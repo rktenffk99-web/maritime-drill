@@ -1,6 +1,7 @@
 // Maritime Drill keyboard controls
 // 1-4 / A-D: choose an answer
 // Enter / Numpad Enter / Space / Right Arrow: next question
+// Left Arrow: previous question
 (function(){
   'use strict';
 
@@ -51,9 +52,13 @@
         window.chooseNavigatorPassPlanAnswer(idx);
         return;
       }
+      if(event.code==='ArrowLeft' && typeof window.prevNavigatorPassPlanQuestion==='function'){
+        event.preventDefault();
+        event.stopPropagation();
+        window.prevNavigatorPassPlanQuestion();
+        return;
+      }
       if(isNextKey(event) && typeof window.nextNavigatorPassPlanQuestion==='function'){
-        // Prevent Enter on the previously focused choice/button from firing its
-        // native click action. In pass-plan sessions Enter always means "next".
         event.preventDefault();
         event.stopPropagation();
         window.nextNavigatorPassPlanQuestion();
