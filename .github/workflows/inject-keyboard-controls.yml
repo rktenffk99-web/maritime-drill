@@ -6,13 +6,16 @@ on:
     paths:
       - 'keyboard-controls.js'
       - 'convenience-controls.js'
+      - 'explain-2026-navi3-3.js'
       - 'tools/patch_pass_plan.py'
       - 'tools/patch_convenience.py'
       - 'tools/patch_2026_navigation.py'
       - 'tools/patch_same_day_confirmation.py'
       - 'tools/patch_predictive_mock.py'
       - 'tools/patch_predictive_mock_followup.py'
+      - 'tools/patch_2026_session3_explanations.py'
       - 'tools/test_predictive_mock.py'
+      - 'tools/test_2026_session3_explanations.py'
       - 'tools/audit_2026_explanations.py'
       - 'tools/match_2026_session3_explanations.py'
       - '.github/workflows/inject-keyboard-controls.yml'
@@ -34,7 +37,9 @@ jobs:
           python tools/patch_same_day_confirmation.py
           python tools/patch_predictive_mock.py
           python tools/patch_predictive_mock_followup.py
+          python tools/patch_2026_session3_explanations.py
           python tools/test_predictive_mock.py
+          python tools/test_2026_session3_explanations.py
           if [ -f tools/audit_2026_explanations.py ]; then python tools/audit_2026_explanations.py; fi
           if [ -f tools/match_2026_session3_explanations.py ]; then python tools/match_2026_session3_explanations.py; fi
       - name: Commit index update
@@ -47,5 +52,5 @@ jobs:
             echo 'No change needed.'
             exit 0
           fi
-          git commit -m 'Audit 2026 explanation reuse candidates'
+          git commit -m 'Add 2026 session 3 explanations'
           git push
