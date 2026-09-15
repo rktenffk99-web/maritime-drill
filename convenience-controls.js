@@ -23,6 +23,7 @@
   function toast(msg){
     if(typeof window.showToast==='function')window.showToast(msg);else console.log(msg);
   }
+  function escapeText(s){return String(s==null?'':s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
 
   function cleanLegacyConfidenceUi(){
     const root=appRoot();if(!root)return;
@@ -105,10 +106,37 @@
     }
     return {counter,tags,question};
   }
+  function readReports(){
+    try{const v=JSON.parse(localStorage.getItem(REPORTS_KEY)||'[]');return Array.isArray(v)?v:[]}catch(e){return []}
+  }
+  function formatReports(reports){
+    return reports.map((r,i)=>`#${i+1} ${r.reason||'신고'}\n시각: ${r.createdAt||''}\n표시: ${(r.tags||[]).join(' · ')} ${r.counter||''}\n문제: ${r.question||''}`).join('\n\n');
+  }
+  async function copyReports(){
+    const reports=readReports();if(!reports.length){toast('저장된 문제 신고가 없습니다.');return}
+    const text=formatReports(reports);
+    try{await navigator.clipboard.writeText(text);toast(`문제 신고 ${reports.length}건을 복사했습니다.`)}catch(e){
+      const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast(`문제 신고 ${reports.length}건을 복사했습니다.`)
+    }
+  }
+  function openReportListModal(){
+    document.getElementById('md-report-list-modal')?.remove();
+    const reports=readReports();
+    const overlay=document.createElement('div');overlay.id='md-report-list-modal';
+    overlay.style.cssText='position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:10000;display:flex;align-items:center;justify-content:center;padding:18px';
+    const rows=reports.length?reports.slice().reverse().map((r,ri)=>`<div style="padding:10px;border:1px solid #E2E8F0;border-radius:9px;background:#F8FAFC"><div style="font-size:12px;font-weight:900">${escapeText(r.reason||'신고')} · #${reports.length-ri}</div><div style="font-size:10px;color:#64748B;margin-top:3px">${escapeText((r.tags||[]).join(' · '))} ${escapeText(r.counter||'')}</div><div style="font-size:12px;line-height:1.55;margin-top:6px">${escapeText(r.question||'문제 문구 없음')}</div></div>`).join(''):'<div style="padding:18px;text-align:center;color:#64748B">저장된 문제 신고가 없습니다.</div>';
+    overlay.innerHTML=`<div class="card" style="width:min(640px,100%);max-height:85vh;overflow:auto;margin:0;background:#fff"><div style="font-size:17px;font-weight:900">저장된 문제 신고 · ${reports.length}건</div><div style="font-size:11px;color:#64748B;margin:5px 0 12px">신고는 이 브라우저의 localStorage에만 저장됩니다. 아래 복사 버튼으로 검수용 내용을 가져올 수 있습니다.</div><div style="display:flex;gap:8px;margin-bottom:12px"><button class="btn btn-accent" style="flex:1" id="md-report-copy" ${reports.length?'':'disabled'}>전체 복사</button><button class="btn btn-outline" style="flex:1" id="md-report-list-close">닫기</button></div><div style="display:flex;flex-direction:column;gap:8px">${rows}</div></div>`;
+    document.body.appendChild(overlay);
+    overlay.querySelector('#md-report-copy').onclick=copyReports;
+    overlay.querySelector('#md-report-list-close').onclick=()=>overlay.remove();
+    overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove()});
+  }
+  window.openMaritimeProblemReports=openReportListModal;
+  window.copyMaritimeProblemReports=copyReports;
+
   function saveReport(reason){
     const snap=collectQuestionSnapshot();
-    let reports=[];
-    try{reports=JSON.parse(localStorage.getItem(REPORTS_KEY)||'[]');if(!Array.isArray(reports))reports=[]}catch(e){reports=[]}
+    const reports=readReports();
     reports.push({createdAt:new Date().toISOString(),reason,...snap});
     try{localStorage.setItem(REPORTS_KEY,JSON.stringify(reports.slice(-500)))}catch(e){}
     toast(`문제 신고 저장됨 · ${reason}`);
@@ -116,12 +144,14 @@
   }
   function openReportModal(){
     document.getElementById('md-report-modal')?.remove();
+    const count=readReports().length;
     const overlay=document.createElement('div');overlay.id='md-report-modal';
     overlay.style.cssText='position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
-    overlay.innerHTML='<div class="card" style="width:min(420px,100%);margin:0;background:#fff"><div style="font-weight:900;font-size:17px;margin-bottom:12px">문제 신고</div><div style="font-size:12px;color:var(--textDim);margin-bottom:12px">현재 문제를 기기에 저장합니다. 나중에 검수 목록으로 활용할 수 있습니다.</div><div id="md-report-actions" style="display:flex;flex-direction:column;gap:8px"></div><button class="btn btn-outline" style="width:100%;margin-top:10px" id="md-report-cancel">취소</button></div>';
+    overlay.innerHTML=`<div class="card" style="width:min(420px,100%);margin:0;background:#fff"><div style="font-weight:900;font-size:17px;margin-bottom:12px">문제 신고</div><div style="font-size:12px;color:var(--textDim);margin-bottom:12px">현재 문제를 이 브라우저에 저장합니다. 저장된 신고는 아래에서 확인·복사할 수 있습니다.</div><div id="md-report-actions" style="display:flex;flex-direction:column;gap:8px"></div><button class="btn btn-outline" style="width:100%;margin-top:10px" id="md-report-list">저장된 신고 ${count}건 보기</button><button class="btn btn-outline" style="width:100%;margin-top:8px" id="md-report-cancel">취소</button></div>`;
     document.body.appendChild(overlay);
     const actions=overlay.querySelector('#md-report-actions');
     ['정답 이상','해설 이상','오타/깨짐'].forEach(reason=>{const b=document.createElement('button');b.className='btn btn-outline';b.style.width='100%';b.textContent=reason;b.onclick=()=>saveReport(reason);actions.appendChild(b)});
+    overlay.querySelector('#md-report-list').onclick=()=>{overlay.remove();openReportListModal()};
     overlay.querySelector('#md-report-cancel').onclick=()=>overlay.remove();
     overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove()});
   }
@@ -132,6 +162,8 @@
     const b=document.createElement('button');b.id='md-report-btn';b.className='btn btn-outline';
     b.style.cssText='width:auto;padding:8px 10px;font-size:12px;margin-left:6px';b.textContent='문제 신고';b.onclick=openReportModal;
     counter.parentElement.appendChild(b);
+    const count=readReports().length;
+    if(count){const list=document.createElement('button');list.id='md-report-list-btn';list.className='btn btn-outline';list.style.cssText='width:auto;padding:8px 10px;font-size:12px;margin-left:4px';list.textContent=`신고 ${count}`;list.onclick=openReportListModal;counter.parentElement.appendChild(list)}
   }
 
   async function requestWakeLock(){
