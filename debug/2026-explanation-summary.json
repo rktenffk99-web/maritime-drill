@@ -93,7 +93,53 @@
       }
     }
   },
+  "exam_inventory": [
+    {
+      "script_id": "md-bundle-past-2026-navi2-2_js",
+      "meta": {
+        "id": "2026-navi2-2",
+        "year": 2026,
+        "gradeId": "navi2",
+        "gradeShort": "navi2",
+        "gradeLabel": "2급항해사(상선)",
+        "session": 2,
+        "source": "2026년 정기 제2회 2급항해사(상선)",
+        "total": 125
+      },
+      "question_count": 125,
+      "subjects": {
+        "항해": 25,
+        "운용": 25,
+        "법규": 25,
+        "영어": 25,
+        "상선전문": 25
+      }
+    },
+    {
+      "script_id": "md-bundle-past-2026-navi3-2_js",
+      "meta": {
+        "id": "2026-navi3-2",
+        "year": 2026,
+        "gradeId": "navi3",
+        "gradeShort": "navi3",
+        "gradeLabel": "3급항해사(상선)",
+        "session": 2,
+        "source": "2026년 정기 제2회 3급항해사(상선)",
+        "total": 75
+      },
+      "question_count": 75,
+      "subjects": {
+        "항해": 25,
+        "법규": 25,
+        "영어": 25
+      }
+    }
+  ],
   "loader_hits": [
+    {
+      "needle": "const PAST_EXPLAIN_YEARS",
+      "pos": 22151375
+    },
     {
       "needle": "async function ensurePastExplainForYears",
       "pos": 22156329

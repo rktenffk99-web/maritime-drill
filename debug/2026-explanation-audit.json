@@ -2776,7 +2776,54 @@
   },
   "missing": [],
   "short_or_placeholder": [],
+  "exam_inventory": [
+    {
+      "script_id": "md-bundle-past-2026-navi2-2_js",
+      "meta": {
+        "id": "2026-navi2-2",
+        "year": 2026,
+        "gradeId": "navi2",
+        "gradeShort": "navi2",
+        "gradeLabel": "2급항해사(상선)",
+        "session": 2,
+        "source": "2026년 정기 제2회 2급항해사(상선)",
+        "total": 125
+      },
+      "question_count": 125,
+      "subjects": {
+        "항해": 25,
+        "운용": 25,
+        "법규": 25,
+        "영어": 25,
+        "상선전문": 25
+      }
+    },
+    {
+      "script_id": "md-bundle-past-2026-navi3-2_js",
+      "meta": {
+        "id": "2026-navi3-2",
+        "year": 2026,
+        "gradeId": "navi3",
+        "gradeShort": "navi3",
+        "gradeLabel": "3급항해사(상선)",
+        "session": 2,
+        "source": "2026년 정기 제2회 3급항해사(상선)",
+        "total": 75
+      },
+      "question_count": 75,
+      "subjects": {
+        "항해": 25,
+        "법규": 25,
+        "영어": 25
+      }
+    }
+  ],
   "loader": [
+    {
+      "needle": "const PAST_EXPLAIN_YEARS",
+      "pos": 22151375,
+      "snippet": "vi5d-2.js,past-2024-navi5d-3.js,past-2024-navi5d-4.js,past-2024-navi5de-1.js,past-2024-navi5de-2.js,past-2024-navi5de-3.js,past-2024-navi5de-4.js,past-2024-navi5e-1.js,past-2024-navi5e-2.js,past-2024-navi5e-3.js,past-2024-navi5e-4.js,past-2024-navi6-1.js,past-2024-navi6-2.js,past-2024-navi6-3.js,past-2024-navi6-4.js,past-2024-navi6e-1.js,past-2024-navi6e-2.js,past-2024-navi6e-3.js,past-2024-navi6e-4.js,past-2025-navi1-1.js,past-2025-navi1-2.js,past-2025-navi1-3.js,past-2025-navi1-4.js,past-2025-navi1e-1.js,past-2025-navi1e-3.js,past-2025-navi1e-4.js,past-2025-navi2-1.js,past-2025-navi2-2.js,past-2025-navi2-3.js,past-2025-navi2-4.js,past-2026-navi2-2.js,past-2026-navi3-3.js,past-2025-navi2e-1.js,past-2025-navi2e-2.js,past-2025-navi2e-3.js,past-2025-navi2e-4.js,past-2025-navi3-1.js,past-2025-navi3-2.js,past-2025-navi3-3.js,past-2025-navi3-4.js,past-2025-navi3e-1.js,past-2025-navi3e-2.js,past-2025-navi3e-3.js,past-2025-navi3e-4.js,past-2026-navi3-2.js,past-2025-navi4-1.js,past-2025-navi4-2.js,past-2025-navi4-3.js,past-2025-navi4-4.js,past-2025-navi4e-1.js,past-2025-navi4e-2.js,past-2025-navi4e-3.js,past-2025-navi4e-4.js,past-2025-navi5-2.js,past-2025-navi5-3.js,past-2025-navi5-4.js,past-2025-navi5d-1.js,past-2025-navi5d-2.js,past-2025-navi5d-3.js,past-2025-navi5d-4.js,past-2025-navi5de-1.js,past-2025-navi5de-2.js,past-2025-navi5de-3.js,past-2025-navi5de-4.js,past-2025-navi5e-1.js,past-2025-navi5e-2.js,past-2025-navi5e-3.js,past-2025-navi5e-4.js,past-2025-navi6-1.js,past-2025-navi6-2.js,past-2025-navi6-3.js,past-2025-navi6e-2.js,past-2025-navi6e-3.js,past-2025-navi6e-4.js,past-2025-engi1-1.js,past-2025-engi1-2.js,past-2025-engi1-3.js,past-2025-engi1-4.js,past-2025-engi2-1.js,past-2025-engi2-2.js,past-2025-engi2-3.js,past-2025-engi2-4.js,past-2025-engi3-1.js,past-2025-engi3-2.js,past-2025-engi3-3.js,past-2025-engi3-4.js,past-2025-engi4-1.js,past-2025-engi4-2.js,past-2025-engi4-3.js,past-2025-engi4-4.js,past-2025-engi5-1.js,past-2025-engi5-2.js,past-2025-engi5-3.js,past-2025-engi5-4.js,past-2025-engi5d-1.js,past-2025-engi5d-2.js,past-2025-engi5d-3.js,past-2025-engi5d-4.js,past-2025-engi6-1.js,past-2025-engi6-2.js,past-2025-engi6-3.js,past-2025-engi6-4.js`.split(',');\nconst PAST_EXPLAIN_YEARS = new Set([2020,2021,2022,2023,2024,2025,2026]);\nconst optionalScriptLoads = new Map();\nconst pastDataSubjectsLoaded = new Set();\n\n// MD_ANDROID_LOADER_START\nfunction getBundledOptionalScript(src){\n  const id='md-bundle-'+String(src||'').replace(/[^a-zA-Z0-9_-]/g,'_');\n  const node=document.getElementById(id);\n  return node?node.textContent.trim():'';\n}\nasync function inflateBundledScript(payload){\n  if(typeof DecompressionStream==='undefined'){\n    throw new Error('Android Chrome 최신 버전이 필요합니다.');\n  }\n  const binary=atob(payload);\n  const bytes=new Uint8Array(binary.length);\n  for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);\n  const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));\n  return new Response(stream).text();\n}\nfunction runBundledScript(code,src){\n  (0,eval)(code+'\\n//# sourceURL='+src);\n}\nfunction loadOptionalScript(src){\n  if(optionalScriptLoads.has(src)) return optionalScriptLoads.get(src);\n  const payload=getBundledOptionalScript(src);\n  if(payload){\n    const task=(async()=>{\n      try{\n        const code=await inflateBundledScript(payload);\n        runBundledScript(code,src);\n        return true;\n      }catch(err){\n        console.error('내장 데이터 로드 실패:',src,err);\n        optionalScriptLoads.delete(src);\n        return false;\n      }\n    })();\n    optionalScriptLoads.set(src,task);\n    return task;\n  }\n  const task=new Promise(resolve=>{\n    const script=document.createElement('script');\n    script.src=src;\n    script.async=true;\n    let settled=false;\n    const finish=ok=>{\n      if(settled) return;\n      settled=true;\n      clearTimeout(timer);\n      if(!ok){ script.remove(); optionalScriptLoads.delete(src); }\n      resolve(ok);\n    };\n    const timer=setTimeout(()=>finish(false),20000);\n    script.onload=()=>finish(true);\n    script.onerror=()=>finish(false);\n    document.head.appendChild(script);\n  });\n  optionalScriptLoads.set(src,task);\n  return task;\n}\n// MD_ANDROID_LOADER_END\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nasync function loadScriptsWithLimit(files, limit){\n  const list=[...(files||[])];\n  if(!list.length) return [];\n  const results=new Array(list.length).fill(false);\n  let next=0;\n  async function worker(){\n    while(next<list.length){\n      const index=next++;\n      results[index]=await loadOptionalScript(list[index]);\n    }\n  }\n  const workers=Array.from({length:Math.min(Math.max(1,limit||1),list.length)},()=>worker());\n  await Promise.all(workers);\n  return results;\n}\nfunction getPastDataFilesForSubject(subjectId){\n  const shorts=PAST_GRADE_MAP[subjectId]||[];\n  if(!shorts.length) return [];\n  const allowed=new Set(shorts);\n  return PAST_DATA_FILES.filter(file=>{\n    const m=file.match(/^past-\\d{4}-(.+)-\\d+\\.js$/);\n    return m && allowed.has(m[1]);\n  });\n}\nfunction getPastYearsForSubject(subjectId){\n  return [...new Set(getPastDataFilesForSubject(subjectId).map(file=>{\n    const m=file.match(/^past-(\\d{4})-/);\n    return m ? Number(m[1]) : null;\n  }).filter(Boolean))].sort((a,b)=>a-b);\n}\nfunction renderPastLoading(message){\n  app.innerHTML=`\n    <div class=\"card\" style=\"margin-top:32px;padding:28px;text-align:center\">\n      <div style=\"width:36px;height:36px;margin:0 auto 12px;color:var(--accent)\">${icon('refresh',36)}</div>\n      <div style=\"font-size:15px;font-weight:800;color:var(--text)\">${escapeHtml(message||'기출 데이터를 불러오는 중입니다')}</div>\n      <div style=\"font-size:12px;color:var(--textDim);margin-top:6px\">선택한 면허 자료만 읽습니다</div>\n    </div>`;\n}\nfunction renderPastLoadError(subjectId, failedFiles){\n  const failedCount=(failedFiles||[]).length;\n  const retryArg=JSON.stringify(subjectId);\n  app.innerHTML=`\n    <div class=\"card\" style=\"margin-top:32px;padding:26px;text-align:center;border-left:4px solid #DC2626\">\n      <div style=\"font-size:16px;font-weight:800;color:#991B1B;margin-bottom:8px\">기출 문제를 모두 불러오지 못했습니다</div>\n      <div style=\"font-size:13px;color:var(--textDim);line-height:1.65\">누락된 파일 ${failedCount}개가 있어 불완전한 상태로 시험을 시작하지 않았습니다.<br>내장 데이터를 열지 못했습니다. Android Chrome을 최신 버전으로 업데이트한 뒤 다시 열어주세요.</div>\n      <div style=\"display:flex;gap:8px;margin-top:18px\">\n        <button class=\"btn btn-outline\" style=\"flex:1\" onclick=\"renderSubjectSelect()\">면허 선택</button>\n        <button class=\"btn btn-accent\" style=\"flex:1\" onclick='renderPastHome(${retryArg})'>다시 시도</button>\n      </div>\n    </div>`;\n}\nasync function ensurePastDataForSubject(subjectId){\n  const files=getPastDataFilesForSubject(subjectId);\n  if(!files.length) return [];\n  const results=await loadScriptsWithLimit(files,8);\n  const failedFiles=files.filter((file,index)=>{\n    const registryId=file.slice(5,-3);\n    return !results[index] || !window.MD_PAST || !window.MD_PAST[registryId];\n  });\n  if(failedFiles.length){\n    const error=new Error(`기출 파일 ${failedFiles.length}개 로드 실패`);\n    error.failedFiles=failedFiles;\n    throw error;\n  }\n  pastDataSubjectsLoaded.add(subjectId);\n  return getPastExamsForSubject(subjectId);\n}\nasync function ensurePastExplainForYears(years"
+    },
     {
       "needle": "async function ensurePastExplainForYears",
       "pos": 22156329,
