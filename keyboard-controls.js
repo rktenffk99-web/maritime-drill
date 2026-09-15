@@ -1,4 +1,4 @@
-// Maritime Drill keyboard controls + automatic pass-plan classification
+// Maritime Drill keyboard controls + automatic pass-plan classification + per-question autosave
 // 1-4 / A-D: choose an answer
 // Enter / Space / Right Arrow: next question when allowed
 (function(){
@@ -20,10 +20,12 @@
     return Object.prototype.hasOwnProperty.call(byCode,event.code) ? byCode[event.code] : -1;
   }
 
-  // Correct answers are treated as a confident answer automatically.
-  // Existing pass-plan logic still controls mastery:
+  // Correct answers are treated as confident automatically.
+  // Existing pass-plan logic controls mastery:
   // first correct = provisional, correct again on a different day = mastered,
   // wrong = weak/review and mastered state is removed.
+  // The outcome is committed immediately when the answer is selected so that
+  // a refresh/close before pressing "next" does not lose the solved question.
   function installAutomaticClassification(){
     if(typeof window.chooseNavigatorPassPlanAnswer==='function'){
       window.chooseNavigatorPassPlanAnswer=function(i){
@@ -31,11 +33,24 @@
           if(typeof currentMode==='undefined' || currentMode!=='pass-plan-session') return;
           const q=planSessionQueue[planSessionIdx];
           if(planSessionAnswers[planSessionIdx]!==null || !q || i<0 || i>=q['선택지'].length) return;
+
+          const confidence=(i===q['정답']) ? 'sure' : 'wrong';
           planSessionAnswers[planSessionIdx]=i;
-          planSessionConfidence[planSessionIdx]=(i===q['정답']) ? 'sure' : 'wrong';
+          planSessionConfidence[planSessionIdx]=confidence;
+
+          // Save this question immediately. nextNavigatorPassPlanQuestion()
+          // sees planSessionCommitted and will not double-count it.
+          if(typeof ppCommitOutcome==='function' && !planSessionCommitted.has(planSessionIdx)){
+            ppCommitOutcome(q,i,confidence);
+            planSessionCommitted.add(planSessionIdx);
+          }
+
           renderNavigatorPassPlanCard();
         }catch(error){
-          console.warn('[keyboard-controls] automatic classification error',error);
+          console.warn('[keyboard-controls] automatic classification/autosave error',error);
+          // Keep the normal UI usable. If the immediate commit failed,
+          // the original next-question logic can still try to commit later.
+          try{ renderNavigatorPassPlanCard(); }catch(e){}
         }
       };
     }
@@ -64,7 +79,7 @@
     for(const el of root.querySelectorAll('div')){
       const text=el.textContent.trim();
       if(el.children.length===0 && text.startsWith('오답은 오늘 미해결로 남습니다.')){
-        el.textContent='오답은 복습 대상으로 남습니다. 이후 다른 날의 정답 기록으로 자동 회복됩니다.';
+        el.textContent='오답은 복습 대상으로 즉시 저장됩니다. 이후 다른 날의 정답 기록으로 자동 회복됩니다.';
       }
     }
   }
