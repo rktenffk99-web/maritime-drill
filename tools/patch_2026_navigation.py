@@ -25,8 +25,11 @@ if old in text:text=text.replace(old,new,1)
 
 anchor="  function ppItemKey(gradeId,groupId){return `${gradeId}|${groupId}`}"
 if "function ppHas2026" not in text and anchor in text:
-    text=text.replace(anchor,anchor+"\n  function ppHas2026(item){return !!(item&&Array.isArray(item.hits)&&item.hits.some(h=>Number(h.year)===2026))}",1)
+    text=text.replace(anchor,anchor+"\n  function ppHas2026(item){return !!(item&&Array.isArray(item.hits)&&item.hits.some(h=>Number(h.year)===2026))}\n  function pp2026NeedsPriority(item,progress){return ppHas2026(item)&&!ppProgressFor(progress,item.key).mastered}",1)
+elif "function ppHas2026" in text and "function pp2026NeedsPriority" not in text:
+    text=text.replace("  function ppHas2026(item){return !!(item&&Array.isArray(item.hits)&&item.hits.some(h=>Number(h.year)===2026))}","  function ppHas2026(item){return !!(item&&Array.isArray(item.hits)&&item.hits.some(h=>Number(h.year)===2026))}\n  function pp2026NeedsPriority(item,progress){return ppHas2026(item)&&!ppProgressFor(progress,item.key).mastered}",1)
 
+# Fresh install: 2026 is mandatory, but only until the item is genuinely mastered.
 text=text.replace(
 """    const freqRemaining=pool.filter(item=>item.count>=2&&!ppProgressFor(progress,item.key).firstPassDate);
     const allRemaining=pool.filter(item=>!ppProgressFor(progress,item.key).firstPassDate);
@@ -34,26 +37,43 @@ text=text.replace(
     if(final)return {phase:'final',label:'시험 직전',dday,freqRemaining,allRemaining,candidates:freqRemaining,learningDays:Math.max(1,dday)};
     if(freqRemaining.length){""",
 """    const freqRemaining=pool.filter(item=>item.count>=2&&!ppProgressFor(progress,item.key).firstPassDate);
-    const current2026Remaining=pool.filter(item=>ppHas2026(item)&&!ppProgressFor(progress,item.key).firstPassDate);
+    const current2026Remaining=pool.filter(item=>pp2026NeedsPriority(item,progress));
     const stage1Remaining=[...current2026Remaining,...freqRemaining.filter(item=>!ppHas2026(item))];
     const allRemaining=pool.filter(item=>!ppProgressFor(progress,item.key).firstPassDate);
     const final=dday!==null&&dday>=0&&dday<=finalDays;
-    if(final)return {phase:'final',label:'시험 직전 · 2026 전체 우선',dday,freqRemaining,current2026Remaining,allRemaining,candidates:stage1Remaining,learningDays:Math.max(1,dday)};
+    if(final)return {phase:'final',label:'시험 직전 · 2026 미숙달 우선',dday,freqRemaining,current2026Remaining,allRemaining,candidates:stage1Remaining,learningDays:Math.max(1,dday)};
     if(stage1Remaining.length){""",1)
 text=text.replace(
 "return {phase:'stage1',label:'1단계 · 최근 5개년 빈출',dday,freqRemaining,allRemaining,candidates:freqRemaining,learningDays:stageDays};",
-"return {phase:'stage1',label:'1단계 · 2026 전체 + 최근 5개년 빈출',dday,freqRemaining,current2026Remaining,allRemaining,candidates:stage1Remaining,learningDays:stageDays};",1)
+"return {phase:'stage1',label:'1단계 · 2026 미숙달 + 최근 5개년 빈출',dday,freqRemaining,current2026Remaining,allRemaining,candidates:stage1Remaining,learningDays:stageDays};",1)
+
+# Upgrade an already-patched v1 index to the mastery-aware policy.
+text=text.replace(
+"    const current2026Remaining=pool.filter(item=>ppHas2026(item)&&!ppProgressFor(progress,item.key).firstPassDate);",
+"    const current2026Remaining=pool.filter(item=>pp2026NeedsPriority(item,progress));",1)
+text=text.replace("label:'시험 직전 · 2026 전체 우선'","label:'시험 직전 · 2026 미숙달 우선'",1)
+text=text.replace("label:'1단계 · 2026 전체 + 최근 5개년 빈출'","label:'1단계 · 2026 미숙달 + 최근 5개년 빈출'",1)
 
 text=text.replace(
 "const compact={dailyCap:plan.dailyCap,finalDays:plan.finalDays,revision:plan.revision,grades:{}};",
-"const compact={dailyCap:plan.dailyCap,finalDays:plan.finalDays,revision:plan.revision,assignmentPolicy:'2026-all-priority-v1',grades:{}};",1)
+"const compact={dailyCap:plan.dailyCap,finalDays:plan.finalDays,revision:plan.revision,assignmentPolicy:'2026-unmastered-priority-v2',grades:{}};",1)
+text=text.replace("assignmentPolicy:'2026-all-priority-v1'","assignmentPolicy:'2026-unmastered-priority-v2'",1)
 
+# 2026 gets tie-break priority only while unmastered. Once mastered, it competes normally
+# and can leave room for unseen/repeated older questions. A later wrong answer demotes
+# mastered=false in the core progress logic, so the 2026 priority automatically returns.
 text=text.replace(
 "candidates.sort((a,b)=>b.count-a.count||b.latest-a.latest);",
-"candidates.sort((a,b)=>(ppHas2026(b)?1:0)-(ppHas2026(a)?1:0)||b.count-a.count||b.latest-a.latest);",1)
+"candidates.sort((a,b)=>(pp2026NeedsPriority(b,progress)?1:0)-(pp2026NeedsPriority(a,progress)?1:0)||b.count-a.count||b.latest-a.latest);",1)
+text=text.replace(
+"candidates.sort((a,b)=>(ppHas2026(b)?1:0)-(ppHas2026(a)?1:0)||b.count-a.count||b.latest-a.latest);",
+"candidates.sort((a,b)=>(pp2026NeedsPriority(b,progress)?1:0)-(pp2026NeedsPriority(a,progress)?1:0)||b.count-a.count||b.latest-a.latest);",1)
 text=text.replace(
 "return da-db||b.count-a.count||b.latest-a.latest;",
-"return da-db||(ppHas2026(b)?1:0)-(ppHas2026(a)?1:0)||b.count-a.count||b.latest-a.latest;",1)
+"return da-db||(pp2026NeedsPriority(b,progress)?1:0)-(pp2026NeedsPriority(a,progress)?1:0)||b.count-a.count||b.latest-a.latest;",1)
+text=text.replace(
+"return da-db||(ppHas2026(b)?1:0)-(ppHas2026(a)?1:0)||b.count-a.count||b.latest-a.latest;",
+"return da-db||(pp2026NeedsPriority(b,progress)?1:0)-(pp2026NeedsPriority(a,progress)?1:0)||b.count-a.count||b.latest-a.latest;",1)
 
 next_anchor="  window.nextNavigatorPassPlanQuestion=function(){"
 if "window.prevNavigatorPassPlanQuestion=function()" not in text and next_anchor in text:
@@ -72,6 +92,6 @@ if old_btn in text:text=text.replace(old_btn,new_btn,1)
 
 if text!=original:
     p.write_text(text,encoding='utf-8')
-    print('patched 2026 priority and navigation')
+    print('patched 2026 mastery-aware priority and navigation')
 else:
     print('no change needed')
