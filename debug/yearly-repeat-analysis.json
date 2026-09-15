@@ -455,50 +455,7 @@
       "영어",
       "운용",
       "항해"
-    ],
-    "study2026Summary": {
-      "occurrences": 125,
-      "uniqueQuestions": 124,
-      "seenInAnyPriorYearUnique": 39,
-      "seenInAnyPriorYearRatePct": 31.5,
-      "occurrencesFromPriorQuestionPct": 32.0,
-      "sameYearDuplicateOccurrences": 1,
-      "sameYearDuplicateRatePct": 0.8,
-      "overlapWithPreviousYearUnique": 20,
-      "overlapWithPreviousYearRatePct": 16.1,
-      "exactCoverageByEarlierYear": {
-        "2020": {
-          "count": 3,
-          "targetCoveragePct": 2.4,
-          "jaccardPct": 0.6
-        },
-        "2021": {
-          "count": 6,
-          "targetCoveragePct": 4.8,
-          "jaccardPct": 1.1
-        },
-        "2022": {
-          "count": 9,
-          "targetCoveragePct": 7.3,
-          "jaccardPct": 1.6
-        },
-        "2023": {
-          "count": 12,
-          "targetCoveragePct": 9.7,
-          "jaccardPct": 2.1
-        },
-        "2024": {
-          "count": 16,
-          "targetCoveragePct": 12.9,
-          "jaccardPct": 2.9
-        },
-        "2025": {
-          "count": 20,
-          "targetCoveragePct": 16.1,
-          "jaccardPct": 3.6
-        }
-      }
-    }
+    ]
   },
   "navi3": {
     "meta": {
@@ -954,49 +911,6 @@
       "법규",
       "상선전문",
       "항해"
-    ],
-    "study2026Summary": {
-      "occurrences": 125,
-      "uniqueQuestions": 125,
-      "seenInAnyPriorYearUnique": 35,
-      "seenInAnyPriorYearRatePct": 28.0,
-      "occurrencesFromPriorQuestionPct": 28.0,
-      "sameYearDuplicateOccurrences": 0,
-      "sameYearDuplicateRatePct": 0.0,
-      "overlapWithPreviousYearUnique": 14,
-      "overlapWithPreviousYearRatePct": 11.2,
-      "exactCoverageByEarlierYear": {
-        "2020": {
-          "count": 4,
-          "targetCoveragePct": 3.2,
-          "jaccardPct": 1.2
-        },
-        "2021": {
-          "count": 9,
-          "targetCoveragePct": 7.2,
-          "jaccardPct": 2.3
-        },
-        "2022": {
-          "count": 6,
-          "targetCoveragePct": 4.8,
-          "jaccardPct": 1.5
-        },
-        "2023": {
-          "count": 6,
-          "targetCoveragePct": 4.8,
-          "jaccardPct": 1.6
-        },
-        "2024": {
-          "count": 14,
-          "targetCoveragePct": 11.2,
-          "jaccardPct": 3.7
-        },
-        "2025": {
-          "count": 14,
-          "targetCoveragePct": 11.2,
-          "jaccardPct": 3.7
-        }
-      }
-    }
+    ]
   }
 }

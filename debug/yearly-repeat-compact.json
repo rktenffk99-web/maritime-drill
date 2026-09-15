@@ -1,0 +1,358 @@
+{
+  "navi2": {
+    "note": "보유 상선 기출 2020~2026 기준. 2026년은 제2회 125문항만 수록된 진행 중 자료.",
+    "originMethod": "공백·문장부호를 제거한 동일 문제 문장 기준",
+    "studySubjects": [
+      "법규",
+      "상선전문",
+      "영어",
+      "운용",
+      "항해"
+    ],
+    "byYear": {
+      "2020": {
+        "occurrences": 374,
+        "uniqueQuestions": 357,
+        "seenInAnyPriorYearUnique": 0,
+        "seenInAnyPriorYearRatePct": 0.0,
+        "occurrencesFromPriorQuestionPct": 0.0,
+        "sameYearDuplicateOccurrences": 17,
+        "sameYearDuplicateRatePct": 4.5,
+        "overlapWithPreviousYearUnique": 0,
+        "overlapWithPreviousYearRatePct": 0.0
+      },
+      "2021": {
+        "occurrences": 499,
+        "uniqueQuestions": 450,
+        "seenInAnyPriorYearUnique": 56,
+        "seenInAnyPriorYearRatePct": 12.4,
+        "occurrencesFromPriorQuestionPct": 14.0,
+        "sameYearDuplicateOccurrences": 49,
+        "sameYearDuplicateRatePct": 9.8,
+        "overlapWithPreviousYearUnique": 56,
+        "overlapWithPreviousYearRatePct": 12.4
+      },
+      "2022": {
+        "occurrences": 498,
+        "uniqueQuestions": 446,
+        "seenInAnyPriorYearUnique": 166,
+        "seenInAnyPriorYearRatePct": 37.2,
+        "occurrencesFromPriorQuestionPct": 39.8,
+        "sameYearDuplicateOccurrences": 52,
+        "sameYearDuplicateRatePct": 10.4,
+        "overlapWithPreviousYearUnique": 108,
+        "overlapWithPreviousYearRatePct": 24.2
+      },
+      "2023": {
+        "occurrences": 499,
+        "uniqueQuestions": 449,
+        "seenInAnyPriorYearUnique": 112,
+        "seenInAnyPriorYearRatePct": 24.9,
+        "occurrencesFromPriorQuestionPct": 26.1,
+        "sameYearDuplicateOccurrences": 50,
+        "sameYearDuplicateRatePct": 10.0,
+        "overlapWithPreviousYearUnique": 79,
+        "overlapWithPreviousYearRatePct": 17.6
+      },
+      "2024": {
+        "occurrences": 500,
+        "uniqueQuestions": 448,
+        "seenInAnyPriorYearUnique": 122,
+        "seenInAnyPriorYearRatePct": 27.2,
+        "occurrencesFromPriorQuestionPct": 28.6,
+        "sameYearDuplicateOccurrences": 52,
+        "sameYearDuplicateRatePct": 10.4,
+        "overlapWithPreviousYearUnique": 74,
+        "overlapWithPreviousYearRatePct": 16.5
+      },
+      "2025": {
+        "occurrences": 498,
+        "uniqueQuestions": 449,
+        "seenInAnyPriorYearUnique": 149,
+        "seenInAnyPriorYearRatePct": 33.2,
+        "occurrencesFromPriorQuestionPct": 34.9,
+        "sameYearDuplicateOccurrences": 49,
+        "sameYearDuplicateRatePct": 9.8,
+        "overlapWithPreviousYearUnique": 73,
+        "overlapWithPreviousYearRatePct": 16.3
+      },
+      "2026": {
+        "occurrences": 125,
+        "uniqueQuestions": 124,
+        "seenInAnyPriorYearUnique": 39,
+        "seenInAnyPriorYearRatePct": 31.5,
+        "occurrencesFromPriorQuestionPct": 32.0,
+        "sameYearDuplicateOccurrences": 1,
+        "sameYearDuplicateRatePct": 0.8,
+        "overlapWithPreviousYearUnique": 20,
+        "overlapWithPreviousYearRatePct": 16.1
+      }
+    },
+    "2026OverlapByEarlierYear": {
+      "2020": {
+        "count": 3,
+        "targetCoveragePct": 2.4,
+        "jaccardPct": 0.6
+      },
+      "2021": {
+        "count": 6,
+        "targetCoveragePct": 4.8,
+        "jaccardPct": 1.1
+      },
+      "2022": {
+        "count": 9,
+        "targetCoveragePct": 7.3,
+        "jaccardPct": 1.6
+      },
+      "2023": {
+        "count": 12,
+        "targetCoveragePct": 9.7,
+        "jaccardPct": 2.1
+      },
+      "2024": {
+        "count": 16,
+        "targetCoveragePct": 12.9,
+        "jaccardPct": 2.9
+      },
+      "2025": {
+        "count": 20,
+        "targetCoveragePct": 16.1,
+        "jaccardPct": 3.6
+      }
+    },
+    "2026BySubject": {
+      "법규": {
+        "occurrences": 25,
+        "uniqueQuestions": 25,
+        "seenInAnyPriorYearUnique": 6,
+        "seenInAnyPriorYearRatePct": 24.0,
+        "occurrencesFromPriorQuestionPct": 24.0,
+        "sameYearDuplicateOccurrences": 0,
+        "sameYearDuplicateRatePct": 0.0,
+        "overlapWithPreviousYearUnique": 4,
+        "overlapWithPreviousYearRatePct": 16.0
+      },
+      "상선전문": {
+        "occurrences": 25,
+        "uniqueQuestions": 25,
+        "seenInAnyPriorYearUnique": 6,
+        "seenInAnyPriorYearRatePct": 24.0,
+        "occurrencesFromPriorQuestionPct": 24.0,
+        "sameYearDuplicateOccurrences": 0,
+        "sameYearDuplicateRatePct": 0.0,
+        "overlapWithPreviousYearUnique": 2,
+        "overlapWithPreviousYearRatePct": 8.0
+      },
+      "영어": {
+        "occurrences": 25,
+        "uniqueQuestions": 24,
+        "seenInAnyPriorYearUnique": 8,
+        "seenInAnyPriorYearRatePct": 33.3,
+        "occurrencesFromPriorQuestionPct": 36.0,
+        "sameYearDuplicateOccurrences": 1,
+        "sameYearDuplicateRatePct": 4.0,
+        "overlapWithPreviousYearUnique": 2,
+        "overlapWithPreviousYearRatePct": 8.3
+      },
+      "운용": {
+        "occurrences": 25,
+        "uniqueQuestions": 25,
+        "seenInAnyPriorYearUnique": 10,
+        "seenInAnyPriorYearRatePct": 40.0,
+        "occurrencesFromPriorQuestionPct": 40.0,
+        "sameYearDuplicateOccurrences": 0,
+        "sameYearDuplicateRatePct": 0.0,
+        "overlapWithPreviousYearUnique": 5,
+        "overlapWithPreviousYearRatePct": 20.0
+      },
+      "항해": {
+        "occurrences": 25,
+        "uniqueQuestions": 25,
+        "seenInAnyPriorYearUnique": 9,
+        "seenInAnyPriorYearRatePct": 36.0,
+        "occurrencesFromPriorQuestionPct": 36.0,
+        "sameYearDuplicateOccurrences": 0,
+        "sameYearDuplicateRatePct": 0.0,
+        "overlapWithPreviousYearUnique": 7,
+        "overlapWithPreviousYearRatePct": 28.0
+      }
+    },
+    "allSubjects2026": {
+      "occurrences": 125,
+      "uniqueQuestions": 124,
+      "seenInAnyPriorYearUnique": 39,
+      "seenInAnyPriorYearRatePct": 31.5,
+      "occurrencesFromPriorQuestionPct": 32.0,
+      "sameYearDuplicateOccurrences": 1,
+      "sameYearDuplicateRatePct": 0.8,
+      "overlapWithPreviousYearUnique": 20,
+      "overlapWithPreviousYearRatePct": 16.1
+    }
+  },
+  "navi3": {
+    "note": "보유 상선 기출 2020~2026 기준. 2026년은 제2회 75문항, 제3회 125문항만 수록된 진행 중 자료.",
+    "originMethod": "공백·문장부호를 제거한 동일 문제 문장 기준",
+    "studySubjects": [
+      "법규",
+      "상선전문",
+      "항해"
+    ],
+    "byYear": {
+      "2020": {
+        "occurrences": 225,
+        "uniqueQuestions": 220,
+        "seenInAnyPriorYearUnique": 0,
+        "seenInAnyPriorYearRatePct": 0.0,
+        "occurrencesFromPriorQuestionPct": 0.0,
+        "sameYearDuplicateOccurrences": 5,
+        "sameYearDuplicateRatePct": 2.2,
+        "overlapWithPreviousYearUnique": 0,
+        "overlapWithPreviousYearRatePct": 0.0
+      },
+      "2021": {
+        "occurrences": 299,
+        "uniqueQuestions": 279,
+        "seenInAnyPriorYearUnique": 34,
+        "seenInAnyPriorYearRatePct": 12.2,
+        "occurrencesFromPriorQuestionPct": 13.4,
+        "sameYearDuplicateOccurrences": 20,
+        "sameYearDuplicateRatePct": 6.7,
+        "overlapWithPreviousYearUnique": 34,
+        "overlapWithPreviousYearRatePct": 12.2
+      },
+      "2022": {
+        "occurrences": 299,
+        "uniqueQuestions": 273,
+        "seenInAnyPriorYearUnique": 108,
+        "seenInAnyPriorYearRatePct": 39.6,
+        "occurrencesFromPriorQuestionPct": 41.8,
+        "sameYearDuplicateOccurrences": 26,
+        "sameYearDuplicateRatePct": 8.7,
+        "overlapWithPreviousYearUnique": 74,
+        "overlapWithPreviousYearRatePct": 27.1
+      },
+      "2023": {
+        "occurrences": 300,
+        "uniqueQuestions": 245,
+        "seenInAnyPriorYearUnique": 50,
+        "seenInAnyPriorYearRatePct": 20.4,
+        "occurrencesFromPriorQuestionPct": 20.7,
+        "sameYearDuplicateOccurrences": 55,
+        "sameYearDuplicateRatePct": 18.3,
+        "overlapWithPreviousYearUnique": 20,
+        "overlapWithPreviousYearRatePct": 8.2
+      },
+      "2024": {
+        "occurrences": 300,
+        "uniqueQuestions": 271,
+        "seenInAnyPriorYearUnique": 94,
+        "seenInAnyPriorYearRatePct": 34.7,
+        "occurrencesFromPriorQuestionPct": 34.7,
+        "sameYearDuplicateOccurrences": 29,
+        "sameYearDuplicateRatePct": 9.7,
+        "overlapWithPreviousYearUnique": 47,
+        "overlapWithPreviousYearRatePct": 17.3
+      },
+      "2025": {
+        "occurrences": 300,
+        "uniqueQuestions": 272,
+        "seenInAnyPriorYearUnique": 99,
+        "seenInAnyPriorYearRatePct": 36.4,
+        "occurrencesFromPriorQuestionPct": 38.7,
+        "sameYearDuplicateOccurrences": 28,
+        "sameYearDuplicateRatePct": 9.3,
+        "overlapWithPreviousYearUnique": 42,
+        "overlapWithPreviousYearRatePct": 15.4
+      },
+      "2026": {
+        "occurrences": 125,
+        "uniqueQuestions": 125,
+        "seenInAnyPriorYearUnique": 35,
+        "seenInAnyPriorYearRatePct": 28.0,
+        "occurrencesFromPriorQuestionPct": 28.0,
+        "sameYearDuplicateOccurrences": 0,
+        "sameYearDuplicateRatePct": 0.0,
+        "overlapWithPreviousYearUnique": 14,
+        "overlapWithPreviousYearRatePct": 11.2
+      }
+    },
+    "2026OverlapByEarlierYear": {
+      "2020": {
+        "count": 4,
+        "targetCoveragePct": 3.2,
+        "jaccardPct": 1.2
+      },
+      "2021": {
+        "count": 9,
+        "targetCoveragePct": 7.2,
+        "jaccardPct": 2.3
+      },
+      "2022": {
+        "count": 6,
+        "targetCoveragePct": 4.8,
+        "jaccardPct": 1.5
+      },
+      "2023": {
+        "count": 6,
+        "targetCoveragePct": 4.8,
+        "jaccardPct": 1.6
+      },
+      "2024": {
+        "count": 14,
+        "targetCoveragePct": 11.2,
+        "jaccardPct": 3.7
+      },
+      "2025": {
+        "count": 14,
+        "targetCoveragePct": 11.2,
+        "jaccardPct": 3.7
+      }
+    },
+    "2026BySubject": {
+      "법규": {
+        "occurrences": 50,
+        "uniqueQuestions": 50,
+        "seenInAnyPriorYearUnique": 12,
+        "seenInAnyPriorYearRatePct": 24.0,
+        "occurrencesFromPriorQuestionPct": 24.0,
+        "sameYearDuplicateOccurrences": 0,
+        "sameYearDuplicateRatePct": 0.0,
+        "overlapWithPreviousYearUnique": 4,
+        "overlapWithPreviousYearRatePct": 8.0
+      },
+      "상선전문": {
+        "occurrences": 25,
+        "uniqueQuestions": 25,
+        "seenInAnyPriorYearUnique": 10,
+        "seenInAnyPriorYearRatePct": 40.0,
+        "occurrencesFromPriorQuestionPct": 40.0,
+        "sameYearDuplicateOccurrences": 0,
+        "sameYearDuplicateRatePct": 0.0,
+        "overlapWithPreviousYearUnique": 4,
+        "overlapWithPreviousYearRatePct": 16.0
+      },
+      "항해": {
+        "occurrences": 50,
+        "uniqueQuestions": 50,
+        "seenInAnyPriorYearUnique": 13,
+        "seenInAnyPriorYearRatePct": 26.0,
+        "occurrencesFromPriorQuestionPct": 26.0,
+        "sameYearDuplicateOccurrences": 0,
+        "sameYearDuplicateRatePct": 0.0,
+        "overlapWithPreviousYearUnique": 6,
+        "overlapWithPreviousYearRatePct": 12.0
+      }
+    },
+    "allSubjects2026": {
+      "occurrences": 200,
+      "uniqueQuestions": 200,
+      "seenInAnyPriorYearUnique": 67,
+      "seenInAnyPriorYearRatePct": 33.5,
+      "occurrencesFromPriorQuestionPct": 33.5,
+      "sameYearDuplicateOccurrences": 0,
+      "sameYearDuplicateRatePct": 0.0,
+      "overlapWithPreviousYearUnique": 26,
+      "overlapWithPreviousYearRatePct": 13.0
+    }
+  }
+}
