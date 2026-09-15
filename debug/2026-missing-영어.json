@@ -1,0 +1,494 @@
+[
+  {
+    "id": "2026|navi3|3|영어|1",
+    "session": 3,
+    "subject": "영어",
+    "number": 1,
+    "question": "Select a suitable sentence in the following communications. A: 'How do you read me?' B: 'I read you bad with signal strength one. ( )'",
+    "choices": [
+      "Go ahead.",
+      "No information.",
+      "Advise try VHF channel 06.",
+      "I am ready to receive your message."
+    ],
+    "answer": 2,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [
+      "2022|navi3|1|영어|1"
+    ],
+    "same_text_reusable_ids": [
+      "2022|navi3|1|영어|1"
+    ]
+  },
+  {
+    "id": "2026|navi3|3|영어|2",
+    "session": 3,
+    "subject": "영어",
+    "number": 2,
+    "question": "Which is the correct expression in SMCP for the following? '더 감아들여야 할 묘쇄는 얼마나 남아 있는가?'",
+    "choices": [
+      "How much shackles are to go?",
+      "How many cables in the water?",
+      "How many cables to heave up?",
+      "How many shackles are left to come in?"
+    ],
+    "answer": 3,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|영어|3",
+    "session": 3,
+    "subject": "영어",
+    "number": 3,
+    "question": "Select the sentence which has the same meaning with the following expression. 'The vessel does not have steerageway.'",
+    "choices": [
+      "The vessel is running safely.",
+      "The vessel turns very quickly.",
+      "The vessel is moving backward.",
+      "The vessel does not answer the wheel."
+    ],
+    "answer": 3,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [
+      "2023|navi3|4|영어|6"
+    ],
+    "same_text_reusable_ids": [
+      "2023|navi3|4|영어|6"
+    ]
+  },
+  {
+    "id": "2026|navi3|3|영어|4",
+    "session": 3,
+    "subject": "영어",
+    "number": 4,
+    "question": "Select the suitable one for the blanks in order. 'How much ( ) is ( ) the cable?' [묘쇄의 장력이 어떠합니까?]",
+    "choices": [
+      "grow, for",
+      "tension, to",
+      "weight, on",
+      "counter, on"
+    ],
+    "answer": 2,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": [
+      "2024|navi3|1|영어|5"
+    ]
+  },
+  {
+    "id": "2026|navi3|3|영어|5",
+    "session": 3,
+    "subject": "영어",
+    "number": 5,
+    "question": "Select a correct answer to the following question. 'What is the container capacity of the vessel?'",
+    "choices": [
+      "The container capacity is 7,500 tons.",
+      "The container capacity is 8,800 TEU.",
+      "The container capacity is 5,000 boxes.",
+      "The container capacity is 8,000 cubic metres."
+    ],
+    "answer": 1,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|영어|6",
+    "session": 3,
+    "subject": "영어",
+    "number": 6,
+    "question": "According to the SMCP, select the proper one for the blank. 'IMO-Class means group of dangerous or hazardous goods, harmful substances or marine pollutants in sea transport as classified in the ( ).'",
+    "choices": [
+      "IBC code",
+      "ISPS code",
+      "IGC code",
+      "IMDG code"
+    ],
+    "answer": 3,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [
+      "2024|navi3|3|영어|4"
+    ],
+    "same_text_reusable_ids": [
+      "2024|navi3|3|영어|4"
+    ]
+  },
+  {
+    "id": "2026|navi3|3|영어|7",
+    "session": 3,
+    "subject": "영어",
+    "number": 7,
+    "question": "Select a suitable group of words for the blanks in order. 'Small fishing boats ( ) area around Hongdo island. Navigate with ( ).' [홍도 주위의 해역에 소형 어선들이 있습니다. 주의해 항해하십시오.]",
+    "choices": [
+      "at, caution",
+      "in, carefully",
+      "in, caution",
+      "at, carefully"
+    ],
+    "answer": 2,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|영어|8",
+    "session": 3,
+    "subject": "영어",
+    "number": 8,
+    "question": "Select a word which has similar meaning to the underlined part. 'Traffic lane has been stopped temporarily.'",
+    "choices": [
+      "avoided",
+      "suspended",
+      "diverted",
+      "discontinued"
+    ],
+    "answer": 1,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|영어|9",
+    "session": 3,
+    "subject": "영어",
+    "number": 9,
+    "question": "Select a correct explanation for the following sentence. 'You are heading towards my tow.'",
+    "choices": [
+      "귀선은 본선을 향하여 오고 있다.",
+      "귀선은 본선의 피예인물을 향하여 가고 있다.",
+      "귀선은 본선과 본선의 피예인물 사이로 향하고 있다.",
+      "귀선은 본선의 피예인물과 동일한 방향으로 가고 있다."
+    ],
+    "answer": 1,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|영어|10",
+    "session": 3,
+    "subject": "영어",
+    "number": 10,
+    "question": "Select one which has correct SMCP expression.",
+    "choices": [
+      "SART: Search And Radio Transmitter",
+      "MRCC: Marine Rescue Coordination Center",
+      "MMSI: Maritime Mobile Service Identity number",
+      "EPIRB: Emergency Position Indexing Radio Beacon"
+    ],
+    "answer": 2,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [
+      "2024|navi3|3|영어|9",
+      "2025|navi3|2|영어|10",
+      "2025|navi3|4|영어|8"
+    ],
+    "same_text_reusable_ids": [
+      "2024|navi3|3|영어|9",
+      "2025|navi3|2|영어|10",
+      "2025|navi3|4|영어|8"
+    ]
+  },
+  {
+    "id": "2026|navi3|3|영어|11",
+    "session": 3,
+    "subject": "영어",
+    "number": 11,
+    "question": "Select the most suitable one for the blank. 'Risk of collision can, when circumstances permit, be ascertained by carefully watching ( ) of an approaching vessel.'",
+    "choices": [
+      "track",
+      "ship's motion",
+      "true course",
+      "compass bearing"
+    ],
+    "answer": 3,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|영어|12",
+    "session": 3,
+    "subject": "영어",
+    "number": 12,
+    "question": "Select the correct one for the blank. '( ) involves taking observations of the sun, moon and stars with a sextant.'",
+    "choices": [
+      "Gyro-Navigation",
+      "Celestial Navigation",
+      "Terrestrial Navigation",
+      "Electronic Navigation"
+    ],
+    "answer": 1,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [
+      "2022|navi3|3|영어|12",
+      "2025|navi3|3|영어|11"
+    ],
+    "same_text_reusable_ids": [
+      "2022|navi3|3|영어|12",
+      "2025|navi3|3|영어|11"
+    ]
+  },
+  {
+    "id": "2026|navi3|3|영어|13",
+    "session": 3,
+    "subject": "영어",
+    "number": 13,
+    "question": "Which of the following is NOT a broken space?",
+    "choices": [
+      "Space between goods",
+      "Space between frame and pillar in holds",
+      "Space between goods and pillar in holds",
+      "Space between goods and bracket in holds"
+    ],
+    "answer": 1,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|영어|14",
+    "session": 3,
+    "subject": "영어",
+    "number": 14,
+    "question": "Select a suitable one for the blank. 'A vessel passing over a shallow patch at high speed may be in danger of grounding. Equally, a small reduction in speed has a significant effect in reducing ( ), which in turn may rapidly reduce the risk of grounding.'",
+    "choices": [
+      "list",
+      "pressure",
+      "squat",
+      "free surface"
+    ],
+    "answer": 2,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|영어|15",
+    "session": 3,
+    "subject": "영어",
+    "number": 15,
+    "question": "Which marks does the following sentence explain about? 'One yellow band, yellow X or yellow symbol'",
+    "choices": [
+      "Special marks",
+      "Safe water marks",
+      "New danger marks",
+      "Isolated danger marks"
+    ],
+    "answer": 0,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [
+      "2022|navi3|2|영어|16"
+    ],
+    "same_text_reusable_ids": [
+      "2022|navi3|2|영어|16"
+    ]
+  },
+  {
+    "id": "2026|navi3|3|영어|16",
+    "session": 3,
+    "subject": "영어",
+    "number": 16,
+    "question": "Select the word which can be replaced with the underlined part. 'The muster list shall specify details of the general emergency alarm and public address system and also action to be taken by crew and passengers when this alarm is sounded.'",
+    "choices": [
+      "lifted",
+      "tuned",
+      "raised",
+      "changed"
+    ],
+    "answer": 2,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|영어|17",
+    "session": 3,
+    "subject": "영어",
+    "number": 17,
+    "question": "Select one which is proper for the blank. 'According to IMO ships' routeing, ( ) means a route which has been specially examined to ensure so far as possible that it is free of dangers and along which ships are advised to navigate.'",
+    "choices": [
+      "two-way route",
+      "inshore traffic zone",
+      "recommended path",
+      "recommended track"
+    ],
+    "answer": 3,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|영어|18",
+    "session": 3,
+    "subject": "영어",
+    "number": 18,
+    "question": "Select the correct one for the blank. 'According to MARPOL Annex I, ( ) means a sea area where for recognized technical reasons in relation to its oceanographical and ecological condition and to the particular character of its traffic the adoption of special mandatory methods for the prevention of sea pollution by oil is required.'",
+    "choices": [
+      "nearest land",
+      "coastal area",
+      "special area",
+      "prohibited zone"
+    ],
+    "answer": 2,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [
+      "2021|navi3|3|영어|16"
+    ],
+    "same_text_reusable_ids": [
+      "2021|navi3|3|영어|16"
+    ]
+  },
+  {
+    "id": "2026|navi3|3|영어|19",
+    "session": 3,
+    "subject": "영어",
+    "number": 19,
+    "question": "Select a proper word for the blanks according to SOLAS. 'At least (a) two-way VHF radiotelephone apparatus shall be provided on every passenger ship and on every cargo ship of 500 gross tonnage and upwards. At least (b) two-way VHF radiotelephone apparatus shall be provided on every cargo ship of 300 gross tonnage and upwards but less than 500 gross tonnage.'",
+    "choices": [
+      "(a): one, (b): two",
+      "(a): two, (b): one",
+      "(a): two, (b): three",
+      "(a): three, (b): two"
+    ],
+    "answer": 3,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|영어|20",
+    "session": 3,
+    "subject": "영어",
+    "number": 20,
+    "question": "Choose a proper one to fill the blank. '( ) is a written notice or note produced by the master of a ship and presented to the agents as soon as his ship arrives at the contractual destination and stating that the ship is ready to load and/or discharge as per charter party conditions.'",
+    "choices": [
+      "Bill of lading",
+      "Shipping order",
+      "Mate's receipt",
+      "Notice of readiness"
+    ],
+    "answer": 3,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|영어|21",
+    "session": 3,
+    "subject": "영어",
+    "number": 21,
+    "question": "Select one which has the wrong explanation.",
+    "choices": [
+      "MARPOL Annex II - Regulations for the control of pollution by noxious liquid substances in bulk",
+      "MARPOL Annex IV - Regulations for the prevention of pollution by sewage from ships",
+      "MARPOL Annex V - Regulations for the prevention of pollution by harmful substances carried by sea in packaged form",
+      "MARPOL Annex VI - Regulations for the prevention of air pollution from ships"
+    ],
+    "answer": 2,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": [
+      "2021|navi3|2|영어|22",
+      "2021|navi3|3|영어|23",
+      "2023|navi3|1|영어|22"
+    ]
+  },
+  {
+    "id": "2026|navi3|3|영어|22",
+    "session": 3,
+    "subject": "영어",
+    "number": 22,
+    "question": "Select a suitable word for the blank. 'On a voyage charter party when the vessel is in port, the charter will specify a definite period of time for loading or discharging of cargo. This time is called ( ).'",
+    "choices": [
+      "laydays",
+      "demurrage",
+      "dispatch",
+      "days of readiness"
+    ],
+    "answer": 0,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|영어|23",
+    "session": 3,
+    "subject": "영어",
+    "number": 23,
+    "question": "Select the correct one for the blank. 'According to MARPOL, a tank specifically designated for the collection of tank drainings, tank washings and other oily mixtures in a ship is as ( ).'",
+    "choices": [
+      "slop tank",
+      "center tank",
+      "wing tank",
+      "ballast tank"
+    ],
+    "answer": 0,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|영어|24",
+    "session": 3,
+    "subject": "영어",
+    "number": 24,
+    "question": "What is not an inspection item in the following sentence? 'Install blank flanges at pump discharge and conduct a 150 PSI hydrostatic test of the entire firemain system. Inspect all valves, piping, pipe hangers, braces and couplings for leaks, rust and deterioration. Submit condition report to Owner's Representative. In the event any hydrant valve leaks, they shall be marked and the test continued. Final test on firemain shall be 150 PSI. Upon completion of test, remove blank flanges and reconnect.'",
+    "choices": [
+      "couplings for leaks",
+      "pipe hangers for rust",
+      "braces for deterioration",
+      "valves for opening failure"
+    ],
+    "answer": 3,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|영어|25",
+    "session": 3,
+    "subject": "영어",
+    "number": 25,
+    "question": "Select the most appropriate word for the blank. 'Pratique ( ), weighed anchor and proceeded to her berth.'",
+    "choices": [
+      "missed",
+      "acquired",
+      "granted",
+      "uncleared"
+    ],
+    "answer": 2,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": [
+      "2023|navi3|2|영어|24"
+    ]
+  }
+]

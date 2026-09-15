@@ -1,0 +1,474 @@
+[
+  {
+    "id": "2026|navi3|3|법규|1",
+    "session": 3,
+    "subject": "법규",
+    "number": 1,
+    "question": "선박의 입항 및 출항 등에 관한 법률상 방파제 입구 또는 그 부근에서의 항법에 관한 설명으로 옳은 것은?",
+    "choices": [
+      "출항선은 방파제 안에서 입항선의 진로를 피한다.",
+      "입항선은 방파제 밖에서 출항선의 진로를 피한다.",
+      "방파제를 선수 좌현측으로 두고 항행할 때에는 이에 접근하여 항행한다.",
+      "방파제를 선수 우현측으로 두고 항행할 때에는 이에 멀리 떨어져서 항행한다."
+    ],
+    "answer": 1,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|법규|2",
+    "session": 3,
+    "subject": "법규",
+    "number": 2,
+    "question": "선원법상 선박소유자는 선원이 승무 중 직무 외의 원인에 의하여 부상이나 질병이 발생한 경우 요양에 필요한 얼마 범위의 비용을 지급하여야 하는가?",
+    "choices": [
+      "3개월",
+      "4개월",
+      "6개월",
+      "1년"
+    ],
+    "answer": 0,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|법규|3",
+    "session": 3,
+    "subject": "법규",
+    "number": 3,
+    "question": "선박직원법상 항행예정시간이 얼마 이내인 국내항간 긴급히 항행할 필요가 있다고 인정되는 경우 해양수산부장관의 허가에 의한 승무기준의 특례를 적용할 수 있는가?",
+    "choices": [
+      "4시간",
+      "6시간",
+      "12시간",
+      "24시간"
+    ],
+    "answer": 0,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|법규|4",
+    "session": 3,
+    "subject": "법규",
+    "number": 4,
+    "question": "선박안전법상 선박위치발신장치를 설치하여야 하는 대상 선박이 아닌 것은? (단, 호소·하천에서만 항해하는 선박은 제외함)",
+    "choices": [
+      "총톤수 5톤인 여객선",
+      "국제항해에 취항하는 총톤수 300톤인 화물선",
+      "연해구역 이상을 항해하는 총톤수 30톤인 유조선",
+      "국제항해에 취항하지 않는 총톤수 500톤인 화물선"
+    ],
+    "answer": 2,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|법규|5",
+    "session": 3,
+    "subject": "법규",
+    "number": 5,
+    "question": "선박안전법상 선박소유자가 임시검사를 받아야 하는 경우가 아닌 것은?",
+    "choices": [
+      "만재흘수선의 변경을 하는 경우",
+      "선박의 무선설비를 새로이 설치하는 경우",
+      "선박검사증서상 선적항을 변경하고자 하는 경우",
+      "선박시설에 대하여 해양수산부령이 정하는 수리를 행하고자 하는 경우"
+    ],
+    "answer": 2,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|법규|6",
+    "session": 3,
+    "subject": "법규",
+    "number": 6,
+    "question": "해양사고의 조사 및 심판에 관한 법률상 해양사고의 범위에 포함되지 않는 것은?",
+    "choices": [
+      "선박의 침몰",
+      "선박의 충돌",
+      "선박의 멸실",
+      "선박 화물의 유실"
+    ],
+    "answer": 3,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|법규|7",
+    "session": 3,
+    "subject": "법규",
+    "number": 7,
+    "question": "해양환경관리법상 선박소유자는 선박해양오염비상계획서를 작성하여 누구의 검인을 받은 후 이를 그 선박에 비치하고, 선박해양오염비상계획서에 따른 조치 등을 이행하여야 하는가?",
+    "choices": [
+      "해양경찰청장",
+      "지방해양수산청장",
+      "해양수산부장관",
+      "기후에너지환경부장관"
+    ],
+    "answer": 0,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|법규|8",
+    "session": 3,
+    "subject": "법규",
+    "number": 8,
+    "question": "해양환경관리법상 총톤수 1만톤 이상의 선박에 설치되어야 하는 기관구역에서의 기름오염방지설비가 아닌 것은? (단, 총톤수 400톤 이상으로서 국제특별해역 안에서만 운항하는 선박은 제외함)",
+    "choices": [
+      "배출관장치",
+      "슬롭탱크장치",
+      "기름여과장치",
+      "선저폐수농도경보장치"
+    ],
+    "answer": 1,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|법규|9",
+    "session": 3,
+    "subject": "법규",
+    "number": 9,
+    "question": "상법상 선장이 적하의 전부나 일부를 처분할 경우 손해배상액 산정의 기준은?",
+    "choices": [
+      "선적 당시의 가격에 의한다.",
+      "선하증권상의 가격에 의한다.",
+      "손해 발생 당시의 가격에 의한다.",
+      "그 적하가 도달할 시기의 양륙항의 가격에 의한다."
+    ],
+    "answer": 3,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|법규|10",
+    "session": 3,
+    "subject": "법규",
+    "number": 10,
+    "question": "상법상 해상운송과 관련하여 규정하고 있는 공동해손의 성립요건이 아닌 것은?",
+    "choices": [
+      "희생과 비용이 발생할 것",
+      "고의적인 처분행위가 있었을 것",
+      "선박 및 운송물 등의 전부가 남아 있을 것",
+      "해상에서 선박과 적하의 공동 위험이 있을 것"
+    ],
+    "answer": 2,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": [
+      "2021|navi3|2|법규|10"
+    ]
+  },
+  {
+    "id": "2026|navi3|3|법규|11",
+    "session": 3,
+    "subject": "법규",
+    "number": 11,
+    "question": "해상교통안전법상 해양경찰서장이 교통안전특정해역을 항행하려는 선박에 대하여 통항시각의 변경 등을 명할 수 있는 대상선박이 아닌 것은?",
+    "choices": [
+      "거대선",
+      "고속여객선",
+      "위험화물운반선",
+      "예인선열의 길이가 180미터인 예인선"
+    ],
+    "answer": 3,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|법규|12",
+    "session": 3,
+    "subject": "법규",
+    "number": 12,
+    "question": "해상교통안전법상 선박의 안전관리체제에 포함되어야 할 사항이 아닌 것은?",
+    "choices": [
+      "선박의 보안에 관한 사항",
+      "선장의 책임과 권한에 관한 사항",
+      "선박소유자의 책임과 권한에 관한 사항",
+      "안전관리체제와 관련된 문서 및 자료 관리에 관한 사항"
+    ],
+    "answer": 0,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|법규|13",
+    "session": 3,
+    "subject": "법규",
+    "number": 13,
+    "question": "국제해상충돌방지규칙상 서로 시계내에서 항행 중인 어로에 종사하고 있는 선박이 진로를 피하여야 하는 선박이 아닌 것은? (단, 좁은 수로, 통항분리제도, 앞지르기 항법의 경우는 제외함)",
+    "choices": [
+      "타가 유실된 선박",
+      "돛을 사용하여 항행하고 있는 범선",
+      "항행 중 보급에 종사하고 있는 선박",
+      "항공기의 발착작업에 종사하고 있는 선박"
+    ],
+    "answer": 1,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|법규|14",
+    "session": 3,
+    "subject": "법규",
+    "number": 14,
+    "question": "국제해상충돌방지규칙상 흘수제약선의 정의로 옳은 것은?",
+    "choices": [
+      "심수심 항로만 항행하는 선박",
+      "흘수와 선폭이 매우 큰 전용 컨테이너선",
+      "흘수가 작으나 폭이 매우 큰 자동차운반선",
+      "가항수역의 수심 및 폭과 선박의 흘수와의 관계에 비추어 그 침로에서 벗어날 수 있는 능력이 매우 제한되어 있는 동력선"
+    ],
+    "answer": 3,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": [
+      "2023|navi3|1|법규|15"
+    ]
+  },
+  {
+    "id": "2026|navi3|3|법규|15",
+    "session": 3,
+    "subject": "법규",
+    "number": 15,
+    "question": "국제해상충돌방지규칙상 안전한 속력 결정 시 고려하여야 하는 사항이 아닌 것은?",
+    "choices": [
+      "시계의 상태",
+      "항행보조시설",
+      "해상교통량의 밀도",
+      "선박의 흘수와 수심과의 관계"
+    ],
+    "answer": 1,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [
+      "2024|navi3|3|법규|15"
+    ],
+    "same_text_reusable_ids": [
+      "2024|navi3|3|법규|15"
+    ]
+  },
+  {
+    "id": "2026|navi3|3|법규|16",
+    "session": 3,
+    "subject": "법규",
+    "number": 16,
+    "question": "국제해상충돌방지규칙상 통항분리수역에서의 항법에 관한 설명으로 옳지 않은 것은?",
+    "choices": [
+      "통항분리수역에서는 어로작업을 할 수 없다.",
+      "선박은 원칙적으로 통항로를 횡단하여서는 아니 된다.",
+      "통항로 안에서는 정하여진 진행방향으로 항행하여야 한다.",
+      "분리선이나 분리대에서 될 수 있으면 떨어져서 항행하여야 한다."
+    ],
+    "answer": 0,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [
+      "2025|navi3|4|법규|17"
+    ],
+    "same_text_reusable_ids": [
+      "2025|navi3|4|법규|17"
+    ]
+  },
+  {
+    "id": "2026|navi3|3|법규|17",
+    "session": 3,
+    "subject": "법규",
+    "number": 17,
+    "question": "( )에 순서대로 적합한 것은? '국제해상충돌방지규칙상 선박은 다른 선박과의 충돌을 피하기 위하여 적절하고 ( ) 동작을 취하거나 당시의 ( )에 알맞은 ( )에서 선박을 멈출 수 있도록 항상 안전한 속력으로 항행하여야 한다.'",
+    "choices": [
+      "효과적인, 사정, 위치",
+      "효과적인, 상황, 거리",
+      "필요한, 통항량, 변침",
+      "필요한, 통항량, 위치"
+    ],
+    "answer": 1,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [
+      "2025|navi3|4|법규|18"
+    ],
+    "same_text_reusable_ids": [
+      "2025|navi3|4|법규|18"
+    ]
+  },
+  {
+    "id": "2026|navi3|3|법규|18",
+    "session": 3,
+    "subject": "법규",
+    "number": 18,
+    "question": "국제해상충돌방지규칙상 선박의 모든 시계 상태에서 준수하여야 할 항법규정이 아닌 것은?",
+    "choices": [
+      "경계(Look-out)",
+      "앞지르기(Overtaking)",
+      "좁은 수로(Narrow channels)",
+      "충돌의 위험(Risk of collision)"
+    ],
+    "answer": 1,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|법규|19",
+    "session": 3,
+    "subject": "법규",
+    "number": 19,
+    "question": "국제해상충돌방지규칙상 다음 그림의 선박에 관한 설명으로 옳은 것은? [그림: 홍색·백색·홍색 전주등을 수직으로 표시]",
+    "choices": [
+      "선박은 조종불능선이다.",
+      "선박은 어로작업에 종사하고 있다.",
+      "선박은 조종성능에 제한을 받고 있다.",
+      "선박은 주간에 등근을 형상물 두 개로 표시하여야 한다."
+    ],
+    "answer": 2,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|법규|20",
+    "session": 3,
+    "subject": "법규",
+    "number": 20,
+    "question": "국제해상충돌방지규칙상 서로 시계 안에서 항행 중 레이더 화면에서 다른 선박의 존재를 탐지하여 충돌의 위험성을 확인한 경우 적절한 피항동작으로 옳은 것은? [그림 문제]",
+    "choices": [
+      "자기 선박은 침로와 속력을 유지한다.",
+      "장음 1회의 기적신호를 울리고, 속력을 올린다.",
+      "정횡 왼쪽에 있는 선박에 대하여 좌현 쪽으로 침로를 변경한다.",
+      "정횡 앞쪽에 있는 다른 선박으로 향하여 침로를 변경하도록 요구한다."
+    ],
+    "answer": 2,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|법규|21",
+    "session": 3,
+    "subject": "법규",
+    "number": 21,
+    "question": "국제해상충돌방지규칙상 예인선이 그림의 등화를 표시하여야 하는 경우는? [그림: 백색 마스트등 3개, 현등, 선미등 및 황색 예인등]",
+    "choices": [
+      "길이 50미터 미만의 예인선이 예인선열의 길이 200미터 이하인 예인을 하고 있을 경우",
+      "길이 50미터 이상의 예인선이 예인선열의 길이 200미터 이하인 예인을 하고 있을 경우",
+      "길이 50미터 이상의 예인선이 예인선열의 길이 200미터를 초과하는 예인을 하고 있을 경우",
+      "길이 100미터 이상의 예인선이 예인선열의 길이 300미터를 초과하는 예인을 하고 있을 경우"
+    ],
+    "answer": 1,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|법규|22",
+    "session": 3,
+    "subject": "법규",
+    "number": 22,
+    "question": "국제해상충돌방지규칙상 주간에 구형·마름모꼴·구형 형상물을 수직으로 표시하여야 하는 선박은?",
+    "choices": [
+      "기관이 고장 난 선박",
+      "조타기가 고장 난 선박",
+      "준설작업에 종사하고 있는 선박",
+      "예인선에 의해 끌려가고 있는 선박"
+    ],
+    "answer": 2,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|법규|23",
+    "session": 3,
+    "subject": "법규",
+    "number": 23,
+    "question": "국제해상충돌방지규칙상 트롤망 이외의 어로에 종사하는 선박이 대수속력이 없는 경우 표시하여야 하는 등화는?",
+    "choices": [
+      "위쪽에 백색 전주등 1개, 아래쪽에 백색 전주등 1개",
+      "위쪽에 백색 전주등 1개, 아래쪽에 붉은색 전주등 1개",
+      "위쪽에 붉은색 전주등 1개, 아래쪽에 백색 전주등 1개",
+      "위쪽에 붉은색 전주등 1개, 아래쪽에 붉은색 전주등 1개"
+    ],
+    "answer": 2,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|법규|24",
+    "session": 3,
+    "subject": "법규",
+    "number": 24,
+    "question": "국제해상충돌방지규칙상 선박이 조종신호를 울릴 수 있는 요건이 아닌 것은?",
+    "choices": [
+      "선박이 항행 중에 있을 것",
+      "선박이 서로 시계 안에 있을 것",
+      "선박이 실제로 변침이나 후진 중에 있을 것",
+      "주위의 다른 선박에게 동의를 구하는 경우일 것"
+    ],
+    "answer": 3,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [
+      "2023|navi3|3|법규|25",
+      "2024|navi3|4|법규|25"
+    ],
+    "same_text_reusable_ids": [
+      "2023|navi3|3|법규|25",
+      "2024|navi3|4|법규|25"
+    ]
+  },
+  {
+    "id": "2026|navi3|3|법규|25",
+    "session": 3,
+    "subject": "법규",
+    "number": 25,
+    "question": "국제해상충돌방지규칙상 선박이 좁은 수로에서 서로 시계 안에 있을 때 다른 선박이 우현 쪽으로 앞지르기 하려는 경우 울려야 하는 기적신호는?",
+    "choices": [
+      "장음 1회, 단음 1회",
+      "장음 1회, 단음 2회",
+      "장음 2회, 단음 1회",
+      "장음 2회, 단음 2회"
+    ],
+    "answer": 2,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  }
+]

@@ -1,0 +1,493 @@
+[
+  {
+    "id": "2026|navi3|3|운용|1",
+    "session": 3,
+    "subject": "운용",
+    "number": 1,
+    "question": "재화중량톤수의 정의로 옳은 것은?",
+    "choices": [
+      "총톤수와 순톤수의 차이",
+      "선수 흘수와 선미 흘수의 차이",
+      "선박의 중량톤수와 배수톤수와의 차이",
+      "만재배수톤수와 경하배수톤수와의 차이"
+    ],
+    "answer": 3,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|운용|2",
+    "session": 3,
+    "subject": "운용",
+    "number": 2,
+    "question": "선박의 계선설비가 아닌 것은?",
+    "choices": [
+      "Winch",
+      "Deck chock",
+      "Bollard",
+      "Side opening"
+    ],
+    "answer": 3,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|운용|3",
+    "session": 3,
+    "subject": "운용",
+    "number": 3,
+    "question": "3호 선저도료(B/T)의 도장법에 관한 설명으로 옳은 것은?",
+    "choices": [
+      "수선부 외판에 직접 칠한다.",
+      "화물창 내판에 직접 칠한다.",
+      "방오도료(A/F) 위에 겹쳐 칠한다.",
+      "방청도료(A/C) 위에 겹쳐 칠한다."
+    ],
+    "answer": 3,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [
+      "2025|navi3|3|운용|3"
+    ],
+    "same_text_reusable_ids": [
+      "2025|navi3|3|운용|3"
+    ]
+  },
+  {
+    "id": "2026|navi3|3|운용|4",
+    "session": 3,
+    "subject": "운용",
+    "number": 4,
+    "question": "전진 중 전타 시작의 위치(WOP)에서 정상선회권 중심까지 원침로상에서 측정한 거리는?",
+    "choices": [
+      "Reach",
+      "Advance",
+      "Transfer",
+      "Tactical diameter"
+    ],
+    "answer": 0,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": [
+      "2022|navi3|3|운용|6"
+    ]
+  },
+  {
+    "id": "2026|navi3|3|운용|5",
+    "session": 3,
+    "subject": "운용",
+    "number": 5,
+    "question": "선체의 6자유도 운동 중 정횡 방향의 왕복 직선운동은?",
+    "choices": [
+      "Yaw",
+      "Sway",
+      "Pitch",
+      "Surge"
+    ],
+    "answer": 1,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [
+      "2025|navi3|2|운용|4",
+      "2025|navi3|3|운용|4"
+    ],
+    "same_text_reusable_ids": [
+      "2025|navi3|2|운용|4",
+      "2025|navi3|3|운용|4"
+    ]
+  },
+  {
+    "id": "2026|navi3|3|운용|6",
+    "session": 3,
+    "subject": "운용",
+    "number": 6,
+    "question": "강풍 또는 파랑이 심하거나, 조류가 강한 수역에서 강한 파주력이 필요할 때 사용되는 묘박법은?",
+    "choices": [
+      "이묘박",
+      "쌍묘박",
+      "단묘박",
+      "선미묘박"
+    ],
+    "answer": 0,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [
+      "2024|navi3|2|운용|6",
+      "2025|navi3|2|운용|7",
+      "2025|navi3|3|운용|5"
+    ],
+    "same_text_reusable_ids": [
+      "2022|navi3|1|운용|6",
+      "2024|navi3|2|운용|6",
+      "2025|navi3|2|운용|7",
+      "2025|navi3|3|운용|5"
+    ]
+  },
+  {
+    "id": "2026|navi3|3|운용|7",
+    "session": 3,
+    "subject": "운용",
+    "number": 7,
+    "question": "다음 중 횡요억제와 관련된 설비가 아닌 것은?",
+    "choices": [
+      "Cofferdam",
+      "Bilge keel",
+      "Anti-rolling tank",
+      "Gyroscopic stabilizer"
+    ],
+    "answer": 0,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|운용|8",
+    "session": 3,
+    "subject": "운용",
+    "number": 8,
+    "question": "선박의 중심위치가 가상 중심 G의 위치보다 GG′만큼 정횡으로 편중되었을 때, 실제 복원정(G′Z)은 각 경사각(θ)에 대하여 가상 복원정(GZ)에서 얼마만큼 값과 같은가?",
+    "choices": [
+      "GZ × cosθ",
+      "GM × cosθ",
+      "GG′ × sinθ",
+      "GG′ × cosθ"
+    ],
+    "answer": 3,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|운용|9",
+    "session": 3,
+    "subject": "운용",
+    "number": 9,
+    "question": "복원력 부족으로 인한 선박의 전복을 방지하기 위한 방법으로 옳지 않은 것은?",
+    "choices": [
+      "대각도의 전타를 하지 않는다.",
+      "적재물이 이동되지 않도록 고박을 철저히 한다.",
+      "항해 중에는 파랑을 정횡으로 받지 않도록 한다.",
+      "밸러스트를 이용하여 선박의 무게중심을 높인다."
+    ],
+    "answer": 3,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|운용|10",
+    "session": 3,
+    "subject": "운용",
+    "number": 10,
+    "question": "선박의 무게중심(G) 위, 수직거리 d(m)에 있는 중량 w(t)을 양하할 경우 무게중심의 수직 이동거리(GG′)는? (단, Δ는 배수량)",
+    "choices": [
+      "w×d/(Δ+w)",
+      "(-w)×d/(Δ+(-w))",
+      "w×Δ/(d+w)",
+      "(-w)×Δ/(d+(-w))"
+    ],
+    "answer": 1,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|운용|11",
+    "session": 3,
+    "subject": "운용",
+    "number": 11,
+    "question": "항해당직을 인계받는 당직사관이 스스로 확인해야 할 사항이 아닌 것은?",
+    "choices": [
+      "선박의 위치",
+      "일·출몰 시간",
+      "선장의 지시사항",
+      "예상되는 조류 및 해류"
+    ],
+    "answer": 1,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|운용|12",
+    "session": 3,
+    "subject": "운용",
+    "number": 12,
+    "question": "하역당직 중 당직사관이 후임 당직사관에게 반드시 인계하여야 할 사항이 아닌 것은?",
+    "choices": [
+      "빌지와 평형수의 양",
+      "정박한 장소의 수심, 선박의 흘수, 고조와 저조의 시각과 수위",
+      "자기 선박이 주변 선석에 접안해 있는 선박들의 하역 진행 상황",
+      "선내에 선적되었거나 남아 있는 화물 또는 양화 후 선내 잔여 화물에 관한 정보"
+    ],
+    "answer": 2,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|운용|13",
+    "session": 3,
+    "subject": "운용",
+    "number": 13,
+    "question": "전선에 관한 설명으로 옳지 않은 것은?",
+    "choices": [
+      "장마전선은 일종의 정체전선이다.",
+      "대부분의 온난전선은 활성전선이다.",
+      "정체전선은 남북으로 놓일 때가 많다.",
+      "한랭전선의 이동속도가 온난전선보다 빨라서 발생하는 것은 폐색전선이다."
+    ],
+    "answer": 2,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|운용|14",
+    "session": 3,
+    "subject": "운용",
+    "number": 14,
+    "question": "일기도에 기재된 'ASAS'의 의미는?",
+    "choices": [
+      "극동 지상 해석도",
+      "아시아 고층 해석도",
+      "아시아 지상 해석도",
+      "아시아 파랑 해석도"
+    ],
+    "answer": 2,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|운용|15",
+    "session": 3,
+    "subject": "운용",
+    "number": 15,
+    "question": "다음 중 지상일기도상 숫자로 기입되는 것은?",
+    "choices": [
+      "풍속",
+      "날씨",
+      "기압",
+      "운량"
+    ],
+    "answer": 2,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": [
+      "2023|navi3|3|운용|14",
+      "2023|navi3|4|운용|15"
+    ]
+  },
+  {
+    "id": "2026|navi3|3|운용|16",
+    "session": 3,
+    "subject": "운용",
+    "number": 16,
+    "question": "보일러의 압력이 규정 압력보다 상승할 때 자동적으로 증기를 분출시키는 밸브는?",
+    "choices": [
+      "정지 밸브(Stop valve)",
+      "안전 밸브(Safety valve)",
+      "역지 밸브(Check valve)",
+      "팽창 밸브(Expansion valve)"
+    ],
+    "answer": 1,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [
+      "2025|navi3|2|운용|16"
+    ],
+    "same_text_reusable_ids": [
+      "2025|navi3|2|운용|16"
+    ]
+  },
+  {
+    "id": "2026|navi3|3|운용|17",
+    "session": 3,
+    "subject": "운용",
+    "number": 17,
+    "question": "냉동장치에서 주위로부터 열을 흡수하는 부분은?",
+    "choices": [
+      "압축기",
+      "응축기",
+      "증발기",
+      "팽창 밸브"
+    ],
+    "answer": 2,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [
+      "2023|navi3|2|운용|17",
+      "2025|navi3|4|운용|16"
+    ],
+    "same_text_reusable_ids": [
+      "2023|navi3|2|운용|17",
+      "2025|navi3|4|운용|16"
+    ]
+  },
+  {
+    "id": "2026|navi3|3|운용|18",
+    "session": 3,
+    "subject": "운용",
+    "number": 18,
+    "question": "IAMSAR manual상 물에 빠진 사람을 계속해서 한 위치에서 볼 수 있을 때 행하는 가장 빠른 구조 조선법은?",
+    "choices": [
+      "Single turn",
+      "Scharnow turn",
+      "Two 180° turn",
+      "Williamson turn"
+    ],
+    "answer": 0,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|운용|19",
+    "session": 3,
+    "subject": "운용",
+    "number": 19,
+    "question": "침수율(Permeability)에 관한 설명으로 옳은 것은?",
+    "choices": [
+      "파공에서의 침수 유속",
+      "침수된 구역과 인접 구역과의 용적비",
+      "침수가 전체 선내 용적에서 점하는 비율",
+      "단위용적 내에 물이 침수할 수 있는 용적의 비율"
+    ],
+    "answer": 3,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|운용|20",
+    "session": 3,
+    "subject": "운용",
+    "number": 20,
+    "question": "쇼크 환자의 응급 처치 방법으로 옳지 않은 것은?",
+    "choices": [
+      "정상 체온이 유지되도록 한다.",
+      "기도를 개방하고, 편안한 자세를 유지한다.",
+      "출혈이 있는 경우 가능한 출혈 부위를 지혈하여 혈액 손실을 최소화한다.",
+      "응급 수술이 예상되는 환자에게는 음식을 주지 않아야 하지만, 갈증을 느끼면 음료수는 준다."
+    ],
+    "answer": 3,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [
+      "2023|navi3|3|운용|21"
+    ],
+    "same_text_reusable_ids": [
+      "2020|navi3|3|운용|20",
+      "2023|navi3|3|운용|21"
+    ]
+  },
+  {
+    "id": "2026|navi3|3|운용|21",
+    "session": 3,
+    "subject": "운용",
+    "number": 21,
+    "question": "타박상 및 피하출혈 시 응급 처치 방법으로 옳지 않은 것은?",
+    "choices": [
+      "마사지",
+      "손상부위를 높임",
+      "냉찜질",
+      "손상부위의 안정"
+    ],
+    "answer": 0,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|운용|22",
+    "session": 3,
+    "subject": "운용",
+    "number": 22,
+    "question": "IAMSAR manual상 수색구역이 소규모이고, 수색선이 1척인 경우 주로 이용하는 수색방식은?",
+    "choices": [
+      "부채꼴 수색방식",
+      "등고선 수색방식",
+      "확대사각 수색방식",
+      "평행선항적 수색방식"
+    ],
+    "answer": 0,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|운용|23",
+    "session": 3,
+    "subject": "운용",
+    "number": 23,
+    "question": "IAMSAR manual상 선박조종지침에 관한 설명으로 옳지 않은 것은?",
+    "choices": [
+      "수색 중에도 국제해상충돌방지규칙이 적용된다.",
+      "수색 상황에서 조종 및 경고신호는 특별히 중요하다.",
+      "선박조종에 관한 통신문에 시각이 명시되어 있지 않은 경우는 수신 즉시 행동을 취한다.",
+      "새로운 수색구역으로의 향진과 같은 대각도 변침을 두 단계로 나누어 하는 것은 바람직하지 않다."
+    ],
+    "answer": 3,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": [
+      "2025|navi3|4|운용|22"
+    ]
+  },
+  {
+    "id": "2026|navi3|3|운용|24",
+    "session": 3,
+    "subject": "운용",
+    "number": 24,
+    "question": "선내 인적자원관리의 주요 목적이 아닌 것은?",
+    "choices": [
+      "안전하고 능률적인 운항 달성",
+      "선장의 권위에 대한 당위성 확보",
+      "선내에 밝고 양호한 인간관계 유지",
+      "좋은 팀워크를 조작하고 선원들의 사기를 증진"
+    ],
+    "answer": 1,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  },
+  {
+    "id": "2026|navi3|3|운용|25",
+    "session": 3,
+    "subject": "운용",
+    "number": 25,
+    "question": "부하 직원이 명령에 복종하는 이유로 가장 바람직한 형태는?",
+    "choices": [
+      "감정적인 이유에서 복종한다.",
+      "자신의 취약점 때문에 복종한다.",
+      "자신의 목표와 일치하므로 복종한다.",
+      "명령이 필요하다고 인식하여 복종한다."
+    ],
+    "answer": 3,
+    "status": "missing",
+    "explanation_chars": 0,
+    "exact_reusable_ids": [],
+    "same_text_reusable_ids": []
+  }
+]
