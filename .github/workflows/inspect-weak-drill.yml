@@ -1,13 +1,26 @@
-name: Inspect weak drill context
+name: Test weak drills
 on:
   push:
     branches: [ feature/today-wrong-and-frequent-wrong ]
     paths:
-      - 'tools/inspect_weak_drill_context.py'
+      - 'tools/patch_weak_drills.py'
+      - 'tools/test_weak_drills.py'
       - '.github/workflows/inspect-weak-drill.yml'
 jobs:
-  inspect:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: python tools/inspect_weak_drill_context.py
+      - name: Apply existing patches then weak-drill patch
+        run: |
+          python tools/patch_pass_plan.py
+          python tools/patch_convenience.py
+          python tools/patch_2026_navigation.py
+          python tools/patch_same_day_confirmation.py
+          python tools/patch_predictive_mock.py
+          python tools/patch_predictive_mock_followup.py
+          python tools/patch_2026_session3_explanations.py
+          python tools/patch_weak_drills.py
+          python tools/test_predictive_mock.py
+          python tools/test_2026_session3_explanations.py
+          python tools/test_weak_drills.py
