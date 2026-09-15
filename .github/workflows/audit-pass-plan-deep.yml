@@ -1,0 +1,33 @@
+name: Deep pass-plan audit
+on:
+  push:
+    branches: [ audit/pass-plan-20260915 ]
+    paths:
+      - 'tools/audit_pass_plan_deep.py'
+      - '.github/workflows/audit-pass-plan-deep.yml'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run existing regression checks
+        run: |
+          python tools/test_predictive_mock.py
+          python tools/test_2026_session3_explanations.py
+          python tools/test_weak_drills.py
+      - name: Verify patch idempotence
+        run: |
+          cp index.html /tmp/index.before
+          python tools/patch_pass_plan.py
+          python tools/patch_convenience.py
+          python tools/patch_2026_navigation.py
+          python tools/patch_same_day_confirmation.py
+          python tools/patch_predictive_mock.py
+          python tools/patch_predictive_mock_followup.py
+          python tools/patch_2026_session3_explanations.py
+          python tools/patch_weak_drills.py
+          cmp /tmp/index.before index.html || { echo 'PATCH_NOT_IDEMPOTENT'; git diff --stat -- index.html; exit 1; }
+      - name: Deep logic audit
+        run: python tools/audit_pass_plan_deep.py
