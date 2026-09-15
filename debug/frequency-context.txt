@@ -1,0 +1,2385 @@
+===== function n3aData =====
+
+count=1
+
+--- 1 @ 22165224 ---
+ar!==latest);
+  }else navi3AnalysisState.years=all;
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();if(!skipRender)renderNavi3Frequency();
+}
+function n3aSetMinCount(value,skipRender){
+  const n=Number(value);navi3AnalysisState.minCount=[1,2,3,4].includes(n)?n:2;
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();if(!skipRender)renderNavi3Frequency();
+}
+function n3aQuickRecentFive(){
+  const data=n3aData();if(!data)return;n3aEnsureFilterState(data);
+  const all=(data.meta.years||[]).map(Number).sort((a,b)=>a-b);
+  const partial=new Set((data.meta.partialYears||[]).map(Number));
+  const complete=((data.meta.completeYears||[]).length?(data.meta.completeYears||[]).map(Number):all.filter(year=>!partial.has(year))).sort((a,b)=>a-b);
+  navi3AnalysisState.years=complete.slice(-5);
+  navi3AnalysisState.minCount=2;
+  navi3AnalysisState.view='repeats';
+  navi3AnalysisState.sort='count';
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;
+  n3aSaveFilterState();renderNavi3Frequency();
+}
+
+function n3aActivateGrade(subjectId){
+  if(!NAVI_ANALYSIS_GRADES.includes(subjectId))subjectId='navi3';
+  if(naviAnalysisSubjectId!==subjectId)navi3AnalysisDetail=null;
+  naviAnalysisSubjectId=subjectId;
+  if(!naviAnalysisStates[subjectId])naviAnalysisStates[subjectId]={view:'repeats',subject:'all',range:'all',subjects:null,years:null,minCount:2,sort:'score',query:'',limit:NAVI3_ANALYSIS_LIMIT,_filterLoaded:false};
+  navi3AnalysisState=naviAnalysisStates[subjectId];
+}
+function n3aData(subjectId){
+  const gradeId=subjectId||naviAnalysisSubjectId;
+  return window.MD_NAVI_FREQUENCY&&window.MD_NAVI_FREQUENCY[gradeId]||null;
+}
+const n3aOriginIndexes={};
+function n3aOriginKey(year,session,subject,number){return `${year}|${session}|${subject}|${number}`}
+function n3aQuestionOrigin(q){
+  if(!q||Number(q._year)<2026)return null;
+  const gradeId=baseFromShort(q._short||'');
+  if(!NAVI_ANALYSIS_GRADES.includes(gradeId))return null;
+  const data=n3aData(gradeId);
+  if(!data||!Array.isArray(data.classifications))return null;
+  if(!n3aOriginIndexes[gradeId]){
+    n3aOriginIndexes[gradeId]=new Map(data.classifications.map(entry=>[
+      n3aOriginKey(entry.year,entry.session,entry.subject,entry.number),entry
+    ]));
+  }
+  return n3aOriginIndexes[gradeId].get(n3aOriginKey(q._year,q._session||q['회차'],q['과목'],q['번호']))||null;
+}
+function n3aOriginTagHtml(q){
+  const origin=n3aQuestionOrigin(q);if(!origin)return '';
+  const styles={
+    new:{label:'신출',bg:'#F3E8FF',color:'#7E22CE'},
+    past:{label:'기출',bg:'#DBEAFE',color:'#1D4ED8'},
+    frequent:{label:'빈출',bg:'#FEE2E2',color:'#B91C1C'}
+  };
+  const style=styles[origin.status]||styles.new;
+  const history=origin.previousCount
+    ? `2020~2025년 동일 문항 ${origin.previousCount}회 · ${origin.previousYears.join('·')}년`
+    : '2020~2025년 동일 문항 없음';
+  const sameYear=origin.sameYearEarlierCount?` · ${origin.year}년 앞 회차 ${origin.sameYearEarlierCount}회`:'';
+  const count=origin.status==='frequent'?` · 과거 ${origin.previousCount}회`:origin.status==='past'?' · 과거 1회':'';
+  return `<span class="tag" style="background:${style.bg};color:${style.color};margin:0" title="${escapeHtml(history+sameYear)}">${style.label}${count}</span>`;
+}
+async function ensureNavi3FrequencyData(subjectId){
+  const gradeId=subjectId||naviAnalysisSubjectId;
+  const existing=n3aData(gradeId);if(existing)return existing;
+  const loaded=await loadOptionalScript(`past-analysis-${gradeId}.js`);
+  const data=n3aData(gradeId);
+  if(!loaded||!data)throw new Error(`${gradeId.replace('navi','')}급 항해사 분석 데이터를 불러오지 못했습니다.`);
+  return data;
+}
+function n3aRangeYears(data,range){
+  const all=(data.meta.years||[]).map(Number);
+  n3aEnsureFilterState(data);
+  if(Array.isArray(navi3AnalysisState.years))return new Set(navi3AnalysisState.years.map(Number).filter(year=>all.includes(year)));
+  if(range==='complete')return new Set((data.meta.completeYears||[]).map(Number));
+  if(range==='recent')return new Set(all.filter(year=>year>=2023));
+  return new Set(all);
+}
+function n3aRangeLabel(data,range){
+  const years=[...n3aRangeYears(data,range)].sort((a,b)=>a-b);
+  if(!years.length)return '선택 연도 없음';
+  const contiguous=years.every((year,index)=>index===0||year===years[index-1]+1);
+  const label=contiguous&&years.length>1?`${years[0]}~${years[years.length-1]}년`:`${years.join('·')}년`;
+  const partial=(data.meta.partialYears||[]).map(Number).filter(year=>years.includes(year));
+  return `${label}${partial.length?` · ${partial.join('·')} 부분 포함`:''}`;
+}
+function n3aYearSpan(years){
+  const sorted=(years||[]).map(Number).sort((a,b)=>a-b);
+  return sorted.length?`${sorted[0]}~${sorted[sorted.length-1]}`:'자료 없음';
+}
+function n3aFilteredHits(hits,yearSet){return (hits||[]).filter(hit=>yearSet.has(Number(hit.year)))}
+function n3aSessionKey(hit){return `${hit.year}-${hit.session}`}
+function n3aUniqueYears(hits){return [...new Set(hits.map(hit=>Number(hit.year)))].sort((a,b)=>a-b)}
+function n3aTier(score){
+  if(score>=80)return {label:'최우선',cls:'n3a-score-top'};
+  if(score>=65)return {label:'중요',cls:'n3a-score-high'};
+  if(score>=50)return {label:'주목',cls:'n3a-score-watch'};
+  return {label:'보통',cls:'n3a-score-normal'};
+}
+function n3aRecencyScore(latest,maxYear){return Math.max(4,25-Math.max(0,maxYear-latest)*4)}
+function n3aRepeatScore(hits,yearSet){
+  const years=n3aUniqueYears(hits),maxYear=Math.max(...yearSet);
+  return Math.min(100,Math.round(Math.min(60,hits.length/7*60)+n3aRecencyScore(years[years.length-1],maxYear)+Math.min(15,years.length/6*15)));
+}
+function n3aTopicScore(hits,yearSet,totalSessions){
+  const years=n3aUniqueYears(hits),latest=years[years.length-1];
+  const sessions=new Set(hits.map(n3aSessionKey)).size;
+  const coverage=totalSessions?Math.min(1,sessions/totalSessions):0;
+  const density=totalSessions?Math.min(1,hits.length/(totalSessions*4)):0;
+  return Math.min(100,Math.round(coverage*55+density*20+n3aRecencyScore(latest,Math.max(...yearSet))));
+}
+function n3aAllSessionKeys(data,yearSet){
+  const keys=new Set();
+  (data.groups||[]).forEach(group=>n3aFilteredHits(group.hits,yearSet).forEach(hit=>keys.add(n3aSessionKey(hit))));
+  return keys;
+}
+function n3aRangeStats(data,yearSet){
+  let questions=0,repeated=0;
+  const minCount=Number(navi3AnalysisState.minCount)||2;
+  (data.groups||[]).forEach(group=>{
+    if(!n3aSubjectSelected(group.subject))return;
+    const count=n3aFilteredHits(group.hits,yearSet).length;
+    questions+=count;
+    if(count>=minCount)repeated+=1;
+  });
+  return {questions,re
+
+===== n3aData= =====
+
+count=0
+
+===== ensureNavi3FrequencyData =====
+
+count=8
+
+--- 1 @ 22126529 ---
+ + subjectId;
+  SCHEDULE_KEY = "md_schedule_"  + subjectId;
+  MISSION_KEY  = "md_missions_"  + subjectId;
+  CONCEPT_KEY  = "md_concepts_"  + subjectId;
+  // 과목별 진도/일정/개념 로드
+  const st = loadState();
+  boxes = (st && st.boxes) ? st.boxes : initBoxes();
+  // v4.51: 레거시 데이터에 SM-2 필드 주입 + 신규 문제에 기본값 보강
+  migrateBoxes(boxes);
+  QUESTIONS.forEach(q=>{
+    if(!boxes[q.id]){
+      boxes[q.id]={box:1,confidence:null,correct:0,wrong:0,lastStudied:null,firstStudied:null,
+                   needsRetry:false,recoveryStreak:0,lastRecoveryDate:null,
+                   ef:SM2_DEFAULT_EF,interval:0,reps:0,nextReview:null};
+    }
+  });
+  schedule = loadSchedule();
+  EXAM_DATE = parseScheduleDate(schedule.exam);
+  START_DATE = parseScheduleDate(schedule.start);
+  concepts = loadConcepts();
+  // 외장 concepts-{id}.js 자동 병합 (사용자 localStorage 우선)
+  const ext = window.MD_CONCEPTS && window.MD_CONCEPTS[subjectId];
+  if(ext){ for(const k in ext){ if(!concepts[k]) concepts[k] = ext[k]; } }
+  // v4.52: 외장 rubrics-{id}.js 자동 병합 + 오버라이드 병합 + boxes 마이그레이션
+  const rubrics = window.MD_RUBRICS && window.MD_RUBRICS[subjectId];
+  if(rubrics){ QUESTIONS.forEach(q=>{ if(rubrics[q.id]) q.rubric = rubrics[q.id]; }); }
+  attachNavi2AutoRubrics(subjectId,QUESTIONS);
+  mergeRubricOverrides(subjectId);
+  migrateBoxesForTyping(boxes);
+  catFilter = "all"; filter = "all";
+  homeToolsOpen=false;
+  initPlan();
+  currentMode = 'home';
+  renderHome();
+  if(NAVI_ANALYSIS_GRADES.includes(subjectId)){n3aActivateGrade(subjectId);ensureNavi3FrequencyData(subjectId).catch(error=>console.warn(`[v5.00] ${subjectId} 빈출 분석 사전 로드 실패:`,error));}
+}
+
+function getSubjectConceptCount(subjectId){
+  // 외장 + 사용자 localStorage 합집합
+  const ext = (window.MD_CONCEPTS && window.MD_CONCEPTS[subjectId]) || {};
+  let user = {};
+  try{ const r = localStorage.getItem('md_concepts_'+subjectId); if(r) user = JSON.parse(r); }catch(e){}
+  const ids = new Set([...Object.keys(ext), ...Object.keys(user)]);
+  return ids.size;
+}
+function getSubjectQCount(subjectId){
+  const d = window.MD_DATA && window.MD_DATA[subjectId];
+  return d ? d.QUESTIONS.length : 0;
+}
+
+function selectGroup(groupName){
+  selectedGroup = groupName;
+  renderSubjectSelect();
+}
+
+function renderSubjectSelect() {
+  currentMode="select";
+  pendingMissionIdx=null;
+  currentSubject = null;
+
+  // v4.25: 데이터 파일(data-*.js) 누락 진단
+  if(!SUBJECTS || SUBJECTS.length===0){
+    app.innerHTML = `
+      <div class="hero-banner">
+        <div class="hero-content">
+          <div class="hero-eyebrow-light" style="margin-top:14px">MARITIME EXAM PREP <span class="beta-badge-light">BETA</span></div>
+          <h1 class="hero-title-light">Maritime Drill<span class="hero-version-light">v${APP_VERSION}</span></h1>
+          <p class="hero-sub-light">해기사 필기·면접 통합 대비 · STCW 기준 통합 학습</p>
+        </div>
+      </div>
+      <div class="card" style="border-left:4px solid #DC2626;background:#FEE2E2;padding:20px">
+          <div style="font-weight:800;color:#991B1B;font-size:16px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:6px">${icon('alert',18)} 문제 데이터를 불러오지 못했습니다</div>
+        <div style="color:#7F1D1D;font-size:13px;line-height:1.7">
+          이 HTML 파일과 같은 폴더에 다음 파일들이 있어야 합니다:<br><br>
+          <b>data-*.js</b> (17개): data-goc.js, data-rec.js, data-navi1.js ~ data-navi6.js, data-engi1.js ~ data-engi6.js, data-small.js, data-safety1.js, data-safety2.js<br><br>
+          <b>concepts-*.js</b> (17개): 같은 패턴으로 17개<br><br>
+          <b>audit-navi.js</b>: 항해사 공식 출처·현행 법령 보정 모듈<br><br>
+          data-*.js / concepts-*.js / audit-navi.js 파일을 v${APP_VERSION} HTML과 같은 폴더에 함께 두시면 됩니다.
+        </div>
+        <button class="btn btn-outline" style="margin-top:14px;width:auto" onclick="location.reload()">새로고침</button>
+      </div>`;
+    return;
+  }
+
+  // ── 1단계: 그룹 카드 화면 (v4.8 marine-minimal) ──
+  if(!selectedGroup){
+    let cards = '';
+    SUBJECT_GROUPS.forEach(g => {
+      const groupSubs = SUBJECTS.filter(s => g.ids.includes(s.id));
+      if(!groupSubs.length) return;
+      let totQ=0;
+      groupSubs.forEach(s => { totQ += getSubjectQCount(s.id); });
+      const iconBg = `linear-gradient(135deg, ${g.color} 0%, ${g.color}dd 100%)`;
+      cards += `
+        <button type="button" class="group-card" onclick="selectGroup('${g.group}')" aria-label="${g.group} 선택">
+          <div class="group-icon" style="background:${iconBg};box-shadow:0 4px 12px ${g.color}40">
+            ${SVG_ICONS[g.svg]}
+          </div>
+          <div class="group-body">
+            <div class="group-name">${g.group}</div>
+            <div class="group-desc">${g.desc}</div>
+          </div>
+          <div class="group-meta">
+            <div class="group-stat">
+              <div class="group-stat-num">${totQ}</div>
+              <div class="group-stat-label">${groupSubs.length} 과목</div>
+            </div>
+          <div class="group-chev">${icon('chevronRight',22)}</div>
+          </div>
+        </button>
+      `;
+    });
+    // 통계 집계 (총 문항·과목·면허)
+    let totalQ = 0;
+    SUBJECTS.forEach(s => { totalQ += getSubjectQCount(s.id); });
+    const totalS = SUBJECTS.length;
+    const totalG = SUBJECT_GROUPS.filter(g => SUBJECTS.some(s => g.ids.includes(s.id))).length;
+
+    app.innerHTML = `
+      <div class="hero-banner">
+        <svg class="bg-wave" viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,30 C200,55 400,5 700,25 C950,40 1050,15 1200,30 L1200,60 L0,60 Z" fill="#0EA5E9"/>
+        </svg>
+        <div class="hero-content">
+          <div class="emblem">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="5" r="2.5"/>
+              <line x1="12" y1="22" x2="12" y2="7.5"/>
+              <path d="M5 12H2a10 10 0 0 0 20 0h-3"/>
+              <line x1="8" y1="12" x2="16" y2="12"/>
+            </svg>
+          </div>
+          <div class="emblem-stars">${icon('star',10).repeat(5)}</div>
+          <div class="hero-eyebrow-light" style="margin-top:14px">MARITIME EXAM PREP <span class="beta-badge-light">BETA</span></div>
+          <h1 class="hero-title-light">Maritime Drill<span class="hero-version-light">v${APP_VERSION}</span></h1>
+          <p class="hero-sub-light">해기사 필기·면접 통합 대비 · STCW 기준 통합 학습</p>
+        </div>
+      </div>
+      ${cards}
+      ${renderDataTools()}
+      <!-- v4.36: 푸터(제작자의 말·이용약관·버전)을 맨 처음 화면에 노출 -->
+      <div style="marg
+
+--- 2 @ 22166950 ---
+,number){return `${year}|${session}|${subject}|${number}`}
+function n3aQuestionOrigin(q){
+  if(!q||Number(q._year)<2026)return null;
+  const gradeId=baseFromShort(q._short||'');
+  if(!NAVI_ANALYSIS_GRADES.includes(gradeId))return null;
+  const data=n3aData(gradeId);
+  if(!data||!Array.isArray(data.classifications))return null;
+  if(!n3aOriginIndexes[gradeId]){
+    n3aOriginIndexes[gradeId]=new Map(data.classifications.map(entry=>[
+      n3aOriginKey(entry.year,entry.session,entry.subject,entry.number),entry
+    ]));
+  }
+  return n3aOriginIndexes[gradeId].get(n3aOriginKey(q._year,q._session||q['회차'],q['과목'],q['번호']))||null;
+}
+function n3aOriginTagHtml(q){
+  const origin=n3aQuestionOrigin(q);if(!origin)return '';
+  const styles={
+    new:{label:'신출',bg:'#F3E8FF',color:'#7E22CE'},
+    past:{label:'기출',bg:'#DBEAFE',color:'#1D4ED8'},
+    frequent:{label:'빈출',bg:'#FEE2E2',color:'#B91C1C'}
+  };
+  const style=styles[origin.status]||styles.new;
+  const history=origin.previousCount
+    ? `2020~2025년 동일 문항 ${origin.previousCount}회 · ${origin.previousYears.join('·')}년`
+    : '2020~2025년 동일 문항 없음';
+  const sameYear=origin.sameYearEarlierCount?` · ${origin.year}년 앞 회차 ${origin.sameYearEarlierCount}회`:'';
+  const count=origin.status==='frequent'?` · 과거 ${origin.previousCount}회`:origin.status==='past'?' · 과거 1회':'';
+  return `<span class="tag" style="background:${style.bg};color:${style.color};margin:0" title="${escapeHtml(history+sameYear)}">${style.label}${count}</span>`;
+}
+async function ensureNavi3FrequencyData(subjectId){
+  const gradeId=subjectId||naviAnalysisSubjectId;
+  const existing=n3aData(gradeId);if(existing)return existing;
+  const loaded=await loadOptionalScript(`past-analysis-${gradeId}.js`);
+  const data=n3aData(gradeId);
+  if(!loaded||!data)throw new Error(`${gradeId.replace('navi','')}급 항해사 분석 데이터를 불러오지 못했습니다.`);
+  return data;
+}
+function n3aRangeYears(data,range){
+  const all=(data.meta.years||[]).map(Number);
+  n3aEnsureFilterState(data);
+  if(Array.isArray(navi3AnalysisState.years))return new Set(navi3AnalysisState.years.map(Number).filter(year=>all.includes(year)));
+  if(range==='complete')return new Set((data.meta.completeYears||[]).map(Number));
+  if(range==='recent')return new Set(all.filter(year=>year>=2023));
+  return new Set(all);
+}
+function n3aRangeLabel(data,range){
+  const years=[...n3aRangeYears(data,range)].sort((a,b)=>a-b);
+  if(!years.length)return '선택 연도 없음';
+  const contiguous=years.every((year,index)=>index===0||year===years[index-1]+1);
+  const label=contiguous&&years.length>1?`${years[0]}~${years[years.length-1]}년`:`${years.join('·')}년`;
+  const partial=(data.meta.partialYears||[]).map(Number).filter(year=>years.includes(year));
+  return `${label}${partial.length?` · ${partial.join('·')} 부분 포함`:''}`;
+}
+function n3aYearSpan(years){
+  const sorted=(years||[]).map(Number).sort((a,b)=>a-b);
+  return sorted.length?`${sorted[0]}~${sorted[sorted.length-1]}`:'자료 없음';
+}
+function n3aFilteredHits(hits,yearSet){return (hits||[]).filter(hit=>yearSet.has(Number(hit.year)))}
+function n3aSessionKey(hit){return `${hit.year}-${hit.session}`}
+function n3aUniqueYears(hits){return [...new Set(hits.map(hit=>Number(hit.year)))].sort((a,b)=>a-b)}
+function n3aTier(score){
+  if(score>=80)return {label:'최우선',cls:'n3a-score-top'};
+  if(score>=65)return {label:'중요',cls:'n3a-score-high'};
+  if(score>=50)return {label:'주목',cls:'n3a-score-watch'};
+  return {label:'보통',cls:'n3a-score-normal'};
+}
+function n3aRecencyScore(latest,maxYear){return Math.max(4,25-Math.max(0,maxYear-latest)*4)}
+function n3aRepeatScore(hits,yearSet){
+  const years=n3aUniqueYears(hits),maxYear=Math.max(...yearSet);
+  return Math.min(100,Math.round(Math.min(60,hits.length/7*60)+n3aRecencyScore(years[years.length-1],maxYear)+Math.min(15,years.length/6*15)));
+}
+function n3aTopicScore(hits,yearSet,totalSessions){
+  const years=n3aUniqueYears(hits),latest=years[years.length-1];
+  const sessions=new Set(hits.map(n3aSessionKey)).size;
+  const coverage=totalSessions?Math.min(1,sessions/totalSessions):0;
+  const density=totalSessions?Math.min(1,hits.length/(totalSessions*4)):0;
+  return Math.min(100,Math.round(coverage*55+density*20+n3aRecencyScore(latest,Math.max(...yearSet))));
+}
+function n3aAllSessionKeys(data,yearSet){
+  const keys=new Set();
+  (data.groups||[]).forEach(group=>n3aFilteredHits(group.hits,yearSet).forEach(hit=>keys.add(n3aSessionKey(hit))));
+  return keys;
+}
+function n3aRangeStats(data,yearSet){
+  let questions=0,repeated=0;
+  const minCount=Number(navi3AnalysisState.minCount)||2;
+  (data.groups||[]).forEach(group=>{
+    if(!n3aSubjectSelected(group.subject))return;
+    const count=n3aFilteredHits(group.hits,yearSet).length;
+    questions+=count;
+    if(count>=minCount)repeated+=1;
+  });
+  return {questions,repeated,sessions:n3aAllSessionKeys(data,yearSet).size};
+}
+function n3aBuildEntries(data){
+  const state=navi3AnalysisState;
+  const yearSet=n3aRangeYears(data,state.range);
+  const query=String(state.query||'').trim().toLowerCase();
+  const totalSessions=n3aAllSessionKeys(data,yearSet).size;
+  let entries=[];
+  if(state.view==='topics'){
+    entries=(data.topics||[]).map(topic=>{
+      const hits=n3aFilteredHits(topic.hits,yearSet);
+      const years=n3aUniqueYears(hits);
+      const sessions=new Set(hits.map(n3aSessionKey));
+      return {...topic,hits,years,latest:years[years.length-1]||0,sessionCount:sessions.size,occurrences:hits.length,distinctQuestions:new Set(hits.map(hit=>hit.groupId)).size,score:hits.length?n3aTopicScore(hits,yearSet,totalSessions):0};
+    }).filter(entry=>entry.hits.length&&
+      n3aSubjectSelected(entry.subject)&&
+      (!query||`${entry.label} ${entry.subject}`.toLowerCase().includes(query)));
+  }else{
+    entries=(data.groups||[]).map(group=>{
+      const hits=n3aFilteredHits(group.hits,yearSet);
+      const years=n3aUniqueYears(hits);
+      return {...group,hits,years,count:hits.length,latest:years[years.length-1]||0,score:hits.length?n3aRepeatScore(hits,yearSet):0};
+    }).filter(entry=>entry.count>=(Number(state.minCount)||2)&&
+      n3aSubjectSelected(entry.subject)&&
+      (!query||`${entry.question} ${entry.subject}`.toLowerCase().includes(query)));
+  }
+  entries.sort((a,b)=>{
+    if(state.sort==='count')return (b.occurrences||b.count)-(a.occurrences||a.count)||b.score-a.score;
+    if(state.sort==='recent')return b.latest-a.latest||b.score-a.score;
+    return b.score-a.score||(b.occurrences||b.count)-(a.occurrences||a.count);
+  });
+  return entries;
+}
+function n
+
+--- 3 @ 22175143 ---
+y.count>=(Number(navi3AnalysisState.minCount)||2)&&
+      n3aSubjectSelected(entry.subject)&&
+      (!query||`${entry.question} ${entry.subject}`.toLowerCase().includes(query)));
+  }else if(navi3AnalysisState.view==='repeats'){
+    entries=n3aBuildEntries(data);
+  }else{
+    const topicEntries=n3aBuildEntries(data);
+    const groupIds=new Set(topicEntries.flatMap(topic=>topic.hits.map(hit=>hit.groupId)));
+    entries=[...groupIds].map(groupId=>toEntry(groupsById.get(groupId))).filter(Boolean);
+  }
+  entries.sort((a,b)=>{
+    if(navi3AnalysisState.sort==='count')return b.count-a.count||b.score-a.score||b.latest-a.latest;
+    if(navi3AnalysisState.sort==='recent')return b.latest-a.latest||b.score-a.score||b.count-a.count;
+    return b.score-a.score||b.count-a.count||b.latest-a.latest;
+  });
+  return entries;
+}
+function n3aFindQuestion(group,hit){
+  const exam=getPastExam(naviAnalysisSubjectId,hit.year,hit.session);
+  return exam&&exam.questions.find(item=>item['과목']===group.subject&&Number(item['번호'])===Number(hit.number)&&n3aNormalizeQuestion(item['문제'])===group.normalized);
+}
+async function startNavi3FrequencyPractice(source,id,limit,mode,returnKind,returnId){
+  const safeMode=mode==='mock'?'mock':'study';
+  const useAll=limit==='all';
+  const maxQuestions=useAll?Infinity:Math.max(1,Number(limit)||1);
+  const returnTarget={kind:returnKind||'list',id:returnId||null};
+  renderPastLoading(safeMode==='mock'?'빈출 모의시험을 준비하는 중입니다':'빈출 학습 문제를 준비하는 중입니다');
+  try{
+    const data=await ensureNavi3FrequencyData();
+    const allCandidates=n3aPracticeGroups(data,source||'current',id);
+    const candidates=useAll?allCandidates:allCandidates.slice(0,maxQuestions);
+    if(!candidates.length)throw new Error('현재 조건에서 풀 수 있는 문제가 없습니다.');
+    const gradeId=naviAnalysisSubjectId;
+    if(!pastDataSubjectsLoaded.has(gradeId))await ensurePastDataForSubject(gradeId);
+    const selected=candidates;
+    const pool=[];
+    for(const group of selected){
+      const hit=[...group.hits].sort((a,b)=>b.year-a.year||b.session-a.session||b.number-a.number)[0];
+      const question=hit&&n3aFindQuestion(group,hit);
+      if(question)pool.push({...question,_year:hit.year,_session:hit.session,'회차':hit.session,_short:gradeId,_n3aGroupId:group.id});
+    }
+    if(!pool.length)throw new Error('기출 원문과 연결되는 문제를 찾지 못했습니다.');
+    await ensurePastExplainForYears(pool.map(question=>question._year));
+    pastSubjectId=gradeId;pastBaseShort=gradeId;pastYear=null;pastSession=null;pastVariant='상선';pastAllYears=false;
+    pastQueue=pool;pastIdx=0;pastAnswers=new Array(pool.length).fill(null);pastMode=safeMode;pastStartedAt=Date.now();
+    pastReturnView='navi3-practice';navi3PracticeReturn=returnTarget;
+    navi3PracticeLabel=source==='topic'?'빈출 주제':source==='group'?'반복 문항':'현재 조건 빈출';
+    currentMode='past';renderPastCard();
+  }catch(error){
+    const back=returnTarget.kind==='topic'&&returnTarget.id?`renderNavi3FrequencyDetail('topic','${returnTarget.id}')`:'renderNavi3Frequency()';
+    app.innerHTML=`<div class="card" style="margin-top:30px;text-align:center;border-left:4px solid #DC2626"><div style="font-size:15px;font-weight:900;color:#991B1B">빈출 문제를 준비하지 못했습니다</div><div style="font-size:12px;color:var(--textDim);margin:7px 0 15px">${escapeHtml(error.message||String(error))}</div><button class="btn btn-outline" onclick="${back}">분석으로 돌아가기</button></div>`;
+  }
+}
+function restartNavi3FrequencyPractice(){
+  if(!pastQueue.length){renderNavi3Frequency();return}
+  pastIdx=0;pastAnswers=new Array(pastQueue.length).fill(null);pastStartedAt=Date.now();currentMode='past';renderPastCard();
+}
+
+async function renderNavi3Frequency(subjectId){
+  if(subjectId)n3aActivateGrade(subjectId);
+  stopTTS();stopMockTimer();currentMode='analysis';
+  let data=n3aData();
+  if(!data){
+    renderPastLoading(`${naviAnalysisSubjectId.replace('navi','')}급 항해사 빈출 통계를 불러오는 중입니다`);
+    try{data=await ensureNavi3FrequencyData()}catch(error){
+      app.innerHTML=`<div class="card" style="margin-top:32px;text-align:center;border-left:4px solid #DC2626"><div style="font-size:16px;font-weight:900;color:#991B1B">빈출 분석 데이터를 열지 못했습니다</div><div style="font-size:12px;color:var(--textDim);margin-top:7px">${escapeHtml(error.message||String(error))}</div><div class="flex gap8" style="margin-top:16px"><button class="btn btn-outline" onclick="pickPrepType('${naviAnalysisSubjectId}')">뒤로</button><button class="btn btn-accent" onclick="renderNavi3Frequency()">다시 시도</button></div></div>`;
+      return;
+    }
+  }
+  n3aEnsureFilterState(data);
+  const yearSet=n3aRangeYears(data,navi3AnalysisState.range);
+  const rangeStats=n3aRangeStats(data,yearSet);
+  const entries=n3aBuildEntries(data);
+  const shown=entries.slice(0,navi3AnalysisState.limit);
+  const subjects=[...(data.subjects||[])];
+  const allYears=(data.meta.years||[]).map(Number).sort((a,b)=>a-b);
+  const selectedSubjects=subjects.filter(subject=>n3aSubjectSelected(subject));
+  const selectedYears=[...yearSet].sort((a,b)=>a-b);
+  const mode=navi3AnalysisState.view;
+  const practiceCount=n3aPracticeGroups(data,'filtered').length;
+  const subjectSummary=selectedSubjects.length===subjects.length?'전체 과목':selectedSubjects.length?selectedSubjects.join(' · '):'선택 과목 없음';
+  const yearSummary=selectedYears.length?((selectedYears.length>1&&selectedYears.every((year,index)=>index===0||year===selectedYears[index-1]+1))?`${selectedYears[0]}~${selectedYears[selectedYears.length-1]}년`:`${selectedYears.join('·')}년`):'선택 연도 없음';
+  const minCount=Number(navi3AnalysisState.minCount)||2;
+  const minCountLabel=minCount===1?'1회 이상 · 전체 문항군':`반복 ${minCount}회 이상`;
+  const practiceTitle=minCount===1?`전체 ${practiceCount.toLocaleString()}문제 학습`:`빈출 ${practiceCount.toLocaleString()}문제 전체 풀기`;
+  app.innerHTML=`
+    <div style="padding-top:22px;margin-bottom:14px">
+      <button type="button" class="text-nav" onclick="pickPrepType('${naviAnalysisSubjectId}')">${icon('arrowLeft',14)} 학습유형으로</button>
+    </div>
+    <section class="card n3a-hero" aria-labelledby="n3a-title">
+      <div style="position:relative;z-index:1">
+        <div style="font-size:11px;letter-spacing:2px;font-weight:900;color:#7DD3FC">FREQUENCY ANALYSIS</div>
+        <h1 id="n3a-title" style="font-size:24px;line-height:1.35;margin:5px 0 4px">${escapeHtml(data.meta.gradeLabel.replace('(상선)',''))} 빈출 분석</h1>
+        <div style="font-size:12px;line-height:1.65;color:#E0F2FE">상선 필기 · ${n3aRangeLabel(data,navi3AnalysisState.range)}</div>
+        <div class="n3a-stats">
+          <div clas
+
+--- 4 @ 22177533 ---
+);
+    pastSubjectId=gradeId;pastBaseShort=gradeId;pastYear=null;pastSession=null;pastVariant='상선';pastAllYears=false;
+    pastQueue=pool;pastIdx=0;pastAnswers=new Array(pool.length).fill(null);pastMode=safeMode;pastStartedAt=Date.now();
+    pastReturnView='navi3-practice';navi3PracticeReturn=returnTarget;
+    navi3PracticeLabel=source==='topic'?'빈출 주제':source==='group'?'반복 문항':'현재 조건 빈출';
+    currentMode='past';renderPastCard();
+  }catch(error){
+    const back=returnTarget.kind==='topic'&&returnTarget.id?`renderNavi3FrequencyDetail('topic','${returnTarget.id}')`:'renderNavi3Frequency()';
+    app.innerHTML=`<div class="card" style="margin-top:30px;text-align:center;border-left:4px solid #DC2626"><div style="font-size:15px;font-weight:900;color:#991B1B">빈출 문제를 준비하지 못했습니다</div><div style="font-size:12px;color:var(--textDim);margin:7px 0 15px">${escapeHtml(error.message||String(error))}</div><button class="btn btn-outline" onclick="${back}">분석으로 돌아가기</button></div>`;
+  }
+}
+function restartNavi3FrequencyPractice(){
+  if(!pastQueue.length){renderNavi3Frequency();return}
+  pastIdx=0;pastAnswers=new Array(pastQueue.length).fill(null);pastStartedAt=Date.now();currentMode='past';renderPastCard();
+}
+
+async function renderNavi3Frequency(subjectId){
+  if(subjectId)n3aActivateGrade(subjectId);
+  stopTTS();stopMockTimer();currentMode='analysis';
+  let data=n3aData();
+  if(!data){
+    renderPastLoading(`${naviAnalysisSubjectId.replace('navi','')}급 항해사 빈출 통계를 불러오는 중입니다`);
+    try{data=await ensureNavi3FrequencyData()}catch(error){
+      app.innerHTML=`<div class="card" style="margin-top:32px;text-align:center;border-left:4px solid #DC2626"><div style="font-size:16px;font-weight:900;color:#991B1B">빈출 분석 데이터를 열지 못했습니다</div><div style="font-size:12px;color:var(--textDim);margin-top:7px">${escapeHtml(error.message||String(error))}</div><div class="flex gap8" style="margin-top:16px"><button class="btn btn-outline" onclick="pickPrepType('${naviAnalysisSubjectId}')">뒤로</button><button class="btn btn-accent" onclick="renderNavi3Frequency()">다시 시도</button></div></div>`;
+      return;
+    }
+  }
+  n3aEnsureFilterState(data);
+  const yearSet=n3aRangeYears(data,navi3AnalysisState.range);
+  const rangeStats=n3aRangeStats(data,yearSet);
+  const entries=n3aBuildEntries(data);
+  const shown=entries.slice(0,navi3AnalysisState.limit);
+  const subjects=[...(data.subjects||[])];
+  const allYears=(data.meta.years||[]).map(Number).sort((a,b)=>a-b);
+  const selectedSubjects=subjects.filter(subject=>n3aSubjectSelected(subject));
+  const selectedYears=[...yearSet].sort((a,b)=>a-b);
+  const mode=navi3AnalysisState.view;
+  const practiceCount=n3aPracticeGroups(data,'filtered').length;
+  const subjectSummary=selectedSubjects.length===subjects.length?'전체 과목':selectedSubjects.length?selectedSubjects.join(' · '):'선택 과목 없음';
+  const yearSummary=selectedYears.length?((selectedYears.length>1&&selectedYears.every((year,index)=>index===0||year===selectedYears[index-1]+1))?`${selectedYears[0]}~${selectedYears[selectedYears.length-1]}년`:`${selectedYears.join('·')}년`):'선택 연도 없음';
+  const minCount=Number(navi3AnalysisState.minCount)||2;
+  const minCountLabel=minCount===1?'1회 이상 · 전체 문항군':`반복 ${minCount}회 이상`;
+  const practiceTitle=minCount===1?`전체 ${practiceCount.toLocaleString()}문제 학습`:`빈출 ${practiceCount.toLocaleString()}문제 전체 풀기`;
+  app.innerHTML=`
+    <div style="padding-top:22px;margin-bottom:14px">
+      <button type="button" class="text-nav" onclick="pickPrepType('${naviAnalysisSubjectId}')">${icon('arrowLeft',14)} 학습유형으로</button>
+    </div>
+    <section class="card n3a-hero" aria-labelledby="n3a-title">
+      <div style="position:relative;z-index:1">
+        <div style="font-size:11px;letter-spacing:2px;font-weight:900;color:#7DD3FC">FREQUENCY ANALYSIS</div>
+        <h1 id="n3a-title" style="font-size:24px;line-height:1.35;margin:5px 0 4px">${escapeHtml(data.meta.gradeLabel.replace('(상선)',''))} 빈출 분석</h1>
+        <div style="font-size:12px;line-height:1.65;color:#E0F2FE">상선 필기 · ${n3aRangeLabel(data,navi3AnalysisState.range)}</div>
+        <div class="n3a-stats">
+          <div class="n3a-stat"><strong>${rangeStats.sessions}</strong><span>수록 회차</span></div>
+          <div class="n3a-stat"><strong>${rangeStats.questions.toLocaleString()}</strong><span>분석 문항</span></div>
+          <div class="n3a-stat"><strong>${rangeStats.repeated.toLocaleString()}</strong><span>${minCount===1?'전체 문항군':`${minCount}회+ 문항군`}</span></div>
+        </div>
+      </div>
+    </section>
+    <section class="n3a-practice-card" aria-labelledby="n3a-practice-title">
+      <div class="n3a-practice-head"><div><div id="n3a-practice-title" class="n3a-practice-title">${practiceTitle}</div><div class="n3a-practice-desc">${escapeHtml(subjectSummary)} · ${escapeHtml(yearSummary)} · ${escapeHtml(minCountLabel)}<br>현재 체크한 조건만 학습합니다. 과목 체크 상태는 자동 저장됩니다.</div></div><span class="n3a-practice-count">학습 대상</span></div>
+      <div class="n3a-practice-actions">
+        <button type="button" class="n3a-practice-btn" onclick="startNavi3FrequencyPractice('filtered',null,'all','study','list')"${practiceCount?'':' disabled'}>${icon('book',16)} ${practiceCount.toLocaleString()}문제 전체 학습</button>
+        <button type="button" class="n3a-practice-btn secondary" onclick="startNavi3FrequencyPractice('filtered',null,'all','mock','list')"${practiceCount?'':' disabled'}>${icon('target',16)} ${practiceCount.toLocaleString()}문제 전체 모의시험</button>
+      </div>
+    </section>
+    <div class="card" style="padding:16px">
+      <div class="n3a-tabs" role="tablist" aria-label="분석 유형">
+        <button class="n3a-tab ${mode==='repeats'?'active':''}" onclick="n3aSetState('view','repeats')">반복 문항</button>
+        <button class="n3a-tab ${mode==='topics'?'active':''}" onclick="n3aSetState('view','topics')">빈출 주제</button>
+      </div>
+      <div class="n3a-quick-actions" style="margin-top:12px">
+        <button type="button" class="n3a-mini-btn primary" onclick="n3aQuickRecentFive()">최근 5개년 빈출 바로 설정</button>
+      </div>
+      <div class="n3a-filter-block">
+        <div class="n3a-filter-head"><div><div class="n3a-filter-title">학습 대상 과목</div><div class="n3a-filter-note">부분합격 과목은 체크 해제하면 다음 실행에도 유지됩니다.</div></div></div>
+        <div class="n3a-checks">${subjects.map(subject=>`<label class="n3a-check"><input type="checkbox" ${n3aSubjectSelected(subject)?'checked':''} onchange="n3aToggleSubject('${subject}',this.checked)"><span>${escapeHtml(subject)}</span></label>`).join('')}</div>
+        <div class="n3
+
+--- 5 @ 22240543 ---
+w==='navi3-analysis'){
+    pastReturnView=null;
+    currentMode='analysis';
+    if(navi3AnalysisDetail)renderNavi3FrequencyDetail(navi3AnalysisDetail.kind,navi3AnalysisDetail.id);
+    else renderNavi3Frequency();
+    return;
+  }
+  if(pastAllYears){
+    pastAllYears = false;
+    renderPastYearPick(pastSubjectId, pastBaseShort);
+  } else {
+    renderPastRunner(pastSubjectId, pastBaseShort, pastYear, pastSession);
+  }
+}
+
+// 체크박스 전체 선택/해제
+function togglePastSubjects(on){
+  document.querySelectorAll('.past-subj-check').forEach(cb => { cb.checked = on; });
+}
+
+// 체크된 과목들로 세션 시작 (mode 'study'|'mock')
+function startPastSubjectSession(mode){
+  mode = mode || 'study';
+  const checks = document.querySelectorAll('.past-subj-check');
+  const picked = [...checks].filter(c=>c.checked).map(c=>c.value);
+  if(!picked.length){ showToast('과목을 1개 이상 선택해주세요.'); return; }
+  startPastSession(mode, picked);
+}
+
+// 실제 세션 시작 (현재 선택된 base/year/session/variant 기준)
+// v4.35: 상선+어선 변종을 모두 합쳐서 풀로 구성 (variant 필터 적용).
+//        mock 모드일 때는 "과목당 PAST_MOCK_PER_SUBJECT 문"으로 샘플.
+//        subjFilter: 'all' | string (단일과목) | string[] (다중과목)
+async function startPastSession(mode, subjFilter){
+  const curV = pastVariant || 'all';
+  const exams = getPastExamsForSession(pastBaseShort, pastYear, pastSession, curV);
+  if(!exams.length){ showToast('데이터를 찾을 수 없습니다.'); return; }
+  if(NAVI_ANALYSIS_GRADES.includes(pastBaseShort)&&Number(pastYear)>=2026){
+    renderPastLoading(`${pastYear}년 신출·기출 이력을 불러오는 중입니다`);
+    try{await ensureNavi3FrequencyData(pastBaseShort)}catch(error){console.warn('[v5.03] 출제 이력 로드 실패:',error)}
+  }
+  // 모든 변종 문제 합치기
+  const allQuestions = [];
+  exams.forEach(p => p.questions.forEach(q => allQuestions.push({
+    ...q, _year: pastYear, _session: pastSession, '회차': pastSession, _short: p.meta.gradeShort
+  })));
+  // 과목 필터 결정
+  let filterSet;
+  if(!subjFilter || subjFilter === 'all'){
+    filterSet = new Set(allQuestions.map(q=>q['과목']));
+  } else if(Array.isArray(subjFilter)){
+    filterSet = new Set(subjFilter);
+  } else {
+    filterSet = new Set([subjFilter]);
+  }
+  // 과목별로 모으기
+  const bySubj = new Map();
+  allQuestions.forEach(q => {
+    if(!filterSet.has(q['과목'])) return;
+    if(!bySubj.has(q['과목'])) bySubj.set(q['과목'], []);
+    bySubj.get(q['과목']).push(q);
+  });
+  let pool = [];
+  if(mode === 'mock'){
+    bySubj.forEach(arr => {
+      const s = shuffle(arr.slice());
+      pool.push(...s.slice(0, PAST_MOCK_PER_SUBJECT));
+    });
+    pool = shuffle(pool);
+  } else {
+    bySubj.forEach(arr => pool.push(...arr));
+    pool = shuffle(pool);
+  }
+  if(!pool.length){ showToast('해당 조건의 문제가 없습니다.'); return; }
+  renderPastLoading(`${pastYear}년 해설을 불러오는 중입니다`);
+  await ensurePastExplainForYears([pastYear]);
+  pastQueue = pool;
+  pastIdx = 0;
+  pastAnswers = new Array(pool.length).fill(null);
+  pastMode = mode;
+  pastStartedAt = Date.now();
+  currentMode = 'past';
+  renderPastCard();
+}
+
+function pastChoiceText(value){
+  return String(value==null?'':value).replace(/^\s*[㉮㉯㉰㉱㉴㉵]\s*/, '').trim();
+}
+
+function renderPastCard(){
+  if(currentMode!=='past')return;
+  savePastProgress();
+  if(pastIdx < 0 || pastIdx >= pastQueue.length){ renderPastResult(); return; }
+  const q = pastQueue[pastIdx];
+  const g = SUBJECT_GROUPS.find(x=>x.ids.includes(pastSubjectId));
+  const gColor = g?g.color:'#1E40AF';
+  const selected = pastAnswers[pastIdx];
+  const showFeedback = pastMode === 'study' && selected !== null;
+  const correct = q['정답'];
+  const optMarkers = ['㉮','㉯','㉰','㉱'];
+  const marked = isPastMarked(q);  // v4.46: 북마크 상태
+  app.innerHTML = `
+    <div style="padding-top:20px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-outline" style="width:auto;font-size:13px;padding:8px 12px;display:inline-flex;align-items:center;gap:5px" onclick="showConfirm('학습을 중단하시겠습니까?', goBackFromPastSession)">${icon('arrowLeft',14)} 그만</button>
+      <div style="display:flex;align-items:center;gap:8px">
+        <button onclick="togglePastMark()" title="북마크 (B)" aria-label="북마크"
+          style="background:${marked?'#FEF3C7':'transparent'};border:1.5px solid ${marked?'#F59E0B':'#E5E7EB'};border-radius:8px;padding:6px 10px;cursor:pointer;font-size:16px;line-height:1;color:${marked?'#D97706':'#94A3B8'};font-weight:800">
+          ${marked?icon('star',18):icon('starOutline',18)}
+        </button>
+        <div style="font-size:13px;color:var(--textDim);font-weight:600">
+          ${pastMode==='mock'?'모의 ':''}${pastIdx+1} / ${pastQueue.length}
+        </div>
+      </div>
+    </div>
+    <div class="card" style="border-left:3px solid ${gColor}">
+      <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+        <span class="tag" style="background:${gColor}20;color:${gColor};margin:0">${q._year}년</span>
+        <span class="tag" style="background:#E0E7FF;color:#3730A3;margin:0">${q['회차']}회</span>
+        <span class="tag" style="background:#F1F5F9;color:#475569;margin:0">${q['과목']}</span>
+        <span class="tag" style="background:#F1F5F9;color:#475569;margin:0">Q${q['번호']}</span>
+        ${n3aOriginTagHtml(q)}
+      </div>
+      <div style="font-size:16px;line-height:1.7;color:var(--text);margin-bottom:16px;white-space:pre-wrap">${escapeHtml(q['문제'])}</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        ${q['선택지'].map((opt,i)=>{
+          const isSelected = selected === i;
+          const isCorrect = i === correct;
+          let bg = '#fff', border = '#E5E7EB', col = 'var(--text)';
+          if(showFeedback){
+            if(isCorrect){ bg='#D1FAE5'; border='#10B981'; col='#065F46'; }
+            else if(isSelected && !isCorrect){ bg='#FEE2E2'; border='#DC2626'; col='#991B1B'; }
+          } else if(isSelected){
+            bg = gColor+'15'; border = gColor; col = gColor;
+          }
+          return `<button onclick="choosePastAnswer(${i})" style="text-align:left;padding:12px 14px;background:${bg};border:2px solid ${border};border-radius:10px;color:${col};font-size:15px;line-height:1.6;cursor:${showFeedback?'default':'pointer'};transition:all 0.15s" ${showFeedback?'disabled':''}>
+            <span style="font-weight:800;margin-right:8px">${optMarkers[i]}</span>${escapeHtml(pastChoiceText(opt))}
+          </button>`;
+        }).join('')}
+      </div>
+      ${showFeedback ? `
+        <div style="margin-top:14px;padding:12px;background:${selected===correct?'#ECFDF5':'#FEF2F2'};border-radius:10px;font-size:14px;font-weight:700;color
+
+--- 6 @ 22450696 ---
+
+  try{
+    const subjects=[...new Set(meta.refs.map(r=>baseFromShort(r.short)))];
+    for(const id of subjects)await ensurePastDataForSubject(id);
+    const examMaps=new Map();
+    const restored=meta.refs.map(r=>{
+      const key=r.short+'|'+r.year+'|'+r.session;
+      if(!examMaps.has(key)){
+        const exam=getPastExam(r.short,r.year,r.session);
+        const map=new Map();
+        for(const q of exam?exam.questions:[]){const full={...q,_year:r.year,_short:r.short,_session:r.session,'회차':r.session};map.set(pqid(full),full);}
+        examMaps.set(key,map);
+      }
+      const q=examMaps.get(key).get(r.id);if(!q)throw new Error('저장된 문항을 찾지 못했습니다. 진행 기록은 보존했습니다.');
+      return {...q,_source:r.source,_n3aGroupId:r.group};
+    });
+    if(state.answers.some((a,i)=>a!==null&&(!Number.isInteger(a)||a<0||a>=restored[i]['선택지'].length)))throw new Error('저장된 답안을 확인할 수 없습니다.');
+    await ensurePastExplainForYears(meta.refs.map(r=>r.year));
+    pastQueue=restored;pastAnswers=state.answers;pastIdx=state.idx;pastMode=state.mode;
+    // Paused time is excluded from the next displayed session duration.
+    pastStartedAt=Date.now()-Math.max(0,state.savedAt-state.startedAt);
+    pastSubjectId=meta.subjectId;pastBaseShort=meta.base;pastYear=meta.year;pastSession=meta.session;pastVariant=meta.variant;pastAllYears=meta.allYears;pastReturnView=meta.returnView;
+    if(meta.analysisSubject)n3aActivateGrade(meta.analysisSubject);
+    if(meta.returnView&&meta.returnView.startsWith('navi3'))await ensureNavi3FrequencyData(meta.analysisSubject);
+    navi3AnalysisDetail=meta.analysisDetail;navi3PracticeReturn=meta.practiceReturn;navi3PracticeLabel=meta.practiceLabel;
+    pastSavedAnswers=pastAnswers;pastProgressId=meta.id;currentMode='past';renderPastCard();
+  }catch(error){app.innerHTML=`<div class="card"><p>${escapeHtml(error.message)}</p><button class="btn btn-outline" onclick="pickPrepType('${escapeHtml(meta.subjectId)}')">학습 유형으로</button></div>`;}
+}
+function retryPastSessionWrongs(){
+  const weak=pastQueue.filter((q,i)=>pastAnswers[i]!==q['정답']);if(!weak.length)return;
+  pastQueue=shuffle(weak);pastAnswers=new Array(weak.length).fill(null);pastIdx=0;pastMode='study';pastStartedAt=Date.now();
+  pastAllYears=true;pastYear=null;pastSession=null;currentMode='past';renderPastCard();
+}
+
+// ── INIT ──
+if(window.speechSynthesis&&speechSynthesis.onvoiceschanged!==undefined){speechSynthesis.onvoiceschanged=()=>{}}
+try{
+  renderSubjectSelect();
+  window.__MD_BOOTED__=true;
+}catch(error){
+  console.error('Maritime Drill 초기화 실패:',error);
+  if(window.__MD_SHOW_BOOT_ERROR__) window.__MD_SHOW_BOOT_ERROR__('앱 초기화 오류',error&&error.message?error.message:'파일을 다시 열어 주세요.');
+}
+// ── v4.8: splash fade-out (≥800ms 표시 후 페이드아웃) ──
+setTimeout(()=>{
+  const s=document.getElementById('splash');
+  if(s){ s.classList.add('hide'); setTimeout(()=>{ try{s.remove();}catch(e){} },600); }
+  // v4.25: 첫 실행 1회 약관 동의 — splash 완전 제거 후(800+700=1500ms) 표시
+  if(!hasAgreedTerms()){ setTimeout(showTermsAgreement, 700); }
+},800);
+// v4.25: 안전장치 — 2초 뒤에도 splash가 남아있으면 강제 제거
+setTimeout(()=>{
+  const s=document.getElementById('splash');
+  if(s){ try{ s.remove(); }catch(e){} }
+}, 2500);
+
+</script>
+
+<script>
+function showToast(msg,duration){
+  duration=duration||2800;
+  let t=document.getElementById('_appToast');
+  if(!t){t=document.createElement('div');t.id='_appToast';
+    t.style.cssText='position:fixed;top:16px;left:50%;transform:translateX(-50%);background:#1E293B;color:#fff;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:700;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.35);pointer-events:none;transition:opacity .3s;opacity:0';
+    document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';
+  clearTimeout(t._tmr);t._tmr=setTimeout(()=>{t.style.opacity='0';},duration);
+}
+function showConfirm(msg,onOk){
+  window._mdConfirmOk=()=>{closeModal();if(typeof onOk==='function')onOk();};
+  openModal({
+    title:'확인',
+    body:`<p style="white-space:pre-wrap;margin:0">${escapeHTML(msg)}</p>`,
+    footer:`<button class="btn btn-outline" style="flex:1;border-color:var(--textDim);color:var(--textDim)" onclick="closeModal()">취소</button><button class="btn btn-accent" style="flex:1" onclick="window._mdConfirmOk()">확인</button>`
+  });
+}
+function appAlert(msg){
+  openModal({
+    title:'알림',
+    body:`<p style="white-space:pre-wrap;margin:0">${escapeHTML(msg)}</p>`,
+    footer:`<button class="btn btn-accent" style="flex:1" onclick="closeModal()">확인</button>`
+  });
+}
+function appPrompt(opts,onSubmit){
+  opts=opts||{};
+  window._mdPromptSubmit=()=>{
+    const input=document.getElementById('_mdPromptInput');
+    if(!input)return;
+    const value=input.value;
+    closeModal();
+    if(typeof onSubmit==='function')onSubmit(value);
+  };
+  openModal({
+    title:opts.title||'값 입력',
+    sub:opts.sub||'',
+    body:`<label for="_mdPromptInput" style="display:block;font-size:13px;font-weight:700;margin-bottom:8px">${escapeHTML(opts.label||'값')}</label><input id="_mdPromptInput" type="${opts.type||'text'}" value="${escapeHTML(opts.value==null?'':opts.value)}" ${opts.min!=null?`min="${opts.min}"`:''} ${opts.max!=null?`max="${opts.max}"`:''} style="width:100%;padding:12px;border:1px solid var(--border);border-radius:8px;font:inherit" onkeydown="if(event.key==='Enter'){event.preventDefault();window._mdPromptSubmit()}">`,
+    footer:`<button class="btn btn-outline" style="flex:1;border-color:var(--textDim);color:var(--textDim)" onclick="closeModal()">취소</button><button class="btn btn-accent" style="flex:1" onclick="window._mdPromptSubmit()">적용</button>`
+  });
+  setTimeout(()=>{const input=document.getElementById('_mdPromptInput');if(input){input.focus();input.select();}},0);
+}
+window.alert=appAlert;
+</script>
+
+<script>
+// ── v5.07: 2·3급 항해사 합격 플랜 / 오늘의 숙제 ──
+// 시험일에서 역산하여 최근 5개년 빈출 → 전체 → 시험 직전 복습 순으로 배정하고,
+// 같은 날 정답 암기만으로는 숙달 처리하지 않습니다.
+(function(){
+  const PLAN_KEY='md_nav23_pass_plan_v1';
+  const PROGRESS_KEY='md_nav23_pass_progress_v1';
+  const DAILY_KEY='md_nav23_pass_daily_v1';
+  const PLAN_GRADES=['navi2','navi3'];
+  const GRADE_LABELS={navi2:'2급 항해사',navi3:'3급 항해사'};
+  let planEntrySubject='navi2';
+  let planPools={};
+  let planSessionQueue=[];
+  let planSessionIdx=0;
+  let planSessionAnswers=[];
+  let planSessionConfidence=[];
+  let planSessionStartedAt=0;
+  let planSessionCommitted=new Set();
+
+  const PASS_SESSION_CHECKPOINT_KEY='md_pass_plan_session_checkpoint_v2';
+  function ppSavePassSessionCheckpoint(nextIndex){
+    try{
+      if(!Array.i
+
+--- 7 @ 22460667 ---
+nst raw=localStorage.getItem(DAILY_KEY);return raw?JSON.parse(raw)||{}:{}}catch(e){return {}}
+  }
+  function ppSaveDaily(daily){safeStorageSet(DAILY_KEY,JSON.stringify(daily),'합격 플랜 오늘 숙제')}
+  function ppSelectedSubjects(plan,gradeId,data){
+    const all=(data&&data.subjects||[]).map(String);
+    const saved=plan.grades[gradeId]&&plan.grades[gradeId].subjects;
+    if(!Array.isArray(saved))return all;
+    return all.filter(s=>saved.includes(s));
+  }
+  function ppTrainingYears(data){
+    const metaYears=(data.meta&&data.meta.years||[]).map(Number);
+    const hitYears=[];
+    (data.groups||[]).forEach(group=>(group.hits||[]).forEach(hit=>{const y=Number(hit.year);if(Number.isFinite(y))hitYears.push(y)}));
+    const all=[...new Set([...metaYears,...hitYears])].sort((a,b)=>a-b);
+    // 2026 is the current exam year. Include it even when the source marks it as a partial year.
+    if(all.includes(2026))return all.filter(y=>y<=2026).slice(-5);
+    const partial=new Set((data.meta&&data.meta.partialYears||[]).map(Number));
+    const complete=((data.meta&&data.meta.completeYears||[]).length?(data.meta.completeYears||[]).map(Number):all.filter(y=>!partial.has(y))).sort((a,b)=>a-b);
+    return complete.slice(-5);
+  }
+  function ppItemKey(gradeId,groupId){return `${gradeId}|${groupId}`}
+  function ppHas2026(item){return !!(item&&Array.isArray(item.hits)&&item.hits.some(h=>Number(h.year)===2026))}
+  async function ppEnsureFrequency(){
+    for(const gradeId of PLAN_GRADES){
+      try{await ensureNavi3FrequencyData(gradeId)}catch(e){console.warn('[v5.07] 빈출 데이터 로드 실패',gradeId,e)}
+    }
+  }
+  async function ppBuildPools(plan){
+    await ppEnsureFrequency();
+    const pools={};
+    PLAN_GRADES.forEach(gradeId=>{
+      const data=n3aData(gradeId);if(!data){pools[gradeId]=[];return}
+      const selected=new Set(ppSelectedSubjects(plan,gradeId,data));
+      const years=ppTrainingYears(data),yearSet=new Set(years);
+      const maxYear=years.length?Math.max(...years):0;
+      const items=[];
+      (data.groups||[]).forEach(group=>{
+        if(!selected.has(group.subject))return;
+        const hits=(group.hits||[]).filter(hit=>yearSet.has(Number(hit.year)));
+        if(!hits.length)return;
+        const sortedHits=[...hits].sort((a,b)=>b.year-a.year||b.session-a.session||b.number-a.number);
+        items.push({
+          key:ppItemKey(gradeId,group.id),gradeId,groupId:group.id,subject:group.subject,
+          question:group.question,normalized:group.normalized,count:hits.length,latest:sortedHits[0].year,
+          hits:sortedHits,rep:sortedHits[0],years:[...new Set(hits.map(h=>Number(h.year)))].sort((a,b)=>a-b),maxYear
+        });
+      });
+      items.sort((a,b)=>b.count-a.count||b.latest-a.latest||String(a.question).localeCompare(String(b.question),'ko'));
+      pools[gradeId]=items;
+    });
+    planPools=pools;
+    return pools;
+  }
+  function ppProgressFor(progress,key){
+    if(!progress[key])progress[key]={firstPassDate:null,mastered:false,status:'new',dueDate:null,lastDate:null,lastSureDate:null,lastOutcome:null,attempts:0,correct:0,wrong:0,unsure:0,masteryReviews:0,recoveryStartDate:null,sameDayFirstCorrectDate:null,sameDayConfirmedDate:null};
+    const r=progress[key];
+    // Migrate old records without discarding prior study history.
+    if(!Object.prototype.hasOwnProperty.call(r,'sameDayFirstCorrectDate'))r.sameDayFirstCorrectDate=(!r.mastered&&r.lastSureDate)?r.lastSureDate:null;
+    if(!Object.prototype.hasOwnProperty.call(r,'sameDayConfirmedDate'))r.sameDayConfirmedDate=r.mastered?(r.lastSureDate||r.firstPassDate||null):null;
+    return r;
+  }
+  function ppExamDay(plan,gradeId){return plan.grades[gradeId]&&plan.grades[gradeId].examDate||''}
+  function ppPhaseForGrade(plan,gradeId,pool,progress,today){
+    const exam=ppExamDay(plan,gradeId),dday=ppDiffDays(today,exam);
+    const finalDays=Number(plan.finalDays)||4;
+    const freqRemaining=pool.filter(item=>item.count>=2&&!ppProgressFor(progress,item.key).firstPassDate);
+    const current2026Remaining=pool.filter(item=>ppHas2026(item)&&!ppProgressFor(progress,item.key).firstPassDate);
+    const stage1Remaining=[...current2026Remaining,...freqRemaining.filter(item=>!ppHas2026(item))];
+    const allRemaining=pool.filter(item=>!ppProgressFor(progress,item.key).firstPassDate);
+    const final=dday!==null&&dday>=0&&dday<=finalDays;
+    if(final)return {phase:'final',label:'시험 직전 · 2026 전체 우선',dday,freqRemaining,current2026Remaining,allRemaining,candidates:stage1Remaining,learningDays:Math.max(1,dday)};
+    if(stage1Remaining.length){
+      const learningDays=Math.max(1,(dday===null?14:dday)-finalDays);
+      const stageDays=Math.max(1,Math.ceil(learningDays*0.45));
+      return {phase:'stage1',label:'1단계 · 2026 전체 + 최근 5개년 빈출',dday,freqRemaining,current2026Remaining,allRemaining,candidates:stage1Remaining,learningDays:stageDays};
+    }
+    const learningDays=Math.max(1,(dday===null?10:dday)-finalDays);
+    return {phase:'stage2',label:'2단계 · 최근 5개년 전체',dday,freqRemaining,allRemaining,candidates:allRemaining,learningDays};
+  }
+  function ppIsDue(rec,today){return !!(rec&&rec.dueDate&&rec.dueDate<=today&&(rec.firstPassDate||rec.status==='weak'))}
+  function ppUrgentSort(a,b,progress){
+    const ra=ppProgressFor(progress,a.key),rb=ppProgressFor(progress,b.key);
+    const wa=(ra.status==='weak'||ra.lastOutcome==='wrong'||ra.lastOutcome==='unsure')?1:0;
+    const wb=(rb.status==='weak'||rb.lastOutcome==='wrong'||rb.lastOutcome==='unsure')?1:0;
+    if(wb!==wa)return wb-wa;
+    if(a.count!==b.count)return b.count-a.count;
+    const da=ra.dueDate||'9999-12-31',db=rb.dueDate||'9999-12-31';
+    if(da!==db)return da.localeCompare(db);
+    return b.latest-a.latest;
+  }
+  function ppPlanSignature(plan,pools){
+    const compact={dailyCap:plan.dailyCap,finalDays:plan.finalDays,revision:plan.revision,assignmentPolicy:'2026-all-priority-v1',grades:{}};
+    PLAN_GRADES.forEach(g=>{compact.grades[g]={enabled:plan.grades[g].enabled,examDate:plan.grades[g].examDate,subjects:plan.grades[g].subjects,pool:(pools[g]||[]).length}});
+    return JSON.stringify(compact);
+  }
+  function ppAllocateNewSlots(requests,slots){
+    const out={navi2:0,navi3:0};
+    const active=PLAN_GRADES.filter(g=>requests[g]>0);
+    if(slots<=0||!active.length)return out;
+    const totalReq=active.reduce((s,g)=>s+requests[g],0);
+    if(totalReq<=slots){active.forEach(g=>out[g]=requests[g]);return out}
+    let used=0;
+    active.forEach(g=>{out[g]=Math.min(requests[g],Math.floor(slots*requests[g]
+
+--- 8 @ 22483087 ---
+Plan(planEntrySubject);
+  };
+  window.resetNavigatorPassPlanProgress=function(){
+    showConfirm('2·3급 합격 플랜의 학습 진도와 오늘 숙제를 모두 초기화하시겠습니까?\n기존 일반 오답노트와 기출 풀이 기록은 유지됩니다.',()=>{
+      safeStorageSet(PROGRESS_KEY,'{}','합격 플랜 진도');safeStorageSet(DAILY_KEY,'{}','합격 플랜 오늘 숙제');renderNavigatorPassPlan(planEntrySubject);
+    });
+  };
+
+  function ppFindQuestion(gradeId,item){
+    for(const hit of item.hits){
+      const exam=getPastExam(gradeId,hit.year,hit.session);if(!exam)continue;
+      const q=exam.questions.find(q=>q['과목']===item.subject&&Number(q['번호'])===Number(hit.number)&&n3aNormalizeQuestion(q['문제'])===item.normalized);
+      if(q)return {...q,_year:hit.year,_session:hit.session,'회차':hit.session,_short:gradeId,_planKey:item.key,_planGrade:gradeId,_planCount:item.count,_planGroupId:item.groupId};
+    }
+    return null;
+  }
+  async function ppHydrateKeys(keys){
+    const grades=[...new Set(keys.map(k=>(ppGetItemByKey(k)||{}).gradeId).filter(Boolean))];
+    renderPastLoading('오늘 숙제 문제를 준비하는 중입니다');
+    for(const g of grades){if(!pastDataSubjectsLoaded.has(g))await ensurePastDataForSubject(g)}
+    const out=[];
+    keys.forEach(key=>{const item=ppGetItemByKey(key);if(!item)return;const q=ppFindQuestion(item.gradeId,item);if(q)out.push(q)});
+    await ensurePastExplainForYears(out.map(q=>q._year));
+    return out;
+  }
+  window.startNavigatorPassPlanMock=async function(gradeId){
+    if(!PLAN_GRADES.includes(gradeId))return;
+    const plan=ppLoadPlan(),data=n3aData(gradeId)||await ensureNavi3FrequencyData(gradeId);
+    const subjects=ppSelectedSubjects(plan,gradeId,data);
+    renderPastLoading(`${GRADE_LABELS[gradeId]} 2026 실전 모의를 준비하는 중입니다`);
+    try{
+      if(!pastDataSubjectsLoaded.has(gradeId))await ensurePastDataForSubject(gradeId);
+      const exams=getPastExamsByBase(gradeId,'상선').filter(p=>p.meta&&Number(p.meta.year)===2026).sort((a,b)=>Number(b.meta.session)-Number(a.meta.session));
+      if(!exams.length)throw new Error('2026년 상선 기출 회차가 없습니다.');
+      const latest=exams[0];
+      pastSubjectId=gradeId;pastBaseShort=gradeId;pastYear=Number(latest.meta.year);pastSession=Number(latest.meta.session);pastVariant='상선';pastAllYears=false;pastReturnView=null;
+      await startPastSession('mock',subjects);
+    }catch(e){
+      app.innerHTML=`<div class="card" style="margin-top:30px"><b>실전 모의를 시작하지 못했습니다.</b><div style="font-size:12px;margin-top:7px">${escapeHtml(e.message||String(e))}</div><button class="btn btn-outline" style="margin-top:12px" onclick="renderNavigatorPassPlan('${planEntrySubject}')">합격 플랜으로 돌아가기</button></div>`;
+    }
+  };
+
+  window.startNavigatorPassPlanToday=async function(){
+    const plan=ppLoadPlan();await ppBuildPools(plan);const progress=ppLoadProgress(),today=ppDateKey(new Date());
+    const assignment=await ppGetDailyAssignment(plan,planPools,progress,false);
+    const allKeys=(assignment.keys||[]).slice();
+    const unresolvedKeys=allKeys.filter(k=>!ppTodayCleared(ppProgressFor(progress,k),today));
+    if(!unresolvedKeys.length){showToast('오늘 숙제를 모두 완료했습니다.');ppClearPassSessionCheckpoint();renderNavigatorPassPlan(planEntrySubject);return}
+    try{
+      const checkpoint=ppLoadPassSessionCheckpoint();
+      const queue=await ppHydrateKeys(allKeys);if(!queue.length||queue.length!==allKeys.length)throw new Error('문제 원문을 찾지 못했습니다.');
+      const checkpointMatches=checkpoint&&Array.isArray(checkpoint.queueKeys)&&checkpoint.queueKeys.length===allKeys.length&&checkpoint.queueKeys.every((k,i)=>k===allKeys[i]);
+      if(checkpointMatches){
+        const nextIndex=Number(checkpoint.nextIndex);
+        if(Number.isInteger(nextIndex)&&nextIndex>=0&&nextIndex<queue.length){
+          planSessionQueue=queue;planSessionIdx=nextIndex;
+          planSessionAnswers=new Array(queue.length).fill(null);planSessionConfidence=new Array(queue.length).fill(null);
+          if(Array.isArray(checkpoint.answers))checkpoint.answers.slice(0,queue.length).forEach((v,i)=>{if(v===null||Number.isInteger(v))planSessionAnswers[i]=v});
+          if(Array.isArray(checkpoint.confidence))checkpoint.confidence.slice(0,queue.length).forEach((v,i)=>{if(v===null||['sure','unsure','wrong'].includes(v))planSessionConfidence[i]=v});
+          planSessionCommitted=new Set(Array.isArray(checkpoint.committed)?checkpoint.committed.filter(i=>Number.isInteger(i)&&i>=0&&i<queue.length):[]);
+          for(let i=0;i<nextIndex;i++)if(planSessionAnswers[i]!==null)planSessionCommitted.add(i);
+          planSessionStartedAt=Date.now();currentMode='pass-plan-session';renderNavigatorPassPlanCard();return;
+        }
+      }
+      if(checkpoint)ppClearPassSessionCheckpoint();
+      let startIndex=allKeys.findIndex(k=>!ppTodayCleared(ppProgressFor(progress,k),today));
+      if(startIndex<0)startIndex=0;
+      planSessionQueue=queue;planSessionIdx=startIndex;planSessionAnswers=new Array(queue.length).fill(null);planSessionConfidence=new Array(queue.length).fill(null);planSessionStartedAt=Date.now();planSessionCommitted=new Set();
+      for(let i=0;i<startIndex;i++)if(ppTodayCleared(ppProgressFor(progress,allKeys[i]),today))planSessionCommitted.add(i);
+      currentMode='pass-plan-session';ppSavePassSessionCheckpoint(startIndex);renderNavigatorPassPlanCard();
+    }catch(e){app.innerHTML=`<div class="card" style="margin-top:30px"><b>오늘 숙제를 시작하지 못했습니다.</b><div style="font-size:12px;margin-top:7px">${escapeHtml(e.message||String(e))}</div><button class="btn btn-outline" style="margin-top:12px" onclick="renderNavigatorPassPlan('${planEntrySubject}')">플랜으로 돌아가기</button></div>`}
+  };
+  function ppGradeColor(g){return g==='navi2'?'#2563EB':'#059669'}
+  window.renderNavigatorPassPlanCard=function(){
+    if(currentMode!=='pass-plan-session')return;
+    if(planSessionIdx>=planSessionQueue.length){renderNavigatorPassPlanResult();return}
+    const q=planSessionQueue[planSessionIdx],selected=planSessionAnswers[planSessionIdx],confidence=planSessionConfidence[planSessionIdx],correct=q['정답'],showFeedback=selected!==null;
+    const grade=q._planGrade,color=ppGradeColor(grade),markers=['㉮','㉯','㉰','㉱'];
+    const isCorrect=showFeedback&&selected===correct;
+    const canNext=showFeedback;
+    app.innerHTML=`
+      <div style="padding-top:20px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:8px"><button class="btn btn-outline" style="width:auto" onclick="showConfirm('오늘 숙제를 중단하시겠습니까? 진행 기록은 저장됩니다.',()=>renderNavigatorPassPlan('${planEntrySubject}'))">${icon('arrowLeft',14)} 그만</button><div style="font-s
+
+===== NAVI3_FREQ =====
+
+count=0
+
+===== frequencyData =====
+
+count=0
+
+===== partialYears =====
+
+count=4
+
+--- 1 @ 22163354 ---
+.subjects||[],years:state.years||[],minCount:Number(state.minCount)||2}),'빈출 필터');
+}
+function n3aSubjectSelected(subject){return Array.isArray(navi3AnalysisState.subjects)&&navi3AnalysisState.subjects.includes(subject)}
+function n3aToggleSubject(subject,checked){
+  const data=n3aData();if(!data)return;
+  n3aEnsureFilterState(data);
+  const set=new Set(navi3AnalysisState.subjects||[]);
+  checked?set.add(subject):set.delete(subject);
+  navi3AnalysisState.subjects=(data.subjects||[]).filter(item=>set.has(item));
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();renderNavi3Frequency();
+}
+function n3aPresetSubjects(mode){
+  const data=n3aData();if(!data)return;n3aEnsureFilterState(data);
+  navi3AnalysisState.subjects=mode==='none'?[]:[...(data.subjects||[])];
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();renderNavi3Frequency();
+}
+function n3aToggleYear(year,checked){
+  const data=n3aData();if(!data)return;n3aEnsureFilterState(data);
+  const set=new Set((navi3AnalysisState.years||[]).map(Number));
+  checked?set.add(Number(year)):set.delete(Number(year));
+  navi3AnalysisState.years=(data.meta.years||[]).map(Number).filter(item=>set.has(item));
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();renderNavi3Frequency();
+}
+function n3aPresetYears(mode,skipRender){
+  const data=n3aData();if(!data)return;n3aEnsureFilterState(data);
+  const all=(data.meta.years||[]).map(Number).sort((a,b)=>a-b);
+  const partial=new Set((data.meta.partialYears||[]).map(Number));
+  const complete=((data.meta.completeYears||[]).length?(data.meta.completeYears||[]).map(Number):all.filter(year=>!partial.has(year))).sort((a,b)=>a-b);
+  if(mode==='recent5')navi3AnalysisState.years=complete.slice(-5);
+  else if(mode==='excludeLatest'){
+    const latest=Math.max(...all);
+    navi3AnalysisState.years=all.filter(year=>year!==latest);
+  }else navi3AnalysisState.years=all;
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();if(!skipRender)renderNavi3Frequency();
+}
+function n3aSetMinCount(value,skipRender){
+  const n=Number(value);navi3AnalysisState.minCount=[1,2,3,4].includes(n)?n:2;
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();if(!skipRender)renderNavi3Frequency();
+}
+function n3aQuickRecentFive(){
+  const data=n3aData();if(!data)return;n3aEnsureFilterState(data);
+  const all=(data.meta.years||[]).map(Number).sort((a,b)=>a-b);
+  const partial=new Set((data.meta.partialYears||[]).map(Number));
+  const complete=((data.meta.completeYears||[]).length?(data.meta.completeYears||[]).map(Number):all.filter(year=>!partial.has(year))).sort((a,b)=>a-b);
+  navi3AnalysisState.years=complete.slice(-5);
+  navi3AnalysisState.minCount=2;
+  navi3AnalysisState.view='repeats';
+  navi3AnalysisState.sort='count';
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;
+  n3aSaveFilterState();renderNavi3Frequency();
+}
+
+function n3aActivateGrade(subjectId){
+  if(!NAVI_ANALYSIS_GRADES.includes(subjectId))subjectId='navi3';
+  if(naviAnalysisSubjectId!==subjectId)navi3AnalysisDetail=null;
+  naviAnalysisSubjectId=subjectId;
+  if(!naviAnalysisStates[subjectId])naviAnalysisStates[subjectId]={view:'repeats',subject:'all',range:'all',subjects:null,years:null,minCount:2,sort:'score',query:'',limit:NAVI3_ANALYSIS_LIMIT,_filterLoaded:false};
+  navi3AnalysisState=naviAnalysisStates[subjectId];
+}
+function n3aData(subjectId){
+  const gradeId=subjectId||naviAnalysisSubjectId;
+  return window.MD_NAVI_FREQUENCY&&window.MD_NAVI_FREQUENCY[gradeId]||null;
+}
+const n3aOriginIndexes={};
+function n3aOriginKey(year,session,subject,number){return `${year}|${session}|${subject}|${number}`}
+function n3aQuestionOrigin(q){
+  if(!q||Number(q._year)<2026)return null;
+  const gradeId=baseFromShort(q._short||'');
+  if(!NAVI_ANALYSIS_GRADES.includes(gradeId))return null;
+  const data=n3aData(gradeId);
+  if(!data||!Array.isArray(data.classifications))return null;
+  if(!n3aOriginIndexes[gradeId]){
+    n3aOriginIndexes[gradeId]=new Map(data.classifications.map(entry=>[
+      n3aOriginKey(entry.year,entry.session,entry.subject,entry.number),entry
+    ]));
+  }
+  return n3aOriginIndexes[gradeId].get(n3aOriginKey(q._year,q._session||q['회차'],q['과목'],q['번호']))||null;
+}
+function n3aOriginTagHtml(q){
+  const origin=n3aQuestionOrigin(q);if(!origin)return '';
+  const styles={
+    new:{label:'신출',bg:'#F3E8FF',color:'#7E22CE'},
+    past:{label:'기출',bg:'#DBEAFE',color:'#1D4ED8'},
+    frequent:{label:'빈출',bg:'#FEE2E2',color:'#B91C1C'}
+  };
+  const style=styles[origin.status]||styles.new;
+  const history=origin.previousCount
+    ? `2020~2025년 동일 문항 ${origin.previousCount}회 · ${origin.previousYears.join('·')}년`
+    : '2020~2025년 동일 문항 없음';
+  const sameYear=origin.sameYearEarlierCount?` · ${origin.year}년 앞 회차 ${origin.sameYearEarlierCount}회`:'';
+  const count=origin.status==='frequent'?` · 과거 ${origin.previousCount}회`:origin.status==='past'?' · 과거 1회':'';
+  return `<span class="tag" style="background:${style.bg};color:${style.color};margin:0" title="${escapeHtml(history+sameYear)}">${style.label}${count}</span>`;
+}
+async function ensureNavi3FrequencyData(subjectId){
+  const gradeId=subjectId||naviAnalysisSubjectId;
+  const existing=n3aData(gradeId);if(existing)return existing;
+  const loaded=await loadOptionalScript(`past-analysis-${gradeId}.js`);
+  const data=n3aData(gradeId);
+  if(!loaded||!data)throw new Error(`${gradeId.replace('navi','')}급 항해사 분석 데이터를 불러오지 못했습니다.`);
+  return data;
+}
+function n3aRangeYears(data,range){
+  const all=(data.meta.years||[]).map(Number);
+  n3aEnsureFilterState(data);
+  if(Array.isArray(navi3AnalysisState.years))return new Set(navi3AnalysisState.years.map(Number).filter(year=>all.includes(year)));
+  if(range==='complete')return new Set((data.meta.completeYears||[]).map(Number));
+  if(range==='recent')return new Set(all.filter(year=>year>=2023));
+  return new Set(all);
+}
+function n3aRangeLabel(data,range){
+  const years=[...n3aRangeYears(data,range)].sort((a,b)=>a-b);
+  if(!years.length)return '선택 연도 없음';
+  const contiguous=years.every((year,index)=>index===0||year===years[index-1]+1);
+  const label=contiguous&&years.length>1?`${years[0]}~${years[years.length-1]}년`:`${years.join('·')}년`;
+  const partial=(data.meta.partialYears||[]).map(Number).filter(year=>years.includes(year));
+  return `${label}${partial.length?` · ${partial.join('·')} 부분 포함`:''}`;
+}
+function n3aYearSpan(years){
+  const sorted=(years||[]).map(Number).sort((a,b)=>a-b);
+  return sorted.length?`${sorted[0]}~${so
+
+--- 2 @ 22164315 ---
+sureFilterState(data);
+  const set=new Set((navi3AnalysisState.years||[]).map(Number));
+  checked?set.add(Number(year)):set.delete(Number(year));
+  navi3AnalysisState.years=(data.meta.years||[]).map(Number).filter(item=>set.has(item));
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();renderNavi3Frequency();
+}
+function n3aPresetYears(mode,skipRender){
+  const data=n3aData();if(!data)return;n3aEnsureFilterState(data);
+  const all=(data.meta.years||[]).map(Number).sort((a,b)=>a-b);
+  const partial=new Set((data.meta.partialYears||[]).map(Number));
+  const complete=((data.meta.completeYears||[]).length?(data.meta.completeYears||[]).map(Number):all.filter(year=>!partial.has(year))).sort((a,b)=>a-b);
+  if(mode==='recent5')navi3AnalysisState.years=complete.slice(-5);
+  else if(mode==='excludeLatest'){
+    const latest=Math.max(...all);
+    navi3AnalysisState.years=all.filter(year=>year!==latest);
+  }else navi3AnalysisState.years=all;
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();if(!skipRender)renderNavi3Frequency();
+}
+function n3aSetMinCount(value,skipRender){
+  const n=Number(value);navi3AnalysisState.minCount=[1,2,3,4].includes(n)?n:2;
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();if(!skipRender)renderNavi3Frequency();
+}
+function n3aQuickRecentFive(){
+  const data=n3aData();if(!data)return;n3aEnsureFilterState(data);
+  const all=(data.meta.years||[]).map(Number).sort((a,b)=>a-b);
+  const partial=new Set((data.meta.partialYears||[]).map(Number));
+  const complete=((data.meta.completeYears||[]).length?(data.meta.completeYears||[]).map(Number):all.filter(year=>!partial.has(year))).sort((a,b)=>a-b);
+  navi3AnalysisState.years=complete.slice(-5);
+  navi3AnalysisState.minCount=2;
+  navi3AnalysisState.view='repeats';
+  navi3AnalysisState.sort='count';
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;
+  n3aSaveFilterState();renderNavi3Frequency();
+}
+
+function n3aActivateGrade(subjectId){
+  if(!NAVI_ANALYSIS_GRADES.includes(subjectId))subjectId='navi3';
+  if(naviAnalysisSubjectId!==subjectId)navi3AnalysisDetail=null;
+  naviAnalysisSubjectId=subjectId;
+  if(!naviAnalysisStates[subjectId])naviAnalysisStates[subjectId]={view:'repeats',subject:'all',range:'all',subjects:null,years:null,minCount:2,sort:'score',query:'',limit:NAVI3_ANALYSIS_LIMIT,_filterLoaded:false};
+  navi3AnalysisState=naviAnalysisStates[subjectId];
+}
+function n3aData(subjectId){
+  const gradeId=subjectId||naviAnalysisSubjectId;
+  return window.MD_NAVI_FREQUENCY&&window.MD_NAVI_FREQUENCY[gradeId]||null;
+}
+const n3aOriginIndexes={};
+function n3aOriginKey(year,session,subject,number){return `${year}|${session}|${subject}|${number}`}
+function n3aQuestionOrigin(q){
+  if(!q||Number(q._year)<2026)return null;
+  const gradeId=baseFromShort(q._short||'');
+  if(!NAVI_ANALYSIS_GRADES.includes(gradeId))return null;
+  const data=n3aData(gradeId);
+  if(!data||!Array.isArray(data.classifications))return null;
+  if(!n3aOriginIndexes[gradeId]){
+    n3aOriginIndexes[gradeId]=new Map(data.classifications.map(entry=>[
+      n3aOriginKey(entry.year,entry.session,entry.subject,entry.number),entry
+    ]));
+  }
+  return n3aOriginIndexes[gradeId].get(n3aOriginKey(q._year,q._session||q['회차'],q['과목'],q['번호']))||null;
+}
+function n3aOriginTagHtml(q){
+  const origin=n3aQuestionOrigin(q);if(!origin)return '';
+  const styles={
+    new:{label:'신출',bg:'#F3E8FF',color:'#7E22CE'},
+    past:{label:'기출',bg:'#DBEAFE',color:'#1D4ED8'},
+    frequent:{label:'빈출',bg:'#FEE2E2',color:'#B91C1C'}
+  };
+  const style=styles[origin.status]||styles.new;
+  const history=origin.previousCount
+    ? `2020~2025년 동일 문항 ${origin.previousCount}회 · ${origin.previousYears.join('·')}년`
+    : '2020~2025년 동일 문항 없음';
+  const sameYear=origin.sameYearEarlierCount?` · ${origin.year}년 앞 회차 ${origin.sameYearEarlierCount}회`:'';
+  const count=origin.status==='frequent'?` · 과거 ${origin.previousCount}회`:origin.status==='past'?' · 과거 1회':'';
+  return `<span class="tag" style="background:${style.bg};color:${style.color};margin:0" title="${escapeHtml(history+sameYear)}">${style.label}${count}</span>`;
+}
+async function ensureNavi3FrequencyData(subjectId){
+  const gradeId=subjectId||naviAnalysisSubjectId;
+  const existing=n3aData(gradeId);if(existing)return existing;
+  const loaded=await loadOptionalScript(`past-analysis-${gradeId}.js`);
+  const data=n3aData(gradeId);
+  if(!loaded||!data)throw new Error(`${gradeId.replace('navi','')}급 항해사 분석 데이터를 불러오지 못했습니다.`);
+  return data;
+}
+function n3aRangeYears(data,range){
+  const all=(data.meta.years||[]).map(Number);
+  n3aEnsureFilterState(data);
+  if(Array.isArray(navi3AnalysisState.years))return new Set(navi3AnalysisState.years.map(Number).filter(year=>all.includes(year)));
+  if(range==='complete')return new Set((data.meta.completeYears||[]).map(Number));
+  if(range==='recent')return new Set(all.filter(year=>year>=2023));
+  return new Set(all);
+}
+function n3aRangeLabel(data,range){
+  const years=[...n3aRangeYears(data,range)].sort((a,b)=>a-b);
+  if(!years.length)return '선택 연도 없음';
+  const contiguous=years.every((year,index)=>index===0||year===years[index-1]+1);
+  const label=contiguous&&years.length>1?`${years[0]}~${years[years.length-1]}년`:`${years.join('·')}년`;
+  const partial=(data.meta.partialYears||[]).map(Number).filter(year=>years.includes(year));
+  return `${label}${partial.length?` · ${partial.join('·')} 부분 포함`:''}`;
+}
+function n3aYearSpan(years){
+  const sorted=(years||[]).map(Number).sort((a,b)=>a-b);
+  return sorted.length?`${sorted[0]}~${sorted[sorted.length-1]}`:'자료 없음';
+}
+function n3aFilteredHits(hits,yearSet){return (hits||[]).filter(hit=>yearSet.has(Number(hit.year)))}
+function n3aSessionKey(hit){return `${hit.year}-${hit.session}`}
+function n3aUniqueYears(hits){return [...new Set(hits.map(hit=>Number(hit.year)))].sort((a,b)=>a-b)}
+function n3aTier(score){
+  if(score>=80)return {label:'최우선',cls:'n3a-score-top'};
+  if(score>=65)return {label:'중요',cls:'n3a-score-high'};
+  if(score>=50)return {label:'주목',cls:'n3a-score-watch'};
+  return {label:'보통',cls:'n3a-score-normal'};
+}
+function n3aRecencyScore(latest,maxYear){return Math.max(4,25-Math.max(0,maxYear-latest)*4)}
+function n3aRepeatScore(hits,yearSet){
+  const years=n3aUniqueYears(hits),maxYear=Math.max(...yearSet);
+  return Math.min(100,Math.round(Math.min(60,hits.length/7*60)+n3aRecencyScore(years[years.length-1],maxYear)+Math.min(15,years.length/6*15)));
+}
+function n3aTopicScore(hits,yearSet,totalSessions){
+  const years=n3aUn
+
+--- 3 @ 22168086 ---
+arlierCount?` · ${origin.year}년 앞 회차 ${origin.sameYearEarlierCount}회`:'';
+  const count=origin.status==='frequent'?` · 과거 ${origin.previousCount}회`:origin.status==='past'?' · 과거 1회':'';
+  return `<span class="tag" style="background:${style.bg};color:${style.color};margin:0" title="${escapeHtml(history+sameYear)}">${style.label}${count}</span>`;
+}
+async function ensureNavi3FrequencyData(subjectId){
+  const gradeId=subjectId||naviAnalysisSubjectId;
+  const existing=n3aData(gradeId);if(existing)return existing;
+  const loaded=await loadOptionalScript(`past-analysis-${gradeId}.js`);
+  const data=n3aData(gradeId);
+  if(!loaded||!data)throw new Error(`${gradeId.replace('navi','')}급 항해사 분석 데이터를 불러오지 못했습니다.`);
+  return data;
+}
+function n3aRangeYears(data,range){
+  const all=(data.meta.years||[]).map(Number);
+  n3aEnsureFilterState(data);
+  if(Array.isArray(navi3AnalysisState.years))return new Set(navi3AnalysisState.years.map(Number).filter(year=>all.includes(year)));
+  if(range==='complete')return new Set((data.meta.completeYears||[]).map(Number));
+  if(range==='recent')return new Set(all.filter(year=>year>=2023));
+  return new Set(all);
+}
+function n3aRangeLabel(data,range){
+  const years=[...n3aRangeYears(data,range)].sort((a,b)=>a-b);
+  if(!years.length)return '선택 연도 없음';
+  const contiguous=years.every((year,index)=>index===0||year===years[index-1]+1);
+  const label=contiguous&&years.length>1?`${years[0]}~${years[years.length-1]}년`:`${years.join('·')}년`;
+  const partial=(data.meta.partialYears||[]).map(Number).filter(year=>years.includes(year));
+  return `${label}${partial.length?` · ${partial.join('·')} 부분 포함`:''}`;
+}
+function n3aYearSpan(years){
+  const sorted=(years||[]).map(Number).sort((a,b)=>a-b);
+  return sorted.length?`${sorted[0]}~${sorted[sorted.length-1]}`:'자료 없음';
+}
+function n3aFilteredHits(hits,yearSet){return (hits||[]).filter(hit=>yearSet.has(Number(hit.year)))}
+function n3aSessionKey(hit){return `${hit.year}-${hit.session}`}
+function n3aUniqueYears(hits){return [...new Set(hits.map(hit=>Number(hit.year)))].sort((a,b)=>a-b)}
+function n3aTier(score){
+  if(score>=80)return {label:'최우선',cls:'n3a-score-top'};
+  if(score>=65)return {label:'중요',cls:'n3a-score-high'};
+  if(score>=50)return {label:'주목',cls:'n3a-score-watch'};
+  return {label:'보통',cls:'n3a-score-normal'};
+}
+function n3aRecencyScore(latest,maxYear){return Math.max(4,25-Math.max(0,maxYear-latest)*4)}
+function n3aRepeatScore(hits,yearSet){
+  const years=n3aUniqueYears(hits),maxYear=Math.max(...yearSet);
+  return Math.min(100,Math.round(Math.min(60,hits.length/7*60)+n3aRecencyScore(years[years.length-1],maxYear)+Math.min(15,years.length/6*15)));
+}
+function n3aTopicScore(hits,yearSet,totalSessions){
+  const years=n3aUniqueYears(hits),latest=years[years.length-1];
+  const sessions=new Set(hits.map(n3aSessionKey)).size;
+  const coverage=totalSessions?Math.min(1,sessions/totalSessions):0;
+  const density=totalSessions?Math.min(1,hits.length/(totalSessions*4)):0;
+  return Math.min(100,Math.round(coverage*55+density*20+n3aRecencyScore(latest,Math.max(...yearSet))));
+}
+function n3aAllSessionKeys(data,yearSet){
+  const keys=new Set();
+  (data.groups||[]).forEach(group=>n3aFilteredHits(group.hits,yearSet).forEach(hit=>keys.add(n3aSessionKey(hit))));
+  return keys;
+}
+function n3aRangeStats(data,yearSet){
+  let questions=0,repeated=0;
+  const minCount=Number(navi3AnalysisState.minCount)||2;
+  (data.groups||[]).forEach(group=>{
+    if(!n3aSubjectSelected(group.subject))return;
+    const count=n3aFilteredHits(group.hits,yearSet).length;
+    questions+=count;
+    if(count>=minCount)repeated+=1;
+  });
+  return {questions,repeated,sessions:n3aAllSessionKeys(data,yearSet).size};
+}
+function n3aBuildEntries(data){
+  const state=navi3AnalysisState;
+  const yearSet=n3aRangeYears(data,state.range);
+  const query=String(state.query||'').trim().toLowerCase();
+  const totalSessions=n3aAllSessionKeys(data,yearSet).size;
+  let entries=[];
+  if(state.view==='topics'){
+    entries=(data.topics||[]).map(topic=>{
+      const hits=n3aFilteredHits(topic.hits,yearSet);
+      const years=n3aUniqueYears(hits);
+      const sessions=new Set(hits.map(n3aSessionKey));
+      return {...topic,hits,years,latest:years[years.length-1]||0,sessionCount:sessions.size,occurrences:hits.length,distinctQuestions:new Set(hits.map(hit=>hit.groupId)).size,score:hits.length?n3aTopicScore(hits,yearSet,totalSessions):0};
+    }).filter(entry=>entry.hits.length&&
+      n3aSubjectSelected(entry.subject)&&
+      (!query||`${entry.label} ${entry.subject}`.toLowerCase().includes(query)));
+  }else{
+    entries=(data.groups||[]).map(group=>{
+      const hits=n3aFilteredHits(group.hits,yearSet);
+      const years=n3aUniqueYears(hits);
+      return {...group,hits,years,count:hits.length,latest:years[years.length-1]||0,score:hits.length?n3aRepeatScore(hits,yearSet):0};
+    }).filter(entry=>entry.count>=(Number(state.minCount)||2)&&
+      n3aSubjectSelected(entry.subject)&&
+      (!query||`${entry.question} ${entry.subject}`.toLowerCase().includes(query)));
+  }
+  entries.sort((a,b)=>{
+    if(state.sort==='count')return (b.occurrences||b.count)-(a.occurrences||a.count)||b.score-a.score;
+    if(state.sort==='recent')return b.latest-a.latest||b.score-a.score;
+    return b.score-a.score||(b.occurrences||b.count)-(a.occurrences||a.count);
+  });
+  return entries;
+}
+function n3aSetState(key,value){
+  navi3AnalysisState[key]=value;
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;
+  renderNavi3Frequency();
+}
+function n3aApplySearch(){
+  const input=document.getElementById('n3a-search');
+  navi3AnalysisState.query=input?input.value.trim():'';
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;
+  renderNavi3Frequency();
+}
+function n3aMore(){navi3AnalysisState.limit+=NAVI3_ANALYSIS_LIMIT;renderNavi3Frequency()}
+function n3aScoreHtml(score){const tier=n3aTier(score);return `<span class="n3a-score ${tier.cls}">${tier.label} · ${score}</span>`}
+
+// v4.98: 빈출 통계를 실제 문제 풀이 세션으로 연결합니다.
+let navi3PracticeReturn=null;
+let navi3PracticeLabel='빈출 문제';
+function n3aPracticeGroups(data,source,id){
+  const yearSet=n3aRangeYears(data,navi3AnalysisState.range);
+  const groupsById=new Map((data.groups||[]).map(group=>[group.id,group]));
+  const toEntry=group=>{
+    if(!group)return null;
+    const hits=n3aFilteredHits(group.hits,yearSet);
+    const years=n3aUniqueYears(hits);
+    return hits.length?{...group,hits,years,count:hits.length,latest:years[years.length-1]||0,score:n3aRepeatScore(hits,yearSet)}:null;
+  };
+ 
+
+--- 4 @ 22460165 ---
+g):null};
+      });
+    }catch(e){console.warn('[v5.07] 합격 플랜 설정 로드 실패',e)}
+    return base;
+  }
+  function ppSavePlan(plan){
+    plan.revision=Date.now();
+    safeStorageSet(PLAN_KEY,JSON.stringify(plan),'2·3급 합격 플랜');
+  }
+  function ppLoadProgress(){
+    try{const raw=localStorage.getItem(PROGRESS_KEY);return raw?JSON.parse(raw)||{}:{}}catch(e){return {}}
+  }
+  function ppSaveProgress(progress){safeStorageSet(PROGRESS_KEY,JSON.stringify(progress),'합격 플랜 진도')}
+  function ppLoadDaily(){
+    try{const raw=localStorage.getItem(DAILY_KEY);return raw?JSON.parse(raw)||{}:{}}catch(e){return {}}
+  }
+  function ppSaveDaily(daily){safeStorageSet(DAILY_KEY,JSON.stringify(daily),'합격 플랜 오늘 숙제')}
+  function ppSelectedSubjects(plan,gradeId,data){
+    const all=(data&&data.subjects||[]).map(String);
+    const saved=plan.grades[gradeId]&&plan.grades[gradeId].subjects;
+    if(!Array.isArray(saved))return all;
+    return all.filter(s=>saved.includes(s));
+  }
+  function ppTrainingYears(data){
+    const metaYears=(data.meta&&data.meta.years||[]).map(Number);
+    const hitYears=[];
+    (data.groups||[]).forEach(group=>(group.hits||[]).forEach(hit=>{const y=Number(hit.year);if(Number.isFinite(y))hitYears.push(y)}));
+    const all=[...new Set([...metaYears,...hitYears])].sort((a,b)=>a-b);
+    // 2026 is the current exam year. Include it even when the source marks it as a partial year.
+    if(all.includes(2026))return all.filter(y=>y<=2026).slice(-5);
+    const partial=new Set((data.meta&&data.meta.partialYears||[]).map(Number));
+    const complete=((data.meta&&data.meta.completeYears||[]).length?(data.meta.completeYears||[]).map(Number):all.filter(y=>!partial.has(y))).sort((a,b)=>a-b);
+    return complete.slice(-5);
+  }
+  function ppItemKey(gradeId,groupId){return `${gradeId}|${groupId}`}
+  function ppHas2026(item){return !!(item&&Array.isArray(item.hits)&&item.hits.some(h=>Number(h.year)===2026))}
+  async function ppEnsureFrequency(){
+    for(const gradeId of PLAN_GRADES){
+      try{await ensureNavi3FrequencyData(gradeId)}catch(e){console.warn('[v5.07] 빈출 데이터 로드 실패',gradeId,e)}
+    }
+  }
+  async function ppBuildPools(plan){
+    await ppEnsureFrequency();
+    const pools={};
+    PLAN_GRADES.forEach(gradeId=>{
+      const data=n3aData(gradeId);if(!data){pools[gradeId]=[];return}
+      const selected=new Set(ppSelectedSubjects(plan,gradeId,data));
+      const years=ppTrainingYears(data),yearSet=new Set(years);
+      const maxYear=years.length?Math.max(...years):0;
+      const items=[];
+      (data.groups||[]).forEach(group=>{
+        if(!selected.has(group.subject))return;
+        const hits=(group.hits||[]).filter(hit=>yearSet.has(Number(hit.year)));
+        if(!hits.length)return;
+        const sortedHits=[...hits].sort((a,b)=>b.year-a.year||b.session-a.session||b.number-a.number);
+        items.push({
+          key:ppItemKey(gradeId,group.id),gradeId,groupId:group.id,subject:group.subject,
+          question:group.question,normalized:group.normalized,count:hits.length,latest:sortedHits[0].year,
+          hits:sortedHits,rep:sortedHits[0],years:[...new Set(hits.map(h=>Number(h.year)))].sort((a,b)=>a-b),maxYear
+        });
+      });
+      items.sort((a,b)=>b.count-a.count||b.latest-a.latest||String(a.question).localeCompare(String(b.question),'ko'));
+      pools[gradeId]=items;
+    });
+    planPools=pools;
+    return pools;
+  }
+  function ppProgressFor(progress,key){
+    if(!progress[key])progress[key]={firstPassDate:null,mastered:false,status:'new',dueDate:null,lastDate:null,lastSureDate:null,lastOutcome:null,attempts:0,correct:0,wrong:0,unsure:0,masteryReviews:0,recoveryStartDate:null,sameDayFirstCorrectDate:null,sameDayConfirmedDate:null};
+    const r=progress[key];
+    // Migrate old records without discarding prior study history.
+    if(!Object.prototype.hasOwnProperty.call(r,'sameDayFirstCorrectDate'))r.sameDayFirstCorrectDate=(!r.mastered&&r.lastSureDate)?r.lastSureDate:null;
+    if(!Object.prototype.hasOwnProperty.call(r,'sameDayConfirmedDate'))r.sameDayConfirmedDate=r.mastered?(r.lastSureDate||r.firstPassDate||null):null;
+    return r;
+  }
+  function ppExamDay(plan,gradeId){return plan.grades[gradeId]&&plan.grades[gradeId].examDate||''}
+  function ppPhaseForGrade(plan,gradeId,pool,progress,today){
+    const exam=ppExamDay(plan,gradeId),dday=ppDiffDays(today,exam);
+    const finalDays=Number(plan.finalDays)||4;
+    const freqRemaining=pool.filter(item=>item.count>=2&&!ppProgressFor(progress,item.key).firstPassDate);
+    const current2026Remaining=pool.filter(item=>ppHas2026(item)&&!ppProgressFor(progress,item.key).firstPassDate);
+    const stage1Remaining=[...current2026Remaining,...freqRemaining.filter(item=>!ppHas2026(item))];
+    const allRemaining=pool.filter(item=>!ppProgressFor(progress,item.key).firstPassDate);
+    const final=dday!==null&&dday>=0&&dday<=finalDays;
+    if(final)return {phase:'final',label:'시험 직전 · 2026 전체 우선',dday,freqRemaining,current2026Remaining,allRemaining,candidates:stage1Remaining,learningDays:Math.max(1,dday)};
+    if(stage1Remaining.length){
+      const learningDays=Math.max(1,(dday===null?14:dday)-finalDays);
+      const stageDays=Math.max(1,Math.ceil(learningDays*0.45));
+      return {phase:'stage1',label:'1단계 · 2026 전체 + 최근 5개년 빈출',dday,freqRemaining,current2026Remaining,allRemaining,candidates:stage1Remaining,learningDays:stageDays};
+    }
+    const learningDays=Math.max(1,(dday===null?10:dday)-finalDays);
+    return {phase:'stage2',label:'2단계 · 최근 5개년 전체',dday,freqRemaining,allRemaining,candidates:allRemaining,learningDays};
+  }
+  function ppIsDue(rec,today){return !!(rec&&rec.dueDate&&rec.dueDate<=today&&(rec.firstPassDate||rec.status==='weak'))}
+  function ppUrgentSort(a,b,progress){
+    const ra=ppProgressFor(progress,a.key),rb=ppProgressFor(progress,b.key);
+    const wa=(ra.status==='weak'||ra.lastOutcome==='wrong'||ra.lastOutcome==='unsure')?1:0;
+    const wb=(rb.status==='weak'||rb.lastOutcome==='wrong'||rb.lastOutcome==='unsure')?1:0;
+    if(wb!==wa)return wb-wa;
+    if(a.count!==b.count)return b.count-a.count;
+    const da=ra.dueDate||'9999-12-31',db=rb.dueDate||'9999-12-31';
+    if(da!==db)return da.localeCompare(db);
+    return b.latest-a.latest;
+  }
+  function ppPlanSignature(plan,pools){
+    const compact={dailyCap:plan.dailyCap,finalDays:plan.finalDays,revision:plan.revision,assignmentPolicy:'2026-all-priority-v1',grades:{}};
+    PLAN_GRADES.forEach(g=>{compact.grades[g]={enabled:plan.grades[g].enabled,examDate:plan.grades[g].examDate,subjects
+
+===== completeYears =====
+
+count=7
+
+--- 1 @ 22163415 ---
+Count)||2}),'빈출 필터');
+}
+function n3aSubjectSelected(subject){return Array.isArray(navi3AnalysisState.subjects)&&navi3AnalysisState.subjects.includes(subject)}
+function n3aToggleSubject(subject,checked){
+  const data=n3aData();if(!data)return;
+  n3aEnsureFilterState(data);
+  const set=new Set(navi3AnalysisState.subjects||[]);
+  checked?set.add(subject):set.delete(subject);
+  navi3AnalysisState.subjects=(data.subjects||[]).filter(item=>set.has(item));
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();renderNavi3Frequency();
+}
+function n3aPresetSubjects(mode){
+  const data=n3aData();if(!data)return;n3aEnsureFilterState(data);
+  navi3AnalysisState.subjects=mode==='none'?[]:[...(data.subjects||[])];
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();renderNavi3Frequency();
+}
+function n3aToggleYear(year,checked){
+  const data=n3aData();if(!data)return;n3aEnsureFilterState(data);
+  const set=new Set((navi3AnalysisState.years||[]).map(Number));
+  checked?set.add(Number(year)):set.delete(Number(year));
+  navi3AnalysisState.years=(data.meta.years||[]).map(Number).filter(item=>set.has(item));
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();renderNavi3Frequency();
+}
+function n3aPresetYears(mode,skipRender){
+  const data=n3aData();if(!data)return;n3aEnsureFilterState(data);
+  const all=(data.meta.years||[]).map(Number).sort((a,b)=>a-b);
+  const partial=new Set((data.meta.partialYears||[]).map(Number));
+  const complete=((data.meta.completeYears||[]).length?(data.meta.completeYears||[]).map(Number):all.filter(year=>!partial.has(year))).sort((a,b)=>a-b);
+  if(mode==='recent5')navi3AnalysisState.years=complete.slice(-5);
+  else if(mode==='excludeLatest'){
+    const latest=Math.max(...all);
+    navi3AnalysisState.years=all.filter(year=>year!==latest);
+  }else navi3AnalysisState.years=all;
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();if(!skipRender)renderNavi3Frequency();
+}
+function n3aSetMinCount(value,skipRender){
+  const n=Number(value);navi3AnalysisState.minCount=[1,2,3,4].includes(n)?n:2;
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();if(!skipRender)renderNavi3Frequency();
+}
+function n3aQuickRecentFive(){
+  const data=n3aData();if(!data)return;n3aEnsureFilterState(data);
+  const all=(data.meta.years||[]).map(Number).sort((a,b)=>a-b);
+  const partial=new Set((data.meta.partialYears||[]).map(Number));
+  const complete=((data.meta.completeYears||[]).length?(data.meta.completeYears||[]).map(Number):all.filter(year=>!partial.has(year))).sort((a,b)=>a-b);
+  navi3AnalysisState.years=complete.slice(-5);
+  navi3AnalysisState.minCount=2;
+  navi3AnalysisState.view='repeats';
+  navi3AnalysisState.sort='count';
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;
+  n3aSaveFilterState();renderNavi3Frequency();
+}
+
+function n3aActivateGrade(subjectId){
+  if(!NAVI_ANALYSIS_GRADES.includes(subjectId))subjectId='navi3';
+  if(naviAnalysisSubjectId!==subjectId)navi3AnalysisDetail=null;
+  naviAnalysisSubjectId=subjectId;
+  if(!naviAnalysisStates[subjectId])naviAnalysisStates[subjectId]={view:'repeats',subject:'all',range:'all',subjects:null,years:null,minCount:2,sort:'score',query:'',limit:NAVI3_ANALYSIS_LIMIT,_filterLoaded:false};
+  navi3AnalysisState=naviAnalysisStates[subjectId];
+}
+function n3aData(subjectId){
+  const gradeId=subjectId||naviAnalysisSubjectId;
+  return window.MD_NAVI_FREQUENCY&&window.MD_NAVI_FREQUENCY[gradeId]||null;
+}
+const n3aOriginIndexes={};
+function n3aOriginKey(year,session,subject,number){return `${year}|${session}|${subject}|${number}`}
+function n3aQuestionOrigin(q){
+  if(!q||Number(q._year)<2026)return null;
+  const gradeId=baseFromShort(q._short||'');
+  if(!NAVI_ANALYSIS_GRADES.includes(gradeId))return null;
+  const data=n3aData(gradeId);
+  if(!data||!Array.isArray(data.classifications))return null;
+  if(!n3aOriginIndexes[gradeId]){
+    n3aOriginIndexes[gradeId]=new Map(data.classifications.map(entry=>[
+      n3aOriginKey(entry.year,entry.session,entry.subject,entry.number),entry
+    ]));
+  }
+  return n3aOriginIndexes[gradeId].get(n3aOriginKey(q._year,q._session||q['회차'],q['과목'],q['번호']))||null;
+}
+function n3aOriginTagHtml(q){
+  const origin=n3aQuestionOrigin(q);if(!origin)return '';
+  const styles={
+    new:{label:'신출',bg:'#F3E8FF',color:'#7E22CE'},
+    past:{label:'기출',bg:'#DBEAFE',color:'#1D4ED8'},
+    frequent:{label:'빈출',bg:'#FEE2E2',color:'#B91C1C'}
+  };
+  const style=styles[origin.status]||styles.new;
+  const history=origin.previousCount
+    ? `2020~2025년 동일 문항 ${origin.previousCount}회 · ${origin.previousYears.join('·')}년`
+    : '2020~2025년 동일 문항 없음';
+  const sameYear=origin.sameYearEarlierCount?` · ${origin.year}년 앞 회차 ${origin.sameYearEarlierCount}회`:'';
+  const count=origin.status==='frequent'?` · 과거 ${origin.previousCount}회`:origin.status==='past'?' · 과거 1회':'';
+  return `<span class="tag" style="background:${style.bg};color:${style.color};margin:0" title="${escapeHtml(history+sameYear)}">${style.label}${count}</span>`;
+}
+async function ensureNavi3FrequencyData(subjectId){
+  const gradeId=subjectId||naviAnalysisSubjectId;
+  const existing=n3aData(gradeId);if(existing)return existing;
+  const loaded=await loadOptionalScript(`past-analysis-${gradeId}.js`);
+  const data=n3aData(gradeId);
+  if(!loaded||!data)throw new Error(`${gradeId.replace('navi','')}급 항해사 분석 데이터를 불러오지 못했습니다.`);
+  return data;
+}
+function n3aRangeYears(data,range){
+  const all=(data.meta.years||[]).map(Number);
+  n3aEnsureFilterState(data);
+  if(Array.isArray(navi3AnalysisState.years))return new Set(navi3AnalysisState.years.map(Number).filter(year=>all.includes(year)));
+  if(range==='complete')return new Set((data.meta.completeYears||[]).map(Number));
+  if(range==='recent')return new Set(all.filter(year=>year>=2023));
+  return new Set(all);
+}
+function n3aRangeLabel(data,range){
+  const years=[...n3aRangeYears(data,range)].sort((a,b)=>a-b);
+  if(!years.length)return '선택 연도 없음';
+  const contiguous=years.every((year,index)=>index===0||year===years[index-1]+1);
+  const label=contiguous&&years.length>1?`${years[0]}~${years[years.length-1]}년`:`${years.join('·')}년`;
+  const partial=(data.meta.partialYears||[]).map(Number).filter(year=>years.includes(year));
+  return `${label}${partial.length?` · ${partial.join('·')} 부분 포함`:''}`;
+}
+function n3aYearSpan(years){
+  const sorted=(years||[]).map(Number).sort((a,b)=>a-b);
+  return sorted.length?`${sorted[0]}~${sorted[sorted.length-1]}`:'자료 없음';
+}
+function n3aFilteredHits(h
+
+--- 2 @ 22163452 ---
+ubjectSelected(subject){return Array.isArray(navi3AnalysisState.subjects)&&navi3AnalysisState.subjects.includes(subject)}
+function n3aToggleSubject(subject,checked){
+  const data=n3aData();if(!data)return;
+  n3aEnsureFilterState(data);
+  const set=new Set(navi3AnalysisState.subjects||[]);
+  checked?set.add(subject):set.delete(subject);
+  navi3AnalysisState.subjects=(data.subjects||[]).filter(item=>set.has(item));
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();renderNavi3Frequency();
+}
+function n3aPresetSubjects(mode){
+  const data=n3aData();if(!data)return;n3aEnsureFilterState(data);
+  navi3AnalysisState.subjects=mode==='none'?[]:[...(data.subjects||[])];
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();renderNavi3Frequency();
+}
+function n3aToggleYear(year,checked){
+  const data=n3aData();if(!data)return;n3aEnsureFilterState(data);
+  const set=new Set((navi3AnalysisState.years||[]).map(Number));
+  checked?set.add(Number(year)):set.delete(Number(year));
+  navi3AnalysisState.years=(data.meta.years||[]).map(Number).filter(item=>set.has(item));
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();renderNavi3Frequency();
+}
+function n3aPresetYears(mode,skipRender){
+  const data=n3aData();if(!data)return;n3aEnsureFilterState(data);
+  const all=(data.meta.years||[]).map(Number).sort((a,b)=>a-b);
+  const partial=new Set((data.meta.partialYears||[]).map(Number));
+  const complete=((data.meta.completeYears||[]).length?(data.meta.completeYears||[]).map(Number):all.filter(year=>!partial.has(year))).sort((a,b)=>a-b);
+  if(mode==='recent5')navi3AnalysisState.years=complete.slice(-5);
+  else if(mode==='excludeLatest'){
+    const latest=Math.max(...all);
+    navi3AnalysisState.years=all.filter(year=>year!==latest);
+  }else navi3AnalysisState.years=all;
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();if(!skipRender)renderNavi3Frequency();
+}
+function n3aSetMinCount(value,skipRender){
+  const n=Number(value);navi3AnalysisState.minCount=[1,2,3,4].includes(n)?n:2;
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();if(!skipRender)renderNavi3Frequency();
+}
+function n3aQuickRecentFive(){
+  const data=n3aData();if(!data)return;n3aEnsureFilterState(data);
+  const all=(data.meta.years||[]).map(Number).sort((a,b)=>a-b);
+  const partial=new Set((data.meta.partialYears||[]).map(Number));
+  const complete=((data.meta.completeYears||[]).length?(data.meta.completeYears||[]).map(Number):all.filter(year=>!partial.has(year))).sort((a,b)=>a-b);
+  navi3AnalysisState.years=complete.slice(-5);
+  navi3AnalysisState.minCount=2;
+  navi3AnalysisState.view='repeats';
+  navi3AnalysisState.sort='count';
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;
+  n3aSaveFilterState();renderNavi3Frequency();
+}
+
+function n3aActivateGrade(subjectId){
+  if(!NAVI_ANALYSIS_GRADES.includes(subjectId))subjectId='navi3';
+  if(naviAnalysisSubjectId!==subjectId)navi3AnalysisDetail=null;
+  naviAnalysisSubjectId=subjectId;
+  if(!naviAnalysisStates[subjectId])naviAnalysisStates[subjectId]={view:'repeats',subject:'all',range:'all',subjects:null,years:null,minCount:2,sort:'score',query:'',limit:NAVI3_ANALYSIS_LIMIT,_filterLoaded:false};
+  navi3AnalysisState=naviAnalysisStates[subjectId];
+}
+function n3aData(subjectId){
+  const gradeId=subjectId||naviAnalysisSubjectId;
+  return window.MD_NAVI_FREQUENCY&&window.MD_NAVI_FREQUENCY[gradeId]||null;
+}
+const n3aOriginIndexes={};
+function n3aOriginKey(year,session,subject,number){return `${year}|${session}|${subject}|${number}`}
+function n3aQuestionOrigin(q){
+  if(!q||Number(q._year)<2026)return null;
+  const gradeId=baseFromShort(q._short||'');
+  if(!NAVI_ANALYSIS_GRADES.includes(gradeId))return null;
+  const data=n3aData(gradeId);
+  if(!data||!Array.isArray(data.classifications))return null;
+  if(!n3aOriginIndexes[gradeId]){
+    n3aOriginIndexes[gradeId]=new Map(data.classifications.map(entry=>[
+      n3aOriginKey(entry.year,entry.session,entry.subject,entry.number),entry
+    ]));
+  }
+  return n3aOriginIndexes[gradeId].get(n3aOriginKey(q._year,q._session||q['회차'],q['과목'],q['번호']))||null;
+}
+function n3aOriginTagHtml(q){
+  const origin=n3aQuestionOrigin(q);if(!origin)return '';
+  const styles={
+    new:{label:'신출',bg:'#F3E8FF',color:'#7E22CE'},
+    past:{label:'기출',bg:'#DBEAFE',color:'#1D4ED8'},
+    frequent:{label:'빈출',bg:'#FEE2E2',color:'#B91C1C'}
+  };
+  const style=styles[origin.status]||styles.new;
+  const history=origin.previousCount
+    ? `2020~2025년 동일 문항 ${origin.previousCount}회 · ${origin.previousYears.join('·')}년`
+    : '2020~2025년 동일 문항 없음';
+  const sameYear=origin.sameYearEarlierCount?` · ${origin.year}년 앞 회차 ${origin.sameYearEarlierCount}회`:'';
+  const count=origin.status==='frequent'?` · 과거 ${origin.previousCount}회`:origin.status==='past'?' · 과거 1회':'';
+  return `<span class="tag" style="background:${style.bg};color:${style.color};margin:0" title="${escapeHtml(history+sameYear)}">${style.label}${count}</span>`;
+}
+async function ensureNavi3FrequencyData(subjectId){
+  const gradeId=subjectId||naviAnalysisSubjectId;
+  const existing=n3aData(gradeId);if(existing)return existing;
+  const loaded=await loadOptionalScript(`past-analysis-${gradeId}.js`);
+  const data=n3aData(gradeId);
+  if(!loaded||!data)throw new Error(`${gradeId.replace('navi','')}급 항해사 분석 데이터를 불러오지 못했습니다.`);
+  return data;
+}
+function n3aRangeYears(data,range){
+  const all=(data.meta.years||[]).map(Number);
+  n3aEnsureFilterState(data);
+  if(Array.isArray(navi3AnalysisState.years))return new Set(navi3AnalysisState.years.map(Number).filter(year=>all.includes(year)));
+  if(range==='complete')return new Set((data.meta.completeYears||[]).map(Number));
+  if(range==='recent')return new Set(all.filter(year=>year>=2023));
+  return new Set(all);
+}
+function n3aRangeLabel(data,range){
+  const years=[...n3aRangeYears(data,range)].sort((a,b)=>a-b);
+  if(!years.length)return '선택 연도 없음';
+  const contiguous=years.every((year,index)=>index===0||year===years[index-1]+1);
+  const label=contiguous&&years.length>1?`${years[0]}~${years[years.length-1]}년`:`${years.join('·')}년`;
+  const partial=(data.meta.partialYears||[]).map(Number).filter(year=>years.includes(year));
+  return `${label}${partial.length?` · ${partial.join('·')} 부분 포함`:''}`;
+}
+function n3aYearSpan(years){
+  const sorted=(years||[]).map(Number).sort((a,b)=>a-b);
+  return sorted.length?`${sorted[0]}~${sorted[sorted.length-1]}`:'자료 없음';
+}
+function n3aFilteredHits(hits,yearSet){return (hits||[]).filter
+
+--- 3 @ 22164376 ---
+e.years||[]).map(Number));
+  checked?set.add(Number(year)):set.delete(Number(year));
+  navi3AnalysisState.years=(data.meta.years||[]).map(Number).filter(item=>set.has(item));
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();renderNavi3Frequency();
+}
+function n3aPresetYears(mode,skipRender){
+  const data=n3aData();if(!data)return;n3aEnsureFilterState(data);
+  const all=(data.meta.years||[]).map(Number).sort((a,b)=>a-b);
+  const partial=new Set((data.meta.partialYears||[]).map(Number));
+  const complete=((data.meta.completeYears||[]).length?(data.meta.completeYears||[]).map(Number):all.filter(year=>!partial.has(year))).sort((a,b)=>a-b);
+  if(mode==='recent5')navi3AnalysisState.years=complete.slice(-5);
+  else if(mode==='excludeLatest'){
+    const latest=Math.max(...all);
+    navi3AnalysisState.years=all.filter(year=>year!==latest);
+  }else navi3AnalysisState.years=all;
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();if(!skipRender)renderNavi3Frequency();
+}
+function n3aSetMinCount(value,skipRender){
+  const n=Number(value);navi3AnalysisState.minCount=[1,2,3,4].includes(n)?n:2;
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();if(!skipRender)renderNavi3Frequency();
+}
+function n3aQuickRecentFive(){
+  const data=n3aData();if(!data)return;n3aEnsureFilterState(data);
+  const all=(data.meta.years||[]).map(Number).sort((a,b)=>a-b);
+  const partial=new Set((data.meta.partialYears||[]).map(Number));
+  const complete=((data.meta.completeYears||[]).length?(data.meta.completeYears||[]).map(Number):all.filter(year=>!partial.has(year))).sort((a,b)=>a-b);
+  navi3AnalysisState.years=complete.slice(-5);
+  navi3AnalysisState.minCount=2;
+  navi3AnalysisState.view='repeats';
+  navi3AnalysisState.sort='count';
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;
+  n3aSaveFilterState();renderNavi3Frequency();
+}
+
+function n3aActivateGrade(subjectId){
+  if(!NAVI_ANALYSIS_GRADES.includes(subjectId))subjectId='navi3';
+  if(naviAnalysisSubjectId!==subjectId)navi3AnalysisDetail=null;
+  naviAnalysisSubjectId=subjectId;
+  if(!naviAnalysisStates[subjectId])naviAnalysisStates[subjectId]={view:'repeats',subject:'all',range:'all',subjects:null,years:null,minCount:2,sort:'score',query:'',limit:NAVI3_ANALYSIS_LIMIT,_filterLoaded:false};
+  navi3AnalysisState=naviAnalysisStates[subjectId];
+}
+function n3aData(subjectId){
+  const gradeId=subjectId||naviAnalysisSubjectId;
+  return window.MD_NAVI_FREQUENCY&&window.MD_NAVI_FREQUENCY[gradeId]||null;
+}
+const n3aOriginIndexes={};
+function n3aOriginKey(year,session,subject,number){return `${year}|${session}|${subject}|${number}`}
+function n3aQuestionOrigin(q){
+  if(!q||Number(q._year)<2026)return null;
+  const gradeId=baseFromShort(q._short||'');
+  if(!NAVI_ANALYSIS_GRADES.includes(gradeId))return null;
+  const data=n3aData(gradeId);
+  if(!data||!Array.isArray(data.classifications))return null;
+  if(!n3aOriginIndexes[gradeId]){
+    n3aOriginIndexes[gradeId]=new Map(data.classifications.map(entry=>[
+      n3aOriginKey(entry.year,entry.session,entry.subject,entry.number),entry
+    ]));
+  }
+  return n3aOriginIndexes[gradeId].get(n3aOriginKey(q._year,q._session||q['회차'],q['과목'],q['번호']))||null;
+}
+function n3aOriginTagHtml(q){
+  const origin=n3aQuestionOrigin(q);if(!origin)return '';
+  const styles={
+    new:{label:'신출',bg:'#F3E8FF',color:'#7E22CE'},
+    past:{label:'기출',bg:'#DBEAFE',color:'#1D4ED8'},
+    frequent:{label:'빈출',bg:'#FEE2E2',color:'#B91C1C'}
+  };
+  const style=styles[origin.status]||styles.new;
+  const history=origin.previousCount
+    ? `2020~2025년 동일 문항 ${origin.previousCount}회 · ${origin.previousYears.join('·')}년`
+    : '2020~2025년 동일 문항 없음';
+  const sameYear=origin.sameYearEarlierCount?` · ${origin.year}년 앞 회차 ${origin.sameYearEarlierCount}회`:'';
+  const count=origin.status==='frequent'?` · 과거 ${origin.previousCount}회`:origin.status==='past'?' · 과거 1회':'';
+  return `<span class="tag" style="background:${style.bg};color:${style.color};margin:0" title="${escapeHtml(history+sameYear)}">${style.label}${count}</span>`;
+}
+async function ensureNavi3FrequencyData(subjectId){
+  const gradeId=subjectId||naviAnalysisSubjectId;
+  const existing=n3aData(gradeId);if(existing)return existing;
+  const loaded=await loadOptionalScript(`past-analysis-${gradeId}.js`);
+  const data=n3aData(gradeId);
+  if(!loaded||!data)throw new Error(`${gradeId.replace('navi','')}급 항해사 분석 데이터를 불러오지 못했습니다.`);
+  return data;
+}
+function n3aRangeYears(data,range){
+  const all=(data.meta.years||[]).map(Number);
+  n3aEnsureFilterState(data);
+  if(Array.isArray(navi3AnalysisState.years))return new Set(navi3AnalysisState.years.map(Number).filter(year=>all.includes(year)));
+  if(range==='complete')return new Set((data.meta.completeYears||[]).map(Number));
+  if(range==='recent')return new Set(all.filter(year=>year>=2023));
+  return new Set(all);
+}
+function n3aRangeLabel(data,range){
+  const years=[...n3aRangeYears(data,range)].sort((a,b)=>a-b);
+  if(!years.length)return '선택 연도 없음';
+  const contiguous=years.every((year,index)=>index===0||year===years[index-1]+1);
+  const label=contiguous&&years.length>1?`${years[0]}~${years[years.length-1]}년`:`${years.join('·')}년`;
+  const partial=(data.meta.partialYears||[]).map(Number).filter(year=>years.includes(year));
+  return `${label}${partial.length?` · ${partial.join('·')} 부분 포함`:''}`;
+}
+function n3aYearSpan(years){
+  const sorted=(years||[]).map(Number).sort((a,b)=>a-b);
+  return sorted.length?`${sorted[0]}~${sorted[sorted.length-1]}`:'자료 없음';
+}
+function n3aFilteredHits(hits,yearSet){return (hits||[]).filter(hit=>yearSet.has(Number(hit.year)))}
+function n3aSessionKey(hit){return `${hit.year}-${hit.session}`}
+function n3aUniqueYears(hits){return [...new Set(hits.map(hit=>Number(hit.year)))].sort((a,b)=>a-b)}
+function n3aTier(score){
+  if(score>=80)return {label:'최우선',cls:'n3a-score-top'};
+  if(score>=65)return {label:'중요',cls:'n3a-score-high'};
+  if(score>=50)return {label:'주목',cls:'n3a-score-watch'};
+  return {label:'보통',cls:'n3a-score-normal'};
+}
+function n3aRecencyScore(latest,maxYear){return Math.max(4,25-Math.max(0,maxYear-latest)*4)}
+function n3aRepeatScore(hits,yearSet){
+  const years=n3aUniqueYears(hits),maxYear=Math.max(...yearSet);
+  return Math.min(100,Math.round(Math.min(60,hits.length/7*60)+n3aRecencyScore(years[years.length-1],maxYear)+Math.min(15,years.length/6*15)));
+}
+function n3aTopicScore(hits,yearSet,totalSessions){
+  const years=n3aUniqueYears(hits),latest=years[years.length-1];
+  const session
+
+--- 4 @ 22164413 ---
+set.add(Number(year)):set.delete(Number(year));
+  navi3AnalysisState.years=(data.meta.years||[]).map(Number).filter(item=>set.has(item));
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();renderNavi3Frequency();
+}
+function n3aPresetYears(mode,skipRender){
+  const data=n3aData();if(!data)return;n3aEnsureFilterState(data);
+  const all=(data.meta.years||[]).map(Number).sort((a,b)=>a-b);
+  const partial=new Set((data.meta.partialYears||[]).map(Number));
+  const complete=((data.meta.completeYears||[]).length?(data.meta.completeYears||[]).map(Number):all.filter(year=>!partial.has(year))).sort((a,b)=>a-b);
+  if(mode==='recent5')navi3AnalysisState.years=complete.slice(-5);
+  else if(mode==='excludeLatest'){
+    const latest=Math.max(...all);
+    navi3AnalysisState.years=all.filter(year=>year!==latest);
+  }else navi3AnalysisState.years=all;
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();if(!skipRender)renderNavi3Frequency();
+}
+function n3aSetMinCount(value,skipRender){
+  const n=Number(value);navi3AnalysisState.minCount=[1,2,3,4].includes(n)?n:2;
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();if(!skipRender)renderNavi3Frequency();
+}
+function n3aQuickRecentFive(){
+  const data=n3aData();if(!data)return;n3aEnsureFilterState(data);
+  const all=(data.meta.years||[]).map(Number).sort((a,b)=>a-b);
+  const partial=new Set((data.meta.partialYears||[]).map(Number));
+  const complete=((data.meta.completeYears||[]).length?(data.meta.completeYears||[]).map(Number):all.filter(year=>!partial.has(year))).sort((a,b)=>a-b);
+  navi3AnalysisState.years=complete.slice(-5);
+  navi3AnalysisState.minCount=2;
+  navi3AnalysisState.view='repeats';
+  navi3AnalysisState.sort='count';
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;
+  n3aSaveFilterState();renderNavi3Frequency();
+}
+
+function n3aActivateGrade(subjectId){
+  if(!NAVI_ANALYSIS_GRADES.includes(subjectId))subjectId='navi3';
+  if(naviAnalysisSubjectId!==subjectId)navi3AnalysisDetail=null;
+  naviAnalysisSubjectId=subjectId;
+  if(!naviAnalysisStates[subjectId])naviAnalysisStates[subjectId]={view:'repeats',subject:'all',range:'all',subjects:null,years:null,minCount:2,sort:'score',query:'',limit:NAVI3_ANALYSIS_LIMIT,_filterLoaded:false};
+  navi3AnalysisState=naviAnalysisStates[subjectId];
+}
+function n3aData(subjectId){
+  const gradeId=subjectId||naviAnalysisSubjectId;
+  return window.MD_NAVI_FREQUENCY&&window.MD_NAVI_FREQUENCY[gradeId]||null;
+}
+const n3aOriginIndexes={};
+function n3aOriginKey(year,session,subject,number){return `${year}|${session}|${subject}|${number}`}
+function n3aQuestionOrigin(q){
+  if(!q||Number(q._year)<2026)return null;
+  const gradeId=baseFromShort(q._short||'');
+  if(!NAVI_ANALYSIS_GRADES.includes(gradeId))return null;
+  const data=n3aData(gradeId);
+  if(!data||!Array.isArray(data.classifications))return null;
+  if(!n3aOriginIndexes[gradeId]){
+    n3aOriginIndexes[gradeId]=new Map(data.classifications.map(entry=>[
+      n3aOriginKey(entry.year,entry.session,entry.subject,entry.number),entry
+    ]));
+  }
+  return n3aOriginIndexes[gradeId].get(n3aOriginKey(q._year,q._session||q['회차'],q['과목'],q['번호']))||null;
+}
+function n3aOriginTagHtml(q){
+  const origin=n3aQuestionOrigin(q);if(!origin)return '';
+  const styles={
+    new:{label:'신출',bg:'#F3E8FF',color:'#7E22CE'},
+    past:{label:'기출',bg:'#DBEAFE',color:'#1D4ED8'},
+    frequent:{label:'빈출',bg:'#FEE2E2',color:'#B91C1C'}
+  };
+  const style=styles[origin.status]||styles.new;
+  const history=origin.previousCount
+    ? `2020~2025년 동일 문항 ${origin.previousCount}회 · ${origin.previousYears.join('·')}년`
+    : '2020~2025년 동일 문항 없음';
+  const sameYear=origin.sameYearEarlierCount?` · ${origin.year}년 앞 회차 ${origin.sameYearEarlierCount}회`:'';
+  const count=origin.status==='frequent'?` · 과거 ${origin.previousCount}회`:origin.status==='past'?' · 과거 1회':'';
+  return `<span class="tag" style="background:${style.bg};color:${style.color};margin:0" title="${escapeHtml(history+sameYear)}">${style.label}${count}</span>`;
+}
+async function ensureNavi3FrequencyData(subjectId){
+  const gradeId=subjectId||naviAnalysisSubjectId;
+  const existing=n3aData(gradeId);if(existing)return existing;
+  const loaded=await loadOptionalScript(`past-analysis-${gradeId}.js`);
+  const data=n3aData(gradeId);
+  if(!loaded||!data)throw new Error(`${gradeId.replace('navi','')}급 항해사 분석 데이터를 불러오지 못했습니다.`);
+  return data;
+}
+function n3aRangeYears(data,range){
+  const all=(data.meta.years||[]).map(Number);
+  n3aEnsureFilterState(data);
+  if(Array.isArray(navi3AnalysisState.years))return new Set(navi3AnalysisState.years.map(Number).filter(year=>all.includes(year)));
+  if(range==='complete')return new Set((data.meta.completeYears||[]).map(Number));
+  if(range==='recent')return new Set(all.filter(year=>year>=2023));
+  return new Set(all);
+}
+function n3aRangeLabel(data,range){
+  const years=[...n3aRangeYears(data,range)].sort((a,b)=>a-b);
+  if(!years.length)return '선택 연도 없음';
+  const contiguous=years.every((year,index)=>index===0||year===years[index-1]+1);
+  const label=contiguous&&years.length>1?`${years[0]}~${years[years.length-1]}년`:`${years.join('·')}년`;
+  const partial=(data.meta.partialYears||[]).map(Number).filter(year=>years.includes(year));
+  return `${label}${partial.length?` · ${partial.join('·')} 부분 포함`:''}`;
+}
+function n3aYearSpan(years){
+  const sorted=(years||[]).map(Number).sort((a,b)=>a-b);
+  return sorted.length?`${sorted[0]}~${sorted[sorted.length-1]}`:'자료 없음';
+}
+function n3aFilteredHits(hits,yearSet){return (hits||[]).filter(hit=>yearSet.has(Number(hit.year)))}
+function n3aSessionKey(hit){return `${hit.year}-${hit.session}`}
+function n3aUniqueYears(hits){return [...new Set(hits.map(hit=>Number(hit.year)))].sort((a,b)=>a-b)}
+function n3aTier(score){
+  if(score>=80)return {label:'최우선',cls:'n3a-score-top'};
+  if(score>=65)return {label:'중요',cls:'n3a-score-high'};
+  if(score>=50)return {label:'주목',cls:'n3a-score-watch'};
+  return {label:'보통',cls:'n3a-score-normal'};
+}
+function n3aRecencyScore(latest,maxYear){return Math.max(4,25-Math.max(0,maxYear-latest)*4)}
+function n3aRepeatScore(hits,yearSet){
+  const years=n3aUniqueYears(hits),maxYear=Math.max(...yearSet);
+  return Math.min(100,Math.round(Math.min(60,hits.length/7*60)+n3aRecencyScore(years[years.length-1],maxYear)+Math.min(15,years.length/6*15)));
+}
+function n3aTopicScore(hits,yearSet,totalSessions){
+  const years=n3aUniqueYears(hits),latest=years[years.length-1];
+  const sessions=new Set(hits.map(n3aSessionKey)).si
+
+--- 5 @ 22167610 ---
+){
+  const origin=n3aQuestionOrigin(q);if(!origin)return '';
+  const styles={
+    new:{label:'신출',bg:'#F3E8FF',color:'#7E22CE'},
+    past:{label:'기출',bg:'#DBEAFE',color:'#1D4ED8'},
+    frequent:{label:'빈출',bg:'#FEE2E2',color:'#B91C1C'}
+  };
+  const style=styles[origin.status]||styles.new;
+  const history=origin.previousCount
+    ? `2020~2025년 동일 문항 ${origin.previousCount}회 · ${origin.previousYears.join('·')}년`
+    : '2020~2025년 동일 문항 없음';
+  const sameYear=origin.sameYearEarlierCount?` · ${origin.year}년 앞 회차 ${origin.sameYearEarlierCount}회`:'';
+  const count=origin.status==='frequent'?` · 과거 ${origin.previousCount}회`:origin.status==='past'?' · 과거 1회':'';
+  return `<span class="tag" style="background:${style.bg};color:${style.color};margin:0" title="${escapeHtml(history+sameYear)}">${style.label}${count}</span>`;
+}
+async function ensureNavi3FrequencyData(subjectId){
+  const gradeId=subjectId||naviAnalysisSubjectId;
+  const existing=n3aData(gradeId);if(existing)return existing;
+  const loaded=await loadOptionalScript(`past-analysis-${gradeId}.js`);
+  const data=n3aData(gradeId);
+  if(!loaded||!data)throw new Error(`${gradeId.replace('navi','')}급 항해사 분석 데이터를 불러오지 못했습니다.`);
+  return data;
+}
+function n3aRangeYears(data,range){
+  const all=(data.meta.years||[]).map(Number);
+  n3aEnsureFilterState(data);
+  if(Array.isArray(navi3AnalysisState.years))return new Set(navi3AnalysisState.years.map(Number).filter(year=>all.includes(year)));
+  if(range==='complete')return new Set((data.meta.completeYears||[]).map(Number));
+  if(range==='recent')return new Set(all.filter(year=>year>=2023));
+  return new Set(all);
+}
+function n3aRangeLabel(data,range){
+  const years=[...n3aRangeYears(data,range)].sort((a,b)=>a-b);
+  if(!years.length)return '선택 연도 없음';
+  const contiguous=years.every((year,index)=>index===0||year===years[index-1]+1);
+  const label=contiguous&&years.length>1?`${years[0]}~${years[years.length-1]}년`:`${years.join('·')}년`;
+  const partial=(data.meta.partialYears||[]).map(Number).filter(year=>years.includes(year));
+  return `${label}${partial.length?` · ${partial.join('·')} 부분 포함`:''}`;
+}
+function n3aYearSpan(years){
+  const sorted=(years||[]).map(Number).sort((a,b)=>a-b);
+  return sorted.length?`${sorted[0]}~${sorted[sorted.length-1]}`:'자료 없음';
+}
+function n3aFilteredHits(hits,yearSet){return (hits||[]).filter(hit=>yearSet.has(Number(hit.year)))}
+function n3aSessionKey(hit){return `${hit.year}-${hit.session}`}
+function n3aUniqueYears(hits){return [...new Set(hits.map(hit=>Number(hit.year)))].sort((a,b)=>a-b)}
+function n3aTier(score){
+  if(score>=80)return {label:'최우선',cls:'n3a-score-top'};
+  if(score>=65)return {label:'중요',cls:'n3a-score-high'};
+  if(score>=50)return {label:'주목',cls:'n3a-score-watch'};
+  return {label:'보통',cls:'n3a-score-normal'};
+}
+function n3aRecencyScore(latest,maxYear){return Math.max(4,25-Math.max(0,maxYear-latest)*4)}
+function n3aRepeatScore(hits,yearSet){
+  const years=n3aUniqueYears(hits),maxYear=Math.max(...yearSet);
+  return Math.min(100,Math.round(Math.min(60,hits.length/7*60)+n3aRecencyScore(years[years.length-1],maxYear)+Math.min(15,years.length/6*15)));
+}
+function n3aTopicScore(hits,yearSet,totalSessions){
+  const years=n3aUniqueYears(hits),latest=years[years.length-1];
+  const sessions=new Set(hits.map(n3aSessionKey)).size;
+  const coverage=totalSessions?Math.min(1,sessions/totalSessions):0;
+  const density=totalSessions?Math.min(1,hits.length/(totalSessions*4)):0;
+  return Math.min(100,Math.round(coverage*55+density*20+n3aRecencyScore(latest,Math.max(...yearSet))));
+}
+function n3aAllSessionKeys(data,yearSet){
+  const keys=new Set();
+  (data.groups||[]).forEach(group=>n3aFilteredHits(group.hits,yearSet).forEach(hit=>keys.add(n3aSessionKey(hit))));
+  return keys;
+}
+function n3aRangeStats(data,yearSet){
+  let questions=0,repeated=0;
+  const minCount=Number(navi3AnalysisState.minCount)||2;
+  (data.groups||[]).forEach(group=>{
+    if(!n3aSubjectSelected(group.subject))return;
+    const count=n3aFilteredHits(group.hits,yearSet).length;
+    questions+=count;
+    if(count>=minCount)repeated+=1;
+  });
+  return {questions,repeated,sessions:n3aAllSessionKeys(data,yearSet).size};
+}
+function n3aBuildEntries(data){
+  const state=navi3AnalysisState;
+  const yearSet=n3aRangeYears(data,state.range);
+  const query=String(state.query||'').trim().toLowerCase();
+  const totalSessions=n3aAllSessionKeys(data,yearSet).size;
+  let entries=[];
+  if(state.view==='topics'){
+    entries=(data.topics||[]).map(topic=>{
+      const hits=n3aFilteredHits(topic.hits,yearSet);
+      const years=n3aUniqueYears(hits);
+      const sessions=new Set(hits.map(n3aSessionKey));
+      return {...topic,hits,years,latest:years[years.length-1]||0,sessionCount:sessions.size,occurrences:hits.length,distinctQuestions:new Set(hits.map(hit=>hit.groupId)).size,score:hits.length?n3aTopicScore(hits,yearSet,totalSessions):0};
+    }).filter(entry=>entry.hits.length&&
+      n3aSubjectSelected(entry.subject)&&
+      (!query||`${entry.label} ${entry.subject}`.toLowerCase().includes(query)));
+  }else{
+    entries=(data.groups||[]).map(group=>{
+      const hits=n3aFilteredHits(group.hits,yearSet);
+      const years=n3aUniqueYears(hits);
+      return {...group,hits,years,count:hits.length,latest:years[years.length-1]||0,score:hits.length?n3aRepeatScore(hits,yearSet):0};
+    }).filter(entry=>entry.count>=(Number(state.minCount)||2)&&
+      n3aSubjectSelected(entry.subject)&&
+      (!query||`${entry.question} ${entry.subject}`.toLowerCase().includes(query)));
+  }
+  entries.sort((a,b)=>{
+    if(state.sort==='count')return (b.occurrences||b.count)-(a.occurrences||a.count)||b.score-a.score;
+    if(state.sort==='recent')return b.latest-a.latest||b.score-a.score;
+    return b.score-a.score||(b.occurrences||b.count)-(a.occurrences||a.count);
+  });
+  return entries;
+}
+function n3aSetState(key,value){
+  navi3AnalysisState[key]=value;
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;
+  renderNavi3Frequency();
+}
+function n3aApplySearch(){
+  const input=document.getElementById('n3a-search');
+  navi3AnalysisState.query=input?input.value.trim():'';
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;
+  renderNavi3Frequency();
+}
+function n3aMore(){navi3AnalysisState.limit+=NAVI3_ANALYSIS_LIMIT;renderNavi3Frequency()}
+function n3aScoreHtml(score){const tier=n3aTier(score);return `<span class="n3a-score ${tier.cls}">${tier.label} · ${score}</span>`}
+
+// v4.98: 빈출 통계를 실제 문제 풀이 세션으로 연결합니다.
+let navi3PracticeReturn=null;
+let navi3PracticeLabel
+
+--- 6 @ 22460239 ---
+}
+    return base;
+  }
+  function ppSavePlan(plan){
+    plan.revision=Date.now();
+    safeStorageSet(PLAN_KEY,JSON.stringify(plan),'2·3급 합격 플랜');
+  }
+  function ppLoadProgress(){
+    try{const raw=localStorage.getItem(PROGRESS_KEY);return raw?JSON.parse(raw)||{}:{}}catch(e){return {}}
+  }
+  function ppSaveProgress(progress){safeStorageSet(PROGRESS_KEY,JSON.stringify(progress),'합격 플랜 진도')}
+  function ppLoadDaily(){
+    try{const raw=localStorage.getItem(DAILY_KEY);return raw?JSON.parse(raw)||{}:{}}catch(e){return {}}
+  }
+  function ppSaveDaily(daily){safeStorageSet(DAILY_KEY,JSON.stringify(daily),'합격 플랜 오늘 숙제')}
+  function ppSelectedSubjects(plan,gradeId,data){
+    const all=(data&&data.subjects||[]).map(String);
+    const saved=plan.grades[gradeId]&&plan.grades[gradeId].subjects;
+    if(!Array.isArray(saved))return all;
+    return all.filter(s=>saved.includes(s));
+  }
+  function ppTrainingYears(data){
+    const metaYears=(data.meta&&data.meta.years||[]).map(Number);
+    const hitYears=[];
+    (data.groups||[]).forEach(group=>(group.hits||[]).forEach(hit=>{const y=Number(hit.year);if(Number.isFinite(y))hitYears.push(y)}));
+    const all=[...new Set([...metaYears,...hitYears])].sort((a,b)=>a-b);
+    // 2026 is the current exam year. Include it even when the source marks it as a partial year.
+    if(all.includes(2026))return all.filter(y=>y<=2026).slice(-5);
+    const partial=new Set((data.meta&&data.meta.partialYears||[]).map(Number));
+    const complete=((data.meta&&data.meta.completeYears||[]).length?(data.meta.completeYears||[]).map(Number):all.filter(y=>!partial.has(y))).sort((a,b)=>a-b);
+    return complete.slice(-5);
+  }
+  function ppItemKey(gradeId,groupId){return `${gradeId}|${groupId}`}
+  function ppHas2026(item){return !!(item&&Array.isArray(item.hits)&&item.hits.some(h=>Number(h.year)===2026))}
+  async function ppEnsureFrequency(){
+    for(const gradeId of PLAN_GRADES){
+      try{await ensureNavi3FrequencyData(gradeId)}catch(e){console.warn('[v5.07] 빈출 데이터 로드 실패',gradeId,e)}
+    }
+  }
+  async function ppBuildPools(plan){
+    await ppEnsureFrequency();
+    const pools={};
+    PLAN_GRADES.forEach(gradeId=>{
+      const data=n3aData(gradeId);if(!data){pools[gradeId]=[];return}
+      const selected=new Set(ppSelectedSubjects(plan,gradeId,data));
+      const years=ppTrainingYears(data),yearSet=new Set(years);
+      const maxYear=years.length?Math.max(...years):0;
+      const items=[];
+      (data.groups||[]).forEach(group=>{
+        if(!selected.has(group.subject))return;
+        const hits=(group.hits||[]).filter(hit=>yearSet.has(Number(hit.year)));
+        if(!hits.length)return;
+        const sortedHits=[...hits].sort((a,b)=>b.year-a.year||b.session-a.session||b.number-a.number);
+        items.push({
+          key:ppItemKey(gradeId,group.id),gradeId,groupId:group.id,subject:group.subject,
+          question:group.question,normalized:group.normalized,count:hits.length,latest:sortedHits[0].year,
+          hits:sortedHits,rep:sortedHits[0],years:[...new Set(hits.map(h=>Number(h.year)))].sort((a,b)=>a-b),maxYear
+        });
+      });
+      items.sort((a,b)=>b.count-a.count||b.latest-a.latest||String(a.question).localeCompare(String(b.question),'ko'));
+      pools[gradeId]=items;
+    });
+    planPools=pools;
+    return pools;
+  }
+  function ppProgressFor(progress,key){
+    if(!progress[key])progress[key]={firstPassDate:null,mastered:false,status:'new',dueDate:null,lastDate:null,lastSureDate:null,lastOutcome:null,attempts:0,correct:0,wrong:0,unsure:0,masteryReviews:0,recoveryStartDate:null,sameDayFirstCorrectDate:null,sameDayConfirmedDate:null};
+    const r=progress[key];
+    // Migrate old records without discarding prior study history.
+    if(!Object.prototype.hasOwnProperty.call(r,'sameDayFirstCorrectDate'))r.sameDayFirstCorrectDate=(!r.mastered&&r.lastSureDate)?r.lastSureDate:null;
+    if(!Object.prototype.hasOwnProperty.call(r,'sameDayConfirmedDate'))r.sameDayConfirmedDate=r.mastered?(r.lastSureDate||r.firstPassDate||null):null;
+    return r;
+  }
+  function ppExamDay(plan,gradeId){return plan.grades[gradeId]&&plan.grades[gradeId].examDate||''}
+  function ppPhaseForGrade(plan,gradeId,pool,progress,today){
+    const exam=ppExamDay(plan,gradeId),dday=ppDiffDays(today,exam);
+    const finalDays=Number(plan.finalDays)||4;
+    const freqRemaining=pool.filter(item=>item.count>=2&&!ppProgressFor(progress,item.key).firstPassDate);
+    const current2026Remaining=pool.filter(item=>ppHas2026(item)&&!ppProgressFor(progress,item.key).firstPassDate);
+    const stage1Remaining=[...current2026Remaining,...freqRemaining.filter(item=>!ppHas2026(item))];
+    const allRemaining=pool.filter(item=>!ppProgressFor(progress,item.key).firstPassDate);
+    const final=dday!==null&&dday>=0&&dday<=finalDays;
+    if(final)return {phase:'final',label:'시험 직전 · 2026 전체 우선',dday,freqRemaining,current2026Remaining,allRemaining,candidates:stage1Remaining,learningDays:Math.max(1,dday)};
+    if(stage1Remaining.length){
+      const learningDays=Math.max(1,(dday===null?14:dday)-finalDays);
+      const stageDays=Math.max(1,Math.ceil(learningDays*0.45));
+      return {phase:'stage1',label:'1단계 · 2026 전체 + 최근 5개년 빈출',dday,freqRemaining,current2026Remaining,allRemaining,candidates:stage1Remaining,learningDays:stageDays};
+    }
+    const learningDays=Math.max(1,(dday===null?10:dday)-finalDays);
+    return {phase:'stage2',label:'2단계 · 최근 5개년 전체',dday,freqRemaining,allRemaining,candidates:allRemaining,learningDays};
+  }
+  function ppIsDue(rec,today){return !!(rec&&rec.dueDate&&rec.dueDate<=today&&(rec.firstPassDate||rec.status==='weak'))}
+  function ppUrgentSort(a,b,progress){
+    const ra=ppProgressFor(progress,a.key),rb=ppProgressFor(progress,b.key);
+    const wa=(ra.status==='weak'||ra.lastOutcome==='wrong'||ra.lastOutcome==='unsure')?1:0;
+    const wb=(rb.status==='weak'||rb.lastOutcome==='wrong'||rb.lastOutcome==='unsure')?1:0;
+    if(wb!==wa)return wb-wa;
+    if(a.count!==b.count)return b.count-a.count;
+    const da=ra.dueDate||'9999-12-31',db=rb.dueDate||'9999-12-31';
+    if(da!==db)return da.localeCompare(db);
+    return b.latest-a.latest;
+  }
+  function ppPlanSignature(plan,pools){
+    const compact={dailyCap:plan.dailyCap,finalDays:plan.finalDays,revision:plan.revision,assignmentPolicy:'2026-all-priority-v1',grades:{}};
+    PLAN_GRADES.forEach(g=>{compact.grades[g]={enabled:plan.grades[g].enabled,examDate:plan.grades[g].examDate,subjects:plan.grades[g].subjects,pool:(pools[g]||[]).length}});
+    return JSON.st
+
+--- 7 @ 22460276 ---
+avePlan(plan){
+    plan.revision=Date.now();
+    safeStorageSet(PLAN_KEY,JSON.stringify(plan),'2·3급 합격 플랜');
+  }
+  function ppLoadProgress(){
+    try{const raw=localStorage.getItem(PROGRESS_KEY);return raw?JSON.parse(raw)||{}:{}}catch(e){return {}}
+  }
+  function ppSaveProgress(progress){safeStorageSet(PROGRESS_KEY,JSON.stringify(progress),'합격 플랜 진도')}
+  function ppLoadDaily(){
+    try{const raw=localStorage.getItem(DAILY_KEY);return raw?JSON.parse(raw)||{}:{}}catch(e){return {}}
+  }
+  function ppSaveDaily(daily){safeStorageSet(DAILY_KEY,JSON.stringify(daily),'합격 플랜 오늘 숙제')}
+  function ppSelectedSubjects(plan,gradeId,data){
+    const all=(data&&data.subjects||[]).map(String);
+    const saved=plan.grades[gradeId]&&plan.grades[gradeId].subjects;
+    if(!Array.isArray(saved))return all;
+    return all.filter(s=>saved.includes(s));
+  }
+  function ppTrainingYears(data){
+    const metaYears=(data.meta&&data.meta.years||[]).map(Number);
+    const hitYears=[];
+    (data.groups||[]).forEach(group=>(group.hits||[]).forEach(hit=>{const y=Number(hit.year);if(Number.isFinite(y))hitYears.push(y)}));
+    const all=[...new Set([...metaYears,...hitYears])].sort((a,b)=>a-b);
+    // 2026 is the current exam year. Include it even when the source marks it as a partial year.
+    if(all.includes(2026))return all.filter(y=>y<=2026).slice(-5);
+    const partial=new Set((data.meta&&data.meta.partialYears||[]).map(Number));
+    const complete=((data.meta&&data.meta.completeYears||[]).length?(data.meta.completeYears||[]).map(Number):all.filter(y=>!partial.has(y))).sort((a,b)=>a-b);
+    return complete.slice(-5);
+  }
+  function ppItemKey(gradeId,groupId){return `${gradeId}|${groupId}`}
+  function ppHas2026(item){return !!(item&&Array.isArray(item.hits)&&item.hits.some(h=>Number(h.year)===2026))}
+  async function ppEnsureFrequency(){
+    for(const gradeId of PLAN_GRADES){
+      try{await ensureNavi3FrequencyData(gradeId)}catch(e){console.warn('[v5.07] 빈출 데이터 로드 실패',gradeId,e)}
+    }
+  }
+  async function ppBuildPools(plan){
+    await ppEnsureFrequency();
+    const pools={};
+    PLAN_GRADES.forEach(gradeId=>{
+      const data=n3aData(gradeId);if(!data){pools[gradeId]=[];return}
+      const selected=new Set(ppSelectedSubjects(plan,gradeId,data));
+      const years=ppTrainingYears(data),yearSet=new Set(years);
+      const maxYear=years.length?Math.max(...years):0;
+      const items=[];
+      (data.groups||[]).forEach(group=>{
+        if(!selected.has(group.subject))return;
+        const hits=(group.hits||[]).filter(hit=>yearSet.has(Number(hit.year)));
+        if(!hits.length)return;
+        const sortedHits=[...hits].sort((a,b)=>b.year-a.year||b.session-a.session||b.number-a.number);
+        items.push({
+          key:ppItemKey(gradeId,group.id),gradeId,groupId:group.id,subject:group.subject,
+          question:group.question,normalized:group.normalized,count:hits.length,latest:sortedHits[0].year,
+          hits:sortedHits,rep:sortedHits[0],years:[...new Set(hits.map(h=>Number(h.year)))].sort((a,b)=>a-b),maxYear
+        });
+      });
+      items.sort((a,b)=>b.count-a.count||b.latest-a.latest||String(a.question).localeCompare(String(b.question),'ko'));
+      pools[gradeId]=items;
+    });
+    planPools=pools;
+    return pools;
+  }
+  function ppProgressFor(progress,key){
+    if(!progress[key])progress[key]={firstPassDate:null,mastered:false,status:'new',dueDate:null,lastDate:null,lastSureDate:null,lastOutcome:null,attempts:0,correct:0,wrong:0,unsure:0,masteryReviews:0,recoveryStartDate:null,sameDayFirstCorrectDate:null,sameDayConfirmedDate:null};
+    const r=progress[key];
+    // Migrate old records without discarding prior study history.
+    if(!Object.prototype.hasOwnProperty.call(r,'sameDayFirstCorrectDate'))r.sameDayFirstCorrectDate=(!r.mastered&&r.lastSureDate)?r.lastSureDate:null;
+    if(!Object.prototype.hasOwnProperty.call(r,'sameDayConfirmedDate'))r.sameDayConfirmedDate=r.mastered?(r.lastSureDate||r.firstPassDate||null):null;
+    return r;
+  }
+  function ppExamDay(plan,gradeId){return plan.grades[gradeId]&&plan.grades[gradeId].examDate||''}
+  function ppPhaseForGrade(plan,gradeId,pool,progress,today){
+    const exam=ppExamDay(plan,gradeId),dday=ppDiffDays(today,exam);
+    const finalDays=Number(plan.finalDays)||4;
+    const freqRemaining=pool.filter(item=>item.count>=2&&!ppProgressFor(progress,item.key).firstPassDate);
+    const current2026Remaining=pool.filter(item=>ppHas2026(item)&&!ppProgressFor(progress,item.key).firstPassDate);
+    const stage1Remaining=[...current2026Remaining,...freqRemaining.filter(item=>!ppHas2026(item))];
+    const allRemaining=pool.filter(item=>!ppProgressFor(progress,item.key).firstPassDate);
+    const final=dday!==null&&dday>=0&&dday<=finalDays;
+    if(final)return {phase:'final',label:'시험 직전 · 2026 전체 우선',dday,freqRemaining,current2026Remaining,allRemaining,candidates:stage1Remaining,learningDays:Math.max(1,dday)};
+    if(stage1Remaining.length){
+      const learningDays=Math.max(1,(dday===null?14:dday)-finalDays);
+      const stageDays=Math.max(1,Math.ceil(learningDays*0.45));
+      return {phase:'stage1',label:'1단계 · 2026 전체 + 최근 5개년 빈출',dday,freqRemaining,current2026Remaining,allRemaining,candidates:stage1Remaining,learningDays:stageDays};
+    }
+    const learningDays=Math.max(1,(dday===null?10:dday)-finalDays);
+    return {phase:'stage2',label:'2단계 · 최근 5개년 전체',dday,freqRemaining,allRemaining,candidates:allRemaining,learningDays};
+  }
+  function ppIsDue(rec,today){return !!(rec&&rec.dueDate&&rec.dueDate<=today&&(rec.firstPassDate||rec.status==='weak'))}
+  function ppUrgentSort(a,b,progress){
+    const ra=ppProgressFor(progress,a.key),rb=ppProgressFor(progress,b.key);
+    const wa=(ra.status==='weak'||ra.lastOutcome==='wrong'||ra.lastOutcome==='unsure')?1:0;
+    const wb=(rb.status==='weak'||rb.lastOutcome==='wrong'||rb.lastOutcome==='unsure')?1:0;
+    if(wb!==wa)return wb-wa;
+    if(a.count!==b.count)return b.count-a.count;
+    const da=ra.dueDate||'9999-12-31',db=rb.dueDate||'9999-12-31';
+    if(da!==db)return da.localeCompare(db);
+    return b.latest-a.latest;
+  }
+  function ppPlanSignature(plan,pools){
+    const compact={dailyCap:plan.dailyCap,finalDays:plan.finalDays,revision:plan.revision,assignmentPolicy:'2026-all-priority-v1',grades:{}};
+    PLAN_GRADES.forEach(g=>{compact.grades[g]={enabled:plan.grades[g].enabled,examDate:plan.grades[g].examDate,subjects:plan.grades[g].subjects,pool:(pools[g]||[]).length}});
+    return JSON.stringify(compact);
+  }
+  function ppAl
+
+===== groups: =====
+
+count=0
