@@ -14,6 +14,7 @@ on:
       - 'tools/patch_predictive_mock_followup.py'
       - 'tools/test_predictive_mock.py'
       - 'tools/audit_2026_explanations.py'
+      - 'tools/match_2026_session3_explanations.py'
       - '.github/workflows/inject-keyboard-controls.yml'
   workflow_dispatch:
 
@@ -35,6 +36,7 @@ jobs:
           python tools/patch_predictive_mock_followup.py
           python tools/test_predictive_mock.py
           if [ -f tools/audit_2026_explanations.py ]; then python tools/audit_2026_explanations.py; fi
+          if [ -f tools/match_2026_session3_explanations.py ]; then python tools/match_2026_session3_explanations.py; fi
       - name: Commit index update
         run: |
           git config user.name 'github-actions[bot]'
@@ -45,5 +47,5 @@ jobs:
             echo 'No change needed.'
             exit 0
           fi
-          git commit -m 'Audit 2026 explanation coverage'
+          git commit -m 'Audit 2026 explanation reuse candidates'
           git push
