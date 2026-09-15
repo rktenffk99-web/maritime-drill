@@ -22,12 +22,10 @@ for m in re.finditer(r'<script([^>]*)>(.*?)</script>',src,re.S|re.I):
     sid=mid.group(1) if mid else '(no-id)'
     scripts.append((sid,decode_script(body)))
 
-# Parse all past-paper payloads for navi2/navi3.
-exams=[]
+exams=[]; exam_inventory=[]
 for sid,text in scripts:
     if 'md-bundle-past-' not in sid or '-explain-' in sid: continue
-    marker='const PAYLOAD = '
-    pos=text.find(marker)
+    marker='const PAYLOAD = ';pos=text.find(marker)
     if pos<0: continue
     frag=text[pos+len(marker):].lstrip()
     try: payload,_=json.JSONDecoder().raw_decode(frag)
@@ -35,8 +33,11 @@ for sid,text in scripts:
     meta=payload.get('meta',{})
     if meta.get('gradeShort') in ('navi2','navi3'):
         exams.append(payload)
+        if '2026' in sid or int(meta.get('year',0))==2026:
+            counts={}
+            for q in payload.get('questions',[]):counts[q.get('과목','?')]=counts.get(q.get('과목','?'),0)+1
+            exam_inventory.append({'script_id':sid,'meta':meta,'question_count':len(payload.get('questions',[])),'subjects':counts})
 
-# Parse explanation entries.
 explains={}
 entry_re=re.compile(r'"([^"\\]*(?:\\.[^"\\]*)*)"\s*:\s*\{\s*html\s*:\s*("(?:\\.|[^"\\])*")',re.S)
 for sid,text in scripts:
@@ -62,18 +63,14 @@ for meta,q,id_ in allqs:
     prev_exact.setdefault((meta.get('gradeShort'),q.get('과목'),norm(q.get('문제')),choice_sig(q),q.get('정답')),[]).append((meta,q,id_))
     prev_text.setdefault((meta.get('gradeShort'),q.get('과목'),norm(q.get('문제')),q.get('정답')),[]).append((meta,q,id_))
 
-report={'grades':{},'missing':[],'short_or_placeholder':[]}
+report={'grades':{},'missing':[],'short_or_placeholder':[],'exam_inventory':exam_inventory}
 for grade in ('navi2','navi3'):
     rows=[]
     for meta,q,id_ in allqs:
         if meta.get('gradeShort')==grade and int(meta.get('year',0))==2026:
-            html=explains.get(id_)
-            visible=re.sub('<[^>]+>','',html or '').strip()
-            status='present' if html and len(visible)>=80 else ('short' if html else 'missing')
-            exact=prev_exact.get((grade,q.get('과목'),norm(q.get('문제')),choice_sig(q),q.get('정답')),[])
-            same_text=prev_text.get((grade,q.get('과목'),norm(q.get('문제')),q.get('정답')),[])
-            reusable=[x for x in exact if x[2] in explains and len(explains[x[2]])>=80]
-            text_reusable=[x for x in same_text if x[2] in explains and len(explains[x[2]])>=80]
+            html=explains.get(id_);visible=re.sub('<[^>]+>','',html or '').strip();status='present' if html and len(visible)>=80 else ('short' if html else 'missing')
+            exact=prev_exact.get((grade,q.get('과목'),norm(q.get('문제')),choice_sig(q),q.get('정답')),[]);same_text=prev_text.get((grade,q.get('과목'),norm(q.get('문제')),q.get('정답')),[])
+            reusable=[x for x in exact if x[2] in explains and len(explains[x[2]])>=80];text_reusable=[x for x in same_text if x[2] in explains and len(explains[x[2]])>=80]
             row={'id':id_,'session':meta.get('session'),'subject':q.get('과목'),'number':q.get('번호'),'question':q.get('문제'),'answer':q.get('정답'),'status':status,'explanation_chars':len(html or ''),'exact_reusable_ids':[x[2] for x in reusable[-5:]],'same_text_reusable_ids':[x[2] for x in text_reusable[-5:]]}
             rows.append(row)
             if status=='missing':report['missing'].append(row)
@@ -85,20 +82,17 @@ for grade in ('navi2','navi3'):
     lengths=[r['explanation_chars'] for r in rows if r['explanation_chars']]
     report['grades'][grade]={'total':len(rows),'present':sum(r['status']=='present' for r in rows),'short':sum(r['status']=='short' for r in rows),'missing':sum(r['status']=='missing' for r in rows),'median_explanation_chars':int(statistics.median(lengths)) if lengths else 0,'by_subject':by_subject,'by_session':by_session,'rows':rows}
 
-# Inspect runtime explanation loader and bundle manifest usage.
 loader=[]
-for needle in ['async function ensurePastExplainForYears','function ensurePastExplainForYears','past-explain-${year}','md-bundle-past-explain','ensureEmbeddedBundle']:
+for needle in ['const PAST_EXPLAIN_YEARS','PAST_EXPLAIN_YEARS=new Set','async function ensurePastExplainForYears','function ensurePastExplainForYears','past-explain-${year}','md-bundle-past-explain','ensureEmbeddedBundle']:
     start=0
     while True:
         pos=src.find(needle,start)
         if pos<0:break
-        loader.append({'needle':needle,'pos':pos,'snippet':src[max(0,pos-2200):pos+5000]})
-        start=pos+1
+        loader.append({'needle':needle,'pos':pos,'snippet':src[max(0,pos-2200):pos+5000]});start=pos+1
 report['loader']=loader
-
 Path('debug/2026-explanation-audit.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
 summary={g:{k:v for k,v in report['grades'][g].items() if k!='rows'} for g in ('navi2','navi3')}
-summary['loader_hits']=[{'needle':x['needle'],'pos':x['pos']} for x in loader]
+summary['exam_inventory']=exam_inventory;summary['loader_hits']=[{'needle':x['needle'],'pos':x['pos']} for x in loader]
 Path('debug/2026-explanation-summary.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2),encoding='utf-8')
 Path('debug/2026-explanation-loader.txt').write_text('\n\n=====\n\n'.join(x['snippet'] for x in loader),encoding='utf-8')
 print(json.dumps(summary,ensure_ascii=False))
