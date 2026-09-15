@@ -2,14 +2,13 @@ name: Patch pass-plan app
 
 on:
   push:
-    branches: [ main, feature/2026-priority-navigation ]
+    branches: [ main ]
     paths:
       - 'keyboard-controls.js'
       - 'convenience-controls.js'
       - 'tools/patch_pass_plan.py'
       - 'tools/patch_convenience.py'
       - 'tools/patch_2026_navigation.py'
-      - 'tools/extract_passplan_debug.py'
       - '.github/workflows/inject-keyboard-controls.yml'
   workflow_dispatch:
 
@@ -26,16 +25,14 @@ jobs:
           python tools/patch_pass_plan.py
           python tools/patch_convenience.py
           python tools/patch_2026_navigation.py
-          if [ -f tools/extract_passplan_debug.py ]; then python tools/extract_passplan_debug.py; fi
       - name: Commit index update
         run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add index.html
-          if [ -d debug ]; then git add debug; fi
-          if git diff --cached --quiet; then
+          if git diff --quiet -- index.html; then
             echo 'No change needed.'
             exit 0
           fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
           git commit -m 'Prioritize 2026 questions and add previous navigation'
           git push
