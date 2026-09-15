@@ -2,7 +2,7 @@ name: Patch pass-plan app
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, analysis/count-priority-questions ]
     paths:
       - 'keyboard-controls.js'
       - 'convenience-controls.js'
@@ -10,6 +10,7 @@ on:
       - 'tools/patch_convenience.py'
       - 'tools/patch_2026_navigation.py'
       - 'tools/patch_same_day_confirmation.py'
+      - 'tools/inspect_frequency_context.py'
       - '.github/workflows/inject-keyboard-controls.yml'
   workflow_dispatch:
 
@@ -27,14 +28,16 @@ jobs:
           python tools/patch_convenience.py
           python tools/patch_2026_navigation.py
           python tools/patch_same_day_confirmation.py
+          if [ -f tools/inspect_frequency_context.py ]; then python tools/inspect_frequency_context.py; fi
       - name: Commit index update
         run: |
-          if git diff --quiet -- index.html; then
-            echo 'No change needed.'
-            exit 0
-          fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
-          git commit -m 'Require same-day confirmation before next-day mastery'
+          if [ -d debug ]; then git add debug; fi
+          if git diff --cached --quiet; then
+            echo 'No change needed.'
+            exit 0
+          fi
+          git commit -m 'Generate frequency diagnostic'
           git push
