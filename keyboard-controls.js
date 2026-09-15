@@ -1,6 +1,7 @@
 // Maritime Drill keyboard controls
 // 1-4 / A-D: choose an answer
 // Enter / Space / Right Arrow: next question
+// Legacy confidence prompt is auto-confirmed and removed.
 (function(){
   'use strict';
 
@@ -20,15 +21,48 @@
     return Object.prototype.hasOwnProperty.call(map,event.code)?map[event.code]:-1;
   }
 
+  function findButtonByText(root,text){
+    return Array.from(root.querySelectorAll('button')).find(btn=>btn.textContent.trim()===text) || null;
+  }
+
   function cleanLegacyConfidenceUi(){
     const root=document.getElementById('app');
     if(!root) return;
-    const prompt='지금 이 문제를 답을 안 보고도 다시 맞힐 수 있습니까?';
+
+    const promptText='지금 이 문제를 답을 안 보고도 다시 맞힐 수 있습니까?';
+    const sureButton=findButtonByText(root,'확실히 안다');
+    const unsureButton=findButtonByText(root,'애매 · 찍음');
+
+    // If a correct answer rendered the old confidence controls, automatically
+    // mark it as confident. setNavigatorPassPlanConfidence() itself refuses
+    // to act on a wrong answer, so this remains safe without reading private
+    // session variables from index.html.
+    if(sureButton && unsureButton && !sureButton.classList.contains('btn-green') && typeof window.setNavigatorPassPlanConfidence==='function'){
+      window.setNavigatorPassPlanConfidence('sure');
+      return;
+    }
+
+    // Remove the entire legacy prompt/control block after auto-confirmation.
     for(const el of root.querySelectorAll('div')){
-      if(el.children.length===0 && el.textContent.trim()===prompt){
-        const wrapper=el.parentElement;
-        if(wrapper) wrapper.remove();
-        break;
+      if(el.textContent.trim()===promptText){
+        let wrapper=el.parentElement;
+        if(wrapper && (wrapper.querySelector('button') || wrapper.textContent.includes('애매 · 찍음'))){
+          wrapper.remove();
+          return;
+        }
+      }
+    }
+
+    // Fallback for markup variations: find the two old buttons and remove
+    // their nearest shared container, even if the prompt element structure changed.
+    if(sureButton && unsureButton){
+      let node=sureButton.parentElement;
+      while(node && node!==root){
+        if(node.contains(unsureButton) && node.textContent.includes('지금 이 문제를 답을 안 보고도 다시 맞힐 수 있습니까?')){
+          node.remove();
+          return;
+        }
+        node=node.parentElement;
       }
     }
   }
