@@ -186,6 +186,22 @@
       if(Number.isInteger(idx)&&idx>=0&&idx<cur.length){cur.splice(idx,1);saveReports(cur);openReportListModal()}
     });
   }
+  function addSavedReportsBanner(){
+    const root=appRoot();if(!root)return;
+    const old=document.getElementById('md-report-inbox-banner');
+    if(inPassSession()){if(old)old.remove();return}
+    const count=loadReports().length;
+    if(!count){if(old)old.remove();return}
+    if(old){old.textContent=`저장된 문제 신고 · ${count}건`;return}
+    const banner=document.createElement('button');
+    banner.id='md-report-inbox-banner';banner.className='btn btn-outline';
+    banner.style.cssText='width:100%;margin:8px 0 12px 0;font-weight:900;border-color:#D97706;color:#92400E;background:#FFFBEB;position:relative;z-index:3';
+    banner.textContent=`저장된 문제 신고 · ${count}건`;
+    banner.onclick=openReportListModal;
+    const resume=document.getElementById('md-resume-banner');
+    if(resume&&resume.parentNode===root)resume.insertAdjacentElement('afterend',banner);
+    else{const firstCard=root.querySelector('.card');if(firstCard)root.insertBefore(banner,firstCard);else root.prepend(banner)}
+  }
   function openReportModal(){
     document.getElementById('md-report-modal')?.remove();
     const count=loadReports().length;
@@ -221,7 +237,7 @@
   let queued=false;
   function enhance(){
     if(queued)return;queued=true;
-    requestAnimationFrame(()=>{queued=false;cleanLegacyConfidenceUi();addResumeBanner();applyExplanationMode();addReportButton();syncWakeLock()});
+    requestAnimationFrame(()=>{queued=false;cleanLegacyConfidenceUi();addResumeBanner();addSavedReportsBanner();applyExplanationMode();addReportButton();syncWakeLock()});
   }
   new MutationObserver(enhance).observe(document.documentElement,{childList:true,subtree:true});
   document.addEventListener('visibilitychange',enhance);
