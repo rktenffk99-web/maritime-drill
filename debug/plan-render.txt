@@ -1,0 +1,205 @@
+iv class="flex" style="align-items:center;gap:14px"><div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#6D28D9,#8B5CF6);display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0">${SVG_ICONS.calendar||SVG_ICONS.target||''}</div>
+      <div style="flex:1"><div style="font-size:17px;font-weight:900;color:#5B21B6;margin-bottom:4px">2·3급 동시 합격 플랜</div><div style="font-size:13px;color:var(--textDim);line-height:1.6">시험일 역산 · 오늘의 숙제 자동 배정 · 오답/확신 복습 · 다른 날 재확인 후 숙달</div><div style="font-size:10px;color:#7C3AED;font-weight:800;margin-top:5px">부분합격 과목은 체크 해제해서 제외</div></div><div style="color:#7C3AED;font-size:22px;font-weight:800">${icon('chevronRight',22)}</div></div></button>`;
+    app.appendChild(wrap);
+  }
+  const ppOriginalPickPrepType=window.pickPrepType;
+  window.pickPrepType=function(subjectId){
+    ppOriginalPickPrepType(subjectId);
+    if(PLAN_GRADES.includes(subjectId))setTimeout(()=>ppInjectEntryCard(subjectId),0);
+  };
+
+  window.renderNavigatorPassPlan=async function(entrySubject){
+    planEntrySubject=PLAN_GRADES.includes(entrySubject)?entrySubject:planEntrySubject;
+    stopTTS();stopMockTimer();currentMode='pass-plan';
+    renderPastLoading('2·3급 합격 플랜을 계산하는 중입니다');
+    const plan=ppLoadPlan();
+    try{await ppBuildPools(plan)}catch(e){app.innerHTML=`<div class="card" style="margin-top:30px"><b>합격 플랜 데이터를 불러오지 못했습니다.</b><div style="margin-top:8px;font-size:12px">${escapeHtml(e.message||String(e))}</div></div>`;return}
+    const progress=ppLoadProgress(),today=ppDateKey(new Date());
+    const assignment=await ppGetDailyAssignment(plan,planPools,progress,false);
+    const unresolved=(assignment.keys||[]).filter(k=>!ppTodayCleared(ppProgressFor(progress,k),today));
+    const gradeCounts={navi2:{total:0,new:0,review:0,unresolved:0},navi3:{total:0,new:0,review:0,unresolved:0}};
+    (assignment.keys||[]).forEach(key=>{
+      const item=ppGetItemByKey(key);if(!item)return;
+      const r=ppProgressFor(progress,key),bucket=gradeCounts[item.gradeId];bucket.total++;
+      if(r.firstPassDate)bucket.review++;else bucket.new++;
+      if(!ppTodayCleared(r,today))bucket.unresolved++;
+    });
+    const gradeCards=PLAN_GRADES.map(g=>{
+      const data=n3aData(g),pool=planPools[g]||[],st=ppProgressStats(plan,g,pool,progress,today),cfg=plan.grades[g];
+      const exam=cfg.examDate,dday=ppDiffDays(today,exam);
+      const passPct=st.selected?Math.round(st.passed/st.selected*100):0,masterPct=st.selected?Math.round(st.mastered/st.selected*100):0;
+      return `<div class="card" style="padding:14px;border-left:4px solid ${g==='navi2'?'#2563EB':'#059669'}">
+        <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><div><div style="font-size:16px;font-weight:900">${GRADE_LABELS[g]}</div><div style="font-size:11px;color:var(--textDim);margin-top:3px">${exam?escapeHtml(exam):'시험일 미설정'} · ${ppDdayLabel(dday)}</div></div><span class="tag" style="margin:0;background:${st.phase.phase==='final'?'#FEE2E2':'#E0F2FE'};color:${st.phase.phase==='final'?'#B91C1C':'#075985'}">${escapeHtml(st.phase.label)}</span></div>
+        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px"><div style="background:#F8FAFC;padding:9px;border-radius:8px"><b>${st.freqPassed}/${st.freqTotal}</b><div style="font-size:10px;color:var(--textDim)">빈출 1차 통과</div></div><div style="background:#F8FAFC;padding:9px;border-radius:8px"><b>${st.passed}/${st.selected}</b><div style="font-size:10px;color:var(--textDim)">전체 1차 통과</div></div><div style="background:#F8FAFC;padding:9px;border-radius:8px"><b>${st.mastered}</b><div style="font-size:10px;color:var(--textDim)">숙달</div></div><div style="background:#F8FAFC;padding:9px;border-radius:8px"><b>${st.due}</b><div style="font-size:10px;color:var(--textDim)">복습 예정</div></div></div>
+        <div style="font-size:11px;color:var(--textDim);margin-top:9px">1차 통과 ${passPct}% · 숙달 ${masterPct}% · 오늘 ${gradeCounts[g].total}문제 배정</div>
+        ${st.phase.phase==='final'&&cfg.enabled&&cfg.examDate?`<button class="btn btn-outline" style="width:100%;margin-top:9px;border-color:${g==='navi2'?'#2563EB':'#059669'};color:${g==='navi2'?'#2563EB':'#059669'}" onclick="startNavigatorPassPlanMock('${g}')">2026 최신 회차 실전 모의</button>`:''}
+      </div>`;
+    }).join('');
+    app.innerHTML=`
+      <div style="padding-top:22px;margin-bottom:14px"><button class="text-nav" onclick="pickPrepType('${planEntrySubject}')">${icon('arrowLeft',14)} 학습유형으로</button></div>
+      <section class="card" style="background:linear-gradient(135deg,#4C1D95,#7C3AED);color:#fff;border:none;padding:22px;margin-bottom:14px">
+        <div style="font-size:11px;letter-spacing:2px;font-weight:900;color:#DDD6FE">ADAPTIVE PASS PLAN</div><h1 style="font-size:24px;margin:5px 0 5px">2·3급 항해사 동시 합격 플랜</h1><div style="font-size:12px;color:#EDE9FE;line-height:1.65">시험일을 기준으로 역산하고, 빈출 → 전체 → 시험 직전 복습 순으로 자동 배정합니다.<br>정답을 맞혀도 ‘확실’ 표시가 없으면 완료되지 않으며, 다른 날 다시 맞혀야 숙달됩니다.</div>
+      </section>
+      <section class="card" style="padding:16px;margin-bottom:14px">
+        <div style="font-size:16px;font-weight:900;margin-bottom:12px">시험 설정</div>
+        ${PLAN_GRADES.map(g=>{const data=n3aData(g),cfg=plan.grades[g];return `<div style="padding:12px 0;border-bottom:1px solid #E2E8F0"><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><label style="font-weight:900"><input id="pp-enable-${g}" type="checkbox" ${cfg.enabled?'checked':''}> ${GRADE_LABELS[g]}</label><label style="font-size:12px;font-weight:700">시험일 <input id="pp-date-${g}" type="date" value="${escapeHtml(cfg.examDate)}" style="padding:8px;border:1px solid #CBD5E1;border-radius:8px"></label></div><div style="font-size:11px;color:var(--textDim);margin:8px 0 6px">응시 과목 · 부분합격 과목은 체크 해제</div><div style="display:flex;gap:6px;flex-wrap:wrap">${ppSubjectChecks(g,data,plan)}</div></div>`}).join('')}
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px"><label style="font-size:12px;font-weight:700">하루 최대 <input id="pp-daily-cap" type="number" min="40" max="250" step="5" value="${plan.dailyCap}" style="width:76px;padding:8px;border:1px solid #CBD5E1;border-radius:8px"> 문제</label><label style="font-size:12px;font-weight:700">시험 직전 모드 <input id="pp-final-days" type="number" min="2" max="7" value="${plan.finalDays}" style="width:58px;padding:8px;border:1px solid #CBD5E1;border-radius:8px"> 일</label></div>
+        <button class="btn btn-accent" style="width:100%;margin-top:12px;background:#7C3AED;border-color:#7C3AED" onclick="saveNavigatorPassPlanSettings()">설정 저장 · 오늘 숙제 재계산</button>
+      </section>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px;margin-bottom:14px">${gradeCards}</div>
+      <section class="card" style="padding:17px;border-left:4px solid #7C3AED">
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap"><div><div style="font-size:18px;font-weight:900">오늘의 숙제</div><div style="font-size:12px;color:var(--textDim);margin-top:3px">${today} · ${assignment.keys.length}문제 배정 · 남은 ${unresolved.length}문제</div></div><span class="tag" style="margin:0;background:${unresolved.length?'#FEF3C7':'#D1FAE5'};color:${unresolved.length?'#92400E':'#065F46'}">${unresolved.length?'진행 중':'오늘 완료'}</span></div>
+        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px"><div style="background:#EFF6FF;padding:11px;border-radius:9px"><b>2급 ${gradeCounts.navi2.total}</b><div style="font-size:10px;color:#475569">신규 ${gradeCounts.navi2.new} · 복습 ${gradeCounts.navi2.review}</div></div><div style="background:#ECFDF5;padding:11px;border-radius:9px"><b>3급 ${gradeCounts.navi3.total}</b><div style="font-size:10px;color:#475569">신규 ${gradeCounts.navi3.new} · 복습 ${gradeCounts.navi3.review}</div></div></div>
+        ${assignment.dueOverflow?`<div style="margin-top:10px;padding:9px 11px;background:#FEF2F2;border-radius:8px;font-size:11px;color:#991B1B">복습 예정 문제가 하루 상한을 넘어 ${assignment.dueOverflow}문제가 다음 배정으로 이월됩니다.</div>`:''}
+        <div style="font-size:11px;color:var(--textDim);line-height:1.6;margin-top:10px">완료 조건: 정답 + ‘확실히 안다’. 오답 또는 ‘애매·찍음’은 오늘 미해결로 남습니다. 첫 통과 후 다른 날 다시 정답+확실이면 숙달됩니다.</div>
+        <button class="btn btn-accent" style="width:100%;margin-top:12px;background:#7C3AED;border-color:#7C3AED" ${unresolved.length?'':'disabled'} onclick="startNavigatorPassPlanToday()">${unresolved.length?`오늘 숙제 시작 · ${unresolved.length}문제`:'오늘 숙제 완료'}</button>
+        <div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-outline" style="flex:1" onclick="recalculateNavigatorPassPlanToday()">오늘 숙제 다시 계산</button><button class="btn btn-outline" style="flex:1" onclick="resetNavigatorPassPlanProgress()">진도 초기화</button></div>
+      </section>
+      <section class="card" style="padding:15px;margin-top:14px;background:#F8FAFC"><div style="font-size:13px;font-weight:900;margin-bottom:6px">숙달 규칙</div><div style="font-size:11px;color:var(--textDim);line-height:1.75">① 처음 정답+확실 → 당일 통과, 다음 날 다시 출제<br>② 다른 날 정답+확실 → 숙달<br>③ 숙달 문제도 3일 뒤 유지복습<br>④ 오답/애매 → 그날 미해결, 다시 풀어서 정답+확실해야 오늘 숙제에서 제거<br>⑤ 시험 직전 ${plan.finalDays}일은 저빈출 신규보다 빈출 미해결·복습을 우선</div></section>`;
+  };
+
+  window.saveNavigatorPassPlanSettings=async function(){
+    const plan=ppLoadPlan();
+    PLAN_GRADES.forEach(g=>{
+      const en=document.getElementById(`pp-enable-${g}`),date=document.getElementById(`pp-date-${g}`);
+      plan.grades[g].enabled=!!(en&&en.checked);plan.grades[g].examDate=date?date.value:'';
+      const boxes=[...document.querySelectorAll(`input[data-pp-subject="${g}"]`)];
+      plan.grades[g].subjects=boxes.filter(b=>b.checked).map(b=>b.value);
+    });
+    const cap=document.getElementById('pp-daily-cap'),finalDays=document.getElementById('pp-final-days');
+    plan.dailyCap=Math.max(40,Math.min(250,Number(cap&&cap.value)||120));
+    plan.finalDays=Math.max(2,Math.min(7,Number(finalDays&&finalDays.value)||4));
+    const today=ppDateKey(new Date());
+    const invalid=PLAN_GRADES.filter(g=>plan.grades[g].enabled&&(!plan.grades[g].examDate||ppDiffDays(today,plan.grades[g].examDate)<0));
+    if(invalid.length){showToast('활성화한 급수의 시험일을 오늘 이후 날짜로 설정하세요.');return}
+    if(PLAN_GRADES.some(g=>plan.grades[g].enabled&&(!plan.grades[g].subjects||!plan.grades[g].subjects.length))){showToast('활성화한 급수에서 최소 1개 과목을 선택하세요.');return}
+    ppSavePlan(plan);showToast('합격 플랜 설정을 저장했습니다.');renderNavigatorPassPlan(planEntrySubject);
+  };
+  window.recalculateNavigatorPassPlanToday=function(){
+    const daily=ppLoadDaily(),today=ppDateKey(new Date());delete daily[today];ppSaveDaily(daily);renderNavigatorPassPlan(planEntrySubject);
+  };
+  window.resetNavigatorPassPlanProgress=function(){
+    showConfirm('2·3급 합격 플랜의 학습 진도와 오늘 숙제를 모두 초기화하시겠습니까?\n기존 일반 오답노트와 기출 풀이 기록은 유지됩니다.',()=>{
+      safeStorageSet(PROGRESS_KEY,'{}','합격 플랜 진도');safeStorageSet(DAILY_KEY,'{}','합격 플랜 오늘 숙제');renderNavigatorPassPlan(planEntrySubject);
+    });
+  };
+
+  function ppFindQuestion(gradeId,item){
+    for(const hit of item.hits){
+      const exam=getPastExam(gradeId,hit.year,hit.session);if(!exam)continue;
+      const q=exam.questions.find(q=>q['과목']===item.subject&&Number(q['번호'])===Number(hit.number)&&n3aNormalizeQuestion(q['문제'])===item.normalized);
+      if(q)return {...q,_year:hit.year,_session:hit.session,'회차':hit.session,_short:gradeId,_planKey:item.key,_planGrade:gradeId,_planCount:item.count,_planGroupId:item.groupId};
+    }
+    return null;
+  }
+  async function ppHydrateKeys(keys){
+    const grades=[...new Set(keys.map(k=>(ppGetItemByKey(k)||{}).gradeId).filter(Boolean))];
+    renderPastLoading('오늘 숙제 문제를 준비하는 중입니다');
+    for(const g of grades){if(!pastDataSubjectsLoaded.has(g))await ensurePastDataForSubject(g)}
+    const out=[];
+    keys.forEach(key=>{const item=ppGetItemByKey(key);if(!item)return;const q=ppFindQuestion(item.gradeId,item);if(q)out.push(q)});
+    await ensurePastExplainForYears(out.map(q=>q._year));
+    return out;
+  }
+  window.startNavigatorPassPlanMock=async function(gradeId){
+    if(!PLAN_GRADES.includes(gradeId))return;
+    const plan=ppLoadPlan(),data=n3aData(gradeId)||await ensureNavi3FrequencyData(gradeId);
+    const subjects=ppSelectedSubjects(plan,gradeId,data);
+    renderPastLoading(`${GRADE_LABELS[gradeId]} 2026 실전 모의를 준비하는 중입니다`);
+    try{
+      if(!pastDataSubjectsLoaded.has(gradeId))await ensurePastDataForSubject(gradeId);
+      const exams=getPastExamsByBase(gradeId,'상선').filter(p=>p.meta&&Number(p.meta.year)===2026).sort((a,b)=>Number(b.meta.session)-Number(a.meta.session));
+      if(!exams.length)throw new Error('2026년 상선 기출 회차가 없습니다.');
+      const latest=exams[0];
+      pastSubjectId=gradeId;pastBaseShort=gradeId;pastYear=Number(latest.meta.year);pastSession=Number(latest.meta.session);pastVariant='상선';pastAllYears=false;pastReturnView=null;
+      await startPastSession('mock',subjects);
+    }catch(e){
+      app.innerHTML=`<div class="card" style="margin-top:30px"><b>실전 모의를 시작하지 못했습니다.</b><div style="font-size:12px;margin-top:7px">${escapeHtml(e.message||String(e))}</div><button class="btn btn-outline" style="margin-top:12px" onclick="renderNavigatorPassPlan('${planEntrySubject}')">합격 플랜으로 돌아가기</button></div>`;
+    }
+  };
+
+  window.startNavigatorPassPlanToday=async function(){
+    const plan=ppLoadPlan();await ppBuildPools(plan);const progress=ppLoadProgress(),today=ppDateKey(new Date());
+    const assignment=await ppGetDailyAssignment(plan,planPools,progress,false);
+    const allKeys=(assignment.keys||[]).slice();
+    const unresolvedKeys=allKeys.filter(k=>!ppTodayCleared(ppProgressFor(progress,k),today));
+    if(!unresolvedKeys.length){showToast('오늘 숙제를 모두 완료했습니다.');ppClearPassSessionCheckpoint();renderNavigatorPassPlan(planEntrySubject);return}
+    try{
+      const checkpoint=ppLoadPassSessionCheckpoint();
+      const queue=await ppHydrateKeys(allKeys);if(!queue.length||queue.length!==allKeys.length)throw new Error('문제 원문을 찾지 못했습니다.');
+      const checkpointMatches=checkpoint&&Array.isArray(checkpoint.queueKeys)&&checkpoint.queueKeys.length===allKeys.length&&checkpoint.queueKeys.every((k,i)=>k===allKeys[i]);
+      if(checkpointMatches){
+        const nextIndex=Number(checkpoint.nextIndex);
+        if(Number.isInteger(nextIndex)&&nextIndex>=0&&nextIndex<queue.length){
+          planSessionQueue=queue;planSessionIdx=nextIndex;
+          planSessionAnswers=new Array(queue.length).fill(null);planSessionConfidence=new Array(queue.length).fill(null);
+          if(Array.isArray(checkpoint.answers))checkpoint.answers.slice(0,queue.length).forEach((v,i)=>{if(v===null||Number.isInteger(v))planSessionAnswers[i]=v});
+          if(Array.isArray(checkpoint.confidence))checkpoint.confidence.slice(0,queue.length).forEach((v,i)=>{if(v===null||['sure','unsure','wrong'].includes(v))planSessionConfidence[i]=v});
+          planSessionCommitted=new Set(Array.isArray(checkpoint.committed)?checkpoint.committed.filter(i=>Number.isInteger(i)&&i>=0&&i<queue.length):[]);
+          for(let i=0;i<nextIndex;i++)if(planSessionAnswers[i]!==null)planSessionCommitted.add(i);
+          planSessionStartedAt=Date.now();currentMode='pass-plan-session';renderNavigatorPassPlanCard();return;
+        }
+      }
+      if(checkpoint)ppClearPassSessionCheckpoint();
+      let startIndex=allKeys.findIndex(k=>!ppTodayCleared(ppProgressFor(progress,k),today));
+      if(startIndex<0)startIndex=0;
+      planSessionQueue=queue;planSessionIdx=startIndex;planSessionAnswers=new Array(queue.length).fill(null);planSessionConfidence=new Array(queue.length).fill(null);planSessionStartedAt=Date.now();planSessionCommitted=new Set();
+      for(let i=0;i<startIndex;i++)if(ppTodayCleared(ppProgressFor(progress,allKeys[i]),today))planSessionCommitted.add(i);
+      currentMode='pass-plan-session';ppSavePassSessionCheckpoint(startIndex);renderNavigatorPassPlanCard();
+    }catch(e){app.innerHTML=`<div class="card" style="margin-top:30px"><b>오늘 숙제를 시작하지 못했습니다.</b><div style="font-size:12px;margin-top:7px">${escapeHtml(e.message||String(e))}</div><button class="btn btn-outline" style="margin-top:12px" onclick="renderNavigatorPassPlan('${planEntrySubject}')">플랜으로 돌아가기</button></div>`}
+  };
+  function ppGradeColor(g){return g==='navi2'?'#2563EB':'#059669'}
+  window.renderNavigatorPassPlanCard=function(){
+    if(currentMode!=='pass-plan-session')return;
+    if(planSessionIdx>=planSessionQueue.length){renderNavigatorPassPlanResult();return}
+    const q=planSessionQueue[planSessionIdx],selected=planSessionAnswers[planSessionIdx],confidence=planSessionConfidence[planSessionIdx],correct=q['정답'],showFeedback=selected!==null;
+    const grade=q._planGrade,color=ppGradeColor(grade),markers=['㉮','㉯','㉰','㉱'];
+    const isCorrect=showFeedback&&selected===correct;
+    const canNext=showFeedback;
+    app.innerHTML=`
+      <div style="padding-top:20px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:8px"><button class="btn btn-outline" style="width:auto" onclick="showConfirm('오늘 숙제를 중단하시겠습니까? 진행 기록은 저장됩니다.',()=>renderNavigatorPassPlan('${planEntrySubject}'))">${icon('arrowLeft',14)} 그만</button><div style="font-size:15px;color:var(--text);font-weight:900">문제 ${planSessionIdx+1}/${planSessionQueue.length}</div></div>
+      <div class="card" style="border-left:4px solid ${color}"><div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px"><span class="tag" style="margin:0;background:${color}18;color:${color}">${GRADE_LABELS[grade]}</span><span class="tag" style="margin:0;background:#F1F5F9;color:#475569">${q['과목']}</span><span class="tag" style="margin:0;background:#FEF3C7;color:#92400E">최근 5년 ${q._planCount}회</span><span class="tag" style="margin:0;background:#F1F5F9;color:#475569">${q._year}년 ${q['회차']}회 Q${q['번호']}</span></div>
+      <div style="font-size:16px;line-height:1.7;margin-bottom:16px;white-space:pre-wrap">${escapeHtml(q['문제'])}</div><div style="display:flex;flex-direction:column;gap:10px">${q['선택지'].map((opt,i)=>{let bg='#fff',border='#E5E7EB',col='var(--text)';if(showFeedback){if(i===correct){bg='#D1FAE5';border='#10B981';col='#065F46'}else if(i===selected){bg='#FEE2E2';border='#DC2626';col='#991B1B'}}return `<button onclick="chooseNavigatorPassPlanAnswer(${i})" ${showFeedback?'disabled':''} style="text-align:left;padding:12px 14px;background:${bg};border:2px solid ${border};border-radius:10px;color:${col};font-size:15px;line-height:1.6;cursor:${showFeedback?'default':'pointer'}"><b style="margin-right:8px">${markers[i]}</b>${escapeHtml(pastChoiceText(opt))}</button>`}).join('')}</div>
+      ${showFeedback?`<div style="margin-top:14px;padding:11px;border-radius:9px;background:${isCorrect?'#ECFDF5':'#FEF2F2'};color:${isCorrect?'#065F46':'#991B1B'};font-weight:800;text-align:center">${isCorrect?'정답':'오답 · 정답 '+markers[correct]}</div>${renderExplainBlock(q)}${isCorrect?`<div style="margin-top:12px"><div style="font-size:12px;font-weight:800;margin-bottom:7px">지금 이 문제를 답을 안 보고도 다시 맞힐 수 있습니까?</div><div style="display:flex;gap:8px"><button class="btn ${confidence==='sure'?'btn-green':'btn-outline'}" style="flex:1" onclick="setNavigatorPassPlanConfidence('sure')">확실히 안다</button><button class="btn ${confidence==='unsure'?'btn-accent':'btn-outline'}" style="flex:1" onclick="setNavigatorPassPlanConfidence('unsure')">애매 · 찍음</button></div></div>`:`<div style="font-size:11px;color:#991B1B;margin-top:10px">오답은 오늘 미해결로 남습니다. 다음 재시험에서 정답+확실이어야 제거됩니다.</div>`}`:''}
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px"><button class="btn btn-outline" ${planSessionIdx>0?'':'disabled'} onclick="prevNavigatorPassPlanQuestion()">${icon('arrowLeft',14)} 이전</button><button class="btn btn-accent" style="background:${color};border-color:${color}" ${canNext?'':'disabled'} onclick="nextNavigatorPassPlanQuestion()">${planSessionIdx+1===planSessionQueue.length?'결과 보기':'다음 '+icon('arrowRight',14)}</button></div>
+      <div style="text-align:center;margin-top:8px;font-size:10px;color:var(--textMuted)">첫 정답은 학습 중 · 같은 날 한 번 더 맞히면 오늘 확인 완료 · 다음 날짜에 다시 맞히면 숙달됩니다.</div>`;
+  };
+  window.chooseNavigatorPassPlanAnswer=function(i){
+    if(currentMode!=='pass-plan-session')return;
+    const q=planSessionQueue[planSessionIdx];
+    if(planSessionAnswers[planSessionIdx]!==null||!q||i<0||i>=q['선택지'].length)return;
+    const confidence=i===q['정답']?'sure':'wrong';
+    planSessionAnswers[planSessionIdx]=i;planSessionConfidence[planSessionIdx]=confidence;
+    if(!planSessionCommitted.has(planSessionIdx)){ppCommitOutcome(q,i,confidence);planSessionCommitted.add(planSessionIdx)}
+    ppSavePassSessionCheckpoint(planSessionIdx+1);
+    renderNavigatorPassPlanCard();
+  };
+  window.setNavigatorPassPlanConfidence=function(value){if(currentMode!=='pass-plan-session')return;if(!['sure','unsure'].includes(value))return;const q=planSessionQueue[planSessionIdx];if(planSessionAnswers[planSessionIdx]!==q['정답'])return;planSessionConfidence[planSessionIdx]=value;renderNavigatorPassPlanCard()};
+  function ppCommitOutcome(q,answer,confidence){
+    const progress=ppLoadProgress(),r=ppProgressFor(progress,q._planKey),today=ppDateKey(new Date()),correct=answer===q['정답'];
+    const priorConfirmed=r.sameDayConfirmedDate||null,priorFirstCorrect=r.sameDayFirstCorrectDate||null;
+    r.attempts=(r.attempts||0)+1;r.lastDate=today;r.lastOutcome=correct?confidence:'wrong';
+    if(correct)r.correct=(r.correct||0)+1;else r.wrong=(r.wrong||0)+1;
+    if(correct&&confidence==='unsure')r.unsure=(r.unsure||0)+1;
+    if(correct&&confidence==='sure'){
+      r.lastSureDate=today;
+      const retainedAcrossDay=!!(priorConfirmed&&priorConfirmed<today);
+      if(retainedAcrossDay){
+        // A question confirmed on an earlier date and recalled again today is mastered.
+        r.status='mastered';r.mastered=true;r.masteryReviews=(r.masteryReviews||0)+1;
+        r.sameDayFirstCorrectDate=today;r.sameDayConfirmedDate=today;r.recoveryStartDate=null;
+        const exam=ppExamDay(ppLoadPlan(),q._planGrade);let due=ppAddDays(today,3);if(exam){const dayBefore=ppAddDays(exam,-1);due=ppMinDate(due,dayBefore)}r.dueDate=due;
+        removePastWrong(pqid(q));
+      }else if(priorFirstCorrect===today){
+        // Second correct recall on the same day: confirmed for today, but not mastered yet.
+        if(!r.firstPassDate)r.firstPassDate=today;
+        r.status='provisional';r.mastered=false;r.sameDayFirstCorrectDate=today;r.sameDayConfirmedDate=today;r.recoveryStartDate=null;r.dueDate=ppAddDays(today,1);
+        removePastWrong(pqid(q));
+      }else{
+        // First correct recall of the day. Keep it unresolved so a delayed same-day check is required.
+        if(!r.firstPassDate)r.firstPassDate=today;
+        r.status='provisional';r.mastered=false;r.sameDayFirstCorrectDate=today;r.sameDayConfirmedDate=null;r.dueDate=today;
+      }
+    }else{
+      r.status='weak';r.mastered=false;r.recoveryStartDate=today;r.dueDate=
