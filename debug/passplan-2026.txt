@@ -1,0 +1,980 @@
+===== 2026 occurrence counts =====
+year_json_colon: 0
+year_unquoted_colon: 0
+korean_2026: 1
+generic_2026: 56
+
+===== first 80 2026 contexts =====
+--- 1 @ 4729967 ---
+c.js">
+// ── GOC 3급 무선통신사 면접 데이터 ──
+// 이 파일은 maritime-drill.html과 같은 폴더에 두십시오.
+(function(){
+const GOC_META = {
+  id: 'goc',
+  name: 'GOC 3급 무선통신사',
+  description: '99문제 · GMDSS 면접 대비',
+  version: '1.4',
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+
+const QUESTIONS = [
+{
+"id": 1,
+"q": "EPIRB에서 발사하는 백색 섬광등의 용도에 대하여 설명하시오.",
+"hint1": "야간, 시각적 위치표시, Self-test",
+"hint2": "야간에 조난 위치를 시각적으로 표시하기 위한 신호등이며, Self-test 시에도 점등되지만 이는 회로 점검용",
+"answer": "EPIRB의 백색 섬광등은 야간에 조난 위치를 시각적으로 표시하기 위한 신호등입니다. Self-test 시에도 잠시 점등되지만, 이는 회로 점검을 위한 기능 확인용으로 본래의 조난용 목적과는 다릅니다.",
+"category": "EPIRB"
+},
+{
+"id": 2,
+"q": "VHF 무선설비의 출력의 종류와 최대 출력
+--- 2 @ 4729996 ---
+데이터 ──
+// 이 파일은 maritime-drill.html과 같은 폴더에 두십시오.
+(function(){
+const GOC_META = {
+  id: 'goc',
+  name: 'GOC 3급 무선통신사',
+  description: '99문제 · GMDSS 면접 대비',
+  version: '1.4',
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+
+const QUESTIONS = [
+{
+"id": 1,
+"q": "EPIRB에서 발사하는 백색 섬광등의 용도에 대하여 설명하시오.",
+"hint1": "야간, 시각적 위치표시, Self-test",
+"hint2": "야간에 조난 위치를 시각적으로 표시하기 위한 신호등이며, Self-test 시에도 점등되지만 이는 회로 점검용",
+"answer": "EPIRB의 백색 섬광등은 야간에 조난 위치를 시각적으로 표시하기 위한 신호등입니다. Self-test 시에도 잠시 점등되지만, 이는 회로 점검을 위한 기능 확인용으로 본래의 조난용 목적과는 다릅니다.",
+"category": "EPIRB"
+},
+{
+"id": 2,
+"q": "VHF 무선설비의 출력의 종류와 최대 출력의 경우 통신 유효 거리에 대하여 설명하시오.",
+"
+--- 3 @ 4810594 ---
+ (REC) 면접 데이터 ──
+// GOC 99문제(답변 포함) + REC 전용 60문제(답변 미작성)
+(function(){
+const META = {
+  id: 'rec',
+  name: '전파전자 1·2급 통신사 (REC)',
+  description: 'GOC 99문제 + REC 전용 60문제 · 전체 답변 작성 완료',
+  version: '1.1',
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "EPIRB에서 발사하는 백색 섬광등의 용도에 대하여 설명하시오.",
+  "hint1": "야간, 시각적 위치표시, Self-test",
+  "hint2": "야간에 조난 위치를 시각적으로 표시하기 위한 신호등이며, Self-test 시에도 점등되지만 이는 회로 점검용",
+  "answer": "EPIRB의 백색 섬광등은 야간에 조난 위치를 시각적으로 표시하기 위한 신호등입니다. Self-test 시에도 잠시 점등되지만, 이는 회로 점검을 위한 기능 확인용으로 본래의 조난용 목적과는 다릅니다.",
+  "category": "GOC공통/EPIRB"
+ },
+ {
+  "id": 2,
+  "q": 
+--- 4 @ 4810623 ---
+답변 포함) + REC 전용 60문제(답변 미작성)
+(function(){
+const META = {
+  id: 'rec',
+  name: '전파전자 1·2급 통신사 (REC)',
+  description: 'GOC 99문제 + REC 전용 60문제 · 전체 답변 작성 완료',
+  version: '1.1',
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "EPIRB에서 발사하는 백색 섬광등의 용도에 대하여 설명하시오.",
+  "hint1": "야간, 시각적 위치표시, Self-test",
+  "hint2": "야간에 조난 위치를 시각적으로 표시하기 위한 신호등이며, Self-test 시에도 점등되지만 이는 회로 점검용",
+  "answer": "EPIRB의 백색 섬광등은 야간에 조난 위치를 시각적으로 표시하기 위한 신호등입니다. Self-test 시에도 잠시 점등되지만, 이는 회로 점검을 위한 기능 확인용으로 본래의 조난용 목적과는 다릅니다.",
+  "category": "GOC공통/EPIRB"
+ },
+ {
+  "id": 2,
+  "q": "VHF 무선설비의 출력의 종류와 최대 출력의 경우 
+--- 5 @ 4878941 ---
+ript>
+<script data-bundled-src="data-navi1.js">
+// ── 1급 항해사 면접 데이터 (한국해양수산연수원 2023.3 기준) ──
+(function(){
+const META = {
+  id: "navi1",
+  name: "1급 항해사",
+  description: "90문제 · 면접 기출",
+  version: "1.0",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "선원법상 선장의 직무와 권한에 대하여 5가지 이상 설명",
+  "hint1": "지휘명령권",
+  "hint2": "지휘명령권, 출항 전의 검사·보고의무, 항로에 의한 항해, 선장의 직접 지휘",
+  "answer": "- 지휘명령권\n - 출항 전의 검사·보고의무\n - 항로에 의한 항해\n - 선장의 직접 지휘\n - 재선의무\n - 선박 위험 시의 조치\n - 선박 충돌 시의 조치\n - 조난 선박 등의 구조\n - 기상 이상 등의 통보\n - 비상배치표 및 훈련\n - 항해의 안전 확보\n - 수장\n - 유류품의 처리\n - 재외국민의 송환\n - 서류의 비치\n - 선박 운항에 
+--- 6 @ 4878970 ---
+c="data-navi1.js">
+// ── 1급 항해사 면접 데이터 (한국해양수산연수원 2023.3 기준) ──
+(function(){
+const META = {
+  id: "navi1",
+  name: "1급 항해사",
+  description: "90문제 · 면접 기출",
+  version: "1.0",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "선원법상 선장의 직무와 권한에 대하여 5가지 이상 설명",
+  "hint1": "지휘명령권",
+  "hint2": "지휘명령권, 출항 전의 검사·보고의무, 항로에 의한 항해, 선장의 직접 지휘",
+  "answer": "- 지휘명령권\n - 출항 전의 검사·보고의무\n - 항로에 의한 항해\n - 선장의 직접 지휘\n - 재선의무\n - 선박 위험 시의 조치\n - 선박 충돌 시의 조치\n - 조난 선박 등의 구조\n - 기상 이상 등의 통보\n - 비상배치표 및 훈련\n - 항해의 안전 확보\n - 수장\n - 유류품의 처리\n - 재외국민의 송환\n - 서류의 비치\n - 선박 운항에 관한 보고",
+  "category": "법규"
+ }
+--- 7 @ 4940994 ---
+;
+
+</script>
+<script data-bundled-src="data-navi2.js">
+// ── 2급 항해사 면접 데이터 (한국해양수산연수원 2023.3 기준) ──
+(function(){
+const META = {
+  id: "navi2",
+  name: "2급 항해사",
+  description: "90문제 · 면접 기출",
+  version: "2.1-oral-visual-20260803",
+  auditDate: "2026-08-03",
+  auditScope: "90/90 questions",
+  auditBasis: "current Korean law, IMO/IHO instruments, IMO SMCP and maritime technical review",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "국제해상충돌방지규칙상 조종제한선과 관련한 다음 문항에 대한 설명 (1) 조종제한선의 정의 (2) 조종제한선의 예",
+  "hint1": "(1) 조종제한선의 정의",
+  "hint2": "(1) 조종제한선의 정의, 선박 작업의 성질과 그 밖의 선박의 조종성능을 제한
+--- 8 @ 4941019 ---
+-bundled-src="data-navi2.js">
+// ── 2급 항해사 면접 데이터 (한국해양수산연수원 2023.3 기준) ──
+(function(){
+const META = {
+  id: "navi2",
+  name: "2급 항해사",
+  description: "90문제 · 면접 기출",
+  version: "2.1-oral-visual-20260803",
+  auditDate: "2026-08-03",
+  auditScope: "90/90 questions",
+  auditBasis: "current Korean law, IMO/IHO instruments, IMO SMCP and maritime technical review",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "국제해상충돌방지규칙상 조종제한선과 관련한 다음 문항에 대한 설명 (1) 조종제한선의 정의 (2) 조종제한선의 예",
+  "hint1": "(1) 조종제한선의 정의",
+  "hint2": "(1) 조종제한선의 정의, 선박 작업의 성질과 그 밖의 선박의 조종성능을 제한하는 작업, 에 종사하고 있어 다른 선박의 진
+--- 9 @ 4941179 ---
+접 기출",
+  version: "2.1-oral-visual-20260803",
+  auditDate: "2026-08-03",
+  auditScope: "90/90 questions",
+  auditBasis: "current Korean law, IMO/IHO instruments, IMO SMCP and maritime technical review",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "국제해상충돌방지규칙상 조종제한선과 관련한 다음 문항에 대한 설명 (1) 조종제한선의 정의 (2) 조종제한선의 예",
+  "hint1": "(1) 조종제한선의 정의",
+  "hint2": "(1) 조종제한선의 정의, 선박 작업의 성질과 그 밖의 선박의 조종성능을 제한하는 작업, 에 종사하고 있어 다른 선박의 진로를 피할 수 없는 선박, (2) 조종제한선의 예",
+  "answer": "(1) 조종제한선의 정의\n - 선박 작업의 성질과 그 밖의 선박의 조종성능을 제한하는 작업\n에 종사하고 있어 다른 선박의 진로를 피할 수 없는 선박 \n(2) 조종제한선의 예\n - 항로표지 ·해저전선 또는
+--- 10 @ 4941208 ---
+isual-20260803",
+  auditDate: "2026-08-03",
+  auditScope: "90/90 questions",
+  auditBasis: "current Korean law, IMO/IHO instruments, IMO SMCP and maritime technical review",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "국제해상충돌방지규칙상 조종제한선과 관련한 다음 문항에 대한 설명 (1) 조종제한선의 정의 (2) 조종제한선의 예",
+  "hint1": "(1) 조종제한선의 정의",
+  "hint2": "(1) 조종제한선의 정의, 선박 작업의 성질과 그 밖의 선박의 조종성능을 제한하는 작업, 에 종사하고 있어 다른 선박의 진로를 피할 수 없는 선박, (2) 조종제한선의 예",
+  "answer": "(1) 조종제한선의 정의\n - 선박 작업의 성질과 그 밖의 선박의 조종성능을 제한하는 작업\n에 종사하고 있어 다른 선박의 진로를 피할 수 없는 선박 \n(2) 조종제한선의 예\n - 항로표지 ·해저전선 또는 해저파이프라인의 부설·보수·인양작\n업에 종사하고 
+--- 11 @ 4992973 ---
+swer": "- 통상 선박에서는 매 당직 및 대각도 변침 시 편차와 자차를 측정\n하여 Compass error book 및 Deck log book에 기록함  \n- 현재 Heading 에 대한 편차와 자차를 Compass error book 및 \nDeck log book에서 찾아 이 값을 나침로에 보정하면 진침로로 \n항해 가능함",
+  "category": "항해"
+ }
+];
+// 2026-08-03 전수검수 교정. 원문 보존 후 아래 필드만 런타임에서 교체한다.
+const AUDIT_PATCHES = {
+  2: {
+    q: "국제해상충돌방지규칙상 길이 70미터인 예인선이 바지선을 끌고 있으며 예인선열의 길이가 200미터를 초과하는 경우 다음 문항에 대한 설명 (1) 예인선이 표시하여야 하는 등화 (2) 예인선이 표시하여야 하는 형상물"
+  },
+  3: {
+    hint1: "진입·이탈선 피항, 나란히 항행 금지, 마주칠 때 우측 항행",
+    hint2: "진입·이탈선 피항, 나란히 항행 금지, 마주칠 때 우측 항행, 원칙적 추월 금지, 위험물운송선박·흘수제약선 진로 방해 금지, 범선 지그재그 금지",
+    answer: [
+      "「선박의 입항 및 출항 등에 관한 법률」 제12조의 항법은 다음과 같
+--- 12 @ 5016424 ---
+estion[field]
+        .replace(/\r/g, "")
+        .replace(/\n(?=[A-Za-z가-힣])/g, "")
+        .replace(/[ \t]+([,.;:?])/g, "$1")
+        .replace(/[ \t]{2,}/g, " ")
+        .trim();
+    }
+  }
+  question.audit = "reviewed-2026-08-03";
+}
+
+const IMP = {"1": 3, "2": 3, "3": 3, "4": 3, "5": 3, "6": 3, "7": 3, "8": 3, "9": 3, "10": 3, "11": 3, "12": 3, "13": 3, "14": 3, "15": 3, "16": 3, "17": 3, "18": 3, "19": 3, "20": 3, "21": 3, "22": 3, "23": 3, "24": 3, "25": 3, "26": 3, "27": 3, "28": 3, "29": 3, "30": 3, "31": 3, "32": 3, "33": 3, "34": 3, "35": 3, "36": 3, "37": 3, "38": 3, "39": 3, "40": 3, "41": 3, "42": 3, "43": 3, "44": 3, "45"
+--- 13 @ 5017949 ---
+ript>
+<script data-bundled-src="data-navi3.js">
+// ── 3급 항해사 면접 데이터 (한국해양수산연수원 2023.3 기준) ──
+(function(){
+const META = {
+  id: "navi3",
+  name: "3급 항해사",
+  description: "59문제 · 면접 기출",
+  version: "1.0",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "선박의 입항 및 출항등에 관한 법률상 다음 용어의 정의에 대한 설명 (1) 정박 (2) 정류",
+  "hint1": "(1) 정박",
+  "hint2": "(1) 정박, 선박이 해상에서 닻을 바다 밑바닥에 내려놓고 운항을 멈추는 것, (2) 정류, 선박이 해상에서 일시적으로 운항을 멈추는 것",
+  "answer": "(1) 정박\n - 선박이 해상에서 닻을 바다 밑바닥에 내려놓고 운항을 멈추는 것\n(2) 정류\n - 선박이 해상에서 일시적으로 운항을 멈추는 것",
+  "category": "법규"
+ },
+ {
+  "id": 2,
+  "q": "선박안전법상의 항해구역에 대해 다음 문항을 
+--- 14 @ 5017978 ---
+c="data-navi3.js">
+// ── 3급 항해사 면접 데이터 (한국해양수산연수원 2023.3 기준) ──
+(function(){
+const META = {
+  id: "navi3",
+  name: "3급 항해사",
+  description: "59문제 · 면접 기출",
+  version: "1.0",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "선박의 입항 및 출항등에 관한 법률상 다음 용어의 정의에 대한 설명 (1) 정박 (2) 정류",
+  "hint1": "(1) 정박",
+  "hint2": "(1) 정박, 선박이 해상에서 닻을 바다 밑바닥에 내려놓고 운항을 멈추는 것, (2) 정류, 선박이 해상에서 일시적으로 운항을 멈추는 것",
+  "answer": "(1) 정박\n - 선박이 해상에서 닻을 바다 밑바닥에 내려놓고 운항을 멈추는 것\n(2) 정류\n - 선박이 해상에서 일시적으로 운항을 멈추는 것",
+  "category": "법규"
+ },
+ {
+  "id": 2,
+  "q": "선박안전법상의 항해구역에 대해 다음 문항을 설명 (1) 종류 (2) 예외적으로 항해할 수 있는 
+--- 15 @ 5043642 ---
+ript>
+<script data-bundled-src="data-navi4.js">
+// ── 4급 항해사 면접 데이터 (한국해양수산연수원 2023.3 기준) ──
+(function(){
+const META = {
+  id: "navi4",
+  name: "4급 항해사",
+  description: "59문제 · 면접 기출",
+  version: "1.0",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "선박의 입항 및 출항등에 관한 법률상 다음 용어의 정의에 대한 설명 (1) 정박 (2) 정류",
+  "hint1": "(1) 정박",
+  "hint2": "(1) 정박, 선박이 해상에서 닻을 바다 밑바닥에 내려놓고 운항을 멈추는 것, (2) 정류, 선박이 해상에서 일시적으로 운항을 멈추는 것",
+  "answer": "(1) 정박\n - 선박이 해상에서 닻을 바다 밑바닥에 내려놓고 운항을 멈추는 것\n(2) 정류\n - 선박이 해상에서 일시적으로 운항을 멈추는 것",
+  "category": "법규"
+ },
+ {
+  "id": 2,
+  "q": "선박안전법상의 항해구역에 대해 다음 문항을 
+--- 16 @ 5043671 ---
+c="data-navi4.js">
+// ── 4급 항해사 면접 데이터 (한국해양수산연수원 2023.3 기준) ──
+(function(){
+const META = {
+  id: "navi4",
+  name: "4급 항해사",
+  description: "59문제 · 면접 기출",
+  version: "1.0",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "선박의 입항 및 출항등에 관한 법률상 다음 용어의 정의에 대한 설명 (1) 정박 (2) 정류",
+  "hint1": "(1) 정박",
+  "hint2": "(1) 정박, 선박이 해상에서 닻을 바다 밑바닥에 내려놓고 운항을 멈추는 것, (2) 정류, 선박이 해상에서 일시적으로 운항을 멈추는 것",
+  "answer": "(1) 정박\n - 선박이 해상에서 닻을 바다 밑바닥에 내려놓고 운항을 멈추는 것\n(2) 정류\n - 선박이 해상에서 일시적으로 운항을 멈추는 것",
+  "category": "법규"
+ },
+ {
+  "id": 2,
+  "q": "선박안전법상의 항해구역에 대해 다음 문항을 설명 (1) 종류 (2) 예외적으로 항해할 수 있는 
+--- 17 @ 5069335 ---
+ript>
+<script data-bundled-src="data-navi5.js">
+// ── 5급 항해사 면접 데이터 (한국해양수산연수원 2023.3 기준) ──
+(function(){
+const META = {
+  id: "navi5",
+  name: "5급 항해사",
+  description: "55문제 · 면접 기출",
+  version: "1.0",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "선박의 입항 및 출항등에 관한 법률상 무역항의 수상구역등에서 예인선의 항법에 대한 설명",
+  "hint1": "예인선의 선수로부터 피예인선의 선미까지의 길이는 200미터를",
+  "hint2": "예인선의 선수로부터 피예인선의 선미까지의 길이는 200미터를, 초과하지 아니할 것. 다만, 다른 선박의 출입을 보조하는 경우에, 는 그러하지 아니함, 예인선은 한꺼번에 3척 이상의 피예인선을 끌지 아니할 것",
+  "answer": "- 예인선의 선수로부터 피예인선의 선미까지의 길이는 200미터를 \n초과하지 아니할 것. 다만, 다른 선박의 출입을 보조하는 경우에\n는 그러하지 아니함\n- 예인
+--- 18 @ 5069364 ---
+c="data-navi5.js">
+// ── 5급 항해사 면접 데이터 (한국해양수산연수원 2023.3 기준) ──
+(function(){
+const META = {
+  id: "navi5",
+  name: "5급 항해사",
+  description: "55문제 · 면접 기출",
+  version: "1.0",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "선박의 입항 및 출항등에 관한 법률상 무역항의 수상구역등에서 예인선의 항법에 대한 설명",
+  "hint1": "예인선의 선수로부터 피예인선의 선미까지의 길이는 200미터를",
+  "hint2": "예인선의 선수로부터 피예인선의 선미까지의 길이는 200미터를, 초과하지 아니할 것. 다만, 다른 선박의 출입을 보조하는 경우에, 는 그러하지 아니함, 예인선은 한꺼번에 3척 이상의 피예인선을 끌지 아니할 것",
+  "answer": "- 예인선의 선수로부터 피예인선의 선미까지의 길이는 200미터를 \n초과하지 아니할 것. 다만, 다른 선박의 출입을 보조하는 경우에\n는 그러하지 아니함\n- 예인선은 한꺼번에 3척 이상의 피예인선을 끌지 아니할 것
+--- 19 @ 5087982 ---
+ript>
+<script data-bundled-src="data-navi6.js">
+// ── 6급 항해사 면접 데이터 (한국해양수산연수원 2023.3 기준) ──
+(function(){
+const META = {
+  id: "navi6",
+  name: "6급 항해사",
+  description: "55문제 · 면접 기출",
+  version: "1.0",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "선박의 입항 및 출항등에 관한 법률상 무역항의 수상구역등에서 예인선의 항법에 대한 설명",
+  "hint1": "예인선의 선수로부터 피예인선의 선미까지의 길이는 200미터를",
+  "hint2": "예인선의 선수로부터 피예인선의 선미까지의 길이는 200미터를, 초과하지 아니할 것. 다만, 다른 선박의 출입을 보조하는 경우에, 는 그러하지 아니함, 예인선은 한꺼번에 3척 이상의 피예인선을 끌지 아니할 것",
+  "answer": "- 예인선의 선수로부터 피예인선의 선미까지의 길이는 200미터를 \n초과하지 아니할 것. 다만, 다른 선박의 출입을 보조하는 경우에\n는 그러하지 아니함\n- 예인
+--- 20 @ 5088011 ---
+c="data-navi6.js">
+// ── 6급 항해사 면접 데이터 (한국해양수산연수원 2023.3 기준) ──
+(function(){
+const META = {
+  id: "navi6",
+  name: "6급 항해사",
+  description: "55문제 · 면접 기출",
+  version: "1.0",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "선박의 입항 및 출항등에 관한 법률상 무역항의 수상구역등에서 예인선의 항법에 대한 설명",
+  "hint1": "예인선의 선수로부터 피예인선의 선미까지의 길이는 200미터를",
+  "hint2": "예인선의 선수로부터 피예인선의 선미까지의 길이는 200미터를, 초과하지 아니할 것. 다만, 다른 선박의 출입을 보조하는 경우에, 는 그러하지 아니함, 예인선은 한꺼번에 3척 이상의 피예인선을 끌지 아니할 것",
+  "answer": "- 예인선의 선수로부터 피예인선의 선미까지의 길이는 200미터를 \n초과하지 아니할 것. 다만, 다른 선박의 출입을 보조하는 경우에\n는 그러하지 아니함\n- 예인선은 한꺼번에 3척 이상의 피예인선을 끌지 아니할 것
+--- 21 @ 5106629 ---
+ript>
+<script data-bundled-src="data-engi1.js">
+// ── 1급 기관사 면접 데이터 (한국해양수산연수원 2023.3 기준) ──
+(function(){
+const META = {
+  id: "engi1",
+  name: "1급 기관사",
+  description: "75문제 · 면접 기출",
+  version: "1.0",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "첨부한 디젤 주기관의 성능곡선에서 100[rpm] 으로 운전 중 5번 실 린더의 압축압력이 100[bar], 최고연소압력이 128[bar], 배기온도가 450[℃]로 나타났을 경우에 대해 다음 문항을 설명 (1) 원인 (2) 대책",
+  "hint1": "(1) 원인",
+  "hint2": "(1) 원인, 압축압력이 정상값보다 약 10[bar] 낮고 최고연소압력도 정상값, 보다 약 10[bar] 낮으며 배기온도는 정상값 보다 약 60[℃] 높, 으므로 배기밸브가 누설하는 것이 원인임",
+  "answer": "(1) 원인\n - 압축압력이 정상값보다 약 10[bar] 낮고 최고연소압력도 정
+--- 22 @ 5106658 ---
+c="data-engi1.js">
+// ── 1급 기관사 면접 데이터 (한국해양수산연수원 2023.3 기준) ──
+(function(){
+const META = {
+  id: "engi1",
+  name: "1급 기관사",
+  description: "75문제 · 면접 기출",
+  version: "1.0",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "첨부한 디젤 주기관의 성능곡선에서 100[rpm] 으로 운전 중 5번 실 린더의 압축압력이 100[bar], 최고연소압력이 128[bar], 배기온도가 450[℃]로 나타났을 경우에 대해 다음 문항을 설명 (1) 원인 (2) 대책",
+  "hint1": "(1) 원인",
+  "hint2": "(1) 원인, 압축압력이 정상값보다 약 10[bar] 낮고 최고연소압력도 정상값, 보다 약 10[bar] 낮으며 배기온도는 정상값 보다 약 60[℃] 높, 으므로 배기밸브가 누설하는 것이 원인임",
+  "answer": "(1) 원인\n - 압축압력이 정상값보다 약 10[bar] 낮고 최고연소압력도 정상값\n보다 약 10[bar] 낮으며 배기온도는 정상
+--- 23 @ 5148406 ---
+ript>
+<script data-bundled-src="data-engi2.js">
+// ── 2급 기관사 면접 데이터 (한국해양수산연수원 2023.3 기준) ──
+(function(){
+const META = {
+  id: "engi2",
+  name: "2급 기관사",
+  description: "75문제 · 면접 기출",
+  version: "1.0",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "운전중인 디젤 주기관에서 다음 문항을 설명 (1) 소기온도가 정상값보다 낮은 경우에 발생하는 현상 (2) 소기온도가 정상값보다 높은 경우에 발생하는 현상",
+  "hint1": "(1) 소기온도가 정상값보다 낮은 경우에 발생하는 현상",
+  "hint2": "(1) 소기온도가 정상값보다 낮은 경우에 발생하는 현상, 소기온도가 정상값보다 낮은 경우에는 소기 중에 드레인이 많이, 발생하고 그 일부가 실린더 내로 유입되어 저온부식이 발생하며, 실린더유의 유막도 파괴됨",
+  "answer": "(1) 소기온도가 정상값보다 낮은 경우에 발생하는 현상\n - 소기온도가 정상값보다 낮은 경우에는 소기
+--- 24 @ 5148435 ---
+c="data-engi2.js">
+// ── 2급 기관사 면접 데이터 (한국해양수산연수원 2023.3 기준) ──
+(function(){
+const META = {
+  id: "engi2",
+  name: "2급 기관사",
+  description: "75문제 · 면접 기출",
+  version: "1.0",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "운전중인 디젤 주기관에서 다음 문항을 설명 (1) 소기온도가 정상값보다 낮은 경우에 발생하는 현상 (2) 소기온도가 정상값보다 높은 경우에 발생하는 현상",
+  "hint1": "(1) 소기온도가 정상값보다 낮은 경우에 발생하는 현상",
+  "hint2": "(1) 소기온도가 정상값보다 낮은 경우에 발생하는 현상, 소기온도가 정상값보다 낮은 경우에는 소기 중에 드레인이 많이, 발생하고 그 일부가 실린더 내로 유입되어 저온부식이 발생하며, 실린더유의 유막도 파괴됨",
+  "answer": "(1) 소기온도가 정상값보다 낮은 경우에 발생하는 현상\n - 소기온도가 정상값보다 낮은 경우에는 소기 중에 드레인이 많이 \n발생하고 그 일부가 실린더 
+--- 25 @ 5186452 ---
+ript>
+<script data-bundled-src="data-engi3.js">
+// ── 3급 기관사 면접 데이터 (한국해양수산연수원 2023.3 기준) ──
+(function(){
+const META = {
+  id: "engi3",
+  name: "3급 기관사",
+  description: "50문제 · 면접 기출",
+  version: "1.0",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "전진방향의 착화순서가 1→5→3→6→2→4인 4행정 사이클 디젤기 관의 흡·배기밸브 태핏 조정에 대해 다음 문항을 설명 (1) 2번 실린더의 피스톤이 흡기행정 시작 지점의 상사점에 위치 해 있다면 흡·배기밸브의 태핏 클리어런스를 조정할 실린더 에 대해 설명 (2) 2번 실린더 흡·배기밸브의 태핏 클리어런스를 조정한 후 1번 실린더를 조정하기 위한 플라이휠의 회전각도에 대해 설명",
+  "hint1": "(1) 2번 실린더의 피스톤이 흡기행정 시작 지점의 상사점에 위치",
+  "hint2": "(1) 2번 실린더의 피스톤이 흡기행정 시작 지점의 상사점에 위치, 해 있다면 흡·배기밸브의 태핏 
+--- 26 @ 5186481 ---
+c="data-engi3.js">
+// ── 3급 기관사 면접 데이터 (한국해양수산연수원 2023.3 기준) ──
+(function(){
+const META = {
+  id: "engi3",
+  name: "3급 기관사",
+  description: "50문제 · 면접 기출",
+  version: "1.0",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "전진방향의 착화순서가 1→5→3→6→2→4인 4행정 사이클 디젤기 관의 흡·배기밸브 태핏 조정에 대해 다음 문항을 설명 (1) 2번 실린더의 피스톤이 흡기행정 시작 지점의 상사점에 위치 해 있다면 흡·배기밸브의 태핏 클리어런스를 조정할 실린더 에 대해 설명 (2) 2번 실린더 흡·배기밸브의 태핏 클리어런스를 조정한 후 1번 실린더를 조정하기 위한 플라이휠의 회전각도에 대해 설명",
+  "hint1": "(1) 2번 실린더의 피스톤이 흡기행정 시작 지점의 상사점에 위치",
+  "hint2": "(1) 2번 실린더의 피스톤이 흡기행정 시작 지점의 상사점에 위치, 해 있다면 흡·배기밸브의 태핏 클리어런스를 조정할 실린더, 에 대해 설명, 5번 실
+--- 27 @ 5205857 ---
+ript>
+<script data-bundled-src="data-engi4.js">
+// ── 4급 기관사 면접 데이터 (한국해양수산연수원 2023.3 기준) ──
+(function(){
+const META = {
+  id: "engi4",
+  name: "4급 기관사",
+  description: "50문제 · 면접 기출",
+  version: "1.0",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "전진방향의 착화순서가 1→5→3→6→2→4인 4행정 사이클 디젤기 관의 흡·배기밸브 태핏 조정에 대해 다음 문항을 설명 (1) 2번 실린더의 피스톤이 흡기행정 시작 지점의 상사점에 위치 해 있다면 흡·배기밸브의 태핏 클리어런스를 조정할 실린더 에 대해 설명 (2) 2번 실린더 흡·배기밸브의 태핏 클리어런스를 조정한 후 1번 실린더를 조정하기 위한 플라이휠의 회전각도에 대해 설명",
+  "hint1": "(1) 2번 실린더의 피스톤이 흡기행정 시작 지점의 상사점에 위치",
+  "hint2": "(1) 2번 실린더의 피스톤이 흡기행정 시작 지점의 상사점에 위치, 해 있다면 흡·배기밸브의 태핏 
+--- 28 @ 5205886 ---
+c="data-engi4.js">
+// ── 4급 기관사 면접 데이터 (한국해양수산연수원 2023.3 기준) ──
+(function(){
+const META = {
+  id: "engi4",
+  name: "4급 기관사",
+  description: "50문제 · 면접 기출",
+  version: "1.0",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "전진방향의 착화순서가 1→5→3→6→2→4인 4행정 사이클 디젤기 관의 흡·배기밸브 태핏 조정에 대해 다음 문항을 설명 (1) 2번 실린더의 피스톤이 흡기행정 시작 지점의 상사점에 위치 해 있다면 흡·배기밸브의 태핏 클리어런스를 조정할 실린더 에 대해 설명 (2) 2번 실린더 흡·배기밸브의 태핏 클리어런스를 조정한 후 1번 실린더를 조정하기 위한 플라이휠의 회전각도에 대해 설명",
+  "hint1": "(1) 2번 실린더의 피스톤이 흡기행정 시작 지점의 상사점에 위치",
+  "hint2": "(1) 2번 실린더의 피스톤이 흡기행정 시작 지점의 상사점에 위치, 해 있다면 흡·배기밸브의 태핏 클리어런스를 조정할 실린더, 에 대해 설명, 5번 실
+--- 29 @ 5225262 ---
+ript>
+<script data-bundled-src="data-engi5.js">
+// ── 5급 기관사 면접 데이터 (한국해양수산연수원 2023.3 기준) ──
+(function(){
+const META = {
+  id: "engi5",
+  name: "5급 기관사",
+  description: "45문제 · 면접 기출",
+  version: "1.0",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "디젤기관의 피스톤을 개방 점검한 후 피스톤링을 피스톤에 조립할 때의 방법과 주의사항에 대해 설명",
+  "hint1": "피스톤링과 피스톤링의 홈이 깨끗이 소제되었는지 점검",
+  "hint2": "피스톤링과 피스톤링의 홈이 깨끗이 소제되었는지 점검, 링확장기 (링오프너 )를 이용하여 가장 아래쪽 피스톤링부터 차례, 대로 조립, 피스톤링의 상하면이 바뀌지 않도록 주의 (글자가 각인된 면을",
+  "answer": "- 피스톤링과 피스톤링의 홈이 깨끗이 소제되었는지 점검\n- 링확장기 (링오프너 )를 이용하여 가장 아래쪽 피스톤링부터 차례\n대로 조립\n- 피스톤링의 상하면이 바뀌지 않도록 
+--- 30 @ 5225291 ---
+c="data-engi5.js">
+// ── 5급 기관사 면접 데이터 (한국해양수산연수원 2023.3 기준) ──
+(function(){
+const META = {
+  id: "engi5",
+  name: "5급 기관사",
+  description: "45문제 · 면접 기출",
+  version: "1.0",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "디젤기관의 피스톤을 개방 점검한 후 피스톤링을 피스톤에 조립할 때의 방법과 주의사항에 대해 설명",
+  "hint1": "피스톤링과 피스톤링의 홈이 깨끗이 소제되었는지 점검",
+  "hint2": "피스톤링과 피스톤링의 홈이 깨끗이 소제되었는지 점검, 링확장기 (링오프너 )를 이용하여 가장 아래쪽 피스톤링부터 차례, 대로 조립, 피스톤링의 상하면이 바뀌지 않도록 주의 (글자가 각인된 면을",
+  "answer": "- 피스톤링과 피스톤링의 홈이 깨끗이 소제되었는지 점검\n- 링확장기 (링오프너 )를 이용하여 가장 아래쪽 피스톤링부터 차례\n대로 조립\n- 피스톤링의 상하면이 바뀌지 않도록 주의 (글자가 각인된 면을 \n위쪽으로 함)\n- 피
+--- 31 @ 5239626 ---
+ript>
+<script data-bundled-src="data-engi6.js">
+// ── 6급 기관사 면접 데이터 (한국해양수산연수원 2023.3 기준) ──
+(function(){
+const META = {
+  id: "engi6",
+  name: "6급 기관사",
+  description: "45문제 · 면접 기출",
+  version: "1.0",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "디젤기관의 피스톤을 개방 점검한 후 피스톤링을 피스톤에 조립할 때의 방법과 주의사항에 대해 설명",
+  "hint1": "피스톤링과 피스톤링의 홈이 깨끗이 소제되었는지 점검",
+  "hint2": "피스톤링과 피스톤링의 홈이 깨끗이 소제되었는지 점검, 링확장기 (링오프너 )를 이용하여 가장 아래쪽 피스톤링부터 차례, 대로 조립, 피스톤링의 상하면이 바뀌지 않도록 주의 (글자가 각인된 면을",
+  "answer": "- 피스톤링과 피스톤링의 홈이 깨끗이 소제되었는지 점검\n- 링확장기 (링오프너 )를 이용하여 가장 아래쪽 피스톤링부터 차례\n대로 조립\n- 피스톤링의 상하면이 바뀌지 않도록 
+--- 32 @ 5239655 ---
+c="data-engi6.js">
+// ── 6급 기관사 면접 데이터 (한국해양수산연수원 2023.3 기준) ──
+(function(){
+const META = {
+  id: "engi6",
+  name: "6급 기관사",
+  description: "45문제 · 면접 기출",
+  version: "1.0",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "디젤기관의 피스톤을 개방 점검한 후 피스톤링을 피스톤에 조립할 때의 방법과 주의사항에 대해 설명",
+  "hint1": "피스톤링과 피스톤링의 홈이 깨끗이 소제되었는지 점검",
+  "hint2": "피스톤링과 피스톤링의 홈이 깨끗이 소제되었는지 점검, 링확장기 (링오프너 )를 이용하여 가장 아래쪽 피스톤링부터 차례, 대로 조립, 피스톤링의 상하면이 바뀌지 않도록 주의 (글자가 각인된 면을",
+  "answer": "- 피스톤링과 피스톤링의 홈이 깨끗이 소제되었는지 점검\n- 링확장기 (링오프너 )를 이용하여 가장 아래쪽 피스톤링부터 차례\n대로 조립\n- 피스톤링의 상하면이 바뀌지 않도록 주의 (글자가 각인된 면을 \n위쪽으로 함)\n- 피
+--- 33 @ 5253992 ---
+pt>
+<script data-bundled-src="data-small.js">
+// ── 소형선박조종사 면접 데이터 (한국해양수산연수원 2023.3 기준) ──
+(function(){
+const META = {
+  id: "small",
+  name: "소형선박조종사",
+  description: "25문제 · 면접 기출",
+  version: "1.0",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "해상 상태가 나쁜 경우에 기관운전 시의 주의사항에 대해 설명",
+  "hint1": "기관의 회전수를 낮춤",
+  "hint2": "기관의 회전수를 낮춤, 추진기가 공회전이 되지 않도록 주의, 파도에 의한 선체의 충격에 주의, 냉각수 계통의 공기흡입에 주의",
+  "answer": "- 기관의 회전수를 낮춤\n- 추진기가 공회전이 되지 않도록 주의\n- 파도에 의한 선체의 충격에 주의\n- 냉각수 계통의 공기흡입에 주의\n- 윤활유 계통의 공기흡입에 주의",
+  "category": "기관"
+ },
+ {
+  "id": 2,
+  "q": "운전중인 디젤기관의 엔진오일 (윤활유 ) 압력이 떨어
+--- 34 @ 5254021 ---
+"data-small.js">
+// ── 소형선박조종사 면접 데이터 (한국해양수산연수원 2023.3 기준) ──
+(function(){
+const META = {
+  id: "small",
+  name: "소형선박조종사",
+  description: "25문제 · 면접 기출",
+  version: "1.0",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ {
+  "id": 1,
+  "q": "해상 상태가 나쁜 경우에 기관운전 시의 주의사항에 대해 설명",
+  "hint1": "기관의 회전수를 낮춤",
+  "hint2": "기관의 회전수를 낮춤, 추진기가 공회전이 되지 않도록 주의, 파도에 의한 선체의 충격에 주의, 냉각수 계통의 공기흡입에 주의",
+  "answer": "- 기관의 회전수를 낮춤\n- 추진기가 공회전이 되지 않도록 주의\n- 파도에 의한 선체의 충격에 주의\n- 냉각수 계통의 공기흡입에 주의\n- 윤활유 계통의 공기흡입에 주의",
+  "category": "기관"
+ },
+ {
+  "id": 2,
+  "q": "운전중인 디젤기관의 엔진오일 (윤활유 ) 압력이 떨어지는 경우의 원 인에 대해 설명",
+  "hint1"
+--- 35 @ 5262659 ---
+bundled-src="data-safety1.js">
+// ── 선박안전관리사 1급 면접 데이터 (2023.12 ~ 2025.4 기출 통합) ──
+(function(){
+const META = {
+  id: "safety1",
+  name: "선박안전관리사 1급",
+  description: "18문제 · 4회차 면접 기출",
+  version: "1.0",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ { "id": 1,  "q": "선박이력기록부(CSR)에 기재된 사항 15가지 (2023.12 1회)",
+   "hint1": "CSR: Continuous Synopsis Record (지속종합기록부)",
+   "hint2": "선명·등록항·소유자·관리자·선급·기국·총톤수·IMO번호·MMSI·선종·선박길이·DOC·SMC·ISSC·말소일 등",
+   "answer": "- 선명(Name of ship)\n- 등록항(Port of registry)\n- 기국(Flag State)\n- IMO 번호\n- 선박소유자(Owner) 명칭과 주소\n- 선박관리자(Manager) 명칭과 주소\n- 선급(Class)\n- 총톤수\n- 선종(
+--- 36 @ 5262688 ---
+>
+// ── 선박안전관리사 1급 면접 데이터 (2023.12 ~ 2025.4 기출 통합) ──
+(function(){
+const META = {
+  id: "safety1",
+  name: "선박안전관리사 1급",
+  description: "18문제 · 4회차 면접 기출",
+  version: "1.0",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ { "id": 1,  "q": "선박이력기록부(CSR)에 기재된 사항 15가지 (2023.12 1회)",
+   "hint1": "CSR: Continuous Synopsis Record (지속종합기록부)",
+   "hint2": "선명·등록항·소유자·관리자·선급·기국·총톤수·IMO번호·MMSI·선종·선박길이·DOC·SMC·ISSC·말소일 등",
+   "answer": "- 선명(Name of ship)\n- 등록항(Port of registry)\n- 기국(Flag State)\n- IMO 번호\n- 선박소유자(Owner) 명칭과 주소\n- 선박관리자(Manager) 명칭과 주소\n- 선급(Class)\n- 총톤수\n- 선종(Type of ship)\n- DOC 발행회사\n- 
+--- 37 @ 5270668 ---
+bundled-src="data-safety2.js">
+// ── 선박안전관리사 2급 면접 데이터 (2023.12 ~ 2025.4 기출 통합) ──
+(function(){
+const META = {
+  id: "safety2",
+  name: "선박안전관리사 2급",
+  description: "19문제 · 4회차 면접 기출",
+  version: "1.0",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ { "id": 1,  "q": "SOLAS 퇴선훈련의 전반적인 내용 (2023.12 1회)",
+   "hint1": "Abandon ship drill - 매월 1회 / 25% 교체 시 24시간 내",
+   "hint2": "비상신호, 집합, 구명조끼, 구명정 진수 준비, LSA 점검, GMDSS 사용",
+   "answer": "- 비상신호: 단음 7회 + 장음 1회\n- 승무원·여객 집합소(Muster Station) 집결\n- 구명조끼·보온복 착용\n- 구명정·구명벌 진수 준비 및 부분 진수\n- 비상조명·전원·통신장비 작동 확인\n- 구명장비(LSA) 점검 및 사용법 시연\n- 비상문·탈출로 확인\n- 매월 1회 의무 
+--- 38 @ 5270697 ---
+>
+// ── 선박안전관리사 2급 면접 데이터 (2023.12 ~ 2025.4 기출 통합) ──
+(function(){
+const META = {
+  id: "safety2",
+  name: "선박안전관리사 2급",
+  description: "19문제 · 4회차 면접 기출",
+  version: "1.0",
+  defaultStart: '2026-04-14',
+  defaultExam: '2026-06-06',
+};
+const QUESTIONS = [
+ { "id": 1,  "q": "SOLAS 퇴선훈련의 전반적인 내용 (2023.12 1회)",
+   "hint1": "Abandon ship drill - 매월 1회 / 25% 교체 시 24시간 내",
+   "hint2": "비상신호, 집합, 구명조끼, 구명정 진수 준비, LSA 점검, GMDSS 사용",
+   "answer": "- 비상신호: 단음 7회 + 장음 1회\n- 승무원·여객 집합소(Muster Station) 집결\n- 구명조끼·보온복 착용\n- 구명정·구명벌 진수 준비 및 부분 진수\n- 비상조명·전원·통신장비 작동 확인\n- 구명장비(LSA) 점검 및 사용법 시연\n- 비상문·탈출로 확인\n- 매월 1회 의무 시행, 승무원 25%↑ 교체 시 24시간 내 추가 실
+--- 39 @ 5402604 ---
+'Vessel in distress'·'Position'·'Number of persons on board'", explanation: "조난통보 4요소: 식별·위치·조난성격·필요지원. SMCP 표준어구로 통일." }
+  };
+})();
+
+</script>
+<script data-bundled-src="audit-navi.js">
+// 항해사 1~6급 공식 공개문제집 대조 및 현행성 표시 (2026-08-04)
+(function(){
+  const REVIEW_DATE = "2026-08-04";
+  const OFFICIAL = {
+    publisher: "한국해양수산연수원",
+    notice: "공개문제집의 답변은 예시이며, 2023년 3월 당시의 사실·법령을 기준으로 한다.",
+    oneTwo: {
+      published: "2023-03-31",
+      url: "https://lems.seaman.or.kr/CInformation/Archives/selectArchivesDetail.do?bbsSubSeq=BSUB_0000002455"
+    },
+    threeSix: {
+      published: "2023-06-26",
+      url: "https://lems.seaman.or.kr/C
+--- 40 @ 5402652 ---
+ns on board'", explanation: "조난통보 4요소: 식별·위치·조난성격·필요지원. SMCP 표준어구로 통일." }
+  };
+})();
+
+</script>
+<script data-bundled-src="audit-navi.js">
+// 항해사 1~6급 공식 공개문제집 대조 및 현행성 표시 (2026-08-04)
+(function(){
+  const REVIEW_DATE = "2026-08-04";
+  const OFFICIAL = {
+    publisher: "한국해양수산연수원",
+    notice: "공개문제집의 답변은 예시이며, 2023년 3월 당시의 사실·법령을 기준으로 한다.",
+    oneTwo: {
+      published: "2023-03-31",
+      url: "https://lems.seaman.or.kr/CInformation/Archives/selectArchivesDetail.do?bbsSubSeq=BSUB_0000002455"
+    },
+    threeSix: {
+      published: "2023-06-26",
+      url: "https://lems.seaman.or.kr/CInformation/Archives/selectArchivesDetail.do?bbs
+--- 41 @ 5411103 ---
+      reviewedAnswerCount:reviewed.size,
+      removedCount:subjectId==="navi6"?5:0,
+      addedCount:(subjectId==="navi3"||subjectId==="navi4")?1:0
+    };
+    data.meta.version=(subjectId==="navi2"?"2.2":"1.1")+"-audit-20260804";
+    data.meta.auditDate=REVIEW_DATE;
+    data.meta.auditScope=`${data.QUESTIONS.length}/${def.total} official questions`;
+    data.meta.description=`${data.QUESTIONS.length}문제 · 공식 공개문제 대조`;
+  }
+
+  patchConcepts();
+  Object.keys(DEFINITIONS).forEach(applySubject);
+  window.MD_NAVI_AUDIT={reviewDate:REVIEW_DATE,official:OFFICIAL,definitions:DEFINITIONS,applySubject};
+})();
+
+</script>
+<script data-bundled-sr
+--- 42 @ 13622200 ---
+g9lbHiV8X2LJVZIQV4PGJn1RbNMWl727pu2Tt5i7Ldv/flnbzH2p7v3vlj50/VPPvg/v7792T+yn8cb/v3f2b8ldPzNtfnZ+Rtv31v617s3l99evPZb9nP269uff/yr2x/87K0/T09N/+yt/wJAOVZ0prcAAA==</script>
+<script type="application/gzip" id="md-bundle-past-2026-navi2-2_js">H4sIAAAAAAACCs297VMb15ov+n3/FatcNSdQhxDAxm9Tubsce8c7d8c7ntizU/Oy61YjGuixpGa6W3Y850yVgDYjG3mABBlBJLaIIUBKnrRAYHEG161Kvs/5H3K/qVv/w63fs1a/qLuFhV/gfEmMevVaq9fzrOf95aOP2K9L2V+XsmxoYOii/chkQ83G41bhRatQd6arPc7MlGNWeplTKQ21VvPMqRSaDYs1G5ZzUGKtgom/+Ay/6RnLpBOGoqZ7ev/HbxhLqGndYLev/d3nX1y7wT5m+O1cSjakc1fp34ydU0bPXWXnsPKHaem+MvTh0Lk+/uShLGnnrtKmxC/jmjQqf0Yv0Nhzwd/vTKiaEf/oc2lETtIycR/mDtVlXVfUNJZ0f1EzWkJ294eTEd/
+--- 43 @ 13645498 ---
+G0Yawtk7d7IwgIeYe2VnGORGwDyZGXbN8t23dXtndDc3zD259/861//hlFZYPVB/60b/8/ta3fuso/DP/zP/8n+R8zAfzg3NDB08cO0dF8Z+nDo3J/Zx+z2tb/7/ItrN/76N//a29P717/5/wGHD7hSqQEBAA==</script>
+<script type="application/gzip" id="md-bundle-past-2026-navi3-2_js">H4sIAAAAAAACCr19bVMbV5b/+3yKG97ErsIO4IcknppKeZ2ZjKvidf5r76amJlNbjXSFet3qVrpbEHZ3qgS0GdnIgxgjEFhimxgMpPC4BQKLHVxblf0m2Xfq29/hX+fc20+ijfBDVDU1sW7fpz7n3PPwO+c2H39Mfl4s/rxYJCNDI1fd+xa51Gk/8KrPvWqLTe+eYzNTzLLPE2bXR7zVMmF2tdN2SKftsMM68aoW/OIzfHAuU1BTpqyp587/xweEpDTVMMnX13//1e3rX5BfE2gbyFFTGriG/yZkQE4PXCMDsPIFVRqXL10YGRjkTyappA9cw02JljFdStObOAD7DkTb72Q13Ux+9JU0ShV4lPhifleDGoasqbCk36IV9BT19weUEe/uk+LU+UzNlGD
+--- 44 @ 13658676 ---
+s3IZNCGyw7zZXscgAkaQhqjunaPBmoL8h+BZ5iXFSU5CfL2cv8BIX/84E+/+oCgOdQmLt764l+/vn7nLvl1d8N//if5j4SOfxgYGRq5egE+UH/pwsjAH8mvydfXf//V7etf/OqDP50/d/5XH/x/UITUJBeGAAA=</script>
+<script type="application/gzip" id="md-bundle-past-2026-navi3-3_js">H4sIAAAAAAACCs193VMb2bXve/6KXa5zrqGuxuHDeGacmzNlO5OJq8YZn7HPyZ2kpu5ppAa6RqiZbskMyUmVgIYIIwcYIyOwRMQYG+yLbwTIWJwwL5P3/BGTN3Xrf7j1W2vv/hACiTnnVt0XUHfvz7XXXl97rbV//GPx/Wr2+9WsGOgbuObOOWKwUV9oFl43CzVvZq/Hm532nEqv8CqlweZGXniVQqNeFY161TsqiWbBwRO38KOekUwqnjbMVE/v734kRNxM2Wnx8Y2bH358T/xU/ObS3xf+z6WYuPT3hT/zvyr/27/0+U/84v8sfip63INcs1iPCXev7lVKMeE5leZs2dvJxtC/u/gmJhqHJ+6rl+r/7USv+Ok/iR50K4Sszr+5CfrtN3M9+HllXJv
+--- 45 @ 21810302 ---
+kg0UDtwzkhlhyIWPLxMvWee7UhxRbofoQqndYYN2rI1XBQ+D/JDN7Y3VXlYNp8IodAN0p+zJsXgGtPBbJ8Ip8poq4LNKrjwKxeS6t7lUacobcwZpxJzTnOHBvXzXvBuXN5w7+epb+79B52pKztB6z4A</script>
+<script type="application/gzip" id="md-bundle-past-explain-2026_js">H4sIAAAAAAACCuy9fVNbV5Yv/P98il2+fwTcCn7LS4eZnqok3deTqmSSintmnplK1VOKLTvcYOECnHTu5D4lwYEIJNoiRnCAIyxs2YBbjg8gkOjInSru//0hOgHbOkff4an1svfZ50ji5Qi6M1VTNT0xIJ2z99p7r71efuu3zp0Tt6JDw6/GfnerP9oXf/Xi+Ytv9PyvIfGXxIz4IDrYN9x3MyZ+PdjX3y/cpaxzZ164o3nXWP+7c+dEI/ekkSu7IyVRr9rutiXqdr5eTrjpvIDfG8Ue0RgpioaZc9P5XnHm3//93//96xuD0WuxK58NDA5/PRQbGuobiH89dPvT/xW7Ovx1/PbNT2ODZ+DR9BLhpq26newVMKpXz7/x6oU3f3vh9d4LF3rP/7Lnwptv/QePwnm
+--- 46 @ 22132291 ---
+--textMuted);color:var(--textDim)" onclick="showTerms()">이용약관</button>
+        </div>
+        <div style="font-size:10px;color:var(--textMuted);letter-spacing:1px">Maritime Drill v${APP_VERSION} · Android 단일 파일 · &copy; 2026 · BETA</div>
+      </div>
+    `;
+    return;
+  }
+
+  // ── 2단계: 선택한 그룹의 세부 과목 화면 ──
+  const g = SUBJECT_GROUPS.find(x => x.group === selectedGroup);
+  const groupSubs = SUBJECTS.filter(s => g.ids.includes(s.id));
+  const list = groupSubs.map(s => {
+    // v4.92: 항해사 급수별 일반 시험 경로를 선택 단계부터 명확히 표시
+    const navigatorTrack = /^navi[12]$/.test(s.id)
+      ? '필기 + 면접'
+      : (/^navi[3-6]$/.test(s.id) ? '일반 응시: 필기만 · 구
+--- 47 @ 22149820 ---
+s,past-2025-navi1-2.js,past-2025-navi1-3.js,past-2025-navi1-4.js,past-2025-navi1e-1.js,past-2025-navi1e-3.js,past-2025-navi1e-4.js,past-2025-navi2-1.js,past-2025-navi2-2.js,past-2025-navi2-3.js,past-2025-navi2-4.js,past-2026-navi2-2.js,past-2026-navi3-3.js,past-2025-navi2e-1.js,past-2025-navi2e-2.js,past-2025-navi2e-3.js,past-2025-navi2e-4.js,past-2025-navi3-1.js,past-2025-navi3-2.js,past-2025-navi3-3.js,past-2025-navi3-4.js,past-2025-navi3e-1.js,past-2025-navi3e-2.js,past-2025-navi3e-3.js,past-2025-navi3e-4.js,past-2026-navi3-2.js,past-2025-navi4-1.js,past-2025-navi4-2.js,past-2025-navi4-3.js,past-2025-navi4-4.js,past-2025-navi4e-1
+--- 48 @ 22149841 ---
+s,past-2025-navi1-3.js,past-2025-navi1-4.js,past-2025-navi1e-1.js,past-2025-navi1e-3.js,past-2025-navi1e-4.js,past-2025-navi2-1.js,past-2025-navi2-2.js,past-2025-navi2-3.js,past-2025-navi2-4.js,past-2026-navi2-2.js,past-2026-navi3-3.js,past-2025-navi2e-1.js,past-2025-navi2e-2.js,past-2025-navi2e-3.js,past-2025-navi2e-4.js,past-2025-navi3-1.js,past-2025-navi3-2.js,past-2025-navi3-3.js,past-2025-navi3-4.js,past-2025-navi3e-1.js,past-2025-navi3e-2.js,past-2025-navi3e-3.js,past-2025-navi3e-4.js,past-2026-navi3-2.js,past-2025-navi4-1.js,past-2025-navi4-2.js,past-2025-navi4-3.js,past-2025-navi4-4.js,past-2025-navi4e-1.js,past-2025-navi4e-
+--- 49 @ 22150122 ---
+ast-2025-navi2e-3.js,past-2025-navi2e-4.js,past-2025-navi3-1.js,past-2025-navi3-2.js,past-2025-navi3-3.js,past-2025-navi3-4.js,past-2025-navi3e-1.js,past-2025-navi3e-2.js,past-2025-navi3e-3.js,past-2025-navi3e-4.js,past-2026-navi3-2.js,past-2025-navi4-1.js,past-2025-navi4-2.js,past-2025-navi4-3.js,past-2025-navi4-4.js,past-2025-navi4e-1.js,past-2025-navi4e-2.js,past-2025-navi4e-3.js,past-2025-navi4e-4.js,past-2025-navi5-2.js,past-2025-navi5-3.js,past-2025-navi5-4.js,past-2025-navi5d-1.js,past-2025-navi5d-2.js,past-2025-navi5d-3.js,past-2025-navi5d-4.js,past-2025-navi5de-1.js,past-2025-navi5de-2.js,past-2025-navi5de-3.js,past-2025-na
+--- 50 @ 22151441 ---
+-engi5d-2.js,past-2025-engi5d-3.js,past-2025-engi5d-4.js,past-2025-engi6-1.js,past-2025-engi6-2.js,past-2025-engi6-3.js,past-2025-engi6-4.js`.split(',');
+const PAST_EXPLAIN_YEARS = new Set([2020,2021,2022,2023,2024,2025,2026]);
+const optionalScriptLoads = new Map();
+const pastDataSubjectsLoaded = new Set();
+
+// MD_ANDROID_LOADER_START
+function getBundledOptionalScript(src){
+  const id='md-bundle-'+String(src||'').replace(/[^a-zA-Z0-9_-]/g,'_');
+  const node=document.getElementById(id);
+  return node?node.textContent.trim():'';
+}
+async function inflateBundledScript(payload){
+  if(typeof DecompressionStream==='undefined'){
+    throw n
+--- 51 @ 22165565 ---
+MD_NAVI_FREQUENCY[gradeId]||null;
+}
+const n3aOriginIndexes={};
+function n3aOriginKey(year,session,subject,number){return `${year}|${session}|${subject}|${number}`}
+function n3aQuestionOrigin(q){
+  if(!q||Number(q._year)<2026)return null;
+  const gradeId=baseFromShort(q._short||'');
+  if(!NAVI_ANALYSIS_GRADES.includes(gradeId))return null;
+  const data=n3aData(gradeId);
+  if(!data||!Array.isArray(data.classifications))return null;
+  if(!n3aOriginIndexes[gradeId]){
+    n3aOriginIndexes[gradeId]=new Map(data.classifications.map(entry=>[
+      n3aOriginKey(entry.year,entry.session,entry.subject,entry.number),entry
+    ]));
+  }
+  return 
+--- 52 @ 22240463 ---
+all';
+  const exams = getPastExamsForSession(pastBaseShort, pastYear, pastSession, curV);
+  if(!exams.length){ showToast('데이터를 찾을 수 없습니다.'); return; }
+  if(NAVI_ANALYSIS_GRADES.includes(pastBaseShort)&&Number(pastYear)>=2026){
+    renderPastLoading(`${pastYear}년 신출·기출 이력을 불러오는 중입니다`);
+    try{await ensureNavi3FrequencyData(pastBaseShort)}catch(error){console.warn('[v5.03] 출제 이력 로드 실패:',error)}
+  }
+  // 모든 변종 문제 합치기
+  const allQuestions = [];
+  exams.forEach(p => p.questions.forEach(q => allQuestions.push({
+    ...q, _year: pastYear, _session: pastSession, '회차': pastSession, _short: p.meta.gradeShort
+  })));
+  // 과목 필터 결정
+  let filte
+--- 53 @ 22473800 ---
+bled&&cfg.examDate?`<button class="btn btn-outline" style="width:100%;margin-top:9px;border-color:${g==='navi2'?'#2563EB':'#059669'};color:${g==='navi2'?'#2563EB':'#059669'}" onclick="startNavigatorPassPlanMock('${g}')">2026 최신 회차 실전 모의</button>`:''}
+      </div>`;
+    }).join('');
+    app.innerHTML=`
+      <div style="padding-top:22px;margin-bottom:14px"><button class="text-nav" onclick="pickPrepType('${planEntrySubject}')">${icon('arrowLeft',14)} 학습유형으로</button></div>
+      <section class="card" style="background:linear-gradient(135deg,#4C1D95,#7C3AED);color:#fff;border:none;padding:22px;margin-bottom:14px">
+        <div style="fo
+--- 54 @ 22481877 ---
+udes(gradeId))return;
+    const plan=ppLoadPlan(),data=n3aData(gradeId)||await ensureNavi3FrequencyData(gradeId);
+    const subjects=ppSelectedSubjects(plan,gradeId,data);
+    renderPastLoading(`${GRADE_LABELS[gradeId]} 2026 실전 모의를 준비하는 중입니다`);
+    try{
+      if(!pastDataSubjectsLoaded.has(gradeId))await ensurePastDataForSubject(gradeId);
+      const exams=getPastExamsByBase(gradeId,'상선').filter(p=>p.meta&&Number(p.meta.year)===2026).sort((a,b)=>Number(b.meta.session)-Number(a.meta.session));
+      if(!exams.length)throw new Error('2026년 상선 기출 회차가 없습니다.');
+      const latest=exams[0];
+      pastSubjectId=gradeId;pastBaseShort=gradeI
+--- 55 @ 22482089 ---
+adeId]} 2026 실전 모의를 준비하는 중입니다`);
+    try{
+      if(!pastDataSubjectsLoaded.has(gradeId))await ensurePastDataForSubject(gradeId);
+      const exams=getPastExamsByBase(gradeId,'상선').filter(p=>p.meta&&Number(p.meta.year)===2026).sort((a,b)=>Number(b.meta.session)-Number(a.meta.session));
+      if(!exams.length)throw new Error('2026년 상선 기출 회차가 없습니다.');
+      const latest=exams[0];
+      pastSubjectId=gradeId;pastBaseShort=gradeId;pastYear=Number(latest.meta.year);pastSession=Number(latest.meta.session);pastVariant='상선';pastAllYears=false;pastReturnView=null;
+      await startPastSession('mock',subjects);
+    }catch(e){
+      app.innerHT
+--- 56 @ 22482195 ---
+taForSubject(gradeId);
+      const exams=getPastExamsByBase(gradeId,'상선').filter(p=>p.meta&&Number(p.meta.year)===2026).sort((a,b)=>Number(b.meta.session)-Number(a.meta.session));
+      if(!exams.length)throw new Error('2026년 상선 기출 회차가 없습니다.');
+      const latest=exams[0];
+      pastSubjectId=gradeId;pastBaseShort=gradeId;pastYear=Number(latest.meta.year);pastSession=Number(latest.meta.session);pastVariant='상선';pastAllYears=false;pastReturnView=null;
+      await startPastSession('mock',subjects);
+    }catch(e){
+      app.innerHTML=`<div class="card" style="margin-top:30px"><b>실전 모의를 시작하지 못했습니다.</b><div style="font-size:12px;margin-t
+
+===== 2026 nearby grade/data markers =====
+7: navi2, 2급 항해사
+8: navi2, 2급 항해사
+9: navi2, 2급 항해사
+10: navi2, 2급 항해사
+12: navi2
+13: navi2, navi3, 3급 항해사
+14: navi2, navi3, 3급 항해사
+15: navi3
+16: navi3
+39: navi2, 2급 항해사
+40: navi2, 2급 항해사
+41: navi2, navi3
+42: navi2
+43: navi3
+44: navi3
+47: navi2, navi3
+48: navi2, navi3
+49: navi2, navi3
+51: navi3, year
+52: year
+53: navi2, 3급 항해사
+54: year
+55: year
+56: year
