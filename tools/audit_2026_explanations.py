@@ -14,26 +14,28 @@ def decode_scripts():
 scripts=decode_scripts(); exam_rows=[]; questions=[]
 for sid,raw in scripts.items():
     if not re.match(r'md-bundle-past-2026-navi[23]-\d+_js$',sid):continue
-    gm=re.search(r'"gradeShort"\s*:\s*"(navi[23])"',raw); sm=re.search(r'"session"\s*:\s*(\d+)',raw)
+    gm=re.search(r'(?:"gradeShort"|gradeShort)\s*:\s*"(navi[23])"',raw); sm=re.search(r'(?:"session"|session)\s*:\s*(\d+)',raw)
     if not gm or not sm:continue
-    grade=gm.group(1); session=int(sm.group(1))
-    # Each question starts with 번호; inspect its object-sized slice for 과목/문제/정답/선택지.
+    grade=gm.group(1); session=int(sm.group(1)); qrows=[]
     starts=[m.start() for m in re.finditer(r'\{\s*"번호"\s*:\s*\d+',raw)]
-    qrows=[]
     for i,st in enumerate(starts):
         chunk=raw[st:starts[i+1] if i+1<len(starts) else min(len(raw),st+6000)]
         nm=re.search(r'"번호"\s*:\s*(\d+)',chunk); sub=re.search(r'"과목"\s*:\s*"([^"]+)"',chunk); qm=re.search(r'"문제"\s*:\s*"((?:\\.|[^"\\])*)"',chunk); am=re.search(r'"정답"\s*:\s*(\d+)',chunk)
         if not nm or not sub:continue
-        question=qm.group(1) if qm else ''
-        q={'key':f"2026|{grade}|{session}|{sub.group(1)}|{int(nm.group(1))}",'grade':grade,'session':session,'subject':sub.group(1),'number':int(nm.group(1)),'question':question,'answer':int(am.group(1)) if am else None}
-        questions.append(q); qrows.append(q)
+        q={'key':f"2026|{grade}|{session}|{sub.group(1)}|{int(nm.group(1))}",'grade':grade,'session':session,'subject':sub.group(1),'number':int(nm.group(1)),'question':qm.group(1) if qm else '', 'answer':int(am.group(1)) if am else None}
+        questions.append(q);qrows.append(q)
+    if not qrows:
+        for line in raw.splitlines():
+            m=re.search(r'^\s*Q\((\d+),\s*"((?:\\.|[^"\\])*)",\s*\[(.*)\],\s*(\d+),\s*"([^"]+)"',line)
+            if not m:continue
+            num=int(m.group(1)); subject=m.group(5)
+            q={'key':f"2026|{grade}|{session}|{subject}|{num}",'grade':grade,'session':session,'subject':subject,'number':num,'question':m.group(2),'answer':int(m.group(4))}
+            questions.append(q);qrows.append(q)
     exam_rows.append({'id':sid,'grade':grade,'session':session,'total':len(qrows)})
 
 exp_raw=scripts.get('md-bundle-past-explain-2026_js','')
 exp_keys=set(re.findall(r'"(2026\|navi[23]\|\d+\|[^"\n]+\|\d+)"\s*:',exp_raw))
-exp_len={}
-for m in re.finditer(r'"(2026\|navi[23]\|\d+\|[^"\n]+\|\d+)"\s*:\s*\{\s*html:\s*"((?:\\.|[^"\\])*)"\s*,\s*loading:',exp_raw,re.S):
-    exp_len[m.group(1)]=len(m.group(2))
+exp_len={m.group(1):len(m.group(2)) for m in re.finditer(r'"(2026\|navi[23]\|\d+\|[^"\n]+\|\d+)"\s*:\s*\{\s*html:\s*"((?:\\.|[^"\\])*)"\s*,\s*loading:',exp_raw,re.S)}
 missing=[q for q in questions if q['key'] not in exp_keys]
 short=[{**q,'html_len':exp_len.get(q['key'],0)} for q in questions if q['key'] in exp_keys and exp_len.get(q['key'],0)<120]
 summary={'exams':exam_rows,'questions_total':len(questions),'explanations_total_keys':len(exp_keys),'covered':len(questions)-len(missing),'missing':len(missing),'short':len(short)}
