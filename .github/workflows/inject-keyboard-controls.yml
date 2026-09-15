@@ -15,9 +15,11 @@ on:
       - 'tools/patch_predictive_mock_followup.py'
       - 'tools/patch_2026_session3_explanations.py'
       - 'tools/patch_weak_drills.py'
+      - 'tools/patch_recovery_recheck.py'
       - 'tools/test_predictive_mock.py'
       - 'tools/test_2026_session3_explanations.py'
       - 'tools/test_weak_drills.py'
+      - 'tools/test_recovery_recheck.py'
       - '.github/workflows/inject-keyboard-controls.yml'
   workflow_dispatch:
 
@@ -39,9 +41,11 @@ jobs:
           python tools/patch_predictive_mock_followup.py
           python tools/patch_2026_session3_explanations.py
           python tools/patch_weak_drills.py
+          python tools/patch_recovery_recheck.py
           python tools/test_predictive_mock.py
           python tools/test_2026_session3_explanations.py
           python tools/test_weak_drills.py
+          python tools/test_recovery_recheck.py
       - name: Commit index update
         run: |
           if git diff --quiet -- index.html; then
