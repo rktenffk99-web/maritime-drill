@@ -74,7 +74,7 @@
 (function(){
   const src='drive-sync-v2.js';
   if(document.readyState==='loading'){
-    document.write('<script src="'+src+'"><\\/script>');
+    document.write('<script src="'+src+'"><'+'/script>');
   }else{
     const script=document.createElement('script');
     script.src=src;
