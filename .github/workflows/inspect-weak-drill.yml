@@ -1,0 +1,13 @@
+name: Inspect weak drill context
+on:
+  push:
+    branches: [ feature/today-wrong-and-frequent-wrong ]
+    paths:
+      - 'tools/inspect_weak_drill_context.py'
+      - '.github/workflows/inspect-weak-drill.yml'
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python tools/inspect_weak_drill_context.py
