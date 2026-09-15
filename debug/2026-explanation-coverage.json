@@ -12,12 +12,18 @@
         "grade": "navi3",
         "session": 2,
         "total": 75
+      },
+      {
+        "id": "md-bundle-past-2026-navi3-3_js",
+        "grade": "navi3",
+        "session": 3,
+        "total": 125
       }
     ],
-    "questions_total": 200,
+    "questions_total": 325,
     "explanations_total_keys": 200,
     "covered": 200,
-    "missing": 0,
+    "missing": 125,
     "short": 0,
     "navi2": {
       "questions": 125,
@@ -25,11 +31,1137 @@
       "missing": 0
     },
     "navi3": {
-      "questions": 75,
+      "questions": 200,
       "covered": 75,
-      "missing": 0
+      "missing": 125
     }
   },
-  "missing": [],
+  "missing": [
+    {
+      "key": "2026|navi3|3|항해|1",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "항해",
+      "number": 1,
+      "question": "선체 자기와 자차 수정구의 연결이 옳지 않은 것은?",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|항해|2",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "항해",
+      "number": 2,
+      "question": "자이로컴퍼스의 속도 오차가 커지는 경우를 <보기>에서 모두 고른 것은? <보기> ㄱ. 선박의 속도가 빠를 때 ㄴ. 선박의 속도가 느릴 때 ㄷ. 침로가 남북 방향에 가까울 때 ㄹ. 침로가 동서 방향에 가까울 때 ㅁ. 위도가 높아질 때",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|항해|3",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "항해",
+      "number": 3,
+      "question": "프리 자이로스코프(Free gyroscope)를 위도 40°인 지표면에 놓았을 때 로터축의 시운동은?",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|항해|4",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "항해",
+      "number": 4,
+      "question": "자동조타장치를 사용하여 항행할 때 수동조타를 반드시 테스트하거나 즉시 전환하여야 하는 경우가 아닌 것은?",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|항해|5",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "항해",
+      "number": 5,
+      "question": "다음 그림의 IALA 방위표지를 동(East)→서(West)→남(South)→북(North) 순서대로 나열한 것은? [그림: ① BY, ② YB, ③ YBY, ④ BYB]",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|항해|6",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "항해",
+      "number": 6,
+      "question": "IALA 해상부표식에서 미국이 채택한 방식은?",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|항해|7",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "항해",
+      "number": 7,
+      "question": "무신호(Fog signal)에 관한 설명으로 옳은 것은?",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|항해|8",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "항해",
+      "number": 8,
+      "question": "항해용 해도의 종류가 아닌 것은?",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|항해|9",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "항해",
+      "number": 9,
+      "question": "항해자에게 육상의 여행안내서와 같은 역할을 하는 수로서지는?",
+      "answer": 0
+    },
+    {
+      "key": "2026|navi3|3|항해|10",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "항해",
+      "number": 10,
+      "question": "임의 항만의 조시와 조고를 구하기 위하여 표준항의 조시와 조고를 개정하는 개정수는?",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|항해|11",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "항해",
+      "number": 11,
+      "question": "북태평양 해류를 일으키는 바람은?",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|항해|12",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "항해",
+      "number": 12,
+      "question": "수평협각법을 실시할 경우 물표의 선정방법으로 옳지 않은 것은?",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|항해|13",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "항해",
+      "number": 13,
+      "question": "선박이 항행하기가 곤란한 좁은 수로를 통과하여야 할 때에는 어느 시기를 택하여야 하는가?",
+      "answer": 0
+    },
+    {
+      "key": "2026|navi3|3|항해|14",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "항해",
+      "number": 14,
+      "question": "중분위도항법에서 중분위도가 60° 이하이고, 항정이 600해리 이내이면 이 항법에 의한 오차는 얼마 이하인가?",
+      "answer": 0
+    },
+    {
+      "key": "2026|navi3|3|항해|15",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "항해",
+      "number": 15,
+      "question": "피험선에 관한 설명으로 옳지 않은 것은?",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|항해|16",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "항해",
+      "number": 16,
+      "question": "점면항법은 완전한 항법이 아니고 중분위도항법을 위한 보조 계산법이라고 하는 이유는?",
+      "answer": 0
+    },
+    {
+      "key": "2026|navi3|3|항해|17",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "항해",
+      "number": 17,
+      "question": "출몰방위각법으로 컴퍼스 오차를 측정할 때 가장 적절한 시기는?",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|항해|18",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "항해",
+      "number": 18,
+      "question": "천체의 방위각 변화가 최대일 때는?",
+      "answer": 0
+    },
+    {
+      "key": "2026|navi3|3|항해|19",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "항해",
+      "number": 19,
+      "question": "위도 35°29′N, 경도 145°25′E인 지점에서 지방시(ZT) 11월 27일 05시 15분을 UTC로 옳게 나타낸 것은?",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|항해|20",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "항해",
+      "number": 20,
+      "question": "각각의 수평선까지 거리를 비교한 설명으로 옳은 것은?",
+      "answer": 0
+    },
+    {
+      "key": "2026|navi3|3|항해|21",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "항해",
+      "number": 21,
+      "question": "레이더 물표상에서 상대선의 상대운동 벡터에 관한 설명으로 옳은 것은?",
+      "answer": 0
+    },
+    {
+      "key": "2026|navi3|3|항해|22",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "항해",
+      "number": 22,
+      "question": "레이더의 제2차 소인에 의한 거짓상에 관한 설명으로 옳은 것은?",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|항해|23",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "항해",
+      "number": 23,
+      "question": "레이더 성능 중 펄스폭의 영향을 거의 받지 않는 것은?",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|항해|24",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "항해",
+      "number": 24,
+      "question": "같은 평면상에 있는 두 점으로부터 거리의 차이가 일정한 점들의 궤적은?",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|항해|25",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "항해",
+      "number": 25,
+      "question": "연안항로 선정 시 이안거리 및 주요지점의 통과시기를 결정할 경우 고려하여야 할 사항이 아닌 것은?",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|운용|1",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "운용",
+      "number": 1,
+      "question": "재화중량톤수의 정의로 옳은 것은?",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|운용|2",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "운용",
+      "number": 2,
+      "question": "선박의 계선설비가 아닌 것은?",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|운용|3",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "운용",
+      "number": 3,
+      "question": "3호 선저도료(B/T)의 도장법에 관한 설명으로 옳은 것은?",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|운용|4",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "운용",
+      "number": 4,
+      "question": "전진 중 전타 시작의 위치(WOP)에서 정상선회권 중심까지 원침로상에서 측정한 거리는?",
+      "answer": 0
+    },
+    {
+      "key": "2026|navi3|3|운용|5",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "운용",
+      "number": 5,
+      "question": "선체의 6자유도 운동 중 정횡 방향의 왕복 직선운동은?",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|운용|6",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "운용",
+      "number": 6,
+      "question": "강풍 또는 파랑이 심하거나, 조류가 강한 수역에서 강한 파주력이 필요할 때 사용되는 묘박법은?",
+      "answer": 0
+    },
+    {
+      "key": "2026|navi3|3|운용|7",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "운용",
+      "number": 7,
+      "question": "다음 중 횡요억제와 관련된 설비가 아닌 것은?",
+      "answer": 0
+    },
+    {
+      "key": "2026|navi3|3|운용|8",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "운용",
+      "number": 8,
+      "question": "선박의 중심위치가 가상 중심 G의 위치보다 GG′만큼 정횡으로 편중되었을 때, 실제 복원정(G′Z)은 각 경사각(θ)에 대하여 가상 복원정(GZ)에서 얼마만큼 값과 같은가?",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|운용|9",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "운용",
+      "number": 9,
+      "question": "복원력 부족으로 인한 선박의 전복을 방지하기 위한 방법으로 옳지 않은 것은?",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|운용|10",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "운용",
+      "number": 10,
+      "question": "선박의 무게중심(G) 위, 수직거리 d(m)에 있는 중량 w(t)을 양하할 경우 무게중심의 수직 이동거리(GG′)는? (단, Δ는 배수량)",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|운용|11",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "운용",
+      "number": 11,
+      "question": "항해당직을 인계받는 당직사관이 스스로 확인해야 할 사항이 아닌 것은?",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|운용|12",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "운용",
+      "number": 12,
+      "question": "하역당직 중 당직사관이 후임 당직사관에게 반드시 인계하여야 할 사항이 아닌 것은?",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|운용|13",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "운용",
+      "number": 13,
+      "question": "전선에 관한 설명으로 옳지 않은 것은?",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|운용|14",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "운용",
+      "number": 14,
+      "question": "일기도에 기재된 'ASAS'의 의미는?",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|운용|15",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "운용",
+      "number": 15,
+      "question": "다음 중 지상일기도상 숫자로 기입되는 것은?",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|운용|16",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "운용",
+      "number": 16,
+      "question": "보일러의 압력이 규정 압력보다 상승할 때 자동적으로 증기를 분출시키는 밸브는?",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|운용|17",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "운용",
+      "number": 17,
+      "question": "냉동장치에서 주위로부터 열을 흡수하는 부분은?",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|운용|18",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "운용",
+      "number": 18,
+      "question": "IAMSAR manual상 물에 빠진 사람을 계속해서 한 위치에서 볼 수 있을 때 행하는 가장 빠른 구조 조선법은?",
+      "answer": 0
+    },
+    {
+      "key": "2026|navi3|3|운용|19",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "운용",
+      "number": 19,
+      "question": "침수율(Permeability)에 관한 설명으로 옳은 것은?",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|운용|20",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "운용",
+      "number": 20,
+      "question": "쇼크 환자의 응급 처치 방법으로 옳지 않은 것은?",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|운용|21",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "운용",
+      "number": 21,
+      "question": "타박상 및 피하출혈 시 응급 처치 방법으로 옳지 않은 것은?",
+      "answer": 0
+    },
+    {
+      "key": "2026|navi3|3|운용|22",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "운용",
+      "number": 22,
+      "question": "IAMSAR manual상 수색구역이 소규모이고, 수색선이 1척인 경우 주로 이용하는 수색방식은?",
+      "answer": 0
+    },
+    {
+      "key": "2026|navi3|3|운용|23",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "운용",
+      "number": 23,
+      "question": "IAMSAR manual상 선박조종지침에 관한 설명으로 옳지 않은 것은?",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|운용|24",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "운용",
+      "number": 24,
+      "question": "선내 인적자원관리의 주요 목적이 아닌 것은?",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|운용|25",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "운용",
+      "number": 25,
+      "question": "부하 직원이 명령에 복종하는 이유로 가장 바람직한 형태는?",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|법규|1",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "법규",
+      "number": 1,
+      "question": "선박의 입항 및 출항 등에 관한 법률상 방파제 입구 또는 그 부근에서의 항법에 관한 설명으로 옳은 것은?",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|법규|2",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "법규",
+      "number": 2,
+      "question": "선원법상 선박소유자는 선원이 승무 중 직무 외의 원인에 의하여 부상이나 질병이 발생한 경우 요양에 필요한 얼마 범위의 비용을 지급하여야 하는가?",
+      "answer": 0
+    },
+    {
+      "key": "2026|navi3|3|법규|3",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "법규",
+      "number": 3,
+      "question": "선박직원법상 항행예정시간이 얼마 이내인 국내항간 긴급히 항행할 필요가 있다고 인정되는 경우 해양수산부장관의 허가에 의한 승무기준의 특례를 적용할 수 있는가?",
+      "answer": 0
+    },
+    {
+      "key": "2026|navi3|3|법규|4",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "법규",
+      "number": 4,
+      "question": "선박안전법상 선박위치발신장치를 설치하여야 하는 대상 선박이 아닌 것은? (단, 호소·하천에서만 항해하는 선박은 제외함)",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|법규|5",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "법규",
+      "number": 5,
+      "question": "선박안전법상 선박소유자가 임시검사를 받아야 하는 경우가 아닌 것은?",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|법규|6",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "법규",
+      "number": 6,
+      "question": "해양사고의 조사 및 심판에 관한 법률상 해양사고의 범위에 포함되지 않는 것은?",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|법규|7",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "법규",
+      "number": 7,
+      "question": "해양환경관리법상 선박소유자는 선박해양오염비상계획서를 작성하여 누구의 검인을 받은 후 이를 그 선박에 비치하고, 선박해양오염비상계획서에 따른 조치 등을 이행하여야 하는가?",
+      "answer": 0
+    },
+    {
+      "key": "2026|navi3|3|법규|8",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "법규",
+      "number": 8,
+      "question": "해양환경관리법상 총톤수 1만톤 이상의 선박에 설치되어야 하는 기관구역에서의 기름오염방지설비가 아닌 것은? (단, 총톤수 400톤 이상으로서 국제특별해역 안에서만 운항하는 선박은 제외함)",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|법규|9",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "법규",
+      "number": 9,
+      "question": "상법상 선장이 적하의 전부나 일부를 처분할 경우 손해배상액 산정의 기준은?",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|법규|10",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "법규",
+      "number": 10,
+      "question": "상법상 해상운송과 관련하여 규정하고 있는 공동해손의 성립요건이 아닌 것은?",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|법규|11",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "법규",
+      "number": 11,
+      "question": "해상교통안전법상 해양경찰서장이 교통안전특정해역을 항행하려는 선박에 대하여 통항시각의 변경 등을 명할 수 있는 대상선박이 아닌 것은?",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|법규|12",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "법규",
+      "number": 12,
+      "question": "해상교통안전법상 선박의 안전관리체제에 포함되어야 할 사항이 아닌 것은?",
+      "answer": 0
+    },
+    {
+      "key": "2026|navi3|3|법규|13",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "법규",
+      "number": 13,
+      "question": "국제해상충돌방지규칙상 서로 시계내에서 항행 중인 어로에 종사하고 있는 선박이 진로를 피하여야 하는 선박이 아닌 것은? (단, 좁은 수로, 통항분리제도, 앞지르기 항법의 경우는 제외함)",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|법규|14",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "법규",
+      "number": 14,
+      "question": "국제해상충돌방지규칙상 흘수제약선의 정의로 옳은 것은?",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|법규|15",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "법규",
+      "number": 15,
+      "question": "국제해상충돌방지규칙상 안전한 속력 결정 시 고려하여야 하는 사항이 아닌 것은?",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|법규|16",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "법규",
+      "number": 16,
+      "question": "국제해상충돌방지규칙상 통항분리수역에서의 항법에 관한 설명으로 옳지 않은 것은?",
+      "answer": 0
+    },
+    {
+      "key": "2026|navi3|3|법규|17",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "법규",
+      "number": 17,
+      "question": "( )에 순서대로 적합한 것은? '국제해상충돌방지규칙상 선박은 다른 선박과의 충돌을 피하기 위하여 적절하고 ( ) 동작을 취하거나 당시의 ( )에 알맞은 ( )에서 선박을 멈출 수 있도록 항상 안전한 속력으로 항행하여야 한다.'",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|법규|18",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "법규",
+      "number": 18,
+      "question": "국제해상충돌방지규칙상 선박의 모든 시계 상태에서 준수하여야 할 항법규정이 아닌 것은?",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|법규|19",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "법규",
+      "number": 19,
+      "question": "국제해상충돌방지규칙상 다음 그림의 선박에 관한 설명으로 옳은 것은? [그림: 홍색·백색·홍색 전주등을 수직으로 표시]",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|법규|20",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "법규",
+      "number": 20,
+      "question": "국제해상충돌방지규칙상 서로 시계 안에서 항행 중 레이더 화면에서 다른 선박의 존재를 탐지하여 충돌의 위험성을 확인한 경우 적절한 피항동작으로 옳은 것은? [그림 문제]",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|법규|21",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "법규",
+      "number": 21,
+      "question": "국제해상충돌방지규칙상 예인선이 그림의 등화를 표시하여야 하는 경우는? [그림: 백색 마스트등 3개, 현등, 선미등 및 황색 예인등]",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|법규|22",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "법규",
+      "number": 22,
+      "question": "국제해상충돌방지규칙상 주간에 구형·마름모꼴·구형 형상물을 수직으로 표시하여야 하는 선박은?",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|법규|23",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "법규",
+      "number": 23,
+      "question": "국제해상충돌방지규칙상 트롤망 이외의 어로에 종사하는 선박이 대수속력이 없는 경우 표시하여야 하는 등화는?",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|법규|24",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "법규",
+      "number": 24,
+      "question": "국제해상충돌방지규칙상 선박이 조종신호를 울릴 수 있는 요건이 아닌 것은?",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|법규|25",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "법규",
+      "number": 25,
+      "question": "국제해상충돌방지규칙상 선박이 좁은 수로에서 서로 시계 안에 있을 때 다른 선박이 우현 쪽으로 앞지르기 하려는 경우 울려야 하는 기적신호는?",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|영어|1",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "영어",
+      "number": 1,
+      "question": "Select a suitable sentence in the following communications. A: 'How do you read me?' B: 'I read you bad with signal strength one. ( )'",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|영어|2",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "영어",
+      "number": 2,
+      "question": "Which is the correct expression in SMCP for the following? '더 감아들여야 할 묘쇄는 얼마나 남아 있는가?'",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|영어|3",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "영어",
+      "number": 3,
+      "question": "Select the sentence which has the same meaning with the following expression. 'The vessel does not have steerageway.'",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|영어|4",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "영어",
+      "number": 4,
+      "question": "Select the suitable one for the blanks in order. 'How much ( ) is ( ) the cable?' [묘쇄의 장력이 어떠합니까?]",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|영어|5",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "영어",
+      "number": 5,
+      "question": "Select a correct answer to the following question. 'What is the container capacity of the vessel?'",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|영어|6",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "영어",
+      "number": 6,
+      "question": "According to the SMCP, select the proper one for the blank. 'IMO-Class means group of dangerous or hazardous goods, harmful substances or marine pollutants in sea transport as classified in the ( ).'",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|영어|7",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "영어",
+      "number": 7,
+      "question": "Select a suitable group of words for the blanks in order. 'Small fishing boats ( ) area around Hongdo island. Navigate with ( ).' [홍도 주위의 해역에 소형 어선들이 있습니다. 주의해 항해하십시오.]",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|영어|8",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "영어",
+      "number": 8,
+      "question": "Select a word which has similar meaning to the underlined part. 'Traffic lane has been stopped temporarily.'",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|영어|9",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "영어",
+      "number": 9,
+      "question": "Select a correct explanation for the following sentence. 'You are heading towards my tow.'",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|영어|10",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "영어",
+      "number": 10,
+      "question": "Select one which has correct SMCP expression.",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|영어|11",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "영어",
+      "number": 11,
+      "question": "Select the most suitable one for the blank. 'Risk of collision can, when circumstances permit, be ascertained by carefully watching ( ) of an approaching vessel.'",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|영어|12",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "영어",
+      "number": 12,
+      "question": "Select the correct one for the blank. '( ) involves taking observations of the sun, moon and stars with a sextant.'",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|영어|13",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "영어",
+      "number": 13,
+      "question": "Which of the following is NOT a broken space?",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|영어|14",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "영어",
+      "number": 14,
+      "question": "Select a suitable one for the blank. 'A vessel passing over a shallow patch at high speed may be in danger of grounding. Equally, a small reduction in speed has a significant effect in reducing ( ), which in turn may rapidly reduce the risk of grounding.'",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|영어|15",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "영어",
+      "number": 15,
+      "question": "Which marks does the following sentence explain about? 'One yellow band, yellow X or yellow symbol'",
+      "answer": 0
+    },
+    {
+      "key": "2026|navi3|3|영어|16",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "영어",
+      "number": 16,
+      "question": "Select the word which can be replaced with the underlined part. 'The muster list shall specify details of the general emergency alarm and public address system and also action to be taken by crew and passengers when this alarm is sounded.'",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|영어|17",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "영어",
+      "number": 17,
+      "question": "Select one which is proper for the blank. 'According to IMO ships' routeing, ( ) means a route which has been specially examined to ensure so far as possible that it is free of dangers and along which ships are advised to navigate.'",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|영어|18",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "영어",
+      "number": 18,
+      "question": "Select the correct one for the blank. 'According to MARPOL Annex I, ( ) means a sea area where for recognized technical reasons in relation to its oceanographical and ecological condition and to the particular character of its traffic the adoption of special mandatory methods for the prevention of sea pollution by oil is required.'",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|영어|19",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "영어",
+      "number": 19,
+      "question": "Select a proper word for the blanks according to SOLAS. 'At least (a) two-way VHF radiotelephone apparatus shall be provided on every passenger ship and on every cargo ship of 500 gross tonnage and upwards. At least (b) two-way VHF radiotelephone apparatus shall be provided on every cargo ship of 300 gross tonnage and upwards but less than 500 gross tonnage.'",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|영어|20",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "영어",
+      "number": 20,
+      "question": "Choose a proper one to fill the blank. '( ) is a written notice or note produced by the master of a ship and presented to the agents as soon as his ship arrives at the contractual destination and stating that the ship is ready to load and/or discharge as per charter party conditions.'",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|영어|21",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "영어",
+      "number": 21,
+      "question": "Select one which has the wrong explanation.",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|영어|22",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "영어",
+      "number": 22,
+      "question": "Select a suitable word for the blank. 'On a voyage charter party when the vessel is in port, the charter will specify a definite period of time for loading or discharging of cargo. This time is called ( ).'",
+      "answer": 0
+    },
+    {
+      "key": "2026|navi3|3|영어|23",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "영어",
+      "number": 23,
+      "question": "Select the correct one for the blank. 'According to MARPOL, a tank specifically designated for the collection of tank drainings, tank washings and other oily mixtures in a ship is as ( ).'",
+      "answer": 0
+    },
+    {
+      "key": "2026|navi3|3|영어|24",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "영어",
+      "number": 24,
+      "question": "What is not an inspection item in the following sentence? 'Install blank flanges at pump discharge and conduct a 150 PSI hydrostatic test of the entire firemain system. Inspect all valves, piping, pipe hangers, braces and couplings for leaks, rust and deterioration. Submit condition report to Owner's Representative. In the event any hydrant valve leaks, they shall be marked and the test continued. Final test on firemain shall be 150 PSI. Upon completion of test, remove blank flanges and reconnect.'",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|영어|25",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "영어",
+      "number": 25,
+      "question": "Select the most appropriate word for the blank. 'Pratique ( ), weighed anchor and proceeded to her berth.'",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|상선전문|1",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "상선전문",
+      "number": 1,
+      "question": "순적화 중량톤수에 관한 설명으로 옳은 것은?",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|상선전문|2",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "상선전문",
+      "number": 2,
+      "question": "400ton의 화물을 선수방향으로 10.0m 이동시킬 때 생기는 트림의 변화량은? (단, MCTC는 160m-ton, TPC는 30ton임)",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|상선전문|3",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "상선전문",
+      "number": 3,
+      "question": "원양구역 또는 근해구역을 항해구역으로 하는 선박에 표시하는 만재흘수선표에서 F가 의미하는 것은?",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|상선전문|4",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "상선전문",
+      "number": 4,
+      "question": "선적화물에서 중량화물과 경량화물을 구별하는 일반적인 기준은?",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|상선전문|5",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "상선전문",
+      "number": 5,
+      "question": "화물적부도(Cargo stowage plan)에 기재되는 내용이 아닌 것은?",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|상선전문|6",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "상선전문",
+      "number": 6,
+      "question": "화물유 펌프 또는 파이프 속의 압력이 화물유의 포화증기압 이하가 되어 액체가 기화함으로써 진동과 소음이 발생되는 현상은?",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|상선전문|7",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "상선전문",
+      "number": 7,
+      "question": "화물창 내의 Sweat 발생에 가장 큰 영향을 주는 요소는?",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|상선전문|8",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "상선전문",
+      "number": 8,
+      "question": "선박법상 주요 규정 사항으로 옳은 것은?",
+      "answer": 0
+    },
+    {
+      "key": "2026|navi3|3|상선전문|9",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "상선전문",
+      "number": 9,
+      "question": "선박법상 톤수에 관한 설명으로 옳은 것은?",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|상선전문|10",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "상선전문",
+      "number": 10,
+      "question": "선박법상 선박의 분류로 옳은 것은?",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|상선전문|11",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "상선전문",
+      "number": 11,
+      "question": "선박법상 등기 및 등록에 관한 설명으로 옳지 않은 것은?",
+      "answer": 3
+    },
+    {
+      "key": "2026|navi3|3|상선전문|12",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "상선전문",
+      "number": 12,
+      "question": "선박법상 선박국적증서에 기재하여야 할 사항이 아닌 것은?",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|상선전문|13",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "상선전문",
+      "number": 13,
+      "question": "선박법상 국제톤수증서에 관한 설명으로 옳지 않은 것은?",
+      "answer": 0
+    },
+    {
+      "key": "2026|navi3|3|상선전문|14",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "상선전문",
+      "number": 14,
+      "question": "정기선 운항의 특징이 아닌 것은?",
+      "answer": 0
+    },
+    {
+      "key": "2026|navi3|3|상선전문|15",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "상선전문",
+      "number": 15,
+      "question": "항해용선계약에 관한 설명으로 옳지 않은 것은?",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|상선전문|16",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "상선전문",
+      "number": 16,
+      "question": "국제적인 건화물시장의 해운시황을 나타내는 BDI 지수를 산출하기 위한 선형별 운임지수 요소가 아닌 것은?",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|상선전문|17",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "상선전문",
+      "number": 17,
+      "question": "도선사나 선장, 해원이 발생시킨 선박의 항해 및 관리상의 과실은?",
+      "answer": 0
+    },
+    {
+      "key": "2026|navi3|3|상선전문|18",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "상선전문",
+      "number": 18,
+      "question": "정기선 운임의 성질에 관한 설명으로 옳지 않은 것은?",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|상선전문|19",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "상선전문",
+      "number": 19,
+      "question": "P&I 보험에서 담보하지 않는 것은?",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|상선전문|20",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "상선전문",
+      "number": 20,
+      "question": "SOLAS 협약에 관한 설명으로 옳은 것은?",
+      "answer": 1
+    },
+    {
+      "key": "2026|navi3|3|상선전문|21",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "상선전문",
+      "number": 21,
+      "question": "SOLAS 협약상 구조정은 몇 분 이내에 진수할 수 있도록 계속 준비된 상태로 탑재되어야 하는가?",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|상선전문|22",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "상선전문",
+      "number": 22,
+      "question": "( )에 적합한 것은? 'SOLAS 협약상 자유낙하식 구명정인 경우 퇴선훈련 중 ( )개월마다 적어도 한 번은 선원들이 구명정에 승정하여 각자 좌석에 적절하게 고정하고 실제 구명정의 이탈 없이 진수절차를 시작하여야 한다.'",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|상선전문|23",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "상선전문",
+      "number": 23,
+      "question": "MARPOL 협약상 부속서 V에서 규정한 특별해역 내에서 폐기물의 처분에 관한 설명으로 옳지 않은 것은?",
+      "answer": 0
+    },
+    {
+      "key": "2026|navi3|3|상선전문|24",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "상선전문",
+      "number": 24,
+      "question": "IAMSAR manual상 선박보고제도를 통하여 수색구조임무조정관(SMC)이 얻을 수 있는 효과가 아닌 것은?",
+      "answer": 2
+    },
+    {
+      "key": "2026|navi3|3|상선전문|25",
+      "grade": "navi3",
+      "session": 3,
+      "subject": "상선전문",
+      "number": 25,
+      "question": "해사노동협약상 건강진단서에 관한 설명으로 옳지 않은 것은?",
+      "answer": 0
+    }
+  ],
   "short": []
 }
