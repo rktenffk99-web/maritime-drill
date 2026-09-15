@@ -1,0 +1,3090 @@
+{
+  "grades": {
+    "navi2": {
+      "total": 125,
+      "present": 125,
+      "short": 0,
+      "missing": 0,
+      "with_exact_reusable_when_not_present": 0,
+      "with_same_text_reusable_when_not_present": 0,
+      "median_explanation_chars": 2359,
+      "by_subject": {
+        "항해": {
+          "total": 25,
+          "present": 25,
+          "short": 0,
+          "missing": 0,
+          "exact_reusable_missing": 0,
+          "same_text_reusable_missing": 0
+        },
+        "운용": {
+          "total": 25,
+          "present": 25,
+          "short": 0,
+          "missing": 0,
+          "exact_reusable_missing": 0,
+          "same_text_reusable_missing": 0
+        },
+        "법규": {
+          "total": 25,
+          "present": 25,
+          "short": 0,
+          "missing": 0,
+          "exact_reusable_missing": 0,
+          "same_text_reusable_missing": 0
+        },
+        "영어": {
+          "total": 25,
+          "present": 25,
+          "short": 0,
+          "missing": 0,
+          "exact_reusable_missing": 0,
+          "same_text_reusable_missing": 0
+        },
+        "상선전문": {
+          "total": 25,
+          "present": 25,
+          "short": 0,
+          "missing": 0,
+          "exact_reusable_missing": 0,
+          "same_text_reusable_missing": 0
+        }
+      },
+      "rows": [
+        {
+          "id": "2026|navi2|2|항해|1",
+          "session": 2,
+          "subject": "항해",
+          "number": 1,
+          "question": "자기 컴퍼스의 자차수정 용구에 관한 설명으로 옳지 않은 것은?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 3087,
+          "exact_previous_ids": [
+            "2025|navi2|3|항해|1"
+          ],
+          "exact_reusable_ids": [
+            "2025|navi2|3|항해|1"
+          ],
+          "same_text_reusable_ids": [
+            "2023|navi2|4|항해|1",
+            "2024|navi2|2|항해|2",
+            "2025|navi2|3|항해|1"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|항해|2",
+          "session": 2,
+          "subject": "항해",
+          "number": 2,
+          "question": "선박의 침로를 360° 모든 방향으로 변경시키더라도 변하지 않고 일정한 크기를 가지는 자차계수는?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2227,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|항해|3",
+          "session": 2,
+          "subject": "항해",
+          "number": 3,
+          "question": "자이로컴퍼스에서 자이로 축의 Precession 각속도에 관한 설명으로 옳은 것은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2330,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|항해|4",
+          "session": 2,
+          "subject": "항해",
+          "number": 4,
+          "question": "레식 자이로컴퍼스의 구조 중 선박이 변침할 때 이적인 제어로 주동부를 추종하는 부분은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2646,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|항해|5",
+          "session": 2,
+          "subject": "항해",
+          "number": 5,
+          "question": "적응제어 자동조타장치에서 천후조정에 이용하는 것은?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2117,
+          "exact_previous_ids": [
+            "2025|navi2|4|항해|3"
+          ],
+          "exact_reusable_ids": [
+            "2025|navi2|4|항해|3"
+          ],
+          "same_text_reusable_ids": [
+            "2025|navi2|4|항해|3"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|항해|6",
+          "session": 2,
+          "subject": "항해",
+          "number": 6,
+          "question": "추측위치에 관한 설명으로 옳지 않은 것은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2583,
+          "exact_previous_ids": [
+            "2024|navi2|3|항해|6",
+            "2024|navi2|4|항해|6",
+            "2025|navi2|1|항해|6",
+            "2025|navi2|3|항해|6"
+          ],
+          "exact_reusable_ids": [
+            "2024|navi2|3|항해|6",
+            "2024|navi2|4|항해|6",
+            "2025|navi2|1|항해|6",
+            "2025|navi2|3|항해|6"
+          ],
+          "same_text_reusable_ids": [
+            "2024|navi2|3|항해|6",
+            "2024|navi2|4|항해|6",
+            "2025|navi2|1|항해|6",
+            "2025|navi2|3|항해|6"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|항해|7",
+          "session": 2,
+          "subject": "항해",
+          "number": 7,
+          "question": "천체의 고도 관측 시 주의사항으로 옳지 않은 것은?",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 2430,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": [
+            "2025|navi2|1|항해|10"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|항해|8",
+          "session": 2,
+          "subject": "항해",
+          "number": 8,
+          "question": "직행침로(Course made good)에 관한 설명으로 옳은 것은?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 2671,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|항해|9",
+          "session": 2,
+          "subject": "항해",
+          "number": 9,
+          "question": "Running fix의 방법 중 물표의 제1관측 시 선수각이 45°, 제2관측 시 선수각이 90°일 때의 정횡거리를 구하는 방법은?",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 3018,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|항해|10",
+          "session": 2,
+          "subject": "항해",
+          "number": 10,
+          "question": "하나의 위치선과 추측위치를 병합하여 최확위치(Most probable position)를 구했을 경우 어떤 위치로 간주하면 좋은가?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2298,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|항해|11",
+          "session": 2,
+          "subject": "항해",
+          "number": 11,
+          "question": "천체를 관측하여 컴퍼스 오차를 측정할 수 있는 방법이 아닌 것은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2359,
+          "exact_previous_ids": [
+            "2024|navi2|2|항해|10",
+            "2024|navi2|3|항해|10",
+            "2024|navi2|4|항해|10",
+            "2025|navi2|2|항해|11",
+            "2025|navi2|4|항해|11"
+          ],
+          "exact_reusable_ids": [
+            "2024|navi2|2|항해|10",
+            "2024|navi2|3|항해|10",
+            "2024|navi2|4|항해|10",
+            "2025|navi2|2|항해|11",
+            "2025|navi2|4|항해|11"
+          ],
+          "same_text_reusable_ids": [
+            "2024|navi2|2|항해|10",
+            "2024|navi2|3|항해|10",
+            "2024|navi2|4|항해|10",
+            "2025|navi2|2|항해|11",
+            "2025|navi2|4|항해|11"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|항해|12",
+          "session": 2,
+          "subject": "항해",
+          "number": 12,
+          "question": "어느 천체의 GHA가 220°인 시각에 경도 120°W인 지점에서 그 천체의 자오선각은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 1924,
+          "exact_previous_ids": [
+            "2025|navi2|1|항해|12",
+            "2025|navi2|4|항해|12"
+          ],
+          "exact_reusable_ids": [
+            "2025|navi2|1|항해|12",
+            "2025|navi2|4|항해|12"
+          ],
+          "same_text_reusable_ids": [
+            "2025|navi2|1|항해|12",
+            "2025|navi2|4|항해|12"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|항해|13",
+          "session": 2,
+          "subject": "항해",
+          "number": 13,
+          "question": "3개의 천체를 관측하여 구한 선위에 오차삼각형이 생겼을 때 그 선위에 관한 설명으로 옳은 것은?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 2335,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|항해|14",
+          "session": 2,
+          "subject": "항해",
+          "number": 14,
+          "question": "레이더의 송수신 전환장치와 관련이 없는 것은?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 1840,
+          "exact_previous_ids": [
+            "2025|navi2|2|항해|14",
+            "2025|navi2|3|항해|15"
+          ],
+          "exact_reusable_ids": [
+            "2025|navi2|2|항해|14",
+            "2025|navi2|3|항해|15"
+          ],
+          "same_text_reusable_ids": [
+            "2025|navi2|2|항해|14",
+            "2025|navi2|3|항해|15"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|항해|15",
+          "session": 2,
+          "subject": "항해",
+          "number": 15,
+          "question": "레이더의 최대탐지거리를 증가시키는 방법으로 옳지 않은 것은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 1912,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|항해|16",
+          "session": 2,
+          "subject": "항해",
+          "number": 16,
+          "question": "( )에 적합한 것은? \"레이더에서 탐지되는 수평선의 거리는 광학적 수평선의 거리보다 시인거리가 ( ) 크다.\"",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 1788,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|항해|17",
+          "session": 2,
+          "subject": "항해",
+          "number": 17,
+          "question": "레이더를 이용한 연안항해 시 주의사항으로 옳지 않은 것은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2560,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|항해|18",
+          "session": 2,
+          "subject": "항해",
+          "number": 18,
+          "question": "IMO ARPA 성능기준상 자동 또는 수동으로 추적 및 처리할 수 있는 물표의 최소 개수는?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 1869,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|항해|19",
+          "session": 2,
+          "subject": "항해",
+          "number": 19,
+          "question": "GPS에 관한 설명으로 옳지 않은 것은?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 2244,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|항해|20",
+          "session": 2,
+          "subject": "항해",
+          "number": 20,
+          "question": "전파의 편파면이 의미하는 것은?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 1860,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|항해|21",
+          "session": 2,
+          "subject": "항해",
+          "number": 21,
+          "question": "다이폴 안테나(Dipole antenna)의 상하 도체를 합한 이상적인 길이는?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 1819,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|항해|22",
+          "session": 2,
+          "subject": "항해",
+          "number": 22,
+          "question": "항정선항법에 해당되지 않는 항법은?",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 2257,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|항해|23",
+          "session": 2,
+          "subject": "항해",
+          "number": 23,
+          "question": "입·출항 항로의 선정에 관한 내용으로 옳지 않은 것은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2168,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": [
+            "2024|navi2|1|항해|23",
+            "2024|navi2|4|항해|23"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|항해|24",
+          "session": 2,
+          "subject": "항해",
+          "number": 24,
+          "question": "속력 V로 1일간 항해하였을 때 소비하는 주기관의 연료량을 Q, 1일에 소비하는 잡용 연료량을 M, 사용 가능한 총 연료량을 F라고 한다면, 항속거리 D를 구하는 계산식은?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 2306,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|항해|25",
+          "session": 2,
+          "subject": "항해",
+          "number": 25,
+          "question": "다음 중 북반구에서 한랭전선의 일반적인 특성으로 옳은 것은?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 2222,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": [
+            "2022|navi2|3|항해|25"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|운용|1",
+          "session": 2,
+          "subject": "운용",
+          "number": 1,
+          "question": "다음 중 이중저(Double bottom) 구조의 장점이 아닌 것은?",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 2720,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|운용|2",
+          "session": 2,
+          "subject": "운용",
+          "number": 2,
+          "question": "Rudder의 각부 명칭이 아닌 것은?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 1651,
+          "exact_previous_ids": [
+            "2021|navi2|1|운용|3"
+          ],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|운용|3",
+          "session": 2,
+          "subject": "운용",
+          "number": 3,
+          "question": "( )에 적합한 것은? '선박설비기준상 양묘기의 동력에 의해 묘쇄를 감아올리는 속도는 매분 ( )를 표준으로 한다.'",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 1581,
+          "exact_previous_ids": [
+            "2025|navi2|2|운용|2"
+          ],
+          "exact_reusable_ids": [
+            "2025|navi2|2|운용|2"
+          ],
+          "same_text_reusable_ids": [
+            "2025|navi2|2|운용|2"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|운용|4",
+          "session": 2,
+          "subject": "운용",
+          "number": 4,
+          "question": "타력과 최단정지거리에 관한 설명으로 옳지 않은 것은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2311,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|운용|5",
+          "session": 2,
+          "subject": "운용",
+          "number": 5,
+          "question": "요잉 방지묘(Anti-yawing anchor)를 사용하여 선수 요잉과 주묘를 억제하기 위한 묘박법은?",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 2105,
+          "exact_previous_ids": [
+            "2024|navi2|2|운용|7",
+            "2024|navi2|3|운용|6"
+          ],
+          "exact_reusable_ids": [
+            "2024|navi2|2|운용|7",
+            "2024|navi2|3|운용|6"
+          ],
+          "same_text_reusable_ids": [
+            "2024|navi2|2|운용|7",
+            "2024|navi2|3|운용|6"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|운용|6",
+          "session": 2,
+          "subject": "운용",
+          "number": 6,
+          "question": "선박의 침로안정성 향상과 선체 후부측 면적을 증가시키기 위하여 부착하는 것은?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2034,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|운용|7",
+          "session": 2,
+          "subject": "운용",
+          "number": 7,
+          "question": "요잉(Yawing)의 원인이 아닌 것은?",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 2711,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": [
+            "2020|navi2|2|운용|7",
+            "2020|navi2|3|운용|6"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|운용|8",
+          "session": 2,
+          "subject": "운용",
+          "number": 8,
+          "question": "선박이 안정된 상태로 물에 떠 있을 때 KB, KG, KM의 관계로 옳은 것은? (단, K: 기선, M: 경심, G: 무게중심, B: 부심)",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2404,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|운용|9",
+          "session": 2,
+          "subject": "운용",
+          "number": 9,
+          "question": "선체의 대각도 경사 시 복원성에 관한 설명으로 옳지 않은 것은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2473,
+          "exact_previous_ids": [
+            "2025|navi2|1|운용|10"
+          ],
+          "exact_reusable_ids": [
+            "2025|navi2|1|운용|10"
+          ],
+          "same_text_reusable_ids": [
+            "2025|navi2|1|운용|10"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|운용|10",
+          "session": 2,
+          "subject": "운용",
+          "number": 10,
+          "question": "일반화물선의 만재 시 선폭에 대한 이상적인 GM의 비율은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2006,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|운용|11",
+          "session": 2,
+          "subject": "운용",
+          "number": 11,
+          "question": "배수량 3,000톤인 선박이 GM 2.8m의 상태에서 이미 적재되어 있는 화물 50톤을 수직 하방으로 12m 이동시키면 새로운 GM은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2367,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|운용|12",
+          "session": 2,
+          "subject": "운용",
+          "number": 12,
+          "question": "일본 남쪽 해상의 한랭전선이 북동에서 남서로 걸쳐있고, 대륙의 고기압이 시베리아에서 만주, 연해주, 북해도 방면으로 확장하여 우리나라 남부지방이 흐린 날씨를 보이는 기압 배치는?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2589,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|운용|13",
+          "session": 2,
+          "subject": "운용",
+          "number": 13,
+          "question": "다음 중 이동성 고기압의 발생 원인은?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2868,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|운용|14",
+          "session": 2,
+          "subject": "운용",
+          "number": 14,
+          "question": "기상도에 사용되는 기호와 의미로 옳지 않은 것은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2009,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|운용|15",
+          "session": 2,
+          "subject": "운용",
+          "number": 15,
+          "question": "공기조화에서 고려하지 않는 요소는?",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 1829,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|운용|16",
+          "session": 2,
+          "subject": "운용",
+          "number": 16,
+          "question": "원심력을 이용하여 기름에서 수분과 불순물을 제거하는 장치는?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 1765,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": [
+            "2020|navi2|4|운용|16",
+            "2021|navi2|2|운용|15",
+            "2022|navi2|4|운용|16",
+            "2023|navi2|4|운용|16"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|운용|17",
+          "session": 2,
+          "subject": "운용",
+          "number": 17,
+          "question": "해변에 좌초된 선박의 손실부력이 300톤이고, 저질의 마찰계수가 0.3일 때 이초에 필요한 인출력은?",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 2165,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|운용|18",
+          "session": 2,
+          "subject": "운용",
+          "number": 18,
+          "question": "국제육상시설연결구(International shore connection)에 관한 설명으로 옳지 않은 것은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2103,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|운용|19",
+          "session": 2,
+          "subject": "운용",
+          "number": 19,
+          "question": "조난선이 침몰 직전에 있을 때 구조선의 구명정이 취하는 조치방법으로 옳지 않은 것은?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2021,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|운용|20",
+          "session": 2,
+          "subject": "운용",
+          "number": 20,
+          "question": "IAMSAR manual상 여러 척의 선박이 조난선박 수색에 참여할 때 수색속력의 기준은?",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 2061,
+          "exact_previous_ids": [
+            "2025|navi2|3|운용|20",
+            "2025|navi2|4|운용|20"
+          ],
+          "exact_reusable_ids": [
+            "2025|navi2|3|운용|20",
+            "2025|navi2|4|운용|20"
+          ],
+          "same_text_reusable_ids": [
+            "2025|navi2|3|운용|20",
+            "2025|navi2|4|운용|20"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|운용|21",
+          "session": 2,
+          "subject": "운용",
+          "number": 21,
+          "question": "IAMSAR manual상 확대사각 수색방식에서 수색의 시작점은?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 2251,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|운용|22",
+          "session": 2,
+          "subject": "운용",
+          "number": 22,
+          "question": "화물창이나 코퍼댐(Cofferdam) 등 밀폐구역에서 사고를 방지하기 위한 조치로 옳지 않은 것은?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 2428,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|운용|23",
+          "session": 2,
+          "subject": "운용",
+          "number": 23,
+          "question": "인사배치에서 가장 우선적으로 고려하여야 할 원칙은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 1722,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": [
+            "2025|navi2|3|운용|23"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|운용|24",
+          "session": 2,
+          "subject": "운용",
+          "number": 24,
+          "question": "선원법상 만 18세 미만 선원의 특수건강진단 유효기간은?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 1494,
+          "exact_previous_ids": [
+            "2024|navi2|2|운용|25"
+          ],
+          "exact_reusable_ids": [
+            "2024|navi2|2|운용|25"
+          ],
+          "same_text_reusable_ids": [
+            "2024|navi2|2|운용|25"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|운용|25",
+          "session": 2,
+          "subject": "운용",
+          "number": 25,
+          "question": "선원법상 선원의 일반건강진단 검사항목 중 SGOT와 SGPT 검사의 목적은?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2105,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|법규|1",
+          "session": 2,
+          "subject": "법규",
+          "number": 1,
+          "question": "선박의 입항 및 출항 등에 관한 법률상 관리청의 허가를 받지 않고, 신고만 하는 경우는?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2427,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|법규|2",
+          "session": 2,
+          "subject": "법규",
+          "number": 2,
+          "question": "선원법상 다른 선박의 구조에 필요한 조치의무를 면제 받을 수 없는 경우는?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 2034,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|법규|3",
+          "session": 2,
+          "subject": "법규",
+          "number": 3,
+          "question": "다음 중 선박직원법의 적용 대상이 아닌 선박은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2093,
+          "exact_previous_ids": [
+            "2022|navi2|2|법규|3"
+          ],
+          "exact_reusable_ids": [
+            "2022|navi2|2|법규|3"
+          ],
+          "same_text_reusable_ids": [
+            "2022|navi2|2|법규|3"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|법규|4",
+          "session": 2,
+          "subject": "법규",
+          "number": 4,
+          "question": "선박안전법상 국제협약검사증서 중 여객선안전검사증서의 유효기간은?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 1931,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|법규|5",
+          "session": 2,
+          "subject": "법규",
+          "number": 5,
+          "question": "선박안전법상 선박위치발신장치를 설치하여야 하는 대상선박이 아닌 것은? (단, 호소·하천에서만 항해하는 선박은 제외함)",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 2712,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|법규|6",
+          "session": 2,
+          "subject": "법규",
+          "number": 6,
+          "question": "( )에 적합한 것은? \"해양사고의 조사 및 심판에 관한 법률상 업무정지 또는 견책의 징계를 받은 해기사 등이 그 징계 재결의 집행이 끝난 날부터 ( ) 이상 무사고 운항을 하였을 경우에는 그 징계는 실효된다.\"",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 2139,
+          "exact_previous_ids": [
+            "2023|navi2|2|법규|6",
+            "2025|navi2|1|법규|6"
+          ],
+          "exact_reusable_ids": [
+            "2023|navi2|2|법규|6",
+            "2025|navi2|1|법규|6"
+          ],
+          "same_text_reusable_ids": [
+            "2023|navi2|2|법규|6",
+            "2025|navi2|1|법규|6",
+            "2025|navi2|2|법규|6"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|법규|7",
+          "session": 2,
+          "subject": "법규",
+          "number": 7,
+          "question": "해양환경관리법상 대통령령이 정하는 배출기준을 초과하는 오염물질이 해양에 배출되었을 때 신고 의무가 없는 사람은?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2105,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|법규|8",
+          "session": 2,
+          "subject": "법규",
+          "number": 8,
+          "question": "해양환경관리법상 항해 중에 선박의 주기관·보조기관 또는 보일러 등에서 소각할 수 있는 물질은? (단, 해양 해역은 제외함)",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 2677,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|법규|9",
+          "session": 2,
+          "subject": "법규",
+          "number": 9,
+          "question": "상법상 해양사고 구조에 있어서 구조료 청구권이 있는 사람은?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 1806,
+          "exact_previous_ids": [
+            "2025|navi2|4|법규|10"
+          ],
+          "exact_reusable_ids": [
+            "2025|navi2|4|법규|10"
+          ],
+          "same_text_reusable_ids": [
+            "2024|navi2|3|법규|10",
+            "2024|navi2|4|법규|10",
+            "2025|navi2|4|법규|10"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|법규|10",
+          "session": 2,
+          "subject": "법규",
+          "number": 10,
+          "question": "( )에 적합한 것은? \"상법상 수회의 항해에 관한 채권의 ( )이 경합하는 때에는 후의 항해에 관한 채권이 전의 항해에 관한 채권에 우선한다.\"",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2169,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|법규|11",
+          "session": 2,
+          "subject": "법규",
+          "number": 11,
+          "question": "해상교통안전법상 선박의 안전관리체제에 포함되어야 하는 사항이 아닌 것은?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2144,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|법규|12",
+          "session": 2,
+          "subject": "법규",
+          "number": 12,
+          "question": "( )에 적합하지 않은 것은? \"해상교통안전법상 해양경찰서장은 ( ), 그 밖에 해양수산부령으로 정하는 선박이 교통안전특정해역을 항행하려는 경우 선장이나 선박소유자에게 항행안전을 확보하기 위하여 필요한 사항을 명할 수 있다.\"",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 2464,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|법규|13",
+          "session": 2,
+          "subject": "법규",
+          "number": 13,
+          "question": "국제해상충돌방지규칙상 모든 시계 상태에서의 항법규정에 관한 설명으로 옳지 않은 것은?",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 2282,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|법규|14",
+          "session": 2,
+          "subject": "법규",
+          "number": 14,
+          "question": "국제해상충돌방지규칙상 통항분리제도(TSS)에 관한 설명으로 옳지 않은 것은?",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 2191,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": [
+            "2024|navi2|1|법규|18"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|법규|15",
+          "session": 2,
+          "subject": "법규",
+          "number": 15,
+          "question": "국제해상충돌방지규칙상 유지선의 동작에 관한 규정이 적용되지 않는 항법은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2827,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|법규|16",
+          "session": 2,
+          "subject": "법규",
+          "number": 16,
+          "question": "국제해상충돌방지규칙상 통항분리방식이 적용되는 수역에서 분리대에 들어가거나 분리선을 횡단하여서는 아니 되는 선박은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2205,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|법규|17",
+          "session": 2,
+          "subject": "법규",
+          "number": 17,
+          "question": "국제해상충돌방지규칙상 앞지르기(추월) 항법에 관한 설명으로 옳지 않은 것은?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2325,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|법규|18",
+          "session": 2,
+          "subject": "법규",
+          "number": 18,
+          "question": "국제해상충돌방지규칙상 유지선의 동작으로 옳지 않은 것은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2204,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": [
+            "2025|navi2|4|법규|20"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|법규|19",
+          "session": 2,
+          "subject": "법규",
+          "number": 19,
+          "question": "국제해상충돌방지규칙상 서로 시계 안에서 좁은 수로등, 통항분리제도 및 앞지르기(추월)에 따른 경우를 제외하고 어로에 종사하고 있는 선박이 항행 중일 때 진로를 피하여야 하는 선박은?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 3099,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|법규|20",
+          "session": 2,
+          "subject": "법규",
+          "number": 20,
+          "question": "국제해상충돌방지규칙상 제한된 시계 안에서 2분을 넘지 아니하는 간격으로 연속하여 장음 1회에 이어 단음 2회의 기적신호를 울려야 하는 선박이 아닌 것은? (단, 선박의 길이는 12미터 이상임)",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 2359,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|법규|21",
+          "session": 2,
+          "subject": "법규",
+          "number": 21,
+          "question": "국제해상충돌방지규칙상 등화 규정에 관한 설명으로 옳지 않은 것은?",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 3006,
+          "exact_previous_ids": [
+            "2025|navi2|1|법규|22"
+          ],
+          "exact_reusable_ids": [
+            "2025|navi2|1|법규|22"
+          ],
+          "same_text_reusable_ids": [
+            "2025|navi2|1|법규|22"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|법규|22",
+          "session": 2,
+          "subject": "법규",
+          "number": 22,
+          "question": "국제해상충돌방지규칙상 각 등화에 관한 정의로 옳지 않은 것은?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 3103,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|법규|23",
+          "session": 2,
+          "subject": "법규",
+          "number": 23,
+          "question": "국제해상충돌방지규칙상 동력선이 2개의 마스트등을 표시하는 경우, 뒤쪽의 등화는 앞쪽의 등화보다 수직선으로 적어도 몇 미터 이상의 높이에 달아야 하는가?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 1963,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|법규|24",
+          "session": 2,
+          "subject": "법규",
+          "number": 24,
+          "question": "( )에 순서대로 적합한 것은? \"국제해상충돌방지규칙상 길이가 ( ) 미만이고 최대속력이 ( ) 미만인 동력선은 항행 중인 동력선이 표시하여야 하는 등화를 대신하여 흰색 전주등 1개만을 표시할 수 있으며, 가능한 경우 현등 1쌍도 표시할 수 있다.\"",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2598,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|법규|25",
+          "session": 2,
+          "subject": "법규",
+          "number": 25,
+          "question": "국제해상충돌방지규칙상 항행 중 가장 잘 보이는 곳에 수직으로 둥근꼴이나 그와 비슷한 형상물 2개를 표시하여야 하는 선박은? (단, 선박의 길이는 12미터 이상임)",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2403,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|영어|1",
+          "session": 2,
+          "subject": "영어",
+          "number": 1,
+          "question": "Choose a proper one to fill the blank. \"Anchor has its own cable twisted around it or has fouled an obstruction is called ( ).\"",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 4175,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|영어|2",
+          "session": 2,
+          "subject": "영어",
+          "number": 2,
+          "question": "Select a suitable word in the blank. \"We must restow cargo in No.1 hold to ( ) the stability.\"",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 3956,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|영어|3",
+          "session": 2,
+          "subject": "영어",
+          "number": 3,
+          "question": "Choose the best one to fill the blank. \"The officer will say '( )', and he/she will call out the passengers individually by their names.\"",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 4224,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|영어|4",
+          "session": 2,
+          "subject": "영어",
+          "number": 4,
+          "question": "Select a proper word to fill the blank. \"Slack ( ) the head line.\"",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 3263,
+          "exact_previous_ids": [
+            "2021|navi2|2|영어|6"
+          ],
+          "exact_reusable_ids": [
+            "2021|navi2|2|영어|6"
+          ],
+          "same_text_reusable_ids": [
+            "2021|navi2|2|영어|6"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|영어|5",
+          "session": 2,
+          "subject": "영어",
+          "number": 5,
+          "question": "Select the one which has wrong explanation for the class of IMDG code.",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 4521,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|영어|6",
+          "session": 2,
+          "subject": "영어",
+          "number": 6,
+          "question": "Select the suitable one for the blank. \"( ) the IMDG code when loading.\"",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 3452,
+          "exact_previous_ids": [
+            "2021|navi2|2|영어|1",
+            "2023|navi2|3|영어|4"
+          ],
+          "exact_reusable_ids": [
+            "2021|navi2|2|영어|1",
+            "2023|navi2|3|영어|4"
+          ],
+          "same_text_reusable_ids": [
+            "2021|navi2|2|영어|1",
+            "2022|navi2|3|영어|4",
+            "2023|navi2|3|영어|4"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|영어|7",
+          "session": 2,
+          "subject": "영어",
+          "number": 7,
+          "question": "Select the one which has wrong expression in SMCP.",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 3392,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": [
+            "2024|navi2|4|영어|4"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|영어|8",
+          "session": 2,
+          "subject": "영어",
+          "number": 8,
+          "question": "Select the one which has wrong expression in SMCP.",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 3571,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|영어|9",
+          "session": 2,
+          "subject": "영어",
+          "number": 9,
+          "question": "Select a correct translation of following sentence. \"다음 보고지점에 도착할 예정시각과 현재의 대지속력을 보고하시오.\"",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 4668,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|영어|10",
+          "session": 2,
+          "subject": "영어",
+          "number": 10,
+          "question": "Select the one which is suitable for the meaning of distress traffic.",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 4415,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|영어|11",
+          "session": 2,
+          "subject": "영어",
+          "number": 11,
+          "question": "Select the most appropriate one for the blank. \"( ) is a modification of great circle sailing to limit the maximum latitude, generally to avoid or severe weather near the poles.\"",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 4635,
+          "exact_previous_ids": [
+            "2025|navi2|3|영어|11"
+          ],
+          "exact_reusable_ids": [
+            "2025|navi2|3|영어|11"
+          ],
+          "same_text_reusable_ids": [
+            "2025|navi2|3|영어|11"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|영어|12",
+          "session": 2,
+          "subject": "영어",
+          "number": 12,
+          "question": "Select the most appropriate one for the blank. \"( ) is the minimum range difference between separate targets at the same bearing which will allow both to appear separately.\"",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 4531,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|영어|13",
+          "session": 2,
+          "subject": "영어",
+          "number": 13,
+          "question": "Select a suitable one for the blank. \"When a new TSS is to be implemented, new editions will be published showing the new scheme up to ( ) prior to the implementation date. A note will be shown on the face of the chart indicating the exact implementation date.\"",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 4649,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|영어|14",
+          "session": 2,
+          "subject": "영어",
+          "number": 14,
+          "question": "Select a suitable one for the blank. \"Contiguous zone is to be adjacent to the territorial sea and extends up to ( ) from baseline which the territorial sea is measured.\"",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 4389,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|영어|15",
+          "session": 2,
+          "subject": "영어",
+          "number": 15,
+          "question": "Select the correct one for the blank. \"( ) means space which is lost to cargo because of the shape of the cargo packaging, pillars, shape of compartment, etc.\"",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 4269,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|영어|16",
+          "session": 2,
+          "subject": "영어",
+          "number": 16,
+          "question": "Select the correct one for the blank. \"( ) is relationship between the volume of displacement and a block having the length, breadth and draft of the vessel.\"",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 4188,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|영어|17",
+          "session": 2,
+          "subject": "영어",
+          "number": 17,
+          "question": "Select the correct one for the blank. \"Where a cold air mass moves under warmer air mass, it is known as ( ).\"",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 4062,
+          "exact_previous_ids": [
+            "2022|navi2|4|영어|19",
+            "2023|navi2|3|영어|14",
+            "2024|navi2|2|영어|16",
+            "2025|navi2|1|영어|16",
+            "2025|navi2|4|영어|15"
+          ],
+          "exact_reusable_ids": [
+            "2022|navi2|4|영어|19",
+            "2023|navi2|3|영어|14",
+            "2024|navi2|2|영어|16",
+            "2025|navi2|1|영어|16",
+            "2025|navi2|4|영어|15"
+          ],
+          "same_text_reusable_ids": [
+            "2022|navi2|4|영어|19",
+            "2023|navi2|3|영어|14",
+            "2024|navi2|2|영어|16",
+            "2025|navi2|1|영어|16",
+            "2025|navi2|4|영어|15"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|영어|18",
+          "session": 2,
+          "subject": "영어",
+          "number": 18,
+          "question": "Choose the best one for the blank. \"A vessel using traffic separation scheme shall normally join or leave a traffic lane at the termination of the lane, but when joining or leaving from either side shall do so ( ).\"",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 4765,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|영어|19",
+          "session": 2,
+          "subject": "영어",
+          "number": 19,
+          "question": "Select the correct one for the blank. \"According to ISM code, the company should establish procedures to ensure that new personnel and personnel transferred to new assignment related to safety and protection of the environment are given proper opportunity for familiarization with their duties. Instructions which are essential to be provided prior to sailing should be identified, ( ) and given.\"",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 4949,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|영어|20",
+          "session": 2,
+          "subject": "영어",
+          "number": 20,
+          "question": "When the ship owner could claim actual total loss, the ship owner can't claim one of the followings. Which is not to be considered as actual total loss?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 4468,
+          "exact_previous_ids": [
+            "2024|navi2|3|영어|22"
+          ],
+          "exact_reusable_ids": [
+            "2024|navi2|3|영어|22"
+          ],
+          "same_text_reusable_ids": [
+            "2024|navi2|3|영어|22"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|영어|21",
+          "session": 2,
+          "subject": "영어",
+          "number": 21,
+          "question": "Off-hire occurs when a vessel breaks down, strands, has any damage that prevents the working of cargo or delays the sailing of the vessel. Under which charter these conditions of off-hire could be arisen?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 5042,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|영어|22",
+          "session": 2,
+          "subject": "영어",
+          "number": 22,
+          "question": "Select the correct one. \"Shipowners may decline the claims for shortage of weight by the use of a special clause, usually stamped on the bill of lading, reading in effect: \"",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 5021,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|영어|23",
+          "session": 2,
+          "subject": "영어",
+          "number": 23,
+          "question": "Choose one which has wrong explanation for the abbreviations used in multi-modalism.",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 4185,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|영어|24",
+          "session": 2,
+          "subject": "영어",
+          "number": 24,
+          "question": "Which of the following is NOT entries in the Principal column of deck log book?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 3867,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|영어|25",
+          "session": 2,
+          "subject": "영어",
+          "number": 25,
+          "question": "Select the correct one for the blank. \"Remove rudder stock packing. Take and record carrier, upper and lower bearing and pintle pin ( ). Submit report to chief officer.\"",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 4307,
+          "exact_previous_ids": [
+            "2023|navi2|4|영어|25"
+          ],
+          "exact_reusable_ids": [
+            "2023|navi2|4|영어|25"
+          ],
+          "same_text_reusable_ids": [
+            "2023|navi2|4|영어|25"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|상선전문|1",
+          "session": 2,
+          "subject": "상선전문",
+          "number": 1,
+          "question": "정적복원력 곡선에서 경사 θ로 인하여 중심이 G에서 G'의 상방향으로 이동한 경우 복원정(GZ)을 수정하는 식은?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2480,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|상선전문|2",
+          "session": 2,
+          "subject": "상선전문",
+          "number": 2,
+          "question": "손상이 생기기 쉬운 화물이나 위험화물을 선적할 시 양하항에서 화물손상이 생겼을 때를 대비하여 자기 선박이 화물적부에 관하여 최선을 다하였다는 사실을 객관적으로 증명하기 위해 받는 서류는?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 2365,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|상선전문|3",
+          "session": 2,
+          "subject": "상선전문",
+          "number": 3,
+          "question": "하항(비중=1.000)에 정박하고 있는 선박의 평균흘수는 8.90m이고, 이 흘수에서의 배수량은 14,592톤이며, 매 cm 배수톤(Tcm)은 20.0톤이다. 이 선박이 하항을 출항하여 해수 비중이 1.025인 항구에 입항하였을 때 평균흘수는? (단, 항해 중의 모든 소비량과 Tcm와 Trim은 변하지 않는다고 가정함)",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 2456,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|상선전문|4",
+          "session": 2,
+          "subject": "상선전문",
+          "number": 4,
+          "question": "길이 150미터, 폭 20미터인 선박이 5미터의 등흘수로 비중 1.000인 수역에 떠 있는 경우 이 선박의 배수량은? [단, 방형 계수(Cb)는 0.58임]",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2339,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|상선전문|5",
+          "session": 2,
+          "subject": "상선전문",
+          "number": 5,
+          "question": "선박이 계류하고 있는 부두에서의 해수비중이 ρ라고 할 때, 이 선박의 실제 배수량을 구하는 식은? (단, Hydrostatic table의 실제 배수량: △, 실제 배수량: △'임)",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2242,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|상선전문|6",
+          "session": 2,
+          "subject": "상선전문",
+          "number": 6,
+          "question": "건현(Freeboard)에 관한 설명으로 옳지 않은 것은?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2416,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": [
+            "2022|navi2|3|상선전문|9",
+            "2024|navi2|2|상선전문|7"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|상선전문|7",
+          "session": 2,
+          "subject": "상선전문",
+          "number": 7,
+          "question": "매 cm 배수톤(Tcm)을 구하는 식은? [단, Cb: 방형계수, Cw: 수선면 계수, Aw: 수선면적(m²), L: 선체길이(m), B: 선폭(m), D: 깊이(m)]",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2845,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|상선전문|8",
+          "session": 2,
+          "subject": "상선전문",
+          "number": 8,
+          "question": "선박의 선수흘수가 635cm, 선미흘수가 640cm인 상태로 선체 중앙에서 선수방향으로 63.0m에 위치한 예비부력이 선체 중앙에서 선미방향으로 62.0m에 위치한 A.P.T.로 이동시켜서 60cm 톤의 상태로 하려면 몇 톤의 청수를 옮겨야 하는가? (단, cm 트림모멘트[Mcm]는 125m-ton이고, 부면심은 선체 중앙에 있음)",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 3058,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|상선전문|9",
+          "session": 2,
+          "subject": "상선전문",
+          "number": 9,
+          "question": "화물창 내에 고정되어 있는 설비가 아닌 것은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 1867,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|상선전문|10",
+          "session": 2,
+          "subject": "상선전문",
+          "number": 10,
+          "question": "Derrick으로 W톤을 0.08m/s로 감아올리다가 0.3초 사이에 0.53m/s로 증속했을 때의 동하중은 W톤의 몇 배인가? (단, 중력가속도는 9.8m/s²임)",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2197,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|상선전문|11",
+          "session": 2,
+          "subject": "상선전문",
+          "number": 11,
+          "question": "유조선의 Topping off 요령에 관한 설명으로 옳지 않은 것은?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 3351,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|상선전문|12",
+          "session": 2,
+          "subject": "상선전문",
+          "number": 12,
+          "question": "Dirty oil 운송 후 다음 화차 화물로 식용유를 선적하려 할 경우 탱크 내부의 청소 순서로 옳은 것은?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2489,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|상선전문|13",
+          "session": 2,
+          "subject": "상선전문",
+          "number": 13,
+          "question": "다음 중 불명중량에 해당하는 것은?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 2000,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|상선전문|14",
+          "session": 2,
+          "subject": "상선전문",
+          "number": 14,
+          "question": "선하증권에 관한 설명으로 옳지 않은 것은?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 2502,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|상선전문|15",
+          "session": 2,
+          "subject": "상선전문",
+          "number": 15,
+          "question": "선박관리업(Ship management)의 주요 관리 수탁 업무가 아닌 것은?",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 2023,
+          "exact_previous_ids": [
+            "2023|navi2|4|상선전문|14"
+          ],
+          "exact_reusable_ids": [
+            "2023|navi2|4|상선전문|14"
+          ],
+          "same_text_reusable_ids": [
+            "2023|navi2|4|상선전문|14"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|상선전문|16",
+          "session": 2,
+          "subject": "상선전문",
+          "number": 16,
+          "question": "국제적으로 사용되는 'GENCON 1994'의 항해용선계약서 표준서식에 인쇄되어 있는 내용이 아닌 것은?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 2350,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|상선전문|17",
+          "session": 2,
+          "subject": "상선전문",
+          "number": 17,
+          "question": "국제적으로 부정기선의 항해용선계약서로 많이 사용하고 있는 'GENCON 1994'에서 규정하고 있는 Brokerage의 대상이 아닌 것은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2594,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|상선전문|18",
+          "session": 2,
+          "subject": "상선전문",
+          "number": 18,
+          "question": "해상운송계약에서 선박소유자의 감항능력 주의의무에 관한 설명으로 옳지 않은 것은?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 2738,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|상선전문|19",
+          "session": 2,
+          "subject": "상선전문",
+          "number": 19,
+          "question": "다음 중 공동해손으로 처리될 수 없는 경우는?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2034,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": [
+            "2022|navi2|2|상선전문|18",
+            "2024|navi2|4|상선전문|20"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|상선전문|20",
+          "session": 2,
+          "subject": "상선전문",
+          "number": 20,
+          "question": "선박보험에 관한 설명으로 옳지 않은 것은?",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 2151,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|상선전문|21",
+          "session": 2,
+          "subject": "상선전문",
+          "number": 21,
+          "question": "( )에 순서대로 적합한 것은? \"STCW 협약상 매 7일마다 77시간의 휴식시간에 대한 예외로 연속된 ( ) 이상의 기간으로 허가되어서는 아니 되며, 선내에서 2개의 예외기간 간의 간격은 그 예외기간의 ( ) 이상이어야 한다.\"",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2026,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi2|2|상선전문|22",
+          "session": 2,
+          "subject": "상선전문",
+          "number": 22,
+          "question": "SOLAS 협약상 총톤수 1,000톤 이상의 선박에서 거주구역과 업무구역 및 제어장소에 비치하여야 하는 승인된 휴대용 소화기의 최소 수량은?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 2255,
+          "exact_previous_ids": [
+            "2024|navi2|1|상선전문|22",
+            "2025|navi2|1|상선전문|23",
+            "2025|navi2|3|상선전문|23",
+            "2025|navi2|4|상선전문|22"
+          ],
+          "exact_reusable_ids": [
+            "2024|navi2|1|상선전문|22",
+            "2025|navi2|1|상선전문|23",
+            "2025|navi2|3|상선전문|23",
+            "2025|navi2|4|상선전문|22"
+          ],
+          "same_text_reusable_ids": [
+            "2024|navi2|1|상선전문|22",
+            "2025|navi2|1|상선전문|23",
+            "2025|navi2|3|상선전문|23",
+            "2025|navi2|4|상선전문|22"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|상선전문|23",
+          "session": 2,
+          "subject": "상선전문",
+          "number": 23,
+          "question": "MARPOL 협약상 국제기름오염방지증서의 유효기간이 2020년 10월 1일이고, 정기검사를 2020년 6월 15일에 시행 완료하였다면 새로운 증서에 기입되는 유효기간은?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2261,
+          "exact_previous_ids": [
+            "2025|navi2|3|상선전문|24"
+          ],
+          "exact_reusable_ids": [
+            "2025|navi2|3|상선전문|24"
+          ],
+          "same_text_reusable_ids": [
+            "2025|navi2|3|상선전문|24"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|상선전문|24",
+          "session": 2,
+          "subject": "상선전문",
+          "number": 24,
+          "question": "MARPOL 협약상 국제기름오염방지증서의 유효기간 중에 행하는 중간검사 시 작동상태를 확인하는 대상이 아닌 것은?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 2452,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": [
+            "2023|navi2|2|상선전문|25",
+            "2024|navi2|2|상선전문|24"
+          ]
+        },
+        {
+          "id": "2026|navi2|2|상선전문|25",
+          "session": 2,
+          "subject": "상선전문",
+          "number": 25,
+          "question": "MARPOL 협약상 유해액체물질의 선박해양오염비상계획서(SMPEP)에 관한 설명으로 옳지 않은 것은?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2127,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        }
+      ]
+    },
+    "navi3": {
+      "total": 75,
+      "present": 75,
+      "short": 0,
+      "missing": 0,
+      "with_exact_reusable_when_not_present": 0,
+      "with_same_text_reusable_when_not_present": 0,
+      "median_explanation_chars": 2607,
+      "by_subject": {
+        "항해": {
+          "total": 25,
+          "present": 25,
+          "short": 0,
+          "missing": 0,
+          "exact_reusable_missing": 0,
+          "same_text_reusable_missing": 0
+        },
+        "법규": {
+          "total": 25,
+          "present": 25,
+          "short": 0,
+          "missing": 0,
+          "exact_reusable_missing": 0,
+          "same_text_reusable_missing": 0
+        },
+        "영어": {
+          "total": 25,
+          "present": 25,
+          "short": 0,
+          "missing": 0,
+          "exact_reusable_missing": 0,
+          "same_text_reusable_missing": 0
+        }
+      },
+      "rows": [
+        {
+          "id": "2026|navi3|2|항해|1",
+          "session": 2,
+          "subject": "항해",
+          "number": 1,
+          "question": "자기 컴퍼스의 Deviation 변화에 영향을 주는 요소가 아닌 것은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2151,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|항해|2",
+          "session": 2,
+          "subject": "항해",
+          "number": 2,
+          "question": "동서 침로에서 남북 침로로 대각도로 급속하게 변침할 때 선체 자장의 불안정으로 인해 발생되는 자기 컴퍼스 오차는?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 2744,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|항해|3",
+          "session": 2,
+          "subject": "항해",
+          "number": 3,
+          "question": "전자식 선속계(EM log)의 지시오차 중 외적인 요인에 의해 발생한 오차를 조정하는 방법은?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2457,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|항해|4",
+          "session": 2,
+          "subject": "항해",
+          "number": 4,
+          "question": "Sextant의 Index error를 수정하였을 때 영향을 받는 것은?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2282,
+          "exact_previous_ids": [
+            "2024|navi3|2|항해|2"
+          ],
+          "exact_reusable_ids": [
+            "2024|navi3|2|항해|2"
+          ],
+          "same_text_reusable_ids": [
+            "2024|navi3|2|항해|2"
+          ]
+        },
+        {
+          "id": "2026|navi3|2|항해|5",
+          "session": 2,
+          "subject": "항해",
+          "number": 5,
+          "question": "IALA 해상부표식에서 등질이 복합군섬광등인 것은?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 2927,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|항해|6",
+          "session": 2,
+          "subject": "항해",
+          "number": 6,
+          "question": "해도상 'Fl(2) 10s 53m 19M'라고 기재되어 있는 등대에 관한 설명으로 옳지 않은 것은?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 2236,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|항해|7",
+          "session": 2,
+          "subject": "항해",
+          "number": 7,
+          "question": "교량표지 중 항로의 중앙을 표시하는 중앙표의 도색과 형상으로 옳게 짝지은 것은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 1940,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|항해|8",
+          "session": 2,
+          "subject": "항해",
+          "number": 8,
+          "question": "종이해도가 최신 정보로 개보되었는지 확인할 수 있는 것은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2732,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|항해|9",
+          "session": 2,
+          "subject": "항해",
+          "number": 9,
+          "question": "수로서지가 아닌 것은?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 1754,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|항해|10",
+          "session": 2,
+          "subject": "항해",
+          "number": 10,
+          "question": "연달아 일어나는 두 번의 고조 또는 저조는 같은 날이라도 반드시 그 높이가 같지 않은데 이와 같은 현상은?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 1843,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|항해|11",
+          "session": 2,
+          "subject": "항해",
+          "number": 11,
+          "question": "쿠로시오에 관한 설명으로 옳지 않은 것은?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 2423,
+          "exact_previous_ids": [
+            "2023|navi3|3|항해|11",
+            "2023|navi3|4|항해|10",
+            "2024|navi3|3|항해|11"
+          ],
+          "exact_reusable_ids": [
+            "2023|navi3|3|항해|11",
+            "2023|navi3|4|항해|10",
+            "2024|navi3|3|항해|11"
+          ],
+          "same_text_reusable_ids": [
+            "2023|navi3|3|항해|11",
+            "2023|navi3|4|항해|10",
+            "2024|navi3|3|항해|11"
+          ]
+        },
+        {
+          "id": "2026|navi3|2|항해|12",
+          "session": 2,
+          "subject": "항해",
+          "number": 12,
+          "question": "선박에서 충돌, 좌초 또는 화재가 발생하여 컴퍼스나 레이더를 사용할 수 없게 되었을 때 이용 가능한 선위 결정법은?",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 2808,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|항해|13",
+          "session": 2,
+          "subject": "항해",
+          "number": 13,
+          "question": "풍압차가 있을 때 진자오선과 선수미선이 이루는 각은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2322,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|항해|14",
+          "session": 2,
+          "subject": "항해",
+          "number": 14,
+          "question": "연안항해 시 이안거리를 결정할 때 고려할 사항이 아닌 것은?",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 2059,
+          "exact_previous_ids": [
+            "2025|navi3|3|항해|14"
+          ],
+          "exact_reusable_ids": [
+            "2025|navi3|3|항해|14"
+          ],
+          "same_text_reusable_ids": [
+            "2025|navi3|3|항해|14"
+          ]
+        },
+        {
+          "id": "2026|navi3|2|항해|15",
+          "session": 2,
+          "subject": "항해",
+          "number": 15,
+          "question": "항행 중인 선박에서 선위의 좌우 편위를 가장 쉽게 알 수 있는 것은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2090,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|항해|16",
+          "session": 2,
+          "subject": "항해",
+          "number": 16,
+          "question": "대권항로로 항해 시 항정이 가장 많이 단축되는 경우는?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 1848,
+          "exact_previous_ids": [
+            "2024|navi3|4|항해|16"
+          ],
+          "exact_reusable_ids": [
+            "2024|navi3|4|항해|16"
+          ],
+          "same_text_reusable_ids": [
+            "2024|navi3|4|항해|16"
+          ]
+        },
+        {
+          "id": "2026|navi3|2|항해|17",
+          "session": 2,
+          "subject": "항해",
+          "number": 17,
+          "question": "시진방위각법으로 천체의 진방위각을 구하려고 할 때 필요한 것은?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 2364,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|항해|18",
+          "session": 2,
+          "subject": "항해",
+          "number": 18,
+          "question": "방위각 S75°W를 방위로 환산하면?",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 1816,
+          "exact_previous_ids": [
+            "2021|navi3|2|항해|17",
+            "2024|navi3|1|항해|18"
+          ],
+          "exact_reusable_ids": [
+            "2021|navi3|2|항해|17",
+            "2024|navi3|1|항해|18"
+          ],
+          "same_text_reusable_ids": [
+            "2021|navi3|2|항해|17",
+            "2024|navi3|1|항해|18"
+          ]
+        },
+        {
+          "id": "2026|navi3|2|항해|19",
+          "session": 2,
+          "subject": "항해",
+          "number": 19,
+          "question": "3월 25일 세계시(GMT) 01시 30분을 경도 131°30'E에서의 지방평시(LMT)로 나타내면?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 1956,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|항해|20",
+          "session": 2,
+          "subject": "항해",
+          "number": 20,
+          "question": "자기 선박의 정횡 방향에 있는 다른 선박에서 강한 반사파가 돌아올 때 이 전파가 자기 선박과 그 다른 선박 사이를 수회 왕복하여 레이더의 화면상에 진영상의 방향에 같은 간격으로 거짓상을 발생시키는 것은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2665,
+          "exact_previous_ids": [
+            "2025|navi3|4|항해|22"
+          ],
+          "exact_reusable_ids": [
+            "2025|navi3|4|항해|22"
+          ],
+          "same_text_reusable_ids": [
+            "2025|navi3|4|항해|22"
+          ]
+        },
+        {
+          "id": "2026|navi3|2|항해|21",
+          "session": 2,
+          "subject": "항해",
+          "number": 21,
+          "question": "레이더로 측정한 선위 중 가장 정확도가 높은 것은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2134,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|항해|22",
+          "session": 2,
+          "subject": "항해",
+          "number": 22,
+          "question": "레이더의 최대탐지거리에 관한 설명으로 옳지 않은 것은?",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 2035,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|항해|23",
+          "session": 2,
+          "subject": "항해",
+          "number": 23,
+          "question": "선박용 레이더의 충격계수를 계산하는 식은?",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 2293,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|항해|24",
+          "session": 2,
+          "subject": "항해",
+          "number": 24,
+          "question": "GPS를 이용한 선위는 위성으로부터 무엇을 측정하여 구하는가?",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 2270,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|항해|25",
+          "session": 2,
+          "subject": "항해",
+          "number": 25,
+          "question": "협수로 통항계획을 수립할 때 주의할 사항으로 옳지 않은 것은?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 2819,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|법규|1",
+          "session": 2,
+          "subject": "법규",
+          "number": 1,
+          "question": "선박의 입항 및 출항 등에 관한 법률상 우선피항선에 관한 설명으로 옳지 않은 것은?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2233,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|법규|2",
+          "session": 2,
+          "subject": "법규",
+          "number": 2,
+          "question": "선원법의 목적이 아닌 것은?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 1761,
+          "exact_previous_ids": [
+            "2021|navi3|1|법규|2"
+          ],
+          "exact_reusable_ids": [
+            "2021|navi3|1|법규|2"
+          ],
+          "same_text_reusable_ids": [
+            "2021|navi3|1|법규|2"
+          ]
+        },
+        {
+          "id": "2026|navi3|2|법규|3",
+          "session": 2,
+          "subject": "법규",
+          "number": 3,
+          "question": "( )에 적합하지 않은 사람은? \"선원법상 선박소유자란 선주로부터 선박의 운항에 대한 책임을 위탁받고 이 법에 따른 선박소유자의 권리 및 책임과 의무를 인수하기로 동한 ( ) 등을 말한다.\"",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 2183,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|법규|4",
+          "session": 2,
+          "subject": "법규",
+          "number": 4,
+          "question": "선박안전법상 선박소유자가 선박을 최초로 항해에 사용하는 때 선박시설과 만재흘수선에 대하여 받아야 하는 검사는?",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 2521,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|법규|5",
+          "session": 2,
+          "subject": "법규",
+          "number": 5,
+          "question": "선박안전법상 임시검사를 받으려는 선박소유자가 해양수산부장관에게 검사 신청서와 함께 반드시 제출하여야 할 서류는?",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 2229,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|법규|6",
+          "session": 2,
+          "subject": "법규",
+          "number": 6,
+          "question": "( )에 순서대로 적합한 것은? \"해양사고의 조사 및 심판에 관한 법률상 국외에서 해양사고가 발생한 사실을 알게 되면 ( )은/는 지체 없이 그 사실과 그 증거를 수집하여 ( )에게 통보하여야 한다.\"",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2054,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|법규|7",
+          "session": 2,
+          "subject": "법규",
+          "number": 7,
+          "question": "해양환경관리법상 선박으로부터 기름을 배출하는 경우 배출액 중의 기름 성분 허용 기준치는? (단, 석유 및 천연가스의 탐사·채취 과정에서 발생한 물의 경우는 제외)",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 1851,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|법규|8",
+          "session": 2,
+          "subject": "법규",
+          "number": 8,
+          "question": "해양환경관리법상 총톤수 1만톤 이상의 모든 선박이 갖추어야 할 기관구역에서의 기름오염방지설비가 아닌 것은? (단, 동법에서 제외된 선박의 경우는 무시함)",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2374,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|법규|9",
+          "session": 2,
+          "subject": "법규",
+          "number": 9,
+          "question": "상법상 법원이 해난 구조료를 산정할 때 고려하는 사항이 아닌 것은?",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 2276,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|법규|10",
+          "session": 2,
+          "subject": "법규",
+          "number": 10,
+          "question": "상법상 선박과 운임에 부수한 채권에 대하여 우선특권이 있는 채권이 아닌 것은?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2633,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|법규|11",
+          "session": 2,
+          "subject": "법규",
+          "number": 11,
+          "question": "해상교통안전법상 표면효과 작용을 이용하여 수면 가까이 비행하는 선박은?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 1821,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|법규|12",
+          "session": 2,
+          "subject": "법규",
+          "number": 12,
+          "question": "( )에 적합한 것은? \"해상교통안전법상 해양경찰청장은 해기사면허를 받은 자가 술에 취한 상태에서 운항을 하기 위하여 조타기를 조작하거나 그 조작을 지시한 경우 해양수산부장관에게 해당 해기사면허를 취소하거나 ( )의 범위에서 해기사면허의 효력을 정지할 것을 요청할 수 있다.\"",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 1971,
+          "exact_previous_ids": [
+            "2025|navi3|4|법규|12"
+          ],
+          "exact_reusable_ids": [
+            "2025|navi3|4|법규|12"
+          ],
+          "same_text_reusable_ids": [
+            "2025|navi3|4|법규|12"
+          ]
+        },
+        {
+          "id": "2026|navi3|2|법규|13",
+          "session": 2,
+          "subject": "법규",
+          "number": 13,
+          "question": "국제해상충돌방지규칙상 용어의 정의로 옳지 않은 것은?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 2701,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|법규|14",
+          "session": 2,
+          "subject": "법규",
+          "number": 14,
+          "question": "국제해상충돌방지규칙상 어로에 종사하고 있는 선박이 항행 중 진로를 피하여야 하는 선박이 아닌 것은? [단, 좁은 수로, 통항분리제도, 앞지르기(추월) 항법의 경우는 제외]",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 2821,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|법규|15",
+          "session": 2,
+          "subject": "법규",
+          "number": 15,
+          "question": "국제해상충돌방지규칙상 어로에 종사하고 있는 선박에 해당되는 것은?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 2138,
+          "exact_previous_ids": [
+            "2021|navi3|3|법규|13",
+            "2023|navi3|2|법규|13"
+          ],
+          "exact_reusable_ids": [
+            "2021|navi3|3|법규|13",
+            "2023|navi3|2|법규|13"
+          ],
+          "same_text_reusable_ids": [
+            "2021|navi3|3|법규|13",
+            "2023|navi3|2|법규|13"
+          ]
+        },
+        {
+          "id": "2026|navi3|2|법규|16",
+          "session": 2,
+          "subject": "법규",
+          "number": 16,
+          "question": "국제해상충돌방지규칙상 적절한 경계(Look-out)에 관한 설명으로 옳지 않은 것은?",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 2175,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|법규|17",
+          "session": 2,
+          "subject": "법규",
+          "number": 17,
+          "question": "국제해상충돌방지규칙상 충돌을 피하기 위한 동작에 관한 설명으로 옳지 않은 것은?",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 1986,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": [
+            "2025|navi3|1|법규|15"
+          ]
+        },
+        {
+          "id": "2026|navi3|2|법규|18",
+          "session": 2,
+          "subject": "법규",
+          "number": 18,
+          "question": "국제해상충돌방지규칙상 통항분리수역에서 항행하는 방법으로 옳지 않은 것은?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 2334,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|법규|19",
+          "session": 2,
+          "subject": "법규",
+          "number": 19,
+          "question": "국제해상충돌방지규칙상 형상물의 크기에 관한 규정으로 옳은 것은?",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 3808,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|법규|20",
+          "session": 2,
+          "subject": "법규",
+          "number": 20,
+          "question": "( )에 순서대로 적합한 것은? \"국제해상충돌방지규칙상 2척의 동력선이 마주치게 되어 충돌의 위험이 있을 경우 각 동력선은 서로 다른 선박의 ( )쪽을 지나갈 수 있도록 침로를 ( )쪽으로 변경하여야 한다.\"",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 2629,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|법규|21",
+          "session": 2,
+          "subject": "법규",
+          "number": 21,
+          "question": "( )에 적합한 것은? \"국제해상충돌방지규칙상 길이 ( ) 미만인 선박이나 범선은 좁은 수로나 항로 내에서만 안전하게 항행할 수 있는 선박의 진로를 방해하여서는 아니 된다.\"",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 1861,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|법규|22",
+          "session": 2,
+          "subject": "법규",
+          "number": 22,
+          "question": "다음 중 국제해상충돌방지규칙상 모든 선박의 진로를 피하지 않아도 되는 선박은? [단, 좁은 수로등, 통항분리제도 및 앞지르기(추월) 하는 경우는 제외]",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 3025,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|법규|23",
+          "session": 2,
+          "subject": "법규",
+          "number": 23,
+          "question": "국제해상충돌방지규칙상 제한된 시계에서 선박의 항법에 관한 설명으로 옳지 않은 것은?",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 2607,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|법규|24",
+          "session": 2,
+          "subject": "법규",
+          "number": 24,
+          "question": "( )에 순서대로 적합한 것은? \"국제해상충돌방지규칙상 시계가 제한된 수역이나 그 부근에 있는 항행 중인 동력선은 ( )을 넘지 아니하는 간격으로 대수속력이 있을 때에는 장음 ( ), 대수속력이 없을 때에는 장음 ( )를 울려야 한다.\"",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 2291,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|법규|25",
+          "session": 2,
+          "subject": "법규",
+          "number": 25,
+          "question": "국제해상충돌방지규칙상 길이 100미터인 동력선의 마스트등과 선미등의 최소가시거리는 각각 몇 해리인가?",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 2518,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|영어|1",
+          "session": 2,
+          "subject": "영어",
+          "number": 1,
+          "question": "Select the one which has wrong explanation.",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 5090,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|영어|2",
+          "session": 2,
+          "subject": "영어",
+          "number": 2,
+          "question": "Select a correct explanation. \"Is the helmsman experienced?\"",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 3201,
+          "exact_previous_ids": [
+            "2020|navi3|2|영어|3",
+            "2021|navi3|1|영어|3",
+            "2022|navi3|1|영어|7"
+          ],
+          "exact_reusable_ids": [
+            "2020|navi3|2|영어|3",
+            "2021|navi3|1|영어|3",
+            "2022|navi3|1|영어|7"
+          ],
+          "same_text_reusable_ids": [
+            "2020|navi3|2|영어|3",
+            "2021|navi3|1|영어|3",
+            "2022|navi3|1|영어|7"
+          ]
+        },
+        {
+          "id": "2026|navi3|2|영어|3",
+          "session": 2,
+          "subject": "영어",
+          "number": 3,
+          "question": "Which is the correct expression in SMCP for the following? \"묘쇄를 얼마나 더 감아 들여야 합니까?\"",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 3873,
+          "exact_previous_ids": [
+            "2023|navi3|3|영어|5",
+            "2023|navi3|4|영어|9",
+            "2024|navi3|4|영어|8",
+            "2025|navi3|4|영어|4"
+          ],
+          "exact_reusable_ids": [
+            "2023|navi3|3|영어|5",
+            "2023|navi3|4|영어|9",
+            "2024|navi3|4|영어|8",
+            "2025|navi3|4|영어|4"
+          ],
+          "same_text_reusable_ids": [
+            "2023|navi3|3|영어|5",
+            "2023|navi3|4|영어|9",
+            "2024|navi3|4|영어|8",
+            "2025|navi3|2|영어|5",
+            "2025|navi3|4|영어|4"
+          ]
+        },
+        {
+          "id": "2026|navi3|2|영어|4",
+          "session": 2,
+          "subject": "영어",
+          "number": 4,
+          "question": "Select the correct one which can be replaced with the underlined part. \"Take tug's line through panama lead.\"",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 3560,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|영어|5",
+          "session": 2,
+          "subject": "영어",
+          "number": 5,
+          "question": "Select one which is not suitable for the blank. Capt.: Starboard twenty! Q/M: Starboard twenty……Starboard twenty. Sir. Capt.: Midships! Q/M: Midships.……Midships. Sir. Capt.: ( )",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 4352,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|영어|6",
+          "session": 2,
+          "subject": "영어",
+          "number": 6,
+          "question": "Fill the blank with suitable one. \"( ) notice of readiness to load by 0900 hours UTC.\"",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 3776,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|영어|7",
+          "session": 2,
+          "subject": "영어",
+          "number": 7,
+          "question": "Select an unsuitable one.",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 5336,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|영어|8",
+          "session": 2,
+          "subject": "영어",
+          "number": 8,
+          "question": "Select an unsuitable one for the blank. A: \"You make identification signal.\" B: \"I am making identification signal by ( ).\"",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 4061,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|영어|9",
+          "session": 2,
+          "subject": "영어",
+          "number": 9,
+          "question": "Choose the best one to fill the blanks in common. A: \"What is the course to ( ) you?\" B: \"The course to ( ) me is 275°.\"",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 3406,
+          "exact_previous_ids": [
+            "2020|navi3|4|영어|10",
+            "2022|navi3|3|영어|10"
+          ],
+          "exact_reusable_ids": [
+            "2020|navi3|4|영어|10",
+            "2022|navi3|3|영어|10"
+          ],
+          "same_text_reusable_ids": [
+            "2020|navi3|4|영어|10",
+            "2022|navi3|3|영어|10"
+          ]
+        },
+        {
+          "id": "2026|navi3|2|영어|10",
+          "session": 2,
+          "subject": "영어",
+          "number": 10,
+          "question": "Select proper words for blanks in order. \"Attention all vessels! There is an emergency situation at two miles east of south breakwater entrance. One large tanker ( ) into collision with a fishing boat. All vessels are advised to keep well ( ) of this area.\"",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 4957,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|영어|11",
+          "session": 2,
+          "subject": "영어",
+          "number": 11,
+          "question": "Select a proper one for the blank. \"Neap tides mean ( ).\"",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 3312,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|영어|12",
+          "session": 2,
+          "subject": "영어",
+          "number": 12,
+          "question": "Select the correct one for the blank. \"( ) chart available should always be used when coasting since errors are reduced to a minimum and detail is shown.\"",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 4360,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|영어|13",
+          "session": 2,
+          "subject": "영어",
+          "number": 13,
+          "question": "Select the correct one for the blank. \"A ( ) is a great circle through the geographical poles of the earth.\"",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 3732,
+          "exact_previous_ids": [
+            "2025|navi3|1|영어|14"
+          ],
+          "exact_reusable_ids": [
+            "2025|navi3|1|영어|14"
+          ],
+          "same_text_reusable_ids": [
+            "2025|navi3|1|영어|14"
+          ]
+        },
+        {
+          "id": "2026|navi3|2|영어|14",
+          "session": 2,
+          "subject": "영어",
+          "number": 14,
+          "question": "Select the correct one for the blank. \"When heading on a course, you put your rudder hard over. The distance traveled in the direction of the original course from when you put your rudder over until your heading differs by 90° is known as ( ).\"",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 4349,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|영어|15",
+          "session": 2,
+          "subject": "영어",
+          "number": 15,
+          "question": "Select the correct one for the blank. \"A squall line, or line of sharp changes of wind, is very often associated with a ( ).\"",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 3714,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|영어|16",
+          "session": 2,
+          "subject": "영어",
+          "number": 16,
+          "question": "Select the correct one for the blank. \"The type of extinguishers which should be used for an electric fire is ( ).\"",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 3487,
+          "exact_previous_ids": [
+            "2020|navi3|3|영어|17"
+          ],
+          "exact_reusable_ids": [
+            "2020|navi3|3|영어|17"
+          ],
+          "same_text_reusable_ids": [
+            "2020|navi3|3|영어|17"
+          ]
+        },
+        {
+          "id": "2026|navi3|2|영어|17",
+          "session": 2,
+          "subject": "영어",
+          "number": 17,
+          "question": "Select the correct one for the blank. \"( ) is a designated area between the landward boundary of a traffic separation scheme and the adjacent coast intended for coastal traffic.\"",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 4542,
+          "exact_previous_ids": [
+            "2021|navi3|3|영어|17",
+            "2022|navi3|3|영어|24"
+          ],
+          "exact_reusable_ids": [
+            "2021|navi3|3|영어|17",
+            "2022|navi3|3|영어|24"
+          ],
+          "same_text_reusable_ids": [
+            "2021|navi3|3|영어|17",
+            "2022|navi3|3|영어|24"
+          ]
+        },
+        {
+          "id": "2026|navi3|2|영어|18",
+          "session": 2,
+          "subject": "영어",
+          "number": 18,
+          "question": "Select a proper one for the blank. \"( ) means a plan developed to ensure the application of measures on board the ship designed to protect persons on board, cargo, cargo transport units, ship's stores or the ship from the risks of a security incident.\"",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 4879,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|영어|19",
+          "session": 2,
+          "subject": "영어",
+          "number": 19,
+          "question": "Select the correct one for the blank. \"For the purpose of ( ) computation ships shall be divided into Type 'A' and Type 'B' in the International Convention on Load Lines 1966.\"",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 4250,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|영어|20",
+          "session": 2,
+          "subject": "영어",
+          "number": 20,
+          "question": "Select the correct one for the blank. \"Dangerous goods in solid form in bulk shall be loaded and stowed safely and appropriately in accordance with the nature of the goods. ( ) goods shall be segregated from one another.\"",
+          "answer": 3,
+          "status": "present",
+          "explanation_chars": 5098,
+          "exact_previous_ids": [
+            "2024|navi3|1|영어|19",
+            "2024|navi3|2|영어|16"
+          ],
+          "exact_reusable_ids": [
+            "2024|navi3|1|영어|19",
+            "2024|navi3|2|영어|16"
+          ],
+          "same_text_reusable_ids": [
+            "2024|navi3|1|영어|19",
+            "2024|navi3|2|영어|16"
+          ]
+        },
+        {
+          "id": "2026|navi3|2|영어|21",
+          "session": 2,
+          "subject": "영어",
+          "number": 21,
+          "question": "Select a suitable one for the blank. \"While underway, if one of your crew members falls overboard from the starboard side, you should immediately ( ).\"",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 4556,
+          "exact_previous_ids": [
+            "2023|navi3|1|영어|19",
+            "2023|navi3|4|영어|22"
+          ],
+          "exact_reusable_ids": [
+            "2023|navi3|1|영어|19",
+            "2023|navi3|4|영어|22"
+          ],
+          "same_text_reusable_ids": [
+            "2023|navi3|1|영어|19",
+            "2023|navi3|4|영어|22"
+          ]
+        },
+        {
+          "id": "2026|navi3|2|영어|22",
+          "session": 2,
+          "subject": "영어",
+          "number": 22,
+          "question": "Select the correct one for the blank. \"Any discharge into the sea of oil or oily mixtures from ships of 400 gross tonnage and above shall be prohibited except when the following conditions are satisfied: the oil content of the effluent without ( ) does not exceed 15 parts per million.\"",
+          "answer": 1,
+          "status": "present",
+          "explanation_chars": 4959,
+          "exact_previous_ids": [
+            "2025|navi3|1|영어|24"
+          ],
+          "exact_reusable_ids": [
+            "2025|navi3|1|영어|24"
+          ],
+          "same_text_reusable_ids": [
+            "2025|navi3|1|영어|24"
+          ]
+        },
+        {
+          "id": "2026|navi3|2|영어|23",
+          "session": 2,
+          "subject": "영어",
+          "number": 23,
+          "question": "Choose a proper one for the blank. \"In the principles of container stowage it cannot be stressed too strongly that safe container transport depends primarily on a correct and immovable cargo stow and an/a ( ) weight distribution.\"",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 4449,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|영어|24",
+          "session": 2,
+          "subject": "영어",
+          "number": 24,
+          "question": "Which of the following is NOT required to be recorded in the garbage record book under the MARPOL Annex V?",
+          "answer": 2,
+          "status": "present",
+          "explanation_chars": 4288,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        },
+        {
+          "id": "2026|navi3|2|영어|25",
+          "session": 2,
+          "subject": "영어",
+          "number": 25,
+          "question": "Select the correct one for the blank. \"At 1040 hours the steering gear ( ) out of order, immediately after which I ordered to stop engine and stand by engine at 1041 hours.\"",
+          "answer": 0,
+          "status": "present",
+          "explanation_chars": 4272,
+          "exact_previous_ids": [],
+          "exact_reusable_ids": [],
+          "same_text_reusable_ids": []
+        }
+      ]
+    }
+  },
+  "missing": [],
+  "short_or_placeholder": []
+}

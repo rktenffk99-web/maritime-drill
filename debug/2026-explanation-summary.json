@@ -1,0 +1,88 @@
+{
+  "navi2": {
+    "total": 125,
+    "present": 125,
+    "short": 0,
+    "missing": 0,
+    "with_exact_reusable_when_not_present": 0,
+    "with_same_text_reusable_when_not_present": 0,
+    "median_explanation_chars": 2359,
+    "by_subject": {
+      "항해": {
+        "total": 25,
+        "present": 25,
+        "short": 0,
+        "missing": 0,
+        "exact_reusable_missing": 0,
+        "same_text_reusable_missing": 0
+      },
+      "운용": {
+        "total": 25,
+        "present": 25,
+        "short": 0,
+        "missing": 0,
+        "exact_reusable_missing": 0,
+        "same_text_reusable_missing": 0
+      },
+      "법규": {
+        "total": 25,
+        "present": 25,
+        "short": 0,
+        "missing": 0,
+        "exact_reusable_missing": 0,
+        "same_text_reusable_missing": 0
+      },
+      "영어": {
+        "total": 25,
+        "present": 25,
+        "short": 0,
+        "missing": 0,
+        "exact_reusable_missing": 0,
+        "same_text_reusable_missing": 0
+      },
+      "상선전문": {
+        "total": 25,
+        "present": 25,
+        "short": 0,
+        "missing": 0,
+        "exact_reusable_missing": 0,
+        "same_text_reusable_missing": 0
+      }
+    }
+  },
+  "navi3": {
+    "total": 75,
+    "present": 75,
+    "short": 0,
+    "missing": 0,
+    "with_exact_reusable_when_not_present": 0,
+    "with_same_text_reusable_when_not_present": 0,
+    "median_explanation_chars": 2607,
+    "by_subject": {
+      "항해": {
+        "total": 25,
+        "present": 25,
+        "short": 0,
+        "missing": 0,
+        "exact_reusable_missing": 0,
+        "same_text_reusable_missing": 0
+      },
+      "법규": {
+        "total": 25,
+        "present": 25,
+        "short": 0,
+        "missing": 0,
+        "exact_reusable_missing": 0,
+        "same_text_reusable_missing": 0
+      },
+      "영어": {
+        "total": 25,
+        "present": 25,
+        "short": 0,
+        "missing": 0,
+        "exact_reusable_missing": 0,
+        "same_text_reusable_missing": 0
+      }
+    }
+  }
+}
