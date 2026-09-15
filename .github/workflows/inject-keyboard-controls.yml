@@ -2,7 +2,7 @@ name: Patch pass-plan app
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, audit/reports-2026-explanations ]
     paths:
       - 'keyboard-controls.js'
       - 'convenience-controls.js'
@@ -13,6 +13,7 @@ on:
       - 'tools/patch_predictive_mock.py'
       - 'tools/patch_predictive_mock_followup.py'
       - 'tools/test_predictive_mock.py'
+      - 'tools/audit_2026_explanations.py'
       - '.github/workflows/inject-keyboard-controls.yml'
   workflow_dispatch:
 
@@ -33,14 +34,16 @@ jobs:
           python tools/patch_predictive_mock.py
           python tools/patch_predictive_mock_followup.py
           python tools/test_predictive_mock.py
+          if [ -f tools/audit_2026_explanations.py ]; then python tools/audit_2026_explanations.py; fi
       - name: Commit index update
         run: |
-          if git diff --quiet -- index.html; then
-            echo 'No change needed.'
-            exit 0
-          fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
-          git commit -m 'Build predictive mock mode'
+          if [ -d debug ]; then git add debug; fi
+          if git diff --cached --quiet; then
+            echo 'No change needed.'
+            exit 0
+          fi
+          git commit -m 'Audit 2026 explanation coverage'
           git push
