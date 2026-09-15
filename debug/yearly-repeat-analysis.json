@@ -1,0 +1,1002 @@
+{
+  "navi2": {
+    "meta": {
+      "years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "completeYears": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "partialYears": [
+        2026
+      ],
+      "examCount": 24,
+      "questionCount": 2993,
+      "uniqueQuestionCount": 2079,
+      "repeatedGroupCount": 570,
+      "note": "보유 상선 기출 2020~2026 기준. 2026년은 제2회 125문항만 수록된 진행 중 자료.",
+      "originMethod": "공백·문장부호를 제거한 동일 문제 문장 기준",
+      "originRule": "완결 연도 0회=신출, 1회=기출, 2회 이상=빈출"
+    },
+    "allSubjects": {
+      "years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "byYear": {
+        "2020": {
+          "occurrences": 374,
+          "uniqueQuestions": 357,
+          "seenInAnyPriorYearUnique": 0,
+          "seenInAnyPriorYearRatePct": 0.0,
+          "occurrencesFromPriorQuestionPct": 0.0,
+          "sameYearDuplicateOccurrences": 17,
+          "sameYearDuplicateRatePct": 4.5,
+          "overlapWithPreviousYearUnique": 0,
+          "overlapWithPreviousYearRatePct": 0.0
+        },
+        "2021": {
+          "occurrences": 499,
+          "uniqueQuestions": 450,
+          "seenInAnyPriorYearUnique": 56,
+          "seenInAnyPriorYearRatePct": 12.4,
+          "occurrencesFromPriorQuestionPct": 14.0,
+          "sameYearDuplicateOccurrences": 49,
+          "sameYearDuplicateRatePct": 9.8,
+          "overlapWithPreviousYearUnique": 56,
+          "overlapWithPreviousYearRatePct": 12.4
+        },
+        "2022": {
+          "occurrences": 498,
+          "uniqueQuestions": 446,
+          "seenInAnyPriorYearUnique": 166,
+          "seenInAnyPriorYearRatePct": 37.2,
+          "occurrencesFromPriorQuestionPct": 39.8,
+          "sameYearDuplicateOccurrences": 52,
+          "sameYearDuplicateRatePct": 10.4,
+          "overlapWithPreviousYearUnique": 108,
+          "overlapWithPreviousYearRatePct": 24.2
+        },
+        "2023": {
+          "occurrences": 499,
+          "uniqueQuestions": 449,
+          "seenInAnyPriorYearUnique": 112,
+          "seenInAnyPriorYearRatePct": 24.9,
+          "occurrencesFromPriorQuestionPct": 26.1,
+          "sameYearDuplicateOccurrences": 50,
+          "sameYearDuplicateRatePct": 10.0,
+          "overlapWithPreviousYearUnique": 79,
+          "overlapWithPreviousYearRatePct": 17.6
+        },
+        "2024": {
+          "occurrences": 500,
+          "uniqueQuestions": 448,
+          "seenInAnyPriorYearUnique": 122,
+          "seenInAnyPriorYearRatePct": 27.2,
+          "occurrencesFromPriorQuestionPct": 28.6,
+          "sameYearDuplicateOccurrences": 52,
+          "sameYearDuplicateRatePct": 10.4,
+          "overlapWithPreviousYearUnique": 74,
+          "overlapWithPreviousYearRatePct": 16.5
+        },
+        "2025": {
+          "occurrences": 498,
+          "uniqueQuestions": 449,
+          "seenInAnyPriorYearUnique": 149,
+          "seenInAnyPriorYearRatePct": 33.2,
+          "occurrencesFromPriorQuestionPct": 34.9,
+          "sameYearDuplicateOccurrences": 49,
+          "sameYearDuplicateRatePct": 9.8,
+          "overlapWithPreviousYearUnique": 73,
+          "overlapWithPreviousYearRatePct": 16.3
+        },
+        "2026": {
+          "occurrences": 125,
+          "uniqueQuestions": 124,
+          "seenInAnyPriorYearUnique": 39,
+          "seenInAnyPriorYearRatePct": 31.5,
+          "occurrencesFromPriorQuestionPct": 32.0,
+          "sameYearDuplicateOccurrences": 1,
+          "sameYearDuplicateRatePct": 0.8,
+          "overlapWithPreviousYearUnique": 20,
+          "overlapWithPreviousYearRatePct": 16.1
+        }
+      },
+      "pairwiseEarlierYearOverlap": {
+        "2020": {},
+        "2021": {
+          "2020": {
+            "count": 56,
+            "targetCoveragePct": 12.4,
+            "jaccardPct": 7.5
+          }
+        },
+        "2022": {
+          "2020": {
+            "count": 83,
+            "targetCoveragePct": 18.6,
+            "jaccardPct": 11.5
+          },
+          "2021": {
+            "count": 108,
+            "targetCoveragePct": 24.2,
+            "jaccardPct": 13.7
+          }
+        },
+        "2023": {
+          "2020": {
+            "count": 33,
+            "targetCoveragePct": 7.3,
+            "jaccardPct": 4.3
+          },
+          "2021": {
+            "count": 45,
+            "targetCoveragePct": 10.0,
+            "jaccardPct": 5.3
+          },
+          "2022": {
+            "count": 79,
+            "targetCoveragePct": 17.6,
+            "jaccardPct": 9.7
+          }
+        },
+        "2024": {
+          "2020": {
+            "count": 15,
+            "targetCoveragePct": 3.3,
+            "jaccardPct": 1.9
+          },
+          "2021": {
+            "count": 26,
+            "targetCoveragePct": 5.8,
+            "jaccardPct": 3.0
+          },
+          "2022": {
+            "count": 48,
+            "targetCoveragePct": 10.7,
+            "jaccardPct": 5.7
+          },
+          "2023": {
+            "count": 74,
+            "targetCoveragePct": 16.5,
+            "jaccardPct": 9.0
+          }
+        },
+        "2025": {
+          "2020": {
+            "count": 17,
+            "targetCoveragePct": 3.8,
+            "jaccardPct": 2.2
+          },
+          "2021": {
+            "count": 28,
+            "targetCoveragePct": 6.2,
+            "jaccardPct": 3.2
+          },
+          "2022": {
+            "count": 33,
+            "targetCoveragePct": 7.3,
+            "jaccardPct": 3.8
+          },
+          "2023": {
+            "count": 60,
+            "targetCoveragePct": 13.4,
+            "jaccardPct": 7.2
+          },
+          "2024": {
+            "count": 73,
+            "targetCoveragePct": 16.3,
+            "jaccardPct": 8.9
+          }
+        },
+        "2026": {
+          "2020": {
+            "count": 3,
+            "targetCoveragePct": 2.4,
+            "jaccardPct": 0.6
+          },
+          "2021": {
+            "count": 6,
+            "targetCoveragePct": 4.8,
+            "jaccardPct": 1.1
+          },
+          "2022": {
+            "count": 9,
+            "targetCoveragePct": 7.3,
+            "jaccardPct": 1.6
+          },
+          "2023": {
+            "count": 12,
+            "targetCoveragePct": 9.7,
+            "jaccardPct": 2.1
+          },
+          "2024": {
+            "count": 16,
+            "targetCoveragePct": 12.9,
+            "jaccardPct": 2.9
+          },
+          "2025": {
+            "count": 20,
+            "targetCoveragePct": 16.1,
+            "jaccardPct": 3.6
+          }
+        }
+      }
+    },
+    "studySubjects": {
+      "years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "byYear": {
+        "2020": {
+          "occurrences": 374,
+          "uniqueQuestions": 357,
+          "seenInAnyPriorYearUnique": 0,
+          "seenInAnyPriorYearRatePct": 0.0,
+          "occurrencesFromPriorQuestionPct": 0.0,
+          "sameYearDuplicateOccurrences": 17,
+          "sameYearDuplicateRatePct": 4.5,
+          "overlapWithPreviousYearUnique": 0,
+          "overlapWithPreviousYearRatePct": 0.0
+        },
+        "2021": {
+          "occurrences": 499,
+          "uniqueQuestions": 450,
+          "seenInAnyPriorYearUnique": 56,
+          "seenInAnyPriorYearRatePct": 12.4,
+          "occurrencesFromPriorQuestionPct": 14.0,
+          "sameYearDuplicateOccurrences": 49,
+          "sameYearDuplicateRatePct": 9.8,
+          "overlapWithPreviousYearUnique": 56,
+          "overlapWithPreviousYearRatePct": 12.4
+        },
+        "2022": {
+          "occurrences": 498,
+          "uniqueQuestions": 446,
+          "seenInAnyPriorYearUnique": 166,
+          "seenInAnyPriorYearRatePct": 37.2,
+          "occurrencesFromPriorQuestionPct": 39.8,
+          "sameYearDuplicateOccurrences": 52,
+          "sameYearDuplicateRatePct": 10.4,
+          "overlapWithPreviousYearUnique": 108,
+          "overlapWithPreviousYearRatePct": 24.2
+        },
+        "2023": {
+          "occurrences": 499,
+          "uniqueQuestions": 449,
+          "seenInAnyPriorYearUnique": 112,
+          "seenInAnyPriorYearRatePct": 24.9,
+          "occurrencesFromPriorQuestionPct": 26.1,
+          "sameYearDuplicateOccurrences": 50,
+          "sameYearDuplicateRatePct": 10.0,
+          "overlapWithPreviousYearUnique": 79,
+          "overlapWithPreviousYearRatePct": 17.6
+        },
+        "2024": {
+          "occurrences": 500,
+          "uniqueQuestions": 448,
+          "seenInAnyPriorYearUnique": 122,
+          "seenInAnyPriorYearRatePct": 27.2,
+          "occurrencesFromPriorQuestionPct": 28.6,
+          "sameYearDuplicateOccurrences": 52,
+          "sameYearDuplicateRatePct": 10.4,
+          "overlapWithPreviousYearUnique": 74,
+          "overlapWithPreviousYearRatePct": 16.5
+        },
+        "2025": {
+          "occurrences": 498,
+          "uniqueQuestions": 449,
+          "seenInAnyPriorYearUnique": 149,
+          "seenInAnyPriorYearRatePct": 33.2,
+          "occurrencesFromPriorQuestionPct": 34.9,
+          "sameYearDuplicateOccurrences": 49,
+          "sameYearDuplicateRatePct": 9.8,
+          "overlapWithPreviousYearUnique": 73,
+          "overlapWithPreviousYearRatePct": 16.3
+        },
+        "2026": {
+          "occurrences": 125,
+          "uniqueQuestions": 124,
+          "seenInAnyPriorYearUnique": 39,
+          "seenInAnyPriorYearRatePct": 31.5,
+          "occurrencesFromPriorQuestionPct": 32.0,
+          "sameYearDuplicateOccurrences": 1,
+          "sameYearDuplicateRatePct": 0.8,
+          "overlapWithPreviousYearUnique": 20,
+          "overlapWithPreviousYearRatePct": 16.1
+        }
+      },
+      "pairwiseEarlierYearOverlap": {
+        "2020": {},
+        "2021": {
+          "2020": {
+            "count": 56,
+            "targetCoveragePct": 12.4,
+            "jaccardPct": 7.5
+          }
+        },
+        "2022": {
+          "2020": {
+            "count": 83,
+            "targetCoveragePct": 18.6,
+            "jaccardPct": 11.5
+          },
+          "2021": {
+            "count": 108,
+            "targetCoveragePct": 24.2,
+            "jaccardPct": 13.7
+          }
+        },
+        "2023": {
+          "2020": {
+            "count": 33,
+            "targetCoveragePct": 7.3,
+            "jaccardPct": 4.3
+          },
+          "2021": {
+            "count": 45,
+            "targetCoveragePct": 10.0,
+            "jaccardPct": 5.3
+          },
+          "2022": {
+            "count": 79,
+            "targetCoveragePct": 17.6,
+            "jaccardPct": 9.7
+          }
+        },
+        "2024": {
+          "2020": {
+            "count": 15,
+            "targetCoveragePct": 3.3,
+            "jaccardPct": 1.9
+          },
+          "2021": {
+            "count": 26,
+            "targetCoveragePct": 5.8,
+            "jaccardPct": 3.0
+          },
+          "2022": {
+            "count": 48,
+            "targetCoveragePct": 10.7,
+            "jaccardPct": 5.7
+          },
+          "2023": {
+            "count": 74,
+            "targetCoveragePct": 16.5,
+            "jaccardPct": 9.0
+          }
+        },
+        "2025": {
+          "2020": {
+            "count": 17,
+            "targetCoveragePct": 3.8,
+            "jaccardPct": 2.2
+          },
+          "2021": {
+            "count": 28,
+            "targetCoveragePct": 6.2,
+            "jaccardPct": 3.2
+          },
+          "2022": {
+            "count": 33,
+            "targetCoveragePct": 7.3,
+            "jaccardPct": 3.8
+          },
+          "2023": {
+            "count": 60,
+            "targetCoveragePct": 13.4,
+            "jaccardPct": 7.2
+          },
+          "2024": {
+            "count": 73,
+            "targetCoveragePct": 16.3,
+            "jaccardPct": 8.9
+          }
+        },
+        "2026": {
+          "2020": {
+            "count": 3,
+            "targetCoveragePct": 2.4,
+            "jaccardPct": 0.6
+          },
+          "2021": {
+            "count": 6,
+            "targetCoveragePct": 4.8,
+            "jaccardPct": 1.1
+          },
+          "2022": {
+            "count": 9,
+            "targetCoveragePct": 7.3,
+            "jaccardPct": 1.6
+          },
+          "2023": {
+            "count": 12,
+            "targetCoveragePct": 9.7,
+            "jaccardPct": 2.1
+          },
+          "2024": {
+            "count": 16,
+            "targetCoveragePct": 12.9,
+            "jaccardPct": 2.9
+          },
+          "2025": {
+            "count": 20,
+            "targetCoveragePct": 16.1,
+            "jaccardPct": 3.6
+          }
+        }
+      }
+    },
+    "studySubjectList": [
+      "법규",
+      "상선전문",
+      "영어",
+      "운용",
+      "항해"
+    ],
+    "study2026Summary": {
+      "occurrences": 125,
+      "uniqueQuestions": 124,
+      "seenInAnyPriorYearUnique": 39,
+      "seenInAnyPriorYearRatePct": 31.5,
+      "occurrencesFromPriorQuestionPct": 32.0,
+      "sameYearDuplicateOccurrences": 1,
+      "sameYearDuplicateRatePct": 0.8,
+      "overlapWithPreviousYearUnique": 20,
+      "overlapWithPreviousYearRatePct": 16.1,
+      "exactCoverageByEarlierYear": {
+        "2020": {
+          "count": 3,
+          "targetCoveragePct": 2.4,
+          "jaccardPct": 0.6
+        },
+        "2021": {
+          "count": 6,
+          "targetCoveragePct": 4.8,
+          "jaccardPct": 1.1
+        },
+        "2022": {
+          "count": 9,
+          "targetCoveragePct": 7.3,
+          "jaccardPct": 1.6
+        },
+        "2023": {
+          "count": 12,
+          "targetCoveragePct": 9.7,
+          "jaccardPct": 2.1
+        },
+        "2024": {
+          "count": 16,
+          "targetCoveragePct": 12.9,
+          "jaccardPct": 2.9
+        },
+        "2025": {
+          "count": 20,
+          "targetCoveragePct": 16.1,
+          "jaccardPct": 3.6
+        }
+      }
+    }
+  },
+  "navi3": {
+    "meta": {
+      "years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "completeYears": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "partialYears": [
+        2026
+      ],
+      "examCount": 25,
+      "questionCount": 3072,
+      "uniqueQuestionCount": 2089,
+      "repeatedGroupCount": 648,
+      "note": "보유 상선 기출 2020~2026 기준. 2026년은 제2회 75문항, 제3회 125문항만 수록된 진행 중 자료.",
+      "originMethod": "공백·문장부호를 제거한 동일 문제 문장 기준",
+      "originRule": "완결 연도 0회=신출, 1회=기출, 2회 이상=빈출"
+    },
+    "allSubjects": {
+      "years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "byYear": {
+        "2020": {
+          "occurrences": 374,
+          "uniqueQuestions": 359,
+          "seenInAnyPriorYearUnique": 0,
+          "seenInAnyPriorYearRatePct": 0.0,
+          "occurrencesFromPriorQuestionPct": 0.0,
+          "sameYearDuplicateOccurrences": 15,
+          "sameYearDuplicateRatePct": 4.0,
+          "overlapWithPreviousYearUnique": 0,
+          "overlapWithPreviousYearRatePct": 0.0
+        },
+        "2021": {
+          "occurrences": 499,
+          "uniqueQuestions": 462,
+          "seenInAnyPriorYearUnique": 56,
+          "seenInAnyPriorYearRatePct": 12.1,
+          "occurrencesFromPriorQuestionPct": 12.8,
+          "sameYearDuplicateOccurrences": 37,
+          "sameYearDuplicateRatePct": 7.4,
+          "overlapWithPreviousYearUnique": 56,
+          "overlapWithPreviousYearRatePct": 12.1
+        },
+        "2022": {
+          "occurrences": 499,
+          "uniqueQuestions": 463,
+          "seenInAnyPriorYearUnique": 195,
+          "seenInAnyPriorYearRatePct": 42.1,
+          "occurrencesFromPriorQuestionPct": 43.5,
+          "sameYearDuplicateOccurrences": 36,
+          "sameYearDuplicateRatePct": 7.2,
+          "overlapWithPreviousYearUnique": 128,
+          "overlapWithPreviousYearRatePct": 27.6
+        },
+        "2023": {
+          "occurrences": 500,
+          "uniqueQuestions": 420,
+          "seenInAnyPriorYearUnique": 101,
+          "seenInAnyPriorYearRatePct": 24.0,
+          "occurrencesFromPriorQuestionPct": 23.6,
+          "sameYearDuplicateOccurrences": 80,
+          "sameYearDuplicateRatePct": 16.0,
+          "overlapWithPreviousYearUnique": 52,
+          "overlapWithPreviousYearRatePct": 12.4
+        },
+        "2024": {
+          "occurrences": 500,
+          "uniqueQuestions": 454,
+          "seenInAnyPriorYearUnique": 141,
+          "seenInAnyPriorYearRatePct": 31.1,
+          "occurrencesFromPriorQuestionPct": 31.8,
+          "sameYearDuplicateOccurrences": 46,
+          "sameYearDuplicateRatePct": 9.2,
+          "overlapWithPreviousYearUnique": 70,
+          "overlapWithPreviousYearRatePct": 15.4
+        },
+        "2025": {
+          "occurrences": 500,
+          "uniqueQuestions": 455,
+          "seenInAnyPriorYearUnique": 164,
+          "seenInAnyPriorYearRatePct": 36.0,
+          "occurrencesFromPriorQuestionPct": 38.4,
+          "sameYearDuplicateOccurrences": 45,
+          "sameYearDuplicateRatePct": 9.0,
+          "overlapWithPreviousYearUnique": 83,
+          "overlapWithPreviousYearRatePct": 18.2
+        },
+        "2026": {
+          "occurrences": 200,
+          "uniqueQuestions": 200,
+          "seenInAnyPriorYearUnique": 67,
+          "seenInAnyPriorYearRatePct": 33.5,
+          "occurrencesFromPriorQuestionPct": 33.5,
+          "sameYearDuplicateOccurrences": 0,
+          "sameYearDuplicateRatePct": 0.0,
+          "overlapWithPreviousYearUnique": 26,
+          "overlapWithPreviousYearRatePct": 13.0
+        }
+      },
+      "pairwiseEarlierYearOverlap": {
+        "2020": {},
+        "2021": {
+          "2020": {
+            "count": 56,
+            "targetCoveragePct": 12.1,
+            "jaccardPct": 7.3
+          }
+        },
+        "2022": {
+          "2020": {
+            "count": 98,
+            "targetCoveragePct": 21.2,
+            "jaccardPct": 13.5
+          },
+          "2021": {
+            "count": 128,
+            "targetCoveragePct": 27.6,
+            "jaccardPct": 16.1
+          }
+        },
+        "2023": {
+          "2020": {
+            "count": 39,
+            "targetCoveragePct": 9.3,
+            "jaccardPct": 5.3
+          },
+          "2021": {
+            "count": 55,
+            "targetCoveragePct": 13.1,
+            "jaccardPct": 6.7
+          },
+          "2022": {
+            "count": 52,
+            "targetCoveragePct": 12.4,
+            "jaccardPct": 6.3
+          }
+        },
+        "2024": {
+          "2020": {
+            "count": 31,
+            "targetCoveragePct": 6.8,
+            "jaccardPct": 4.0
+          },
+          "2021": {
+            "count": 38,
+            "targetCoveragePct": 8.4,
+            "jaccardPct": 4.3
+          },
+          "2022": {
+            "count": 46,
+            "targetCoveragePct": 10.1,
+            "jaccardPct": 5.3
+          },
+          "2023": {
+            "count": 70,
+            "targetCoveragePct": 15.4,
+            "jaccardPct": 8.7
+          }
+        },
+        "2025": {
+          "2020": {
+            "count": 27,
+            "targetCoveragePct": 5.9,
+            "jaccardPct": 3.4
+          },
+          "2021": {
+            "count": 25,
+            "targetCoveragePct": 5.5,
+            "jaccardPct": 2.8
+          },
+          "2022": {
+            "count": 39,
+            "targetCoveragePct": 8.6,
+            "jaccardPct": 4.4
+          },
+          "2023": {
+            "count": 60,
+            "targetCoveragePct": 13.2,
+            "jaccardPct": 7.4
+          },
+          "2024": {
+            "count": 83,
+            "targetCoveragePct": 18.2,
+            "jaccardPct": 10.0
+          }
+        },
+        "2026": {
+          "2020": {
+            "count": 11,
+            "targetCoveragePct": 5.5,
+            "jaccardPct": 2.0
+          },
+          "2021": {
+            "count": 14,
+            "targetCoveragePct": 7.0,
+            "jaccardPct": 2.2
+          },
+          "2022": {
+            "count": 15,
+            "targetCoveragePct": 7.5,
+            "jaccardPct": 2.3
+          },
+          "2023": {
+            "count": 17,
+            "targetCoveragePct": 8.5,
+            "jaccardPct": 2.8
+          },
+          "2024": {
+            "count": 22,
+            "targetCoveragePct": 11.0,
+            "jaccardPct": 3.5
+          },
+          "2025": {
+            "count": 26,
+            "targetCoveragePct": 13.0,
+            "jaccardPct": 4.1
+          }
+        }
+      }
+    },
+    "studySubjects": {
+      "years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "byYear": {
+        "2020": {
+          "occurrences": 225,
+          "uniqueQuestions": 220,
+          "seenInAnyPriorYearUnique": 0,
+          "seenInAnyPriorYearRatePct": 0.0,
+          "occurrencesFromPriorQuestionPct": 0.0,
+          "sameYearDuplicateOccurrences": 5,
+          "sameYearDuplicateRatePct": 2.2,
+          "overlapWithPreviousYearUnique": 0,
+          "overlapWithPreviousYearRatePct": 0.0
+        },
+        "2021": {
+          "occurrences": 299,
+          "uniqueQuestions": 279,
+          "seenInAnyPriorYearUnique": 34,
+          "seenInAnyPriorYearRatePct": 12.2,
+          "occurrencesFromPriorQuestionPct": 13.4,
+          "sameYearDuplicateOccurrences": 20,
+          "sameYearDuplicateRatePct": 6.7,
+          "overlapWithPreviousYearUnique": 34,
+          "overlapWithPreviousYearRatePct": 12.2
+        },
+        "2022": {
+          "occurrences": 299,
+          "uniqueQuestions": 273,
+          "seenInAnyPriorYearUnique": 108,
+          "seenInAnyPriorYearRatePct": 39.6,
+          "occurrencesFromPriorQuestionPct": 41.8,
+          "sameYearDuplicateOccurrences": 26,
+          "sameYearDuplicateRatePct": 8.7,
+          "overlapWithPreviousYearUnique": 74,
+          "overlapWithPreviousYearRatePct": 27.1
+        },
+        "2023": {
+          "occurrences": 300,
+          "uniqueQuestions": 245,
+          "seenInAnyPriorYearUnique": 50,
+          "seenInAnyPriorYearRatePct": 20.4,
+          "occurrencesFromPriorQuestionPct": 20.7,
+          "sameYearDuplicateOccurrences": 55,
+          "sameYearDuplicateRatePct": 18.3,
+          "overlapWithPreviousYearUnique": 20,
+          "overlapWithPreviousYearRatePct": 8.2
+        },
+        "2024": {
+          "occurrences": 300,
+          "uniqueQuestions": 271,
+          "seenInAnyPriorYearUnique": 94,
+          "seenInAnyPriorYearRatePct": 34.7,
+          "occurrencesFromPriorQuestionPct": 34.7,
+          "sameYearDuplicateOccurrences": 29,
+          "sameYearDuplicateRatePct": 9.7,
+          "overlapWithPreviousYearUnique": 47,
+          "overlapWithPreviousYearRatePct": 17.3
+        },
+        "2025": {
+          "occurrences": 300,
+          "uniqueQuestions": 272,
+          "seenInAnyPriorYearUnique": 99,
+          "seenInAnyPriorYearRatePct": 36.4,
+          "occurrencesFromPriorQuestionPct": 38.7,
+          "sameYearDuplicateOccurrences": 28,
+          "sameYearDuplicateRatePct": 9.3,
+          "overlapWithPreviousYearUnique": 42,
+          "overlapWithPreviousYearRatePct": 15.4
+        },
+        "2026": {
+          "occurrences": 125,
+          "uniqueQuestions": 125,
+          "seenInAnyPriorYearUnique": 35,
+          "seenInAnyPriorYearRatePct": 28.0,
+          "occurrencesFromPriorQuestionPct": 28.0,
+          "sameYearDuplicateOccurrences": 0,
+          "sameYearDuplicateRatePct": 0.0,
+          "overlapWithPreviousYearUnique": 14,
+          "overlapWithPreviousYearRatePct": 11.2
+        }
+      },
+      "pairwiseEarlierYearOverlap": {
+        "2020": {},
+        "2021": {
+          "2020": {
+            "count": 34,
+            "targetCoveragePct": 12.2,
+            "jaccardPct": 7.3
+          }
+        },
+        "2022": {
+          "2020": {
+            "count": 49,
+            "targetCoveragePct": 17.9,
+            "jaccardPct": 11.0
+          },
+          "2021": {
+            "count": 74,
+            "targetCoveragePct": 27.1,
+            "jaccardPct": 15.5
+          }
+        },
+        "2023": {
+          "2020": {
+            "count": 20,
+            "targetCoveragePct": 8.2,
+            "jaccardPct": 4.5
+          },
+          "2021": {
+            "count": 30,
+            "targetCoveragePct": 12.2,
+            "jaccardPct": 6.1
+          },
+          "2022": {
+            "count": 20,
+            "targetCoveragePct": 8.2,
+            "jaccardPct": 4.0
+          }
+        },
+        "2024": {
+          "2020": {
+            "count": 17,
+            "targetCoveragePct": 6.3,
+            "jaccardPct": 3.6
+          },
+          "2021": {
+            "count": 27,
+            "targetCoveragePct": 10.0,
+            "jaccardPct": 5.2
+          },
+          "2022": {
+            "count": 32,
+            "targetCoveragePct": 11.8,
+            "jaccardPct": 6.2
+          },
+          "2023": {
+            "count": 47,
+            "targetCoveragePct": 17.3,
+            "jaccardPct": 10.0
+          }
+        },
+        "2025": {
+          "2020": {
+            "count": 16,
+            "targetCoveragePct": 5.9,
+            "jaccardPct": 3.4
+          },
+          "2021": {
+            "count": 18,
+            "targetCoveragePct": 6.6,
+            "jaccardPct": 3.4
+          },
+          "2022": {
+            "count": 20,
+            "targetCoveragePct": 7.4,
+            "jaccardPct": 3.8
+          },
+          "2023": {
+            "count": 42,
+            "targetCoveragePct": 15.4,
+            "jaccardPct": 8.8
+          },
+          "2024": {
+            "count": 42,
+            "targetCoveragePct": 15.4,
+            "jaccardPct": 8.4
+          }
+        },
+        "2026": {
+          "2020": {
+            "count": 4,
+            "targetCoveragePct": 3.2,
+            "jaccardPct": 1.2
+          },
+          "2021": {
+            "count": 9,
+            "targetCoveragePct": 7.2,
+            "jaccardPct": 2.3
+          },
+          "2022": {
+            "count": 6,
+            "targetCoveragePct": 4.8,
+            "jaccardPct": 1.5
+          },
+          "2023": {
+            "count": 6,
+            "targetCoveragePct": 4.8,
+            "jaccardPct": 1.6
+          },
+          "2024": {
+            "count": 14,
+            "targetCoveragePct": 11.2,
+            "jaccardPct": 3.7
+          },
+          "2025": {
+            "count": 14,
+            "targetCoveragePct": 11.2,
+            "jaccardPct": 3.7
+          }
+        }
+      }
+    },
+    "studySubjectList": [
+      "법규",
+      "상선전문",
+      "항해"
+    ],
+    "study2026Summary": {
+      "occurrences": 125,
+      "uniqueQuestions": 125,
+      "seenInAnyPriorYearUnique": 35,
+      "seenInAnyPriorYearRatePct": 28.0,
+      "occurrencesFromPriorQuestionPct": 28.0,
+      "sameYearDuplicateOccurrences": 0,
+      "sameYearDuplicateRatePct": 0.0,
+      "overlapWithPreviousYearUnique": 14,
+      "overlapWithPreviousYearRatePct": 11.2,
+      "exactCoverageByEarlierYear": {
+        "2020": {
+          "count": 4,
+          "targetCoveragePct": 3.2,
+          "jaccardPct": 1.2
+        },
+        "2021": {
+          "count": 9,
+          "targetCoveragePct": 7.2,
+          "jaccardPct": 2.3
+        },
+        "2022": {
+          "count": 6,
+          "targetCoveragePct": 4.8,
+          "jaccardPct": 1.5
+        },
+        "2023": {
+          "count": 6,
+          "targetCoveragePct": 4.8,
+          "jaccardPct": 1.6
+        },
+        "2024": {
+          "count": 14,
+          "targetCoveragePct": 11.2,
+          "jaccardPct": 3.7
+        },
+        "2025": {
+          "count": 14,
+          "targetCoveragePct": 11.2,
+          "jaccardPct": 3.7
+        }
+      }
+    }
+  }
+}
