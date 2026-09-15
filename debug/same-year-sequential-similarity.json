@@ -1,0 +1,821 @@
+{
+  "navi2": {
+    "note": "보유 상선 기출 2020~2026 기준. 2026년은 제2회 125문항만 수록된 진행 중 자료.",
+    "studySubjects": [
+      "법규",
+      "상선전문",
+      "영어",
+      "운용",
+      "항해"
+    ],
+    "method": {
+      "denominator": "questions in later sessions of the same year; the first available session is excluded because no earlier same-year paper exists",
+      "exact": "same normalized question stem appeared in an earlier session of that same year",
+      "near_identical": "same subject, non-exact, SequenceMatcher >=0.88 and trigram Jaccard >=0.55",
+      "wording_variant": "same subject, non-exact, SequenceMatcher >=0.72 and trigram Jaccard >=0.30",
+      "warning": "lexical stem similarity only; options/answers and semantic equivalence are not included"
+    },
+    "byYear": {
+      "2020": {
+        "sessions": [
+          2,
+          3,
+          4
+        ],
+        "firstSessionExcludedFromDenominator": 2,
+        "laterSessionsCombined": {
+          "eligible": 249,
+          "exact": 17,
+          "near_identical": 5,
+          "wording_variant": 15,
+          "new_wording": 212,
+          "exactPct": 6.8,
+          "near_identicalPct": 2.0,
+          "wording_variantPct": 6.0,
+          "new_wordingPct": 85.1,
+          "exactPlusNearPct": 8.8,
+          "exactPlusNearPlusVariantPct": 14.9
+        },
+        "byLaterSession": {
+          "3": {
+            "eligible": 125,
+            "exact": 5,
+            "near_identical": 3,
+            "wording_variant": 5,
+            "new_wording": 112,
+            "exactPct": 4.0,
+            "near_identicalPct": 2.4,
+            "wording_variantPct": 4.0,
+            "new_wordingPct": 89.6,
+            "exactPlusNearPct": 6.4,
+            "exactPlusNearPlusVariantPct": 10.4
+          },
+          "4": {
+            "eligible": 124,
+            "exact": 12,
+            "near_identical": 2,
+            "wording_variant": 10,
+            "new_wording": 100,
+            "exactPct": 9.7,
+            "near_identicalPct": 1.6,
+            "wording_variantPct": 8.1,
+            "new_wordingPct": 80.6,
+            "exactPlusNearPct": 11.3,
+            "exactPlusNearPlusVariantPct": 19.4
+          }
+        }
+      },
+      "2021": {
+        "sessions": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "firstSessionExcludedFromDenominator": 1,
+        "laterSessionsCombined": {
+          "eligible": 373,
+          "exact": 48,
+          "near_identical": 4,
+          "wording_variant": 19,
+          "new_wording": 302,
+          "exactPct": 12.9,
+          "near_identicalPct": 1.1,
+          "wording_variantPct": 5.1,
+          "new_wordingPct": 81.0,
+          "exactPlusNearPct": 13.9,
+          "exactPlusNearPlusVariantPct": 19.0
+        },
+        "byLaterSession": {
+          "2": {
+            "eligible": 124,
+            "exact": 11,
+            "near_identical": 2,
+            "wording_variant": 4,
+            "new_wording": 107,
+            "exactPct": 8.9,
+            "near_identicalPct": 1.6,
+            "wording_variantPct": 3.2,
+            "new_wordingPct": 86.3,
+            "exactPlusNearPct": 10.5,
+            "exactPlusNearPlusVariantPct": 13.7
+          },
+          "3": {
+            "eligible": 124,
+            "exact": 18,
+            "near_identical": 1,
+            "wording_variant": 5,
+            "new_wording": 100,
+            "exactPct": 14.5,
+            "near_identicalPct": 0.8,
+            "wording_variantPct": 4.0,
+            "new_wordingPct": 80.6,
+            "exactPlusNearPct": 15.3,
+            "exactPlusNearPlusVariantPct": 19.4
+          },
+          "4": {
+            "eligible": 125,
+            "exact": 19,
+            "near_identical": 1,
+            "wording_variant": 10,
+            "new_wording": 95,
+            "exactPct": 15.2,
+            "near_identicalPct": 0.8,
+            "wording_variantPct": 8.0,
+            "new_wordingPct": 76.0,
+            "exactPlusNearPct": 16.0,
+            "exactPlusNearPlusVariantPct": 24.0
+          }
+        }
+      },
+      "2022": {
+        "sessions": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "firstSessionExcludedFromDenominator": 1,
+        "laterSessionsCombined": {
+          "eligible": 375,
+          "exact": 51,
+          "near_identical": 12,
+          "wording_variant": 24,
+          "new_wording": 288,
+          "exactPct": 13.6,
+          "near_identicalPct": 3.2,
+          "wording_variantPct": 6.4,
+          "new_wordingPct": 76.8,
+          "exactPlusNearPct": 16.8,
+          "exactPlusNearPlusVariantPct": 23.2
+        },
+        "byLaterSession": {
+          "2": {
+            "eligible": 125,
+            "exact": 9,
+            "near_identical": 1,
+            "wording_variant": 7,
+            "new_wording": 108,
+            "exactPct": 7.2,
+            "near_identicalPct": 0.8,
+            "wording_variantPct": 5.6,
+            "new_wordingPct": 86.4,
+            "exactPlusNearPct": 8.0,
+            "exactPlusNearPlusVariantPct": 13.6
+          },
+          "3": {
+            "eligible": 125,
+            "exact": 24,
+            "near_identical": 2,
+            "wording_variant": 7,
+            "new_wording": 92,
+            "exactPct": 19.2,
+            "near_identicalPct": 1.6,
+            "wording_variantPct": 5.6,
+            "new_wordingPct": 73.6,
+            "exactPlusNearPct": 20.8,
+            "exactPlusNearPlusVariantPct": 26.4
+          },
+          "4": {
+            "eligible": 125,
+            "exact": 18,
+            "near_identical": 9,
+            "wording_variant": 10,
+            "new_wording": 88,
+            "exactPct": 14.4,
+            "near_identicalPct": 7.2,
+            "wording_variantPct": 8.0,
+            "new_wordingPct": 70.4,
+            "exactPlusNearPct": 21.6,
+            "exactPlusNearPlusVariantPct": 29.6
+          }
+        }
+      },
+      "2023": {
+        "sessions": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "firstSessionExcludedFromDenominator": 1,
+        "laterSessionsCombined": {
+          "eligible": 374,
+          "exact": 50,
+          "near_identical": 5,
+          "wording_variant": 20,
+          "new_wording": 299,
+          "exactPct": 13.4,
+          "near_identicalPct": 1.3,
+          "wording_variantPct": 5.3,
+          "new_wordingPct": 79.9,
+          "exactPlusNearPct": 14.7,
+          "exactPlusNearPlusVariantPct": 20.1
+        },
+        "byLaterSession": {
+          "2": {
+            "eligible": 124,
+            "exact": 6,
+            "near_identical": 3,
+            "wording_variant": 4,
+            "new_wording": 111,
+            "exactPct": 4.8,
+            "near_identicalPct": 2.4,
+            "wording_variantPct": 3.2,
+            "new_wordingPct": 89.5,
+            "exactPlusNearPct": 7.3,
+            "exactPlusNearPlusVariantPct": 10.5
+          },
+          "3": {
+            "eligible": 125,
+            "exact": 19,
+            "near_identical": 1,
+            "wording_variant": 9,
+            "new_wording": 96,
+            "exactPct": 15.2,
+            "near_identicalPct": 0.8,
+            "wording_variantPct": 7.2,
+            "new_wordingPct": 76.8,
+            "exactPlusNearPct": 16.0,
+            "exactPlusNearPlusVariantPct": 23.2
+          },
+          "4": {
+            "eligible": 125,
+            "exact": 25,
+            "near_identical": 1,
+            "wording_variant": 7,
+            "new_wording": 92,
+            "exactPct": 20.0,
+            "near_identicalPct": 0.8,
+            "wording_variantPct": 5.6,
+            "new_wordingPct": 73.6,
+            "exactPlusNearPct": 20.8,
+            "exactPlusNearPlusVariantPct": 26.4
+          }
+        }
+      },
+      "2024": {
+        "sessions": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "firstSessionExcludedFromDenominator": 1,
+        "laterSessionsCombined": {
+          "eligible": 375,
+          "exact": 52,
+          "near_identical": 10,
+          "wording_variant": 22,
+          "new_wording": 291,
+          "exactPct": 13.9,
+          "near_identicalPct": 2.7,
+          "wording_variantPct": 5.9,
+          "new_wordingPct": 77.6,
+          "exactPlusNearPct": 16.5,
+          "exactPlusNearPlusVariantPct": 22.4
+        },
+        "byLaterSession": {
+          "2": {
+            "eligible": 125,
+            "exact": 4,
+            "near_identical": 2,
+            "wording_variant": 0,
+            "new_wording": 119,
+            "exactPct": 3.2,
+            "near_identicalPct": 1.6,
+            "wording_variantPct": 0.0,
+            "new_wordingPct": 95.2,
+            "exactPlusNearPct": 4.8,
+            "exactPlusNearPlusVariantPct": 4.8
+          },
+          "3": {
+            "eligible": 125,
+            "exact": 14,
+            "near_identical": 5,
+            "wording_variant": 12,
+            "new_wording": 94,
+            "exactPct": 11.2,
+            "near_identicalPct": 4.0,
+            "wording_variantPct": 9.6,
+            "new_wordingPct": 75.2,
+            "exactPlusNearPct": 15.2,
+            "exactPlusNearPlusVariantPct": 24.8
+          },
+          "4": {
+            "eligible": 125,
+            "exact": 34,
+            "near_identical": 3,
+            "wording_variant": 10,
+            "new_wording": 78,
+            "exactPct": 27.2,
+            "near_identicalPct": 2.4,
+            "wording_variantPct": 8.0,
+            "new_wordingPct": 62.4,
+            "exactPlusNearPct": 29.6,
+            "exactPlusNearPlusVariantPct": 37.6
+          }
+        }
+      },
+      "2025": {
+        "sessions": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "firstSessionExcludedFromDenominator": 1,
+        "laterSessionsCombined": {
+          "eligible": 373,
+          "exact": 49,
+          "near_identical": 6,
+          "wording_variant": 22,
+          "new_wording": 296,
+          "exactPct": 13.1,
+          "near_identicalPct": 1.6,
+          "wording_variantPct": 5.9,
+          "new_wordingPct": 79.4,
+          "exactPlusNearPct": 14.7,
+          "exactPlusNearPlusVariantPct": 20.6
+        },
+        "byLaterSession": {
+          "2": {
+            "eligible": 125,
+            "exact": 7,
+            "near_identical": 2,
+            "wording_variant": 9,
+            "new_wording": 107,
+            "exactPct": 5.6,
+            "near_identicalPct": 1.6,
+            "wording_variantPct": 7.2,
+            "new_wordingPct": 85.6,
+            "exactPlusNearPct": 7.2,
+            "exactPlusNearPlusVariantPct": 14.4
+          },
+          "3": {
+            "eligible": 124,
+            "exact": 17,
+            "near_identical": 2,
+            "wording_variant": 6,
+            "new_wording": 99,
+            "exactPct": 13.7,
+            "near_identicalPct": 1.6,
+            "wording_variantPct": 4.8,
+            "new_wordingPct": 79.8,
+            "exactPlusNearPct": 15.3,
+            "exactPlusNearPlusVariantPct": 20.2
+          },
+          "4": {
+            "eligible": 124,
+            "exact": 25,
+            "near_identical": 2,
+            "wording_variant": 7,
+            "new_wording": 90,
+            "exactPct": 20.2,
+            "near_identicalPct": 1.6,
+            "wording_variantPct": 5.6,
+            "new_wordingPct": 72.6,
+            "exactPlusNearPct": 21.8,
+            "exactPlusNearPlusVariantPct": 27.4
+          }
+        }
+      },
+      "2026": {
+        "sessions": [
+          2
+        ],
+        "firstSessionExcludedFromDenominator": 2,
+        "laterSessionsCombined": {
+          "eligible": 0,
+          "exact": 0,
+          "near_identical": 0,
+          "wording_variant": 0,
+          "new_wording": 0,
+          "exactPct": 0.0,
+          "near_identicalPct": 0.0,
+          "wording_variantPct": 0.0,
+          "new_wordingPct": 0.0,
+          "exactPlusNearPct": 0.0,
+          "exactPlusNearPlusVariantPct": 0.0
+        },
+        "byLaterSession": {}
+      }
+    }
+  },
+  "navi3": {
+    "note": "보유 상선 기출 2020~2026 기준. 2026년은 제2회 75문항, 제3회 125문항만 수록된 진행 중 자료.",
+    "studySubjects": [
+      "법규",
+      "상선전문",
+      "항해"
+    ],
+    "method": {
+      "denominator": "questions in later sessions of the same year; the first available session is excluded because no earlier same-year paper exists",
+      "exact": "same normalized question stem appeared in an earlier session of that same year",
+      "near_identical": "same subject, non-exact, SequenceMatcher >=0.88 and trigram Jaccard >=0.55",
+      "wording_variant": "same subject, non-exact, SequenceMatcher >=0.72 and trigram Jaccard >=0.30",
+      "warning": "lexical stem similarity only; options/answers and semantic equivalence are not included"
+    },
+    "byYear": {
+      "2020": {
+        "sessions": [
+          2,
+          3,
+          4
+        ],
+        "firstSessionExcludedFromDenominator": 2,
+        "laterSessionsCombined": {
+          "eligible": 150,
+          "exact": 5,
+          "near_identical": 2,
+          "wording_variant": 10,
+          "new_wording": 133,
+          "exactPct": 3.3,
+          "near_identicalPct": 1.3,
+          "wording_variantPct": 6.7,
+          "new_wordingPct": 88.7,
+          "exactPlusNearPct": 4.7,
+          "exactPlusNearPlusVariantPct": 11.3
+        },
+        "byLaterSession": {
+          "3": {
+            "eligible": 75,
+            "exact": 0,
+            "near_identical": 2,
+            "wording_variant": 5,
+            "new_wording": 68,
+            "exactPct": 0.0,
+            "near_identicalPct": 2.7,
+            "wording_variantPct": 6.7,
+            "new_wordingPct": 90.7,
+            "exactPlusNearPct": 2.7,
+            "exactPlusNearPlusVariantPct": 9.3
+          },
+          "4": {
+            "eligible": 75,
+            "exact": 5,
+            "near_identical": 0,
+            "wording_variant": 5,
+            "new_wording": 65,
+            "exactPct": 6.7,
+            "near_identicalPct": 0.0,
+            "wording_variantPct": 6.7,
+            "new_wordingPct": 86.7,
+            "exactPlusNearPct": 6.7,
+            "exactPlusNearPlusVariantPct": 13.3
+          }
+        }
+      },
+      "2021": {
+        "sessions": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "firstSessionExcludedFromDenominator": 1,
+        "laterSessionsCombined": {
+          "eligible": 225,
+          "exact": 20,
+          "near_identical": 6,
+          "wording_variant": 13,
+          "new_wording": 186,
+          "exactPct": 8.9,
+          "near_identicalPct": 2.7,
+          "wording_variantPct": 5.8,
+          "new_wordingPct": 82.7,
+          "exactPlusNearPct": 11.6,
+          "exactPlusNearPlusVariantPct": 17.3
+        },
+        "byLaterSession": {
+          "2": {
+            "eligible": 75,
+            "exact": 1,
+            "near_identical": 2,
+            "wording_variant": 2,
+            "new_wording": 70,
+            "exactPct": 1.3,
+            "near_identicalPct": 2.7,
+            "wording_variantPct": 2.7,
+            "new_wordingPct": 93.3,
+            "exactPlusNearPct": 4.0,
+            "exactPlusNearPlusVariantPct": 6.7
+          },
+          "3": {
+            "eligible": 75,
+            "exact": 8,
+            "near_identical": 3,
+            "wording_variant": 4,
+            "new_wording": 60,
+            "exactPct": 10.7,
+            "near_identicalPct": 4.0,
+            "wording_variantPct": 5.3,
+            "new_wordingPct": 80.0,
+            "exactPlusNearPct": 14.7,
+            "exactPlusNearPlusVariantPct": 20.0
+          },
+          "4": {
+            "eligible": 75,
+            "exact": 11,
+            "near_identical": 1,
+            "wording_variant": 7,
+            "new_wording": 56,
+            "exactPct": 14.7,
+            "near_identicalPct": 1.3,
+            "wording_variantPct": 9.3,
+            "new_wordingPct": 74.7,
+            "exactPlusNearPct": 16.0,
+            "exactPlusNearPlusVariantPct": 25.3
+          }
+        }
+      },
+      "2022": {
+        "sessions": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "firstSessionExcludedFromDenominator": 1,
+        "laterSessionsCombined": {
+          "eligible": 224,
+          "exact": 26,
+          "near_identical": 2,
+          "wording_variant": 19,
+          "new_wording": 177,
+          "exactPct": 11.6,
+          "near_identicalPct": 0.9,
+          "wording_variantPct": 8.5,
+          "new_wordingPct": 79.0,
+          "exactPlusNearPct": 12.5,
+          "exactPlusNearPlusVariantPct": 21.0
+        },
+        "byLaterSession": {
+          "2": {
+            "eligible": 74,
+            "exact": 6,
+            "near_identical": 1,
+            "wording_variant": 5,
+            "new_wording": 62,
+            "exactPct": 8.1,
+            "near_identicalPct": 1.4,
+            "wording_variantPct": 6.8,
+            "new_wordingPct": 83.8,
+            "exactPlusNearPct": 9.5,
+            "exactPlusNearPlusVariantPct": 16.2
+          },
+          "3": {
+            "eligible": 75,
+            "exact": 9,
+            "near_identical": 0,
+            "wording_variant": 5,
+            "new_wording": 61,
+            "exactPct": 12.0,
+            "near_identicalPct": 0.0,
+            "wording_variantPct": 6.7,
+            "new_wordingPct": 81.3,
+            "exactPlusNearPct": 12.0,
+            "exactPlusNearPlusVariantPct": 18.7
+          },
+          "4": {
+            "eligible": 75,
+            "exact": 11,
+            "near_identical": 1,
+            "wording_variant": 9,
+            "new_wording": 54,
+            "exactPct": 14.7,
+            "near_identicalPct": 1.3,
+            "wording_variantPct": 12.0,
+            "new_wordingPct": 72.0,
+            "exactPlusNearPct": 16.0,
+            "exactPlusNearPlusVariantPct": 28.0
+          }
+        }
+      },
+      "2023": {
+        "sessions": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "firstSessionExcludedFromDenominator": 1,
+        "laterSessionsCombined": {
+          "eligible": 225,
+          "exact": 55,
+          "near_identical": 8,
+          "wording_variant": 13,
+          "new_wording": 149,
+          "exactPct": 24.4,
+          "near_identicalPct": 3.6,
+          "wording_variantPct": 5.8,
+          "new_wordingPct": 66.2,
+          "exactPlusNearPct": 28.0,
+          "exactPlusNearPlusVariantPct": 33.8
+        },
+        "byLaterSession": {
+          "2": {
+            "eligible": 75,
+            "exact": 3,
+            "near_identical": 2,
+            "wording_variant": 4,
+            "new_wording": 66,
+            "exactPct": 4.0,
+            "near_identicalPct": 2.7,
+            "wording_variantPct": 5.3,
+            "new_wordingPct": 88.0,
+            "exactPlusNearPct": 6.7,
+            "exactPlusNearPlusVariantPct": 12.0
+          },
+          "3": {
+            "eligible": 75,
+            "exact": 11,
+            "near_identical": 5,
+            "wording_variant": 6,
+            "new_wording": 53,
+            "exactPct": 14.7,
+            "near_identicalPct": 6.7,
+            "wording_variantPct": 8.0,
+            "new_wordingPct": 70.7,
+            "exactPlusNearPct": 21.3,
+            "exactPlusNearPlusVariantPct": 29.3
+          },
+          "4": {
+            "eligible": 75,
+            "exact": 41,
+            "near_identical": 1,
+            "wording_variant": 3,
+            "new_wording": 30,
+            "exactPct": 54.7,
+            "near_identicalPct": 1.3,
+            "wording_variantPct": 4.0,
+            "new_wordingPct": 40.0,
+            "exactPlusNearPct": 56.0,
+            "exactPlusNearPlusVariantPct": 60.0
+          }
+        }
+      },
+      "2024": {
+        "sessions": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "firstSessionExcludedFromDenominator": 1,
+        "laterSessionsCombined": {
+          "eligible": 225,
+          "exact": 29,
+          "near_identical": 7,
+          "wording_variant": 18,
+          "new_wording": 171,
+          "exactPct": 12.9,
+          "near_identicalPct": 3.1,
+          "wording_variantPct": 8.0,
+          "new_wordingPct": 76.0,
+          "exactPlusNearPct": 16.0,
+          "exactPlusNearPlusVariantPct": 24.0
+        },
+        "byLaterSession": {
+          "2": {
+            "eligible": 75,
+            "exact": 8,
+            "near_identical": 4,
+            "wording_variant": 5,
+            "new_wording": 58,
+            "exactPct": 10.7,
+            "near_identicalPct": 5.3,
+            "wording_variantPct": 6.7,
+            "new_wordingPct": 77.3,
+            "exactPlusNearPct": 16.0,
+            "exactPlusNearPlusVariantPct": 22.7
+          },
+          "3": {
+            "eligible": 75,
+            "exact": 8,
+            "near_identical": 2,
+            "wording_variant": 10,
+            "new_wording": 55,
+            "exactPct": 10.7,
+            "near_identicalPct": 2.7,
+            "wording_variantPct": 13.3,
+            "new_wordingPct": 73.3,
+            "exactPlusNearPct": 13.3,
+            "exactPlusNearPlusVariantPct": 26.7
+          },
+          "4": {
+            "eligible": 75,
+            "exact": 13,
+            "near_identical": 1,
+            "wording_variant": 3,
+            "new_wording": 58,
+            "exactPct": 17.3,
+            "near_identicalPct": 1.3,
+            "wording_variantPct": 4.0,
+            "new_wordingPct": 77.3,
+            "exactPlusNearPct": 18.7,
+            "exactPlusNearPlusVariantPct": 22.7
+          }
+        }
+      },
+      "2025": {
+        "sessions": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "firstSessionExcludedFromDenominator": 1,
+        "laterSessionsCombined": {
+          "eligible": 225,
+          "exact": 28,
+          "near_identical": 7,
+          "wording_variant": 19,
+          "new_wording": 171,
+          "exactPct": 12.4,
+          "near_identicalPct": 3.1,
+          "wording_variantPct": 8.4,
+          "new_wordingPct": 76.0,
+          "exactPlusNearPct": 15.6,
+          "exactPlusNearPlusVariantPct": 24.0
+        },
+        "byLaterSession": {
+          "2": {
+            "eligible": 75,
+            "exact": 7,
+            "near_identical": 0,
+            "wording_variant": 5,
+            "new_wording": 63,
+            "exactPct": 9.3,
+            "near_identicalPct": 0.0,
+            "wording_variantPct": 6.7,
+            "new_wordingPct": 84.0,
+            "exactPlusNearPct": 9.3,
+            "exactPlusNearPlusVariantPct": 16.0
+          },
+          "3": {
+            "eligible": 75,
+            "exact": 8,
+            "near_identical": 5,
+            "wording_variant": 8,
+            "new_wording": 54,
+            "exactPct": 10.7,
+            "near_identicalPct": 6.7,
+            "wording_variantPct": 10.7,
+            "new_wordingPct": 72.0,
+            "exactPlusNearPct": 17.3,
+            "exactPlusNearPlusVariantPct": 28.0
+          },
+          "4": {
+            "eligible": 75,
+            "exact": 13,
+            "near_identical": 2,
+            "wording_variant": 6,
+            "new_wording": 54,
+            "exactPct": 17.3,
+            "near_identicalPct": 2.7,
+            "wording_variantPct": 8.0,
+            "new_wordingPct": 72.0,
+            "exactPlusNearPct": 20.0,
+            "exactPlusNearPlusVariantPct": 28.0
+          }
+        }
+      },
+      "2026": {
+        "sessions": [
+          2,
+          3
+        ],
+        "firstSessionExcludedFromDenominator": 2,
+        "laterSessionsCombined": {
+          "eligible": 75,
+          "exact": 0,
+          "near_identical": 0,
+          "wording_variant": 5,
+          "new_wording": 70,
+          "exactPct": 0.0,
+          "near_identicalPct": 0.0,
+          "wording_variantPct": 6.7,
+          "new_wordingPct": 93.3,
+          "exactPlusNearPct": 0.0,
+          "exactPlusNearPlusVariantPct": 6.7
+        },
+        "byLaterSession": {
+          "3": {
+            "eligible": 75,
+            "exact": 0,
+            "near_identical": 0,
+            "wording_variant": 5,
+            "new_wording": 70,
+            "exactPct": 0.0,
+            "near_identicalPct": 0.0,
+            "wording_variantPct": 6.7,
+            "new_wordingPct": 93.3,
+            "exactPlusNearPct": 0.0,
+            "exactPlusNearPlusVariantPct": 6.7
+          }
+        }
+      }
+    }
+  }
+}
