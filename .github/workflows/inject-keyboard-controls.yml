@@ -2,7 +2,7 @@ name: Patch pass-plan app
 
 on:
   push:
-    branches: [ main, audit/reports-2026-explanations ]
+    branches: [ main ]
     paths:
       - 'keyboard-controls.js'
       - 'convenience-controls.js'
@@ -16,8 +16,6 @@ on:
       - 'tools/patch_2026_session3_explanations.py'
       - 'tools/test_predictive_mock.py'
       - 'tools/test_2026_session3_explanations.py'
-      - 'tools/audit_2026_explanations.py'
-      - 'tools/match_2026_session3_explanations.py'
       - '.github/workflows/inject-keyboard-controls.yml'
   workflow_dispatch:
 
@@ -40,17 +38,14 @@ jobs:
           python tools/patch_2026_session3_explanations.py
           python tools/test_predictive_mock.py
           python tools/test_2026_session3_explanations.py
-          if [ -f tools/audit_2026_explanations.py ]; then python tools/audit_2026_explanations.py; fi
-          if [ -f tools/match_2026_session3_explanations.py ]; then python tools/match_2026_session3_explanations.py; fi
       - name: Commit index update
         run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add index.html
-          if [ -d debug ]; then git add debug; fi
-          if git diff --cached --quiet; then
+          if git diff --quiet -- index.html; then
             echo 'No change needed.'
             exit 0
           fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
           git commit -m 'Add 2026 session 3 explanations'
           git push
