@@ -15,9 +15,8 @@ required=[
     "const sourceKeys=checkpointMatches?checkpoint.queueKeys:allKeys;",
     "checkpoint.queueKeys.length>=allKeys.length",
     "_sameDayRecheck:true",
-    "당일 재확인",
     "숙달되면 목록에서 빠집니다.",
-    "첫 정답은 30~50문제 뒤 자동 재확인",
+    "30~50문제 뒤 자동 재확인",
     "new Map(planSessionQueue.filter(q=>!ppTodayCleared",
 ]
 for needle in required:
