@@ -109,26 +109,15 @@ new="const unresolved=[...new Map(planSessionQueue.filter(q=>!ppTodayCleared(ppP
 if old in text:text=text.replace(old,new,1)
 elif new not in text: raise SystemExit('result unresolved selector not found')
 
-# Show clearly when the user is seeing an automatic delayed confirmation.
-old="const sessionLabel=ppSessionLabel(),rec=ppProgressFor(ppLoadProgress(),q._planKey),wrongTag=planSessionKind==='frequent-wrong'?`<span class=\"tag\" style=\"margin:0;background:#FEE2E2;color:#B91C1C\">누적 오답 ${Number(rec.wrong)||0}회</span>`:'';"
-new="const sessionLabel=ppSessionLabel(),rec=ppProgressFor(ppLoadProgress(),q._planKey),wrongTag=planSessionKind==='frequent-wrong'?`<span class=\"tag\" style=\"margin:0;background:#FEE2E2;color:#B91C1C\">누적 오답 ${Number(rec.wrong)||0}회</span>`:'',recheckTag=q._sameDayRecheck?`<span class=\"tag\" style=\"margin:0;background:#EDE9FE;color:#6D28D9\">당일 재확인</span>`:'';"
-if old in text:text=text.replace(old,new,1)
-elif new not in text: raise SystemExit('card tag variable marker not found')
+# Safe copy updates: these sections are not rewritten by the earlier weak-drill patch once present.
+text=text.replace(
+    '오늘 한 번이라도 틀린 문제와 누적 2회 이상 틀린 문제를 별도로 다시 풀 수 있습니다.',
+    '오늘 한 번이라도 틀린 문제와 누적 2회 이상 틀렸지만 아직 숙달되지 않은 문제를 별도로 다시 풀 수 있습니다. 오늘 숙제에서 처음 맞힌 문제는 30~50문제 뒤 자동 재확인됩니다.',1)
+text=text.replace(
+    '자주 틀리는 문제는 누적 오답 횟수가 많은 순으로 출제됩니다.',
+    '자주 틀리는 문제는 누적 오답 횟수가 많은 순으로 출제되며 숙달되면 목록에서 빠집니다.',1)
 
-old="${wrongTag}</div>"
-new="${wrongTag}${recheckTag}</div>"
-if old in text:text=text.replace(old,new,1)
-elif new not in text: raise SystemExit('card tag output marker not found')
-
-# Update user-facing descriptions to match the actual behavior.
-text=text.replace('오늘 한 번이라도 틀린 문제와 누적 2회 이상 틀린 문제를 별도로 다시 풀 수 있습니다.','오늘 한 번이라도 틀린 문제와 누적 2회 이상 틀렸지만 아직 숙달되지 않은 문제를 별도로 다시 풀 수 있습니다.',1)
-text=text.replace('자주 틀리는 문제는 누적 오답 횟수가 많은 순으로 출제됩니다.','자주 틀리는 문제는 누적 오답 횟수가 많은 순으로 출제되며 숙달되면 목록에서 빠집니다.',1)
-text=text.replace('누적 2회 이상 오답 문제 집중 훈련 · 많이 틀린 문제부터 출제됩니다.','누적 2회 이상 오답·미숙달 문제 집중 훈련 · 숙달되면 목록에서 빠집니다.',1)
-text=text.replace('첫 정답은 학습 중 · 같은 날 한 번 더 맞히면 오늘 확인 완료 · 다음 날짜에 다시 맞히면 숙달됩니다.','첫 정답은 30~50문제 뒤 자동 재확인 · 같은 날 두 번 정답이면 오늘 확인 완료 · 다음 날짜 정답이면 숙달됩니다.',1)
-
-if MARKER not in text:
-    # Marker is already embedded in the rewritten start function; this is only a safety guard.
-    raise SystemExit('recovery-recheck marker missing after patch')
+if MARKER not in text: raise SystemExit('recovery-recheck marker missing after patch')
 
 if text!=original:
     p.write_text(text,encoding='utf-8')
