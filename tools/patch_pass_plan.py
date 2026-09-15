@@ -44,10 +44,27 @@ if cp_marker not in text:
         raise SystemExit('checkpoint anchor not found')
     text = text.replace(anchor, anchor + '\n' + helper, 1)
 
-old_start = """      const queue=await ppHydrateKeys(keys);if(!queue.length)throw new Error('문제 원문을 찾지 못했습니다.');
-      planSessionQueue=queue;planSessionIdx=0;planSessionAnswers=new Array(queue.length).fill(null);planSessionConfidence=new Array(queue.length).fill(null);planSessionStartedAt=Date.now();planSessionCommitted=new Set();currentMode='pass-plan-session';renderNavigatorPassPlanCard();"""
-new_start = """      const checkpoint=ppLoadPassSessionCheckpoint();
-      if(checkpoint&&checkpoint.queueKeys.length){
+# Replace the whole "today homework" session starter.  This intentionally keeps
+# the full daily assignment as the session queue.  Previously already-cleared
+# questions were filtered out before hydration, so 110 questions could become
+# 108 and a reopened session incorrectly showed 1/108.
+start_marker = '  window.startNavigatorPassPlanToday=async function(){'
+end_marker = '  function ppGradeColor'
+start = text.find(start_marker)
+end = text.find(end_marker, start)
+if start < 0 or end < 0:
+    raise SystemExit('startNavigatorPassPlanToday block not found')
+
+new_start = """  window.startNavigatorPassPlanToday=async function(){
+    const plan=ppLoadPlan();await ppBuildPools(plan);const progress=ppLoadProgress(),today=ppDateKey(new Date());
+    const assignment=await ppGetDailyAssignment(plan,planPools,progress,false);
+    const assignmentKeys=(assignment.keys||[]).slice();
+    const unresolvedKeys=assignmentKeys.filter(k=>!ppTodayCleared(ppProgressFor(progress,k),today));
+    if(!unresolvedKeys.length){ppClearPassSessionCheckpoint();showToast('오늘 숙제를 모두 완료했습니다.');renderNavigatorPassPlan(planEntrySubject);return}
+    try{
+      const assignmentSet=new Set(assignmentKeys);
+      const checkpoint=ppLoadPassSessionCheckpoint();
+      if(checkpoint&&checkpoint.queueKeys.length===assignmentKeys.length&&checkpoint.queueKeys.every(k=>assignmentSet.has(k))){
         const restored=await ppHydrateKeys(checkpoint.queueKeys);
         const nextIndex=Number(checkpoint.nextIndex);
         if(restored.length===checkpoint.queueKeys.length&&Number.isInteger(nextIndex)&&nextIndex>=0&&nextIndex<restored.length){
@@ -59,13 +76,31 @@ new_start = """      const checkpoint=ppLoadPassSessionCheckpoint();
           for(let i=0;i<nextIndex;i++)if(planSessionAnswers[i]!==null)planSessionCommitted.add(i);
           planSessionStartedAt=Date.now();currentMode='pass-plan-session';renderNavigatorPassPlanCard();return;
         }
-        ppClearPassSessionCheckpoint();
       }
-      const queue=await ppHydrateKeys(keys);if(!queue.length)throw new Error('문제 원문을 찾지 못했습니다.');
-      planSessionQueue=queue;planSessionIdx=0;planSessionAnswers=new Array(queue.length).fill(null);planSessionConfidence=new Array(queue.length).fill(null);planSessionStartedAt=Date.now();planSessionCommitted=new Set();currentMode='pass-plan-session';renderNavigatorPassPlanCard();"""
-if old_start in text:
-    text = text.replace(old_start, new_start, 1)
+      if(checkpoint)ppClearPassSessionCheckpoint();
 
+      const queue=await ppHydrateKeys(assignmentKeys);if(!queue.length)throw new Error('문제 원문을 찾지 못했습니다.');
+      planSessionQueue=queue;
+      const firstUncleared=queue.findIndex(q=>!ppTodayCleared(ppProgressFor(progress,q._planKey),today));
+      planSessionIdx=firstUncleared<0?0:firstUncleared;
+      planSessionAnswers=new Array(queue.length).fill(null);planSessionConfidence=new Array(queue.length).fill(null);planSessionCommitted=new Set();
+      for(let i=0;i<planSessionIdx;i++){
+        if(ppTodayCleared(ppProgressFor(progress,queue[i]._planKey),today)){
+          planSessionAnswers[i]=queue[i]['정답'];planSessionConfidence[i]='sure';planSessionCommitted.add(i);
+        }
+      }
+      planSessionStartedAt=Date.now();currentMode='pass-plan-session';ppSavePassSessionCheckpoint(planSessionIdx);renderNavigatorPassPlanCard();
+    }catch(e){app.innerHTML=`<div class="card" style="margin-top:30px"><b>오늘 숙제를 시작하지 못했습니다.</b><div style="font-size:12px;margin-top:7px">${escapeHtml(e.message||String(e))}</div><button class="btn btn-outline" style="margin-top:12px" onclick="renderNavigatorPassPlan('${planEntrySubject}')">플랜으로 돌아가기</button></div>`}
+  };
+"""
+text = text[:start] + new_start + text[end:]
+
+# Make the progress indicator explicitly cumulative against the stable full queue.
+text = text.replace('${planSessionIdx+1} / ${planSessionQueue.length}', '${planSessionIdx+1}/${planSessionQueue.length}')
+text = text.replace('>${planSessionIdx+1}/${planSessionQueue.length}</div>', '>문제 ${planSessionIdx+1}/${planSessionQueue.length}</div>', 1)
+
+# Keep answer autosave and automatic confidence behavior if the main file still
+# contains the older handlers.
 old_choose = """  window.chooseNavigatorPassPlanAnswer=function(i){
     if(currentMode!=='pass-plan-session')return;const q=planSessionQueue[planSessionIdx];if(planSessionAnswers[planSessionIdx]!==null||!q||i<0||i>=q['선택지'].length)return;planSessionAnswers[planSessionIdx]=i;if(i!==q['정답'])planSessionConfidence[planSessionIdx]='wrong';renderNavigatorPassPlanCard();
   };"""
@@ -99,12 +134,7 @@ new_next = """  window.nextNavigatorPassPlanQuestion=function(){
 if old_next in text:
     text = text.replace(old_next, new_next, 1)
 
-text = text.replace(
-    'style="font-size:13px;color:var(--textDim);font-weight:700">${planSessionIdx+1} / ${planSessionQueue.length}</div>',
-    'style="font-size:15px;color:var(--text);font-weight:900">문제 ${planSessionIdx+1}/${planSessionQueue.length}</div>',
-    1,
-)
-
+# The explicit "retry unresolved only" mode is allowed to build a smaller queue.
 text = text.replace(
     "const queue=await ppHydrateKeys(keys);planSessionQueue=shuffle(queue);planSessionIdx=0;",
     "const queue=await ppHydrateKeys(keys);ppClearPassSessionCheckpoint();planSessionQueue=shuffle(queue);planSessionIdx=0;",
