@@ -1,6 +1,5 @@
-// Maritime Drill keyboard controls
+// Maritime Drill keyboard controls + automatic pass-plan classification
 // 1-4 / A-D: choose an answer
-// Y: "확실히 안다", N: "애매 · 찍음"
 // Enter / Space / Right Arrow: next question when allowed
 (function(){
   'use strict';
@@ -21,6 +20,55 @@
     return Object.prototype.hasOwnProperty.call(byCode,event.code) ? byCode[event.code] : -1;
   }
 
+  // Correct answers are treated as a confident answer automatically.
+  // Existing pass-plan logic still controls mastery:
+  // first correct = provisional, correct again on a different day = mastered,
+  // wrong = weak/review and mastered state is removed.
+  function installAutomaticClassification(){
+    if(typeof window.chooseNavigatorPassPlanAnswer==='function'){
+      window.chooseNavigatorPassPlanAnswer=function(i){
+        try{
+          if(typeof currentMode==='undefined' || currentMode!=='pass-plan-session') return;
+          const q=planSessionQueue[planSessionIdx];
+          if(planSessionAnswers[planSessionIdx]!==null || !q || i<0 || i>=q['선택지'].length) return;
+          planSessionAnswers[planSessionIdx]=i;
+          planSessionConfidence[planSessionIdx]=(i===q['정답']) ? 'sure' : 'wrong';
+          renderNavigatorPassPlanCard();
+        }catch(error){
+          console.warn('[keyboard-controls] automatic classification error',error);
+        }
+      };
+    }
+
+    if(typeof window.renderNavigatorPassPlanCard==='function'){
+      const originalRender=window.renderNavigatorPassPlanCard;
+      window.renderNavigatorPassPlanCard=function(){
+        const result=originalRender.apply(this,arguments);
+        removeConfidencePrompt();
+        return result;
+      };
+    }
+  }
+
+  function removeConfidencePrompt(){
+    const root=document.getElementById('app') || document.body;
+    const prompt='지금 이 문제를 답을 안 보고도 다시 맞힐 수 있습니까?';
+    for(const el of root.querySelectorAll('div')){
+      if(el.children.length===0 && el.textContent.trim()===prompt){
+        const wrapper=el.parentElement;
+        if(wrapper) wrapper.remove();
+        break;
+      }
+    }
+
+    for(const el of root.querySelectorAll('div')){
+      const text=el.textContent.trim();
+      if(el.children.length===0 && text.startsWith('오답은 오늘 미해결로 남습니다.')){
+        el.textContent='오답은 복습 대상으로 남습니다. 이후 다른 날의 정답 기록으로 자동 회복됩니다.';
+      }
+    }
+  }
+
   function handlePassPlan(event){
     try{
       if(typeof currentMode==='undefined' || currentMode!=='pass-plan-session') return false;
@@ -28,15 +76,6 @@
       const choiceIndex=getChoiceIndex(event);
       if(choiceIndex>=0 && typeof window.chooseNavigatorPassPlanAnswer==='function'){
         window.chooseNavigatorPassPlanAnswer(choiceIndex);
-        return true;
-      }
-
-      if(event.code==='KeyY' && typeof window.setNavigatorPassPlanConfidence==='function'){
-        window.setNavigatorPassPlanConfidence('sure');
-        return true;
-      }
-      if(event.code==='KeyN' && typeof window.setNavigatorPassPlanConfidence==='function'){
-        window.setNavigatorPassPlanConfidence('unsure');
         return true;
       }
 
@@ -59,6 +98,9 @@
     }
     return false;
   }
+
+  installAutomaticClassification();
+  removeConfidencePrompt();
 
   document.addEventListener('keydown',function(event){
     if(event.defaultPrevented || event.ctrlKey || event.metaKey || event.altKey) return;
