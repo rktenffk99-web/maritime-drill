@@ -11,38 +11,29 @@ def decode_scripts():
         except Exception: pass
     return out
 
-def payload_from_js(raw):
-    marker='const PAYLOAD = '
-    pos=raw.find(marker)
-    if pos<0:return None
-    frag=raw[pos+len(marker):].lstrip()
-    obj,_=json.JSONDecoder().raw_decode(frag)
-    return obj
-
-scripts=decode_scripts()
-exam_rows=[]
-questions=[]
+scripts=decode_scripts(); exam_rows=[]; questions=[]
 for sid,raw in scripts.items():
-    if not sid.startswith('md-bundle-past-2026-navi'):continue
-    p=payload_from_js(raw)
-    if not p:continue
-    meta=p.get('meta',{})
-    if meta.get('gradeShort') not in ('navi2','navi3'):continue
-    qs=p.get('questions',[])
-    exam_rows.append({'id':meta.get('id'),'grade':meta.get('gradeShort'),'session':meta.get('session'),'total':len(qs)})
-    for q in qs:
-        questions.append({'key':f"2026|{meta.get('gradeShort')}|{meta.get('session')}|{q.get('과목')}|{q.get('번호')}",'grade':meta.get('gradeShort'),'session':meta.get('session'),'subject':q.get('과목'),'number':q.get('번호'),'question':q.get('문제'),'answer':q.get('정답'),'choices':q.get('선택지')})
+    if not re.match(r'md-bundle-past-2026-navi[23]-\d+_js$',sid):continue
+    gm=re.search(r'"gradeShort"\s*:\s*"(navi[23])"',raw); sm=re.search(r'"session"\s*:\s*(\d+)',raw)
+    if not gm or not sm:continue
+    grade=gm.group(1); session=int(sm.group(1))
+    # Each question starts with 번호; inspect its object-sized slice for 과목/문제/정답/선택지.
+    starts=[m.start() for m in re.finditer(r'\{\s*"번호"\s*:\s*\d+',raw)]
+    qrows=[]
+    for i,st in enumerate(starts):
+        chunk=raw[st:starts[i+1] if i+1<len(starts) else min(len(raw),st+6000)]
+        nm=re.search(r'"번호"\s*:\s*(\d+)',chunk); sub=re.search(r'"과목"\s*:\s*"([^"]+)"',chunk); qm=re.search(r'"문제"\s*:\s*"((?:\\.|[^"\\])*)"',chunk); am=re.search(r'"정답"\s*:\s*(\d+)',chunk)
+        if not nm or not sub:continue
+        question=qm.group(1) if qm else ''
+        q={'key':f"2026|{grade}|{session}|{sub.group(1)}|{int(nm.group(1))}",'grade':grade,'session':session,'subject':sub.group(1),'number':int(nm.group(1)),'question':question,'answer':int(am.group(1)) if am else None}
+        questions.append(q); qrows.append(q)
+    exam_rows.append({'id':sid,'grade':grade,'session':session,'total':len(qrows)})
 
 exp_raw=scripts.get('md-bundle-past-explain-2026_js','')
-# keys are quoted object keys inside Object.assign(window.MD_EXPLAIN,...)
 exp_keys=set(re.findall(r'"(2026\|navi[23]\|\d+\|[^"\n]+\|\d+)"\s*:',exp_raw))
-# approximate substantive explanation: key entry contains html with at least 80 chars before loading flag
 exp_len={}
 for m in re.finditer(r'"(2026\|navi[23]\|\d+\|[^"\n]+\|\d+)"\s*:\s*\{\s*html:\s*"((?:\\.|[^"\\])*)"\s*,\s*loading:',exp_raw,re.S):
-    try: html=bytes(m.group(2),'utf-8').decode('unicode_escape')
-    except Exception: html=m.group(2)
-    exp_len[m.group(1)]=len(html)
-
+    exp_len[m.group(1)]=len(m.group(2))
 missing=[q for q in questions if q['key'] not in exp_keys]
 short=[{**q,'html_len':exp_len.get(q['key'],0)} for q in questions if q['key'] in exp_keys and exp_len.get(q['key'],0)<120]
 summary={'exams':exam_rows,'questions_total':len(questions),'explanations_total_keys':len(exp_keys),'covered':len(questions)-len(missing),'missing':len(missing),'short':len(short)}
