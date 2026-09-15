@@ -1,0 +1,981 @@
+{
+  "navi2": {
+    "note": "보유 상선 기출 2020~2026 기준. 2026년은 제2회 125문항만 수록된 진행 중 자료.",
+    "method": {
+      "exact": "same normalized question stem group appeared in any earlier year",
+      "near_identical": "non-exact, same subject, SequenceMatcher >= 0.88 AND trigram Jaccard >= 0.55",
+      "wording_variant": "non-exact, same subject, SequenceMatcher >= 0.72 AND trigram Jaccard >= 0.30",
+      "new_wording": "below wording-variant threshold",
+      "warning": "wording similarity only; choices/answers and semantic equivalence are not included in this derived frequency dataset"
+    },
+    "studySubjects": [
+      "법규",
+      "상선전문",
+      "영어",
+      "운용",
+      "항해"
+    ],
+    "analysis": {
+      "years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "byYear": {
+        "2020": {
+          "uniqueQuestionStems": 357,
+          "exactPrior": 0,
+          "exactPriorPct": 0.0,
+          "nearIdenticalNonExact": 0,
+          "nearIdenticalNonExactPct": 0.0,
+          "wordingVariantNonExact": 0,
+          "wordingVariantNonExactPct": 0.0,
+          "newWording": 357,
+          "newWordingPct": 100.0,
+          "exactPlusNearPct": 0.0,
+          "exactPlusNearPlusVariantPct": 0.0,
+          "sameYearOccurrences": 374,
+          "sameYearExactRepeatLaterOccurrences": 17,
+          "sameYearExactRepeatPctOfOccurrences": 4.5,
+          "avgBestLexicalScoreAmongNonExactPct": 0.0
+        },
+        "2021": {
+          "uniqueQuestionStems": 450,
+          "exactPrior": 56,
+          "exactPriorPct": 12.4,
+          "nearIdenticalNonExact": 20,
+          "nearIdenticalNonExactPct": 4.4,
+          "wordingVariantNonExact": 38,
+          "wordingVariantNonExactPct": 8.4,
+          "newWording": 336,
+          "newWordingPct": 74.7,
+          "exactPlusNearPct": 16.9,
+          "exactPlusNearPlusVariantPct": 25.3,
+          "sameYearOccurrences": 499,
+          "sameYearExactRepeatLaterOccurrences": 49,
+          "sameYearExactRepeatPctOfOccurrences": 9.8,
+          "avgBestLexicalScoreAmongNonExactPct": 38.8
+        },
+        "2022": {
+          "uniqueQuestionStems": 446,
+          "exactPrior": 166,
+          "exactPriorPct": 37.2,
+          "nearIdenticalNonExact": 54,
+          "nearIdenticalNonExactPct": 12.1,
+          "wordingVariantNonExact": 42,
+          "wordingVariantNonExactPct": 9.4,
+          "newWording": 184,
+          "newWordingPct": 41.3,
+          "exactPlusNearPct": 49.3,
+          "exactPlusNearPlusVariantPct": 58.7,
+          "sameYearOccurrences": 498,
+          "sameYearExactRepeatLaterOccurrences": 52,
+          "sameYearExactRepeatPctOfOccurrences": 10.4,
+          "avgBestLexicalScoreAmongNonExactPct": 51.7
+        },
+        "2023": {
+          "uniqueQuestionStems": 449,
+          "exactPrior": 112,
+          "exactPriorPct": 24.9,
+          "nearIdenticalNonExact": 56,
+          "nearIdenticalNonExactPct": 12.5,
+          "wordingVariantNonExact": 49,
+          "wordingVariantNonExactPct": 10.9,
+          "newWording": 232,
+          "newWordingPct": 51.7,
+          "exactPlusNearPct": 37.4,
+          "exactPlusNearPlusVariantPct": 48.3,
+          "sameYearOccurrences": 499,
+          "sameYearExactRepeatLaterOccurrences": 50,
+          "sameYearExactRepeatPctOfOccurrences": 10.0,
+          "avgBestLexicalScoreAmongNonExactPct": 48.2
+        },
+        "2024": {
+          "uniqueQuestionStems": 448,
+          "exactPrior": 122,
+          "exactPriorPct": 27.2,
+          "nearIdenticalNonExact": 78,
+          "nearIdenticalNonExactPct": 17.4,
+          "wordingVariantNonExact": 36,
+          "wordingVariantNonExactPct": 8.0,
+          "newWording": 212,
+          "newWordingPct": 47.3,
+          "exactPlusNearPct": 44.6,
+          "exactPlusNearPlusVariantPct": 52.7,
+          "sameYearOccurrences": 500,
+          "sameYearExactRepeatLaterOccurrences": 52,
+          "sameYearExactRepeatPctOfOccurrences": 10.4,
+          "avgBestLexicalScoreAmongNonExactPct": 52.8
+        },
+        "2025": {
+          "uniqueQuestionStems": 449,
+          "exactPrior": 149,
+          "exactPriorPct": 33.2,
+          "nearIdenticalNonExact": 67,
+          "nearIdenticalNonExactPct": 14.9,
+          "wordingVariantNonExact": 52,
+          "wordingVariantNonExactPct": 11.6,
+          "newWording": 181,
+          "newWordingPct": 40.3,
+          "exactPlusNearPct": 48.1,
+          "exactPlusNearPlusVariantPct": 59.7,
+          "sameYearOccurrences": 498,
+          "sameYearExactRepeatLaterOccurrences": 49,
+          "sameYearExactRepeatPctOfOccurrences": 9.8,
+          "avgBestLexicalScoreAmongNonExactPct": 54.5
+        },
+        "2026": {
+          "uniqueQuestionStems": 124,
+          "exactPrior": 39,
+          "exactPriorPct": 31.5,
+          "nearIdenticalNonExact": 25,
+          "nearIdenticalNonExactPct": 20.2,
+          "wordingVariantNonExact": 14,
+          "wordingVariantNonExactPct": 11.3,
+          "newWording": 46,
+          "newWordingPct": 37.1,
+          "exactPlusNearPct": 51.6,
+          "exactPlusNearPlusVariantPct": 62.9,
+          "sameYearOccurrences": 125,
+          "sameYearExactRepeatLaterOccurrences": 1,
+          "sameYearExactRepeatPctOfOccurrences": 0.8,
+          "avgBestLexicalScoreAmongNonExactPct": 59.6
+        }
+      },
+      "examples2026": [
+        {
+          "category": "near_identical",
+          "subject": "항해",
+          "current": "어느 천체의 GHA가 220°인 시각에 경도 120°W인 지점에서 그 천체의 자오선각은?",
+          "prior": "어느 천체의 GHA가 220˚인 시각에 경도 120˚W인 지점에서 그 천체의 자오선각은?",
+          "bestSeqPct": 100.0,
+          "bestTrigramPct": 100.0,
+          "priorYears": [
+            2025
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "상선전문",
+          "current": "( )에 순서대로 적합한 것은? \"STCW 협약상 매 7일마다 77시간의 휴식시간에 대한 예외로 연속된 ( ) 이상의 기간으로 허가되어서는 아니 되며, 선내에서 2개의 예외기간 간의 간격은 그 예외기간의 ( ) 이상이어야 한다.\"",
+          "prior": "( )에 순서대로 적합한 것은? \"STCW 협약상 매 7일마다 77시간의 휴식시간에 대한예외는 연속된 ( ) 이상의 기간으로 허가되어서는아니 되며, 선내에서 2개의 예외기간 간의 간격은 그예외기간의 ( ) 이상이어야 한다.\"",
+          "bestSeqPct": 98.8,
+          "bestTrigramPct": 92.9,
+          "priorYears": [
+            2023,
+            2025
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "상선전문",
+          "current": "길이 150미터, 폭 20미터인 선박이 5미터의 등흘수로 비중 1.000인 수역에 떠 있는 경우 이 선박의 배수량은? [단, 방형 계수(Cb)는 0.58임]",
+          "prior": "길이 150미터, 폭 20미터인 선박이 5미터의 등흘수로비중 1.000인 수역에 떠 있는 경우 이 선박의 배수량은? [단, 방형계수(C )는 0.58임] b",
+          "bestSeqPct": 98.3,
+          "bestTrigramPct": 89.8,
+          "priorYears": [
+            2022,
+            2023,
+            2024
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "항해",
+          "current": "하나의 위치선과 추측위치를 병합하여 최확위치(Most probable position)를 구했을 경우 어떤 위치로 간주하면 좋은가?",
+          "prior": "하나의 위치선과 추측위치를 병합하여 최확위치(Most probable position)를 구했을 경우 어느 위치로 간주하면 좋은가?",
+          "bestSeqPct": 98.3,
+          "bestTrigramPct": 89.8,
+          "priorYears": [
+            2025
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "법규",
+          "current": "국제해상충돌방지규칙상 제한된 시계 안에서 2분을 넘지 아니하는 간격으로 연속하여 장음 1회에 이어 단음 2회의 기적신호를 울려야 하는 선박이 아닌 것은? (단, 선박의 길이는 12미터 이상임)",
+          "prior": "국제해상충돌방지규칙상 제한된 시계 안에서 2분을넘지 아니하는 간격으로 연속하여 장음 1회에 이어단음 2회의 음향신호를 울려야 하는 선박이 아닌 것은? (단, 선박의 길이는 12미터 이상임)",
+          "bestSeqPct": 97.5,
+          "bestTrigramPct": 90.1,
+          "priorYears": [
+            2021,
+            2025
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "운용",
+          "current": "배수량 3,000톤인 선박이 GM 2.8m의 상태에서 이미 적재되어 있는 화물 50톤을 수직 하방으로 12m 이동시키면 새로운 GM은?",
+          "prior": "배수량 3,000톤인 선박이 GM 2.8m의 상태에 있다. 이미 적재되어 있는 화물 50톤을 수직 하방으로 12m 이동시키면 새로운 GM은?",
+          "bestSeqPct": 97.3,
+          "bestTrigramPct": 87.9,
+          "priorYears": [
+            2024
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "법규",
+          "current": "해상교통안전법상 선박의 안전관리체제에 포함되어야 하는 사항이 아닌 것은?",
+          "prior": "해상교통안전법상 선박의 안전관리체제 수립에 포함되어야 하는 사항이 아닌 것은?",
+          "bestSeqPct": 97.0,
+          "bestTrigramPct": 82.4,
+          "priorYears": [
+            2024,
+            2025
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "운용",
+          "current": "선박의 침로안정성 향상과 선체 후부측 면적을 증가시키기 위하여 부착하는 것은?",
+          "prior": "선박의 침로안정성 향상과 선체 후부측 단면을 증가시키기 위하여 부착하는 것은?",
+          "bestSeqPct": 97.0,
+          "bestTrigramPct": 77.1,
+          "priorYears": [
+            2022,
+            2023,
+            2025
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "영어",
+          "current": "Which of the following is NOT entries in the Principal column of deck log book?",
+          "prior": "Which of the following is NOT entry in the 'Principal column' of deck log book?",
+          "bestSeqPct": 96.8,
+          "bestTrigramPct": 87.5,
+          "priorYears": [
+            2024
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "법규",
+          "current": "국제해상충돌방지규칙상 각 등화에 관한 정의로 옳지 않은 것은?",
+          "prior": "국제해상충돌방지규칙상 각 등화에 대한 정의로 옳지않은 것은?",
+          "bestSeqPct": 96.2,
+          "bestTrigramPct": 77.8,
+          "priorYears": [
+            2024
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "상선전문",
+          "current": "Derrick으로 W톤을 0.08m/s로 감아올리다가 0.3초 사이에 0.53m/s로 증속했을 때의 동하중은 W톤의 몇 배인가? (단, 중력가속도는 9.8m/s²임)",
+          "prior": "Derrick으로 W톤을 0.08m/sec로 감아올리다가 0.3초사이에 0.53m/sec로 증속했을 때의 동하중은 W톤의몇 배인가?(단, 중력가속도는 9.8m/s2)",
+          "bestSeqPct": 95.5,
+          "bestTrigramPct": 85.1,
+          "priorYears": [
+            2024
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "법규",
+          "current": "선박의 입항 및 출항 등에 관한 법률상 관리청의 허가를 받지 않고, 신고만 하는 경우는?",
+          "prior": "선박의 입항 및 출항 등에 관한 법률상 관리청의 허가를 받지 않고, 관리청에 신고만 하는 경우는?",
+          "bestSeqPct": 94.4,
+          "bestTrigramPct": 81.1,
+          "priorYears": [
+            2022,
+            2023
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "상선전문",
+          "current": "선박보험에 관한 설명으로 옳지 않은 것은?",
+          "prior": "선박보험에 대한 설명으로 옳지 않은 것은?",
+          "bestSeqPct": 94.1,
+          "bestTrigramPct": 66.7,
+          "priorYears": [
+            2022
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "항해",
+          "current": "3개의 천체를 관측하여 구한 선위에 오차삼각형이 생겼을 때 그 선위에 관한 설명으로 옳은 것은?",
+          "prior": "3개의 천체를 관측하여 오차삼각형이 생겼을 때 그선위에 관한 설명으로 옳은 것은?",
+          "bestSeqPct": 93.2,
+          "bestTrigramPct": 78.9,
+          "priorYears": [
+            2024,
+            2025
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "법규",
+          "current": "해양환경관리법상 대통령령이 정하는 배출기준을 초과하는 오염물질이 해양에 배출되었을 때 신고 의무가 없는 사람은?",
+          "prior": "해양환경관리법상 대통령령이 정하는 배출기준을 초과하는 오염물질이 배출된 때 신고 의무가 없는 사람은?",
+          "bestSeqPct": 92.5,
+          "bestTrigramPct": 71.2,
+          "priorYears": [
+            2020
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "항해",
+          "current": "직행침로(Course made good)에 관한 설명으로 옳은 것은?",
+          "prior": "다음 중 직행침로(Course made good)에 대한 설명으로 옳은 것은?",
+          "bestSeqPct": 91.8,
+          "bestTrigramPct": 72.7,
+          "priorYears": [
+            2022
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "법규",
+          "current": "선박안전법상 선박위치발신장치를 설치하여야 하는 대상선박이 아닌 것은? (단, 호소·하천에서만 항해하는 선박은 제외함)",
+          "prior": "선박안전법상 선박위치발신장치 설치 대상선박이 아닌것은?(단, 호수·하천에서만 항해하는 선박은 제외함)",
+          "bestSeqPct": 91.3,
+          "bestTrigramPct": 62.3,
+          "priorYears": [
+            2021
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "항해",
+          "current": "레식 자이로컴퍼스의 구조 중 선박이 변침할 때 이적인 제어로 주동부를 추종하는 부분은?",
+          "prior": "스페리식 자이로컴퍼스의 구조 중 선박이 변침할 때전기적인 제어로 주동부를 추종하는 부분은?",
+          "bestSeqPct": 90.7,
+          "bestTrigramPct": 73.2,
+          "priorYears": [
+            2024
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "법규",
+          "current": "국제해상충돌방지규칙상 서로 시계 안에서 좁은 수로등, 통항분리제도 및 앞지르기(추월)에 따른 경우를 제외하고 어로에 종사하고 있는 선박이 항행 중일 때 진로를 피하여야 하는 선박은?",
+          "prior": "국제해상충돌방지규칙상 서로 시계 안에서 좁은 수로등, 통항분리제도 및 앞지르기에 따른 경우를 제외하고항행 중인 상태로 어로에 종사하고 있는 선박이 진로를피하여야 하는 선박은?",
+          "bestSeqPct": 90.7,
+          "bestTrigramPct": 71.4,
+          "priorYears": [
+            2023,
+            2024
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "법규",
+          "current": "국제해상충돌방지규칙상 유지선의 동작에 관한 규정이 적용되지 않는 항법은?",
+          "prior": "국제해상충돌방지규칙상 유지선의 동작에 관한 규정이적용되지 않는 경우는?",
+          "bestSeqPct": 90.6,
+          "bestTrigramPct": 81.8,
+          "priorYears": [
+            2022,
+            2024
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "상선전문",
+          "current": "하항(비중=1.000)에 정박하고 있는 선박의 평균흘수는 8.90m이고, 이 흘수에서의 배수량은 14,592톤이며, 매 cm 배수톤(Tcm)은 20.0톤이다. 이 선박이 하항을 출항하여 해수 비중이 1.025인 항구에 입항하였을 때 평균흘수는? (단, 항해 중의 모든 소비량과 Tcm와 Trim은 변하지 않는다고 가정함)",
+          "prior": "하항(비중=1.000)에 정박하고 있는 선박의 평균흘수는 8.90m이고, 이 흘수에서의 배수량은 14,592톤이며, T 는 20.0톤이다. 이 선박이 하항을 출항하여 해수 cm 비중이 1.025인 항구에 입항하였을 때 평균흘수는? (단, 항해 중의 모든 소비량은 192톤이며, T 와 Trim cm 은 변하지 않는다고 가정함)",
+          "bestSeqPct": 90.6,
+          "bestTrigramPct": 75.2,
+          "priorYears": [
+            2025
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "법규",
+          "current": "해양환경관리법상 항해 중에 선박의 주기관·보조기관 또는 보일러 등에서 소각할 수 있는 물질은? (단, 해양 해역은 제외함)",
+          "prior": "해양환경관리법상 선박의 항해 중에 선박의 주기관·보조기관 또는 보일러 등에서 소각할 수 있는 물질은? (단, 해양수산부령으로 정하는 해역은 제외함)",
+          "bestSeqPct": 88.9,
+          "bestTrigramPct": 68.9,
+          "priorYears": [
+            2021
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "항해",
+          "current": "GPS에 관한 설명으로 옳지 않은 것은?",
+          "prior": "GPS의 P신호에 관한 설명으로 옳지 않은 것은?",
+          "bestSeqPct": 88.9,
+          "bestTrigramPct": 60.0,
+          "priorYears": [
+            2025
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "법규",
+          "current": "국제해상충돌방지규칙상 항행 중 가장 잘 보이는 곳에 수직으로 둥근꼴이나 그와 비슷한 형상물 2개를 표시하여야 하는 선박은? (단, 선박의 길이는 12미터 이상임)",
+          "prior": "국제해상충돌방지규칙상 항행 중 가장 잘 보이는 곳에수직으로 둥근꼴이나 그와 비슷한 형상물 2개를 표시하여야 하는 선박은?",
+          "bestSeqPct": 88.1,
+          "bestTrigramPct": 78.1,
+          "priorYears": [
+            2024
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "상선전문",
+          "current": "다음 중 불명중량에 해당하는 것은?",
+          "prior": "불명중량에 해당하는 것은?",
+          "bestSeqPct": 88.0,
+          "bestTrigramPct": 75.0,
+          "priorYears": [
+            2025
+          ]
+        },
+        {
+          "category": "wording_variant",
+          "subject": "항해",
+          "current": "속력 V로 1일간 항해하였을 때 소비하는 주기관의 연료량을 Q, 1일에 소비하는 잡용 연료량을 M, 사용 가능한 총 연료량을 F라고 한다면, 항속거리 D를 구하는 계산식은?",
+          "prior": "속력 로 1일에 소비하는 주기관의 연료량을 , 1일에 소비하는 잡용연료량을 , 사용 가능한 전 연료량을 라고 한다면 항속거리 를 구하는 계산식은?",
+          "bestSeqPct": 88.2,
+          "bestTrigramPct": 45.9,
+          "priorYears": [
+            2024,
+            2025
+          ]
+        },
+        {
+          "category": "wording_variant",
+          "subject": "항해",
+          "current": "레이더의 최대탐지거리를 증가시키는 방법으로 옳지 않은 것은?",
+          "prior": "레이더의 탐지거리를 향상시키는 방법으로 옳지 않은것은?",
+          "bestSeqPct": 88.0,
+          "bestTrigramPct": 53.3,
+          "priorYears": [
+            2024
+          ]
+        },
+        {
+          "category": "wording_variant",
+          "subject": "법규",
+          "current": "국제해상충돌방지규칙상 앞지르기(추월) 항법에 관한 설명으로 옳지 않은 것은?",
+          "prior": "국제해상충돌방지규칙상 항법규정에 관한 설명으로 옳지 않은 것은?",
+          "bestSeqPct": 86.7,
+          "bestTrigramPct": 55.6,
+          "priorYears": [
+            2024
+          ]
+        },
+        {
+          "category": "wording_variant",
+          "subject": "상선전문",
+          "current": "선하증권에 관한 설명으로 옳지 않은 것은?",
+          "prior": "다음 중 선하증권에 대한 설명으로 옳지 않은 것은?",
+          "bestSeqPct": 86.5,
+          "bestTrigramPct": 57.1,
+          "priorYears": [
+            2023
+          ]
+        },
+        {
+          "category": "wording_variant",
+          "subject": "영어",
+          "current": "Select a suitable word in the blank. \"We must restow cargo in No.1 hold to ( ) the stability.\"",
+          "prior": "Select a suitable word in the blank of the following sentence. \"We must restow cargo in No.1 hold to ( ) the stability.\"",
+          "bestSeqPct": 86.2,
+          "bestTrigramPct": 71.3,
+          "priorYears": [
+            2025
+          ]
+        }
+      ]
+    }
+  },
+  "navi3": {
+    "note": "보유 상선 기출 2020~2026 기준. 2026년은 제2회 75문항, 제3회 125문항만 수록된 진행 중 자료.",
+    "method": {
+      "exact": "same normalized question stem group appeared in any earlier year",
+      "near_identical": "non-exact, same subject, SequenceMatcher >= 0.88 AND trigram Jaccard >= 0.55",
+      "wording_variant": "non-exact, same subject, SequenceMatcher >= 0.72 AND trigram Jaccard >= 0.30",
+      "new_wording": "below wording-variant threshold",
+      "warning": "wording similarity only; choices/answers and semantic equivalence are not included in this derived frequency dataset"
+    },
+    "studySubjects": [
+      "법규",
+      "상선전문",
+      "항해"
+    ],
+    "analysis": {
+      "years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "byYear": {
+        "2020": {
+          "uniqueQuestionStems": 220,
+          "exactPrior": 0,
+          "exactPriorPct": 0.0,
+          "nearIdenticalNonExact": 0,
+          "nearIdenticalNonExactPct": 0.0,
+          "wordingVariantNonExact": 0,
+          "wordingVariantNonExactPct": 0.0,
+          "newWording": 220,
+          "newWordingPct": 100.0,
+          "exactPlusNearPct": 0.0,
+          "exactPlusNearPlusVariantPct": 0.0,
+          "sameYearOccurrences": 225,
+          "sameYearExactRepeatLaterOccurrences": 5,
+          "sameYearExactRepeatPctOfOccurrences": 2.2,
+          "avgBestLexicalScoreAmongNonExactPct": 0.0
+        },
+        "2021": {
+          "uniqueQuestionStems": 279,
+          "exactPrior": 34,
+          "exactPriorPct": 12.2,
+          "nearIdenticalNonExact": 9,
+          "nearIdenticalNonExactPct": 3.2,
+          "wordingVariantNonExact": 20,
+          "wordingVariantNonExactPct": 7.2,
+          "newWording": 216,
+          "newWordingPct": 77.4,
+          "exactPlusNearPct": 15.4,
+          "exactPlusNearPlusVariantPct": 22.6,
+          "sameYearOccurrences": 299,
+          "sameYearExactRepeatLaterOccurrences": 20,
+          "sameYearExactRepeatPctOfOccurrences": 6.7,
+          "avgBestLexicalScoreAmongNonExactPct": 38.6
+        },
+        "2022": {
+          "uniqueQuestionStems": 273,
+          "exactPrior": 108,
+          "exactPriorPct": 39.6,
+          "nearIdenticalNonExact": 15,
+          "nearIdenticalNonExactPct": 5.5,
+          "wordingVariantNonExact": 35,
+          "wordingVariantNonExactPct": 12.8,
+          "newWording": 115,
+          "newWordingPct": 42.1,
+          "exactPlusNearPct": 45.1,
+          "exactPlusNearPlusVariantPct": 57.9,
+          "sameYearOccurrences": 299,
+          "sameYearExactRepeatLaterOccurrences": 26,
+          "sameYearExactRepeatPctOfOccurrences": 8.7,
+          "avgBestLexicalScoreAmongNonExactPct": 47.9
+        },
+        "2023": {
+          "uniqueQuestionStems": 245,
+          "exactPrior": 50,
+          "exactPriorPct": 20.4,
+          "nearIdenticalNonExact": 15,
+          "nearIdenticalNonExactPct": 6.1,
+          "wordingVariantNonExact": 32,
+          "wordingVariantNonExactPct": 13.1,
+          "newWording": 148,
+          "newWordingPct": 60.4,
+          "exactPlusNearPct": 26.5,
+          "exactPlusNearPlusVariantPct": 39.6,
+          "sameYearOccurrences": 300,
+          "sameYearExactRepeatLaterOccurrences": 55,
+          "sameYearExactRepeatPctOfOccurrences": 18.3,
+          "avgBestLexicalScoreAmongNonExactPct": 44.2
+        },
+        "2024": {
+          "uniqueQuestionStems": 271,
+          "exactPrior": 94,
+          "exactPriorPct": 34.7,
+          "nearIdenticalNonExact": 41,
+          "nearIdenticalNonExactPct": 15.1,
+          "wordingVariantNonExact": 23,
+          "wordingVariantNonExactPct": 8.5,
+          "newWording": 113,
+          "newWordingPct": 41.7,
+          "exactPlusNearPct": 49.8,
+          "exactPlusNearPlusVariantPct": 58.3,
+          "sameYearOccurrences": 300,
+          "sameYearExactRepeatLaterOccurrences": 29,
+          "sameYearExactRepeatPctOfOccurrences": 9.7,
+          "avgBestLexicalScoreAmongNonExactPct": 53.2
+        },
+        "2025": {
+          "uniqueQuestionStems": 272,
+          "exactPrior": 99,
+          "exactPriorPct": 36.4,
+          "nearIdenticalNonExact": 46,
+          "nearIdenticalNonExactPct": 16.9,
+          "wordingVariantNonExact": 35,
+          "wordingVariantNonExactPct": 12.9,
+          "newWording": 92,
+          "newWordingPct": 33.8,
+          "exactPlusNearPct": 53.3,
+          "exactPlusNearPlusVariantPct": 66.2,
+          "sameYearOccurrences": 300,
+          "sameYearExactRepeatLaterOccurrences": 28,
+          "sameYearExactRepeatPctOfOccurrences": 9.3,
+          "avgBestLexicalScoreAmongNonExactPct": 56.7
+        },
+        "2026": {
+          "uniqueQuestionStems": 125,
+          "exactPrior": 35,
+          "exactPriorPct": 28.0,
+          "nearIdenticalNonExact": 27,
+          "nearIdenticalNonExactPct": 21.6,
+          "wordingVariantNonExact": 16,
+          "wordingVariantNonExactPct": 12.8,
+          "newWording": 47,
+          "newWordingPct": 37.6,
+          "exactPlusNearPct": 49.6,
+          "exactPlusNearPlusVariantPct": 62.4,
+          "sameYearOccurrences": 125,
+          "sameYearExactRepeatLaterOccurrences": 0,
+          "sameYearExactRepeatPctOfOccurrences": 0.0,
+          "avgBestLexicalScoreAmongNonExactPct": 59.7
+        }
+      },
+      "examples2026": [
+        {
+          "category": "near_identical",
+          "subject": "항해",
+          "current": "방위각 S75°W를 방위로 환산하면?",
+          "prior": "방위각 S75˚W를 방위로 환산하면?",
+          "bestSeqPct": 100.0,
+          "bestTrigramPct": 100.0,
+          "priorYears": [
+            2021,
+            2024
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "법규",
+          "current": "( )에 순서대로 적합한 것은? \"국제해상충돌방지규칙상 2척의 동력선이 마주치게 되어 충돌의 위험이 있을 경우 각 동력선은 서로 다른 선박의 ( )쪽을 지나갈 수 있도록 침로를 ( )쪽으로 변경하여야 한다.\"",
+          "prior": "( )에 순서대로 적합한 것은? \"국제해상충돌방지규칙상 2척의 동력선이 마주치게 되어 충돌의 위험이 있을 경우에 각 동력선은 서로 다른선박의 ( ) 쪽을 지나갈 수 있도록 침로를 ( ) 쪽으로 변경하여야 한다.\"",
+          "bestSeqPct": 99.4,
+          "bestTrigramPct": 93.6,
+          "priorYears": [
+            2023
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "법규",
+          "current": "국제해상충돌방지규칙상 어로에 종사하고 있는 선박이 항행 중 진로를 피하여야 하는 선박이 아닌 것은? [단, 좁은 수로, 통항분리제도, 앞지르기(추월) 항법의 경우는 제외]",
+          "prior": "국제해상충돌방지규칙상 어로에 종사하고 있는 선박이항행 중 진로를 피하여야 하는 선박이 아닌 것은? (단, 좁은 수로, 통항분리제도, 앞지르기 항법의 경우는 제외함)",
+          "bestSeqPct": 97.7,
+          "bestTrigramPct": 89.4,
+          "priorYears": [
+            2025
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "법규",
+          "current": "국제해상충돌방지규칙상 선박이 좁은 수로에서 서로 시계 안에 있을 때 다른 선박이 우현 쪽으로 앞지르기 하려는 경우 울려야 하는 기적신호는?",
+          "prior": "국제해상충돌방지규칙상 선박이 좁은 수로등에서 서로시계 안에 있을 때 다른 선박의 우현 쪽으로 앞지르기하려는 경우 울려야 하는 기적신호는?",
+          "bestSeqPct": 97.4,
+          "bestTrigramPct": 83.6,
+          "priorYears": [
+            2024
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "법규",
+          "current": "선박안전법상 선박위치발신장치를 설치하여야 하는 대상 선박이 아닌 것은? (단, 호소·하천에서만 항해하는 선박은 제외함)",
+          "prior": "선박안전법상 선박위치발신장치를 설치하여야 하는 대상선박이 아닌 것은?(다만, 호소·하천에서만 항해하는 선박은 제외함)",
+          "bestSeqPct": 97.0,
+          "bestTrigramPct": 86.0,
+          "priorYears": [
+            2024
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "법규",
+          "current": "국제해상충돌방지규칙상 형상물의 크기에 관한 규정으로 옳은 것은?",
+          "prior": "국제해상충돌방지규칙상 형상물의 크기에 관한 규정으로 옳지 않은 것은?",
+          "bestSeqPct": 96.6,
+          "bestTrigramPct": 80.0,
+          "priorYears": [
+            2025
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "항해",
+          "current": "점면항법은 완전한 항법이 아니고 중분위도항법을 위한 보조 계산법이라고 하는 이유는?",
+          "prior": "평면항법은 완전한 항법이 아니고 중분위도항법을 위한 보조 계산법이라 하는 이유는?",
+          "bestSeqPct": 95.8,
+          "bestTrigramPct": 81.1,
+          "priorYears": [
+            2023,
+            2024
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "항해",
+          "current": "레이더의 최대탐지거리에 관한 설명으로 옳지 않은 것은?",
+          "prior": "레이더의 최대 탐지거리에 대한 설명으로 옳지 않은것은?",
+          "bestSeqPct": 95.7,
+          "bestTrigramPct": 75.0,
+          "priorYears": [
+            2020
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "항해",
+          "current": "선박에서 충돌, 좌초 또는 화재가 발생하여 컴퍼스나 레이더를 사용할 수 없게 되었을 때 이용 가능한 선위 결정법은?",
+          "prior": "충돌, 좌초 또는 화재가 발생하여 컴퍼스나 레이더를사용할 수 없게 되었을 때 이용 가능한 선위결정법은?",
+          "bestSeqPct": 95.5,
+          "bestTrigramPct": 90.9,
+          "priorYears": [
+            2025
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "항해",
+          "current": "레이더 성능 중 펄스폭의 영향을 거의 받지 않는 것은?",
+          "prior": "다음 레이더 성능 중 펄스 폭의 영향을 거의 받지 않는 것은?",
+          "bestSeqPct": 95.5,
+          "bestTrigramPct": 90.5,
+          "priorYears": [
+            2020
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "상선전문",
+          "current": "선박법상 등기 및 등록에 관한 설명으로 옳지 않은 것은?",
+          "prior": "선박 등기 및 등록에 관한 설명으로 옳지 않은 것은?",
+          "bestSeqPct": 95.2,
+          "bestTrigramPct": 72.7,
+          "priorYears": [
+            2022
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "법규",
+          "current": "국제해상충돌방지규칙상 제한된 시계에서 선박의 항법에 관한 설명으로 옳지 않은 것은?",
+          "prior": "국제해상충돌방지규칙상 제한된 시계에서 운항하는 선박의 항법에 관한 설명으로 옳지 않은 것은?",
+          "bestSeqPct": 94.7,
+          "bestTrigramPct": 80.0,
+          "priorYears": [
+            2024
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "법규",
+          "current": "국제해상충돌방지규칙상 선박의 모든 시계 상태에서 준수하여야 할 항법규정이 아닌 것은?",
+          "prior": "국제해상충돌방지규칙상 선박이 모든 시계 상태에서준수하여야 할 항법규칙이 아닌 것은?",
+          "bestSeqPct": 94.6,
+          "bestTrigramPct": 70.7,
+          "priorYears": [
+            2023
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "항해",
+          "current": "항해자에게 육상의 여행안내서와 같은 역할을 하는 수로서지는?",
+          "prior": "항해자에게 있어서 육상의 여행안내서와 같은 역할을하는 수로서지는?",
+          "bestSeqPct": 94.5,
+          "bestTrigramPct": 75.9,
+          "priorYears": [
+            2023
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "상선전문",
+          "current": "화물유 펌프 또는 파이프 속의 압력이 화물유의 포화증기압 이하가 되어 액체가 기화함으로써 진동과 소음이 발생되는 현상은?",
+          "prior": "화물유 펌프 또는 파이프 속의 압력이 화물유의 포화증기압 이하가 되어 액체가 기화하여 진동과 소음이발생되는 현상은?",
+          "bestSeqPct": 94.0,
+          "bestTrigramPct": 80.8,
+          "priorYears": [
+            2021,
+            2023,
+            2025
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "항해",
+          "current": "자이로컴퍼스의 속도 오차가 커지는 경우를 <보기>에서 모두 고른 것은? <보기> ㄱ. 선박의 속도가 빠를 때 ㄴ. 선박의 속도가 느릴 때 ㄷ. 침로가 남북 방향에 가까울 때 ㄹ. 침로가 동서 방향에 가까울 때 ㅁ. 위도가 높아질 때",
+          "prior": "<보기>에서 자이로컴퍼스의 속도 오차가 커지는 경우만 모두 고른 것은? <보기> ㄱ. 선박의 속도가 빠를 때 ㄴ. 선박의 속도가 느릴 때 ㄷ. 침로가 남북 방향에 가까울 때 ㄹ. 침로가 동서 방향에 가까울 때 ㅁ. 위도가 높아질 때",
+          "bestSeqPct": 93.7,
+          "bestTrigramPct": 85.7,
+          "priorYears": [
+            2025
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "법규",
+          "current": "해상교통안전법상 표면효과 작용을 이용하여 수면 가까이 비행하는 선박은?",
+          "prior": "해사안전법상 표면효과 작용을 이용하여 수면 가까이비행하는 선박은?",
+          "bestSeqPct": 93.3,
+          "bestTrigramPct": 80.6,
+          "priorYears": [
+            2023
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "항해",
+          "current": "레이더로 측정한 선위 중 가장 정확도가 높은 것은?",
+          "prior": "레이더로 구한 선위 중 가장 정확도가 높은 것은?",
+          "bestSeqPct": 92.3,
+          "bestTrigramPct": 66.7,
+          "priorYears": [
+            2024
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "항해",
+          "current": "자동조타장치를 사용하여 항행할 때 수동조타를 반드시 테스트하거나 즉시 전환하여야 하는 경우가 아닌 것은?",
+          "prior": "다음 중 자동조타장치를 사용하여 항행할 때 '수동조타'를 반드시 테스트 하거나 '수동조타'로 즉시 전환하여야 하는 경우가 아닌 것은?",
+          "bestSeqPct": 91.8,
+          "bestTrigramPct": 80.0,
+          "priorYears": [
+            2024
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "항해",
+          "current": "피험선에 관한 설명으로 옳지 않은 것은?",
+          "prior": "피험선의 사용에 관한 설명으로 옳지 않은 것은?",
+          "bestSeqPct": 91.4,
+          "bestTrigramPct": 63.2,
+          "priorYears": [
+            2024,
+            2025
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "법규",
+          "current": "선박안전법상 임시검사를 받으려는 선박소유자가 해양수산부장관에게 검사 신청서와 함께 반드시 제출하여야 할 서류는?",
+          "prior": "선박안전법상 임시검사를 받으려는 선박소유자가 해양수산부장관에게 반드시 제출하여야 할 서류는?",
+          "bestSeqPct": 91.3,
+          "bestTrigramPct": 76.0,
+          "priorYears": [
+            2024,
+            2025
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "법규",
+          "current": "해양환경관리법상 선박으로부터 기름을 배출하는 경우 배출액 중의 기름 성분 허용 기준치는? (단, 석유 및 천연가스의 탐사·채취 과정에서 발생한 물의 경우는 제외)",
+          "prior": "해양환경관리법상 선박에서 기름을 배출하는 경우 배출액 중의 유분의 허용 기준치는? (단, 석유 및 천연가스의 탐사ㆍ채취 과정에서 발생한 물의 경우는 제외)",
+          "bestSeqPct": 91.3,
+          "bestTrigramPct": 70.8,
+          "priorYears": [
+            2023
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "항해",
+          "current": "연안항로 선정 시 이안거리 및 주요지점의 통과시기를 결정할 경우 고려하여야 할 사항이 아닌 것은?",
+          "prior": "연안항로 선정 시 이안거리 및 주요지점 통과시기를결정할 때 고려할 사항이 아닌 것은?",
+          "bestSeqPct": 90.7,
+          "bestTrigramPct": 57.8,
+          "priorYears": [
+            2023
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "항해",
+          "current": "협수로 통항계획을 수립할 때 주의할 사항으로 옳지 않은 것은?",
+          "prior": "좁은 수로 통항계획을 수립할 때 유의할 사항으로 옳지 않은 것은?",
+          "bestSeqPct": 90.2,
+          "bestTrigramPct": 67.9,
+          "priorYears": [
+            2024
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "법규",
+          "current": "국제해상충돌방지규칙상 서로 시계내에서 항행 중인 어로에 종사하고 있는 선박이 진로를 피하여야 하는 선박이 아닌 것은? (단, 좁은 수로, 통항분리제도, 앞지르기 항법의 경우는 제외함)",
+          "prior": "국제해상충돌방지규칙상 어로에 종사하고 있는 선박이항행 중 진로를 피하여야 하는 선박이 아닌 것은? (단, 좁은 수로, 통항분리제도, 앞지르기 항법의 경우는 제외함)",
+          "bestSeqPct": 90.0,
+          "bestTrigramPct": 73.7,
+          "priorYears": [
+            2025
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "법규",
+          "current": "국제해상충돌방지규칙상 서로 시계 안에서 항행 중 레이더 화면에서 다른 선박의 존재를 탐지하여 충돌의 위험성을 확인한 경우 적절한 피항동작으로 옳은 것은? [그림 문제]",
+          "prior": "국제해상충돌방지규칙상 제한된 시계 안에서 항행 중그림과 같이 레이더 화면에서 다른 선박의 존재를 탐지하여 충돌의 위험성을 확인한 경우 적절한 피항동작으로 옳은 것은?",
+          "bestSeqPct": 90.0,
+          "bestTrigramPct": 72.2,
+          "priorYears": [
+            2024
+          ]
+        },
+        {
+          "category": "near_identical",
+          "subject": "법규",
+          "current": "국제해상충돌방지규칙상 용어의 정의로 옳지 않은 것은?",
+          "prior": "국제해상충돌방지규칙상 용어의 정의에 관한 설명으로옳지 않은 것은?",
+          "bestSeqPct": 88.5,
+          "bestTrigramPct": 65.5,
+          "priorYears": [
+            2024
+          ]
+        },
+        {
+          "category": "wording_variant",
+          "subject": "상선전문",
+          "current": "선박법상 주요 규정 사항으로 옳은 것은?",
+          "prior": "선박법상 규정된 사항으로 옳은 것은?",
+          "bestSeqPct": 90.3,
+          "bestTrigramPct": 42.1,
+          "priorYears": [
+            2025
+          ]
+        },
+        {
+          "category": "wording_variant",
+          "subject": "법규",
+          "current": "국제해상충돌방지규칙상 통항분리수역에서 항행하는 방법으로 옳지 않은 것은?",
+          "prior": "국제해상충돌방지규칙상 통항분리수역에서의 항해계획수립 방법으로 옳지 않은 것은?",
+          "bestSeqPct": 87.0,
+          "bestTrigramPct": 62.5,
+          "priorYears": [
+            2024
+          ]
+        },
+        {
+          "category": "wording_variant",
+          "subject": "항해",
+          "current": "중분위도항법에서 중분위도가 60° 이하이고, 항정이 600해리 이내이면 이 항법에 의한 오차는 얼마 이하인가?",
+          "prior": "( )에 적합한 것은? \"중분위도항법에서 중분위도가 60도 이하이고, 항정이 600해리 이내이면 이 항법에 의한 오차는 ( ) 이하이다.\"",
+          "bestSeqPct": 86.6,
+          "bestTrigramPct": 62.3,
+          "priorYears": [
+            2021,
+            2024
+          ]
+        }
+      ]
+    }
+  }
+}
