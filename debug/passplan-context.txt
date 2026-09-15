@@ -1,12 +1,18 @@
 ===== ppTrainingYears =====
 
 function ppTrainingYears(data){
-    const all=(data.meta&&data.meta.years||[]).map(Number).sort((a,b)=>a-b);
+    const metaYears=(data.meta&&data.meta.years||[]).map(Number);
+    const hitYears=[];
+    (data.groups||[]).forEach(group=>(group.hits||[]).forEach(hit=>{const y=Number(hit.year);if(Number.isFinite(y))hitYears.push(y)}));
+    const all=[...new Set([...metaYears,...hitYears])].sort((a,b)=>a-b);
+    // 2026 is the current exam year. Include it even when the source marks it as a partial year.
+    if(all.includes(2026))return all.filter(y=>y<=2026).slice(-5);
     const partial=new Set((data.meta&&data.meta.partialYears||[]).map(Number));
     const complete=((data.meta&&data.meta.completeYears||[]).length?(data.meta.completeYears||[]).map(Number):all.filter(y=>!partial.has(y))).sort((a,b)=>a-b);
     return complete.slice(-5);
   }
   function ppItemKey(gradeId,groupId){return `${gradeId}|${groupId}`}
+  function ppHas2026(item){return !!(item&&Array.isArray(item.hits)&&item.hits.some(h=>Number(h.year)===2026))}
   async function ppEnsureFrequency(){
     for(const gradeId of PLAN_GRADES){
       try{await ensureNavi3FrequencyData(gradeId)}catch(e){console.warn('[v5.07] 빈출 데이터 로드 실패',gradeId,e)}
@@ -47,13 +53,15 @@ function ppTrainingYears(data){
     const exam=ppExamDay(plan,gradeId),dday=ppDiffDays(today,exam);
     const finalDays=Number(plan.finalDays)||4;
     const freqRemaining=pool.filter(item=>item.count>=2&&!ppProgressFor(progress,item.key).firstPassDate);
+    const current2026Remaining=pool.filter(item=>ppHas2026(item)&&!ppProgressFor(progress,item.key).firstPassDate);
+    const stage1Remaining=[...current2026Remaining,...freqRemaining.filter(item=>!ppHas2026(item))];
     const allRemaining=pool.filter(item=>!ppProgressFor(progress,item.key).firstPassDate);
     const final=dday!==null&&dday>=0&&dday<=finalDays;
-    if(final)return {phase:'final',label:'시험 직전',dday,freqRemaining,allRemaining,candidates:freqRemaining,learningDays:Math.max(1,dday)};
-    if(freqRemaining.length){
+    if(final)return {phase:'final',label:'시험 직전 · 2026 전체 우선',dday,freqRemaining,current2026Remaining,allRemaining,candidates:stage1Remaining,learningDays:Math.max(1,dday)};
+    if(stage1Remaining.length){
       const learningDays=Math.max(1,(dday===null?14:dday)-finalDays);
       const stageDays=Math.max(1,Math.ceil(learningDays*0.45));
-      return {phase:'stage1',label:'1단계 · 최근 5개년 빈출',dday,freqRemaining,allRemaining,candidates:freqRemaining,learningDays:stageDays};
+      return {phase:'stage1',label:'1단계 · 2026 전체 + 최근 5개년 빈출',dday,freqRemaining,current2026Remaining,allRemaining,candidates:stage1Remaining,learningDays:stageDays};
     }
     const learningDays=Math.max(1,(dday===null?10:dday)-finalDays);
     return {phase:'stage2',label:'2단계 · 최근 5개년 전체',dday,freqRemaining,allRemaining,candidates:allRemaining,learningDays};
@@ -70,7 +78,7 @@ function ppTrainingYears(data){
     return b.latest-a.latest;
   }
   function ppPlanSignature(plan,pools){
-    const compact={dailyCap:plan.dailyCap,finalDays:plan.finalDays,revision:plan.revision,grades:{}};
+    const compact={dailyCap:plan.dailyCap,finalDays:plan.finalDays,revision:plan.revision,assignmentPolicy:'2026-all-priority-v1',grades:{}};
     PLAN_GRADES.forEach(g=>{compact.grades[g]={enabled:plan.grades[g].enabled,examDate:plan.grades[g].examDate,subjects:plan.grades[g].subjects,pool:(pools[g]||[]).length}});
     return JSON.stringify(compact);
   }
@@ -108,7 +116,7 @@ function ppTrainingYears(data){
     PLAN_GRADES.forEach(g=>{
       const phase=phases[g];if(!phase||!quotas[g])return;
       const candidates=phase.candidates.filter(item=>!ppProgressFor(progress,item.key).firstPassDate&&!dueSelected.some(d=>d.key===item.key));
-      candidates.sort((a,b)=>b.count-a.count||b.latest-a.latest);
+      candidates.sort((a,b)=>(ppHas2026(b)?1:0)-(ppHas2026(a)?1:0)||b.count-a.count||b.latest-a.latest);
       newItems.push(...candidates.slice(0,quotas[g]));
     });
     // 남는 슬롯이 있고 현재 단계에 미학습 문제가 더 있으면 시험이 더 가까운 급부터 채웁니다.
@@ -126,7 +134,7 @@ function ppTrainingYears(data){
       extra.sort((a,b)=>{
         const pa=phases[a.gradeId],pb=phases[b.gradeId];
         const da=pa&&pa.dday!=null?pa.dday:999,db=pb&&pb.dday!=null?pb.dday:999;
-        return da-db||b.count-a.count||b.latest-a.latest;
+        return da-db||(ppHas2026(b)?1:0)-(ppHas2026(a)?1:0)||b.count-a.count||b.latest-a.latest;
       });
       // 필요량보다 과도하게 앞당겨 풀지는 않도록 최대 절반만 보너스로 사용.
       const bonus=Math.min(slots,Math.ceil(cap*0.15));
@@ -223,9 +231,7 @@ function ppTrainingYears(data){
       </section>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px;margin-bottom:14px">${gradeCards}</div>
       <section class="card" style="padding:17px;border-left:4px solid #7C3AED">
-        <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap"><div><div style="font-size:18px;font-weight:900">오늘의 숙제</div><div style="font-size:12px;color:var(--textDim);margin-top:3px">${today} · ${assignment.keys.length}문제 배정 · 남은 ${unresolved.length}문제</div></div><span class="tag" style="margin:0;background:${unresolved.length?'#FEF3C7':'#D1FAE5'};color:${unresolved.length?'#92400E':'#065F46'}">${unresolved.length?'진행 중':'오늘 완료'}</span></div>
-        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px"><div style="background:#EFF6FF;padding:11px;border-radius:9px"><b>2급 ${gradeCounts.navi2.total}</b><div style="font-size:10px;color:#475569">신규 ${gradeCounts.navi2.new} · 복습 ${gradeCounts.navi2.review}</div></div><div style="background:#ECFDF5;padding:11px;border-radius:9px"><b>3급 ${gradeCounts.navi3.total}</b><div style="font-size:10px;color:#475569">신규 ${gradeCounts.navi3.new} · 복습 ${gradeCounts.navi3.review}</div></div></div>
-        ${assignment.dueOverflow?`<div style="margin-top:10px;padding:9px 11px;background:#FEF2F2;border-radius:8px;font-size:11px;color:#991B1B">복습 예정 문제가 하루 상한을 넘어 ${assignment.dueOverflow}
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap"><div><div style="font-size:18px;font-weight:900">오늘의 숙제</div><div style="font-size:12px;color:var(--textDim);margin-top:3px">${today} · ${assignment.keys.length}문제 배정 · 남은 ${unresolved.length}문제</div></div><span c
 
 ===== ppBuildPools =====
 
@@ -264,13 +270,15 @@ async function ppBuildPools(plan){
     const exam=ppExamDay(plan,gradeId),dday=ppDiffDays(today,exam);
     const finalDays=Number(plan.finalDays)||4;
     const freqRemaining=pool.filter(item=>item.count>=2&&!ppProgressFor(progress,item.key).firstPassDate);
+    const current2026Remaining=pool.filter(item=>ppHas2026(item)&&!ppProgressFor(progress,item.key).firstPassDate);
+    const stage1Remaining=[...current2026Remaining,...freqRemaining.filter(item=>!ppHas2026(item))];
     const allRemaining=pool.filter(item=>!ppProgressFor(progress,item.key).firstPassDate);
     const final=dday!==null&&dday>=0&&dday<=finalDays;
-    if(final)return {phase:'final',label:'시험 직전',dday,freqRemaining,allRemaining,candidates:freqRemaining,learningDays:Math.max(1,dday)};
-    if(freqRemaining.length){
+    if(final)return {phase:'final',label:'시험 직전 · 2026 전체 우선',dday,freqRemaining,current2026Remaining,allRemaining,candidates:stage1Remaining,learningDays:Math.max(1,dday)};
+    if(stage1Remaining.length){
       const learningDays=Math.max(1,(dday===null?14:dday)-finalDays);
       const stageDays=Math.max(1,Math.ceil(learningDays*0.45));
-      return {phase:'stage1',label:'1단계 · 최근 5개년 빈출',dday,freqRemaining,allRemaining,candidates:freqRemaining,learningDays:stageDays};
+      return {phase:'stage1',label:'1단계 · 2026 전체 + 최근 5개년 빈출',dday,freqRemaining,current2026Remaining,allRemaining,candidates:stage1Remaining,learningDays:stageDays};
     }
     const learningDays=Math.max(1,(dday===null?10:dday)-finalDays);
     return {phase:'stage2',label:'2단계 · 최근 5개년 전체',dday,freqRemaining,allRemaining,candidates:allRemaining,learningDays};
@@ -287,7 +295,7 @@ async function ppBuildPools(plan){
     return b.latest-a.latest;
   }
   function ppPlanSignature(plan,pools){
-    const compact={dailyCap:plan.dailyCap,finalDays:plan.finalDays,revision:plan.revision,grades:{}};
+    const compact={dailyCap:plan.dailyCap,finalDays:plan.finalDays,revision:plan.revision,assignmentPolicy:'2026-all-priority-v1',grades:{}};
     PLAN_GRADES.forEach(g=>{compact.grades[g]={enabled:plan.grades[g].enabled,examDate:plan.grades[g].examDate,subjects:plan.grades[g].subjects,pool:(pools[g]||[]).length}});
     return JSON.stringify(compact);
   }
@@ -325,7 +333,7 @@ async function ppBuildPools(plan){
     PLAN_GRADES.forEach(g=>{
       const phase=phases[g];if(!phase||!quotas[g])return;
       const candidates=phase.candidates.filter(item=>!ppProgressFor(progress,item.key).firstPassDate&&!dueSelected.some(d=>d.key===item.key));
-      candidates.sort((a,b)=>b.count-a.count||b.latest-a.latest);
+      candidates.sort((a,b)=>(ppHas2026(b)?1:0)-(ppHas2026(a)?1:0)||b.count-a.count||b.latest-a.latest);
       newItems.push(...candidates.slice(0,quotas[g]));
     });
     // 남는 슬롯이 있고 현재 단계에 미학습 문제가 더 있으면 시험이 더 가까운 급부터 채웁니다.
@@ -343,7 +351,7 @@ async function ppBuildPools(plan){
       extra.sort((a,b)=>{
         const pa=phases[a.gradeId],pb=phases[b.gradeId];
         const da=pa&&pa.dday!=null?pa.dday:999,db=pb&&pb.dday!=null?pb.dday:999;
-        return da-db||b.count-a.count||b.latest-a.latest;
+        return da-db||(ppHas2026(b)?1:0)-(ppHas2026(a)?1:0)||b.count-a.count||b.latest-a.latest;
       });
       // 필요량보다 과도하게 앞당겨 풀지는 않도록 최대 절반만 보너스로 사용.
       const bonus=Math.min(slots,Math.ceil(cap*0.15));
@@ -444,8 +452,7 @@ async function ppBuildPools(plan){
         <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px"><div style="background:#EFF6FF;padding:11px;border-radius:9px"><b>2급 ${gradeCounts.navi2.total}</b><div style="font-size:10px;color:#475569">신규 ${gradeCounts.navi2.new} · 복습 ${gradeCounts.navi2.review}</div></div><div style="background:#ECFDF5;padding:11px;border-radius:9px"><b>3급 ${gradeCounts.navi3.total}</b><div style="font-size:10px;color:#475569">신규 ${gradeCounts.navi3.new} · 복습 ${gradeCounts.navi3.review}</div></div></div>
         ${assignment.dueOverflow?`<div style="margin-top:10px;padding:9px 11px;background:#FEF2F2;border-radius:8px;font-size:11px;color:#991B1B">복습 예정 문제가 하루 상한을 넘어 ${assignment.dueOverflow}문제가 다음 배정으로 이월됩니다.</div>`:''}
         <div style="font-size:11px;color:var(--textDim);line-height:1.6;margin-top:10px">완료 조건: 정답 + ‘확실히 안다’. 오답 또는 ‘애매·찍음’은 오늘 미해결로 남습니다. 첫 통과 후 다른 날 다시 정답+확실이면 숙달됩니다.</div>
-        <button class="btn btn-accent" style="width:100%;margin-top:12px;background:#7C3AED;border-color:#7C3AED" ${unresolved.length?'':'disabled'} onclick="startNavigatorPassPlanToday()">${unresolved.length?`오늘 숙제 시작 · ${unresolved.length}문제`:'오늘 숙제 완료'}</button>
-        <div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-outline" style="flex:1" onclick="recalculateNavigatorPassPlanToday()">오늘 숙제 다시 계산</button><button 
+        <button class="btn btn-accent"
 
 ===== ppBuildTodayAssignment =====
 
@@ -468,7 +475,7 @@ function ppBuildTodayAssignment(plan,pools,progress,today){
     PLAN_GRADES.forEach(g=>{
       const phase=phases[g];if(!phase||!quotas[g])return;
       const candidates=phase.candidates.filter(item=>!ppProgressFor(progress,item.key).firstPassDate&&!dueSelected.some(d=>d.key===item.key));
-      candidates.sort((a,b)=>b.count-a.count||b.latest-a.latest);
+      candidates.sort((a,b)=>(ppHas2026(b)?1:0)-(ppHas2026(a)?1:0)||b.count-a.count||b.latest-a.latest);
       newItems.push(...candidates.slice(0,quotas[g]));
     });
     // 남는 슬롯이 있고 현재 단계에 미학습 문제가 더 있으면 시험이 더 가까운 급부터 채웁니다.
@@ -486,7 +493,7 @@ function ppBuildTodayAssignment(plan,pools,progress,today){
       extra.sort((a,b)=>{
         const pa=phases[a.gradeId],pb=phases[b.gradeId];
         const da=pa&&pa.dday!=null?pa.dday:999,db=pb&&pb.dday!=null?pb.dday:999;
-        return da-db||b.count-a.count||b.latest-a.latest;
+        return da-db||(ppHas2026(b)?1:0)-(ppHas2026(a)?1:0)||b.count-a.count||b.latest-a.latest;
       });
       // 필요량보다 과도하게 앞당겨 풀지는 않도록 최대 절반만 보너스로 사용.
       const bonus=Math.min(slots,Math.ceil(cap*0.15));
@@ -649,7 +656,7 @@ function ppBuildTodayAssignment(plan,pools,progress,today){
       pastSubjectId=gradeId;pastBaseShort=gradeId;pastYear=Number(latest.meta.year);pastSession=Number(latest.meta.session);pastVariant='상선';pastAllYears=false;pastReturnView=null;
       await startPastSession('mock',subjects);
     }catch(e){
-      app.innerHTML=`<div class="card" style="margin-top:30px"><b>실전 모의를 시작하지 못했습니다.</b><div style="font-size:12px;margin-top:7px">$
+      app.innerHTML=`<div class="card" style="margin-t
 
 ===== ppGetDailyAssignment =====
 
@@ -908,7 +915,7 @@ async function ppHydrateKeys(keys){
       <div style="font-size:16px;line-height:1.7;margin-bottom:16px;white-space:pre-wrap">${escapeHtml(q['문제'])}</div><div style="display:flex;flex-direction:column;gap:10px">${q['선택지'].map((opt,i)=>{let bg='#fff',border='#E5E7EB',col='var(--text)';if(showFeedback){if(i===correct){bg='#D1FAE5';border='#10B981';col='#065F46'}else if(i===selected){bg='#FEE2E2';border='#DC2626';col='#991B1B'}}return `<button onclick="chooseNavigatorPassPlanAnswer(${i})" ${showFeedback?'disabled':''} style="text-align:left;padding:12px 14px;background:${bg};border:2px solid ${border};border-radius:10px;color:${col};font-size:15px;line-height:1.6;cursor:${showFeedback?'default':'pointer'}"><b style="margin-right:8px">${markers[i]}</b>${escapeHtml(pastChoiceText(opt))}</button>`}).join('')}</div>
       ${showFeedback?`<div style="margin-top:14px;padding:11px;border-radius:9px;background:${isCorrect?'#ECFDF5':'#FEF2F2'};color:${isCorrect?'#065F46':'#991B1B'};font-weight:800;text-align:center">${isCorrect?'정답':'오답 · 정답 '+markers[correct]}</div>${renderExplainBlock(q)}${isCorrect?`<div style="margin-top:12px"><div style="font-size:12px;font-weight:800;margin-bottom:7px">지금 이 문제를 답을 안 보고도 다시 맞힐 수 있습니까?</div><div style="display:flex;gap:8px"><button class="btn ${confidence==='sure'?'btn-green':'btn-outline'}" style="flex:1" onclick="setNavigatorPassPlanConfidence('sure')">확실히 안다</button><button class="btn ${confidence==='unsure'?'btn-accent':'btn-outline'}" style="flex:1" onclick="setNavigatorPassPlanConfidence('unsure')">애매 · 찍음</button></div></div>`:`<div style="font-size:11px;color:#991B1B;margin-top:10px">오답은 오늘 미해결로 남습니다. 다음 재시험에서 정답+확실이어야 제거됩니다.</div>`}`:''}
       </div>
-      <button class="btn btn-accent" style="width:100%;margin-top:12px;background:${color};border-color:${color}" ${canNext?'':'disabled'} onclick="nextNavigatorPassPlanQuestion()">${planSessionIdx+1===planSessionQueue.length?'결과 보기':'다음 '+icon('arrowRight',14)}</button>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px"><button class="btn btn-outline" ${planSessionIdx>0?'':'disabled'} onclick="prevNavigatorPassPlanQuestion()">${icon('arrowLeft',14)} 이전</button><button class="btn btn-accent" style="background:${color};border-color:${color}" ${canNext?'':'disabled'} onclick="nextNavigatorPassPlanQuestion()">${planSessionIdx+1===planSessionQueue.length?'결과 보기':'다음 '+icon('arrowRight',14)}</button></div>
       <div style="text-align:center;margin-top:8px;font-size:10px;color:var(--textMuted)">같은 날 여러 번 맞혀도 숙달로 올리지 않습니다. 다른 날 다시 정답+확실해야 숙달됩니다.</div>`;
   };
   window.chooseNavigatorPassPlanAnswer=function(i){
@@ -940,6 +947,12 @@ async function ppHydrateKeys(keys){
     }
     progress[q._planKey]=r;ppSaveProgress(progress);
   }
+  window.prevNavigatorPassPlanQuestion=function(){
+    if(currentMode!=='pass-plan-session'||planSessionIdx<=0)return;
+    planSessionIdx--;
+    ppSavePassSessionCheckpoint(planSessionIdx);
+    renderNavigatorPassPlanCard();
+  };
   window.nextNavigatorPassPlanQuestion=function(){
     if(currentMode!=='pass-plan-session')return;const q=planSessionQueue[planSessionIdx],answer=planSessionAnswers[planSessionIdx],conf=planSessionConfidence[planSessionIdx];if(answer===null)return;
     if(!planSessionCommitted.has(planSessionIdx)){ppCommitOutcome(q,answer,conf||'wrong');planSessionCommitted.add(planSessionIdx)}
@@ -967,418 +980,6 @@ async function ppHydrateKeys(keys){
 </body>
 </html>
 
-
-===== startPastSession =====
-
-async function startPastSession(mode, subjFilter){
-  const curV = pastVariant || 'all';
-  const exams = getPastExamsForSession(pastBaseShort, pastYear, pastSession, curV);
-  if(!exams.length){ showToast('데이터를 찾을 수 없습니다.'); return; }
-  if(NAVI_ANALYSIS_GRADES.includes(pastBaseShort)&&Number(pastYear)>=2026){
-    renderPastLoading(`${pastYear}년 신출·기출 이력을 불러오는 중입니다`);
-    try{await ensureNavi3FrequencyData(pastBaseShort)}catch(error){console.warn('[v5.03] 출제 이력 로드 실패:',error)}
-  }
-  // 모든 변종 문제 합치기
-  const allQuestions = [];
-  exams.forEach(p => p.questions.forEach(q => allQuestions.push({
-    ...q, _year: pastYear, _session: pastSession, '회차': pastSession, _short: p.meta.gradeShort
-  })));
-  // 과목 필터 결정
-  let filterSet;
-  if(!subjFilter || subjFilter === 'all'){
-    filterSet = new Set(allQuestions.map(q=>q['과목']));
-  } else if(Array.isArray(subjFilter)){
-    filterSet = new Set(subjFilter);
-  } else {
-    filterSet = new Set([subjFilter]);
-  }
-  // 과목별로 모으기
-  const bySubj = new Map();
-  allQuestions.forEach(q => {
-    if(!filterSet.has(q['과목'])) return;
-    if(!bySubj.has(q['과목'])) bySubj.set(q['과목'], []);
-    bySubj.get(q['과목']).push(q);
-  });
-  let pool = [];
-  if(mode === 'mock'){
-    bySubj.forEach(arr => {
-      const s = shuffle(arr.slice());
-      pool.push(...s.slice(0, PAST_MOCK_PER_SUBJECT));
-    });
-    pool = shuffle(pool);
-  } else {
-    bySubj.forEach(arr => pool.push(...arr));
-    pool = shuffle(pool);
-  }
-  if(!pool.length){ showToast('해당 조건의 문제가 없습니다.'); return; }
-  renderPastLoading(`${pastYear}년 해설을 불러오는 중입니다`);
-  await ensurePastExplainForYears([pastYear]);
-  pastQueue = pool;
-  pastIdx = 0;
-  pastAnswers = new Array(pool.length).fill(null);
-  pastMode = mode;
-  pastStartedAt = Date.now();
-  currentMode = 'past';
-  renderPastCard();
-}
-
-function pastChoiceText(value){
-  return String(value==null?'':value).replace(/^\s*[㉮㉯㉰㉱㉴㉵]\s*/, '').trim();
-}
-
-function renderPastCard(){
-  if(currentMode!=='past')return;
-  savePastProgress();
-  if(pastIdx < 0 || pastIdx >= pastQueue.length){ renderPastResult(); return; }
-  const q = pastQueue[pastIdx];
-  const g = SUBJECT_GROUPS.find(x=>x.ids.includes(pastSubjectId));
-  const gColor = g?g.color:'#1E40AF';
-  const selected = pastAnswers[pastIdx];
-  const showFeedback = pastMode === 'study' && selected !== null;
-  const correct = q['정답'];
-  const optMarkers = ['㉮','㉯','㉰','㉱'];
-  const marked = isPastMarked(q);  // v4.46: 북마크 상태
-  app.innerHTML = `
-    <div style="padding-top:20px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
-      <button class="btn btn-outline" style="width:auto;font-size:13px;padding:8px 12px;display:inline-flex;align-items:center;gap:5px" onclick="showConfirm('학습을 중단하시겠습니까?', goBackFromPastSession)">${icon('arrowLeft',14)} 그만</button>
-      <div style="display:flex;align-items:center;gap:8px">
-        <button onclick="togglePastMark()" title="북마크 (B)" aria-label="북마크"
-          style="background:${marked?'#FEF3C7':'transparent'};border:1.5px solid ${marked?'#F59E0B':'#E5E7EB'};border-radius:8px;padding:6px 10px;cursor:pointer;font-size:16px;line-height:1;color:${marked?'#D97706':'#94A3B8'};font-weight:800">
-          ${marked?icon('star',18):icon('starOutline',18)}
-        </button>
-        <div style="font-size:13px;color:var(--textDim);font-weight:600">
-          ${pastMode==='mock'?'모의 ':''}${pastIdx+1} / ${pastQueue.length}
-        </div>
-      </div>
-    </div>
-    <div class="card" style="border-left:3px solid ${gColor}">
-      <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
-        <span class="tag" style="background:${gColor}20;color:${gColor};margin:0">${q._year}년</span>
-        <span class="tag" style="background:#E0E7FF;color:#3730A3;margin:0">${q['회차']}회</span>
-        <span class="tag" style="background:#F1F5F9;color:#475569;margin:0">${q['과목']}</span>
-        <span class="tag" style="background:#F1F5F9;color:#475569;margin:0">Q${q['번호']}</span>
-        ${n3aOriginTagHtml(q)}
-      </div>
-      <div style="font-size:16px;line-height:1.7;color:var(--text);margin-bottom:16px;white-space:pre-wrap">${escapeHtml(q['문제'])}</div>
-      <div style="display:flex;flex-direction:column;gap:10px">
-        ${q['선택지'].map((opt,i)=>{
-          const isSelected = selected === i;
-          const isCorrect = i === correct;
-          let bg = '#fff', border = '#E5E7EB', col = 'var(--text)';
-          if(showFeedback){
-            if(isCorrect){ bg='#D1FAE5'; border='#10B981'; col='#065F46'; }
-            else if(isSelected && !isCorrect){ bg='#FEE2E2'; border='#DC2626'; col='#991B1B'; }
-          } else if(isSelected){
-            bg = gColor+'15'; border = gColor; col = gColor;
-          }
-          return `<button onclick="choosePastAnswer(${i})" style="text-align:left;padding:12px 14px;background:${bg};border:2px solid ${border};border-radius:10px;color:${col};font-size:15px;line-height:1.6;cursor:${showFeedback?'default':'pointer'};transition:all 0.15s" ${showFeedback?'disabled':''}>
-            <span style="font-weight:800;margin-right:8px">${optMarkers[i]}</span>${escapeHtml(pastChoiceText(opt))}
-          </button>`;
-        }).join('')}
-      </div>
-      ${showFeedback ? `
-        <div style="margin-top:14px;padding:12px;background:${selected===correct?'#ECFDF5':'#FEF2F2'};border-radius:10px;font-size:14px;font-weight:700;color:${selected===correct?'#065F46':'#991B1B'};text-align:center">
-          ${selected===correct?icon('checkCircle',16)+' 정답':icon('xCircle',16)+' 오답 · 정답: '+optMarkers[correct]}
-        </div>
-        ${renderExplainBlock(q)}
-      ` : ''}
-    </div>
-    <div style="display:flex;gap:8px;margin-top:12px">
-      ${pastIdx>0?`<button class="btn btn-outline" style="flex:1" onclick="pastIdx--;renderPastCard()">${icon('arrowLeft',14)} 이전</button>`:''}
-      ${(selected!==null || pastMode==='mock')?`<button class="btn btn-accent" style="flex:2" onclick="pastNext()">${pastIdx+1===pastQueue.length?'제출':'다음 '+icon('arrowRight',14)}</button>`:`<button class="btn btn-outline" style="flex:2;opacity:0.5" disabled>답을 선택하세요</button>`}
-    </div>
-    <div style="margin-top:10px;text-align:center;font-size:11px;color:var(--textMuted)">
-      단축키: <b>1~4</b> 답 선택 · <b>Enter</b>/<b>→</b> 다음 · <b>←</b> 이전 · <b>B</b> 북마크
-    </div>
-  `;
-}
-
-function choosePastAnswer(i){
-  if(currentMode!=='past'||!Number.isInteger(i)||i<0||i>=pastQueue[pastIdx]['선택지'].length)return;
-  if(pastMode==='study'&&pastAnswers[pastIdx]!==null)return;
-  pastAnswers[pastIdx] = i;
-  renderPastCard();
-}
-
-function pastNext(){
-  if(currentMode!=='past')return;
-  if(pastMode==='study'&&pastAnswers[pastIdx]===null)return;
-  if(pastIdx+1 >= pastQueue.length){ renderPastResult(); return; }
-  pastIdx++;
-  renderPastCard();
-}
-
-function renderPastResult(){
-  if(currentMode!=='past')return;
-  currentMode='past-result';
-  clearPastProgress();
-  const total = pastQueue.length;
-  const isNavi3Practice = pastReturnView === 'navi3-practice';
-  const analysisGradeLabel = ((n3aData()&&n3aData().meta&&n3aData().meta.gradeLabel)||'항해사').replace(/\s*\(상선\)\s*/g,'');
-  let correct = 0;
-  const wrongs = [];
-  pastQueue.forEach((q,i)=>{
-    if(pastAnswers[i] === q['정답']) correct++;
-    else wrongs.push({q, i, ans: pastAnswers[i]});
-  });
-  const pct = total ? Math.round(100*correct/total) : 0;
-  // v4.46: 오답 자동 누적 + 정답은 오답노트에서 자동 제거 + 풀이 기록 저장 (단일 회차만)
-  wrongs.forEach(({q,ans}) => addPastWrong(q, ans));
-  pastQueue.forEach((q,i)=>{
-    if(pastAnswers[i] === q['정답']) removePastWrong(pqid(q));
-  });
-  if(!pastAllYears && !pastReturnView && pastBaseShort && pastYear && pastSession){
-    recordPastSession(pastBaseShort, pastYear, pastSession, correct, total, pastMode);
-  }
-  const elapsed = Math.floor((Date.now()-pastStartedAt)/1000);
-  const mm = Math.floor(elapsed/60), ss = elapsed%60;
-  const s = SUBJECTS.find(x=>x.id===pastSubjectId);
-  const g = SUBJECT_GROUPS.find(x=>x.ids.includes(pastSubjectId));
-  const gColor = g?g.color:'#1E40AF';
-  const optMarkers = ['㉮','㉯','㉰','㉱'];
-  app.innerHTML = `
-    <div style="padding-top:20px;margin-bottom:16px">
-      <div style="font-size:12px;color:var(--textDim);font-weight:700;letter-spacing:2px;margin-bottom:6px">${pastMode==='mock'?'모의시험 결과':'학습 결과'}</div>
-      <h1 style="font-size:24px;font-weight:800;margin:0;color:${gColor}">${isNavi3Practice?`${escapeHtml(analysisGradeLabel)} · ${escapeHtml(navi3PracticeLabel)}`:`${s?s.name:''} · 필기 기출`}</h1>
-    </div>
-    <div class="card" style="text-align:center;border-left:3px solid ${gColor}">
-      <div style="font-size:44px;font-weight:900;color:${gColor};line-height:1">${correct} / ${total}</div>
-      <div style="font-size:18px;font-weight:700;color:var(--text);margin-top:6px">정답률 ${pct}%</div>
-      <div style="font-size:13px;color:var(--textDim);margin-top:4px">소요시간 ${mm}분 ${ss}초</div>
-    </div>
-    ${wrongs.length ? `
-      <div class="card">
-        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px">오답 ${wrongs.length}개</div>
-        ${wrongs.slice(0,30).map(({q,i,ans})=>`
-          <div style="padding:10px 0;border-bottom:1px solid #F1F5F9">
-            <div style="font-size:12px;color:var(--textDim);margin-bottom:4px">${q._year}년 ${q['회차']}회 · ${q['과목']} · Q${q['번호']}</div>
-            <div style="font-size:14px;color:var(--text);margin-bottom:6px">${escapeHtml(q['문제'])}</div>
-            <div style="font-size:13px;color:#DC2626">내 답: ${ans!==null?optMarkers[ans]+' '+escapeHtml(pastChoiceText(q['선택지'][ans])):'(미응답)'}</div>
-            <div style="font-size:13px;color:#059669">정답: ${optMarkers[q['정답']]} ${escapeHtml(pastChoiceText(q['선택지'][q['정답']]))}</div>
-            ${renderExplainBlock(q,{compact:true})}
-          </div>
-        `).join('')}
-        ${wrongs.length>30?`<div style="font-size:12px;color:var(--textMuted);margin-top:8px;text-align:center">... 외 ${wrongs.length-30}개 (상위 30개만 표시)</div>`:''}
-      </div>
-    ` : `
-      <div class="card" style="text-align:center;background:#D1FAE5">
-          <div style="font-size:18px;font-weight:800;color:#065F46">모두 정답</div>
-      </div>
-    `}
-    ${wrongs.length?'<button class="btn btn-green mb12" onclick="retryPastSessionWrongs()">이번 오답만 다시 풀기 ('+wrongs.length+'문제)</button>':''}
-    <div class="flex gap8" style="margin-top:12px">
-      ${isNavi3Practice?`<button class="btn btn-outline" style="flex:1" onclick="goBackFromPastSession()">빈출 분석으로</button><button class="btn btn-accent" style="flex:1" onclick="restartNavi3FrequencyPractice()">같은 문제 다시 풀기</button>`:`<button class="btn btn-outline" style="flex:1" onclick="goBackFromPastSession()">${pastAllYears?'다시 선택':'이 회차 다시'}</button><button class="btn btn-accent" style="flex:1" onclick="pickPrepType(pastSubjectId)">과목 홈</button>`}
-    </div>
-  `;
-}
-
-function escapeHtml(s){
-  return String(s==null?'':s).replace(/[&<>'"]/g,function(c){
-    return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c];
-  });
-}
-
-
-const getImp=id=>IMP[id]||3;
-const stars=n=>icon('star',12).repeat(n);
-const BOX_INT={1:1,2:3,3:7};
-const $=id=>document.getElementById(id);
-const app=$("app");
-
-// v4.51: SM-2 기반 개인화 간격 반복
-// 각 문제마다 난이도(ef)/다음 복습 간격(interval)/연속 정답(reps)/다음 복습일(nextReview) 추적
-// Leitner 박스는 UI/통계 지표로 그대로 유지, 스케줄은 SM-2 interval이 주도
-const SM2_DEFAULT_EF = 2.5;
-const SM2_MIN_EF = 1.3;
-
-// SM-2 품질 점수 매핑 (이 앱의 3버튼 입력):
-// ○ 맞음(sure)   -> q=5 (perfect)
-// △ 애매(unsure) -> q=3 (correct with difficulty)
-// ✕ 틀림         -> q=1 (incorrect)
-function qualityFromInput(correct, confidence){
-  if(!correct) return 1;
-  if(confidence==='sure') return 5;
-  return 3;
-}
-
-// 순수 SM-2 계산. item을 변이시키고 nextReview(ISO) 갱신.
-function updateSM2(item, q){
-  // EF 갱신 (q에 무관하게 항상 적용되는 게 원안)
-  let ef = (typeof item.ef==='number') ? item.ef : SM2_DEFAULT_EF;
-  ef = ef + (0.1 - (5-q)*(0.08 + (5-q)*0.02));
-  if(ef < SM2_MIN_EF) ef = SM2_MIN_EF;
-  item.ef = Math.round(ef*1000)/1000;
-
-  let reps = item.reps || 0;
-  let interval;
-
-  if(q < 3){
-    // 실패 → 처음부터
-    reps = 0;
-    interval = 1;
-  } else {
-    if(reps === 0) interval = 1;
-    else if(reps === 1) interval = 6;
-    else interval = Math.round((item.interval||1) * item.ef);
-    reps += 1;
-  }
-
-  item.reps = reps;
-  item.interval = interval;
-  const next = new Date();
-  next.setHours(0,0,0,0);
-  next.setDate(next.getDate() + interval);
-  item.nextReview = next.toISOString();
-}
-
-// v4.83: 같은 날의 반복은 숙달 연습으로만 취급하고 간격복습 횟수는 하루 1회만 반영합니다.
-// 같은 날 평가가 여러 개면 가장 낮은 품질을 사용해 과도한 복습 연장을 막습니다.
-function studyDateKey(){return toLocalDateInput(new Date())}
-function updateSpacedReview(item,q){
-  const today=studyDateKey();
-  if(item.sm2Day!==today){
-    item.sm2Day=today;
-    item.sm2DayQuality=q;
-    item.sm2DayBase={ef:item.ef,reps:item.reps,interval:item.interval,nextReview:item.nextReview};
-    updateSM2(item,q);
-    return;
-  }
-  const dailyQ=Math.min(typeof item.sm2DayQuality==='number'?item.sm2DayQuality:5,q);
-  if(dailyQ===item.sm2DayQuality)return;
-  const base=item.sm2DayBase||{};
-  item.ef=typeof base.ef==='number'?base.ef:SM2_DEFAULT_EF;
-  item.reps=typeof base.reps==='number'?base.reps:0;
-  item.interval=typeof base.interval==='number'?base.interval:0;
-  item.nextReview=base.nextReview||null;
-  item.sm2DayQuality=dailyQ;
-  updateSM2(item,dailyQ);
-}
-
-function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
-function loadState(){try{const r=localStorage.getItem(STORAGE_KEY);if(r)return JSON.parse(r)}catch(e){}return null}
-function saveState(s){return safeStorageSet(STORAGE_KEY,JSON.stringify(s),'면접 학습 진도')}
-function initBoxes(){
-  const b={};
-  QUESTIONS.forEach(q=>{
-    b[q.id]={
-      box:1, confidence:null, correct:0, wrong:0, lastStudied:null, firstStudied:null,
-      needsRetry:false, recoveryStreak:0, lastRecoveryDate:null,
-      // v4.51: SM-2 필드
-      ef:SM2_DEFAULT_EF, interval:0, reps:0, nextReview:null
-    };
-  });
-  return b;
-}
-
-// v4.51: 레거시 데이터(v4.50 이하)에 SM-2 필드 주입
-function migrateBoxes(loadedBoxes){
-  if(!loadedBoxes) return loadedBoxes;
-  Object.keys(loadedBoxes).forEach(id=>{
-    const it = loadedBoxes[id];
-    if(typeof it.ef !== 'number') it.ef = SM2_DEFAULT_EF;
-    if(typeof it.interval !== 'number') it.interval = 0;
-    if(typeof it.reps !== 'number') it.reps = 0;
-    if(!('nextReview' in it)) it.nextReview = null;
-    if(typeof it.needsRetry!=='boolean') it.needsRetry=(it.wrong||0)>0&&(it.box||1)<3;
-    if(typeof it.recoveryStreak!=='number') it.recoveryStreak=0;
-    if(!('lastRecoveryDate' in it)) it.lastRecoveryDate=null;
-    // v4.84 이전 학습 기록은 첫 학습일을 알 수 없으므로 신규 목표에서 제외합니다.
-    if(!('firstStudied' in it)) it.firstStudied=it.lastStudied?'legacy':null;
-  });
-  return loadedBoxes;
-}
-
-// v4.84: 처음 접한 날짜와 최근 학습 날짜를 분리해 하루 신규 목표를 정확히 계산합니다.
-function stampStudied(item){
-  const now=new Date().toISOString();
-  if(!item.firstStudied)item.firstStudied=now;
-  item.lastStudied=now;
-}
-
-function updateWrongRecovery(item,correct,confidence,isMock){
-  if(!correct){item.needsRetry=true;item.recoveryStreak=0;item.lastRecoveryDate=null;return;}
-  if(confidence!=='sure'||!item.needsRetry)return;
-  const today=studyDateKey();
-  if(item.lastRecoveryDate===today)return;
-  item.lastRecoveryDate=today;
-  item.recoveryStreak=(item.recoveryStreak||0)+1;
-  if(item.recoveryStreak>=2){item.needsRetry=false;item.recoveryStreak=0;item.lastRecoveryDate=null;}
-}
-
-// v4.51: nextReview 기반 복습 대상 판정 (fallback: Leitner)
-function isDue(item){
-  if(!item) return false;
-  // SM-2 경로: nextReview 있으면 그것만 본다
-  if(item.nextReview){
-    return new Date(item.nextReview).getTime() <= Date.now();
-  }
-  // 레거시 fallback: lastStudied + Leitner BOX_INT
-  if(!item.lastStudied) return false;
-  const d = (Date.now()-new Date(item.lastStudied).getTime())/(1e3*60*60*24);
-  return d >= (BOX_INT[item.box]||1);
-}
-function impTag(id){const i=getImp(id);return i>=5?'tag-imp5':i>=4?'tag-imp4':'tag-imp-low'}
-function boxTag(b){return b===1?'tag-red':b===2?'tag-amber':'tag-green'}
-
-let boxes={};
-let queue=[], currentIdx=0, hintLevel=0, showAnswer=false, filter="all", catFilter="all";
-let answerCollapsed=false; // v4.62: 모범답안 접기/펼치기 상태
-let sessionResults=[], mockPhase=0, currentMode="home";
-let homeToolsOpen=false;
-
-// ── v4.82: 2급 항해사 표준 도판 훈련 ──
-const NAVI2_VISUAL_DRILLS = [
-  {
-    id:'signal-o',
-    qid:65,
-    title:'국제신호기',
-    question:'다음 국제신호기의 명칭과 단독 게양 시 의미를 말해보세요.',
-    answer:'O기(Oscar)이며, 단독 게양 시 “Man overboard”, 즉 사람이 해상에 추락했음을 뜻합니다.',
-    standard:'International Code of Signals · Single-letter signal O'
-  },
-  {
-    id:'tow-over-200',
-    qid:2,
-    title:'예인선 등화·형상물',
-    question:'다음은 길이 70미터인 예인선이 200미터를 초과하는 예인선열을 끄는 경우입니다. 표시할 등화와 형상물을 말해보세요.',
-    answer:'전부에 수직선상 백색 마스트등 3개, 그 뒤 높은 위치에 제2 마스트등, 현등, 선미등과 그 위 황색 예선등을 표시합니다. 주간에는 가장 잘 보이는 곳에 마름모꼴 형상물 1개를 표시합니다.',
-    standard:'COLREG Rule 24(a), 24(d)'
-  },
-  {
-    id:'power-over-50',
-    qid:8,
-    title:'동력선 등화',
-    question:'다음은 길이 50미터 이상인 항해 중 동력선의 배치도입니다. 표시할 등화와 마스트등의 시인거리를 말해보세요.',
-    answer:'전부 마스트등, 그보다 뒤쪽의 높은 제2 마스트등, 현등과 선미등을 표시합니다. 마스트등의 시인거리는 6해리입니다.',
-    standard:'COLREG Rule 23, Rule 22'
-  },
-  {
-    id:'light-sectors',
-    qid:9,
-    title:'등화 조사 범위',
-    question:'도판의 각 조사구역을 보고 마스트등·현등·선미등의 색과 수평 조사각을 말해보세요.',
-    answer:'마스트등은 백색 225도, 현등은 좌현 홍색·우현 녹색으로 각각 112.5도, 선미등은 백색 135도입니다. 전주등은 360도입니다.',
-    standard:'COLREG Rule 21'
-  }
-];
-let visualDrillIndex=0;
-let visualDrillRevealed=false;
-
-function visualPolar(cx,cy,r,bearing){
-  const angle=(bearing-90)*Math.PI/180;
-  return {x:cx+r*Math.cos(angle),y:cy+r*Math.sin(angle)};
-}
-function visualArcPath(cx,cy,r,startBearing,endBearing){
-  const start=visualPolar(cx,cy,r,startBearing);
-  const end=visualPolar(cx,cy,r,endBearing);
-  const span=endBearing-startBearing;
-  return `M ${start.x.toFixed(2)} ${start.y.toFixed(2)} A ${r} ${r} 0 ${span>180?1:0} 1 ${end.x.toFixed(2)} ${end.y.toFixed(2)}`;
-}
-function renderMaritimeVisual(id){
-  let svg='';
-  let caption='표준을 학습하기 위한 개념도이며 실제 선박의 배치 간격을 축척으로 나타낸 것은 아닙니다.';
-  if(id==='signal-o'){
-    svg
 
 ===== getPastExamsByBase =====
 
@@ -1732,7 +1333,7 @@ window.renderNavigatorPassPlanCard=function(){
       <div style="font-size:16px;line-height:1.7;margin-bottom:16px;white-space:pre-wrap">${escapeHtml(q['문제'])}</div><div style="display:flex;flex-direction:column;gap:10px">${q['선택지'].map((opt,i)=>{let bg='#fff',border='#E5E7EB',col='var(--text)';if(showFeedback){if(i===correct){bg='#D1FAE5';border='#10B981';col='#065F46'}else if(i===selected){bg='#FEE2E2';border='#DC2626';col='#991B1B'}}return `<button onclick="chooseNavigatorPassPlanAnswer(${i})" ${showFeedback?'disabled':''} style="text-align:left;padding:12px 14px;background:${bg};border:2px solid ${border};border-radius:10px;color:${col};font-size:15px;line-height:1.6;cursor:${showFeedback?'default':'pointer'}"><b style="margin-right:8px">${markers[i]}</b>${escapeHtml(pastChoiceText(opt))}</button>`}).join('')}</div>
       ${showFeedback?`<div style="margin-top:14px;padding:11px;border-radius:9px;background:${isCorrect?'#ECFDF5':'#FEF2F2'};color:${isCorrect?'#065F46':'#991B1B'};font-weight:800;text-align:center">${isCorrect?'정답':'오답 · 정답 '+markers[correct]}</div>${renderExplainBlock(q)}${isCorrect?`<div style="margin-top:12px"><div style="font-size:12px;font-weight:800;margin-bottom:7px">지금 이 문제를 답을 안 보고도 다시 맞힐 수 있습니까?</div><div style="display:flex;gap:8px"><button class="btn ${confidence==='sure'?'btn-green':'btn-outline'}" style="flex:1" onclick="setNavigatorPassPlanConfidence('sure')">확실히 안다</button><button class="btn ${confidence==='unsure'?'btn-accent':'btn-outline'}" style="flex:1" onclick="setNavigatorPassPlanConfidence('unsure')">애매 · 찍음</button></div></div>`:`<div style="font-size:11px;color:#991B1B;margin-top:10px">오답은 오늘 미해결로 남습니다. 다음 재시험에서 정답+확실이어야 제거됩니다.</div>`}`:''}
       </div>
-      <button class="btn btn-accent" style="width:100%;margin-top:12px;background:${color};border-color:${color}" ${canNext?'':'disabled'} onclick="nextNavigatorPassPlanQuestion()">${planSessionIdx+1===planSessionQueue.length?'결과 보기':'다음 '+icon('arrowRight',14)}</button>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px"><button class="btn btn-outline" ${planSessionIdx>0?'':'disabled'} onclick="prevNavigatorPassPlanQuestion()">${icon('arrowLeft',14)} 이전</button><button class="btn btn-accent" style="background:${color};border-color:${color}" ${canNext?'':'disabled'} onclick="nextNavigatorPassPlanQuestion()">${planSessionIdx+1===planSessionQueue.length?'결과 보기':'다음 '+icon('arrowRight',14)}</button></div>
       <div style="text-align:center;margin-top:8px;font-size:10px;color:var(--textMuted)">같은 날 여러 번 맞혀도 숙달로 올리지 않습니다. 다른 날 다시 정답+확실해야 숙달됩니다.</div>`;
   };
   window.chooseNavigatorPassPlanAnswer=function(i){
@@ -1764,6 +1365,12 @@ window.renderNavigatorPassPlanCard=function(){
     }
     progress[q._planKey]=r;ppSaveProgress(progress);
   }
+  window.prevNavigatorPassPlanQuestion=function(){
+    if(currentMode!=='pass-plan-session'||planSessionIdx<=0)return;
+    planSessionIdx--;
+    ppSavePassSessionCheckpoint(planSessionIdx);
+    renderNavigatorPassPlanCard();
+  };
   window.nextNavigatorPassPlanQuestion=function(){
     if(currentMode!=='pass-plan-session')return;const q=planSessionQueue[planSessionIdx],answer=planSessionAnswers[planSessionIdx],conf=planSessionConfidence[planSessionIdx];if(answer===null)return;
     if(!planSessionCommitted.has(planSessionIdx)){ppCommitOutcome(q,answer,conf||'wrong');planSessionCommitted.add(planSessionIdx)}
@@ -1790,90 +1397,3 @@ window.renderNavigatorPassPlanCard=function(){
 <script src="convenience-controls.js"></script>
 </body>
 </html>
-
-
-===== 2026 mock function vicinity =====
-
-window.startNavigatorPassPlanMock=async function(gradeId){
-    if(!PLAN_GRADES.includes(gradeId))return;
-    const plan=ppLoadPlan(),data=n3aData(gradeId)||await ensureNavi3FrequencyData(gradeId);
-    const subjects=ppSelectedSubjects(plan,gradeId,data);
-    renderPastLoading(`${GRADE_LABELS[gradeId]} 2026 실전 모의를 준비하는 중입니다`);
-    try{
-      if(!pastDataSubjectsLoaded.has(gradeId))await ensurePastDataForSubject(gradeId);
-      const exams=getPastExamsByBase(gradeId,'상선').filter(p=>p.meta&&Number(p.meta.year)===2026).sort((a,b)=>Number(b.meta.session)-Number(a.meta.session));
-      if(!exams.length)throw new Error('2026년 상선 기출 회차가 없습니다.');
-      const latest=exams[0];
-      pastSubjectId=gradeId;pastBaseShort=gradeId;pastYear=Number(latest.meta.year);pastSession=Number(latest.meta.session);pastVariant='상선';pastAllYears=false;pastReturnView=null;
-      await startPastSession('mock',subjects);
-    }catch(e){
-      app.innerHTML=`<div class="card" style="margin-top:30px"><b>실전 모의를 시작하지 못했습니다.</b><div style="font-size:12px;margin-top:7px">${escapeHtml(e.message||String(e))}</div><button class="btn btn-outline" style="margin-top:12px" onclick="renderNavigatorPassPlan('${planEntrySubject}')">합격 플랜으로 돌아가기</button></div>`;
-    }
-  };
-
-  window.startNavigatorPassPlanToday=async function(){
-    const plan=ppLoadPlan();await ppBuildPools(plan);const progress=ppLoadProgress(),today=ppDateKey(new Date());
-    const assignment=await ppGetDailyAssignment(plan,planPools,progress,false);
-    const allKeys=(assignment.keys||[]).slice();
-    const unresolvedKeys=allKeys.filter(k=>!ppTodayCleared(ppProgressFor(progress,k),today));
-    if(!unresolvedKeys.length){showToast('오늘 숙제를 모두 완료했습니다.');ppClearPassSessionCheckpoint();renderNavigatorPassPlan(planEntrySubject);return}
-    try{
-      const checkpoint=ppLoadPassSessionCheckpoint();
-      const queue=await ppHydrateKeys(allKeys);if(!queue.length||queue.length!==allKeys.length)throw new Error('문제 원문을 찾지 못했습니다.');
-      const checkpointMatches=checkpoint&&Array.isArray(checkpoint.queueKeys)&&checkpoint.queueKeys.length===allKeys.length&&checkpoint.queueKeys.every((k,i)=>k===allKeys[i]);
-      if(checkpointMatches){
-        const nextIndex=Number(checkpoint.nextIndex);
-        if(Number.isInteger(nextIndex)&&nextIndex>=0&&nextIndex<queue.length){
-          planSessionQueue=queue;planSessionIdx=nextIndex;
-          planSessionAnswers=new Array(queue.length).fill(null);planSessionConfidence=new Array(queue.length).fill(null);
-          if(Array.isArray(checkpoint.answers))checkpoint.answers.slice(0,queue.length).forEach((v,i)=>{if(v===null||Number.isInteger(v))planSessionAnswers[i]=v});
-          if(Array.isArray(checkpoint.confidence))checkpoint.confidence.slice(0,queue.length).forEach((v,i)=>{if(v===null||['sure','unsure','wrong'].includes(v))planSessionConfidence[i]=v});
-          planSessionCommitted=new Set(Array.isArray(checkpoint.committed)?checkpoint.committed.filter(i=>Number.isInteger(i)&&i>=0&&i<queue.length):[]);
-          for(let i=0;i<nextIndex;i++)if(planSessionAnswers[i]!==null)planSessionCommitted.add(i);
-          planSessionStartedAt=Date.now();currentMode='pass-plan-session';renderNavigatorPassPlanCard();return;
-        }
-      }
-      if(checkpoint)ppClearPassSessionCheckpoint();
-      let startIndex=allKeys.findIndex(k=>!ppTodayCleared(ppProgressFor(progress,k),today));
-      if(startIndex<0)startIndex=0;
-      planSessionQueue=queue;planSessionIdx=startIndex;planSessionAnswers=new Array(queue.length).fill(null);planSessionConfidence=new Array(queue.length).fill(null);planSessionStartedAt=Date.now();planSessionCommitted=new Set();
-      for(let i=0;i<startIndex;i++)if(ppTodayCleared(ppProgressFor(progress,allKeys[i]),today))planSessionCommitted.add(i);
-      currentMode='pass-plan-session';ppSavePassSessionCheckpoint(startIndex);renderNavigatorPassPlanCard();
-    }catch(e){app.innerHTML=`<div class="card" style="margin-top:30px"><b>오늘 숙제를 시작하지 못했습니다.</b><div style="font-size:12px;margin-top:7px">${escapeHtml(e.message||String(e))}</div><button class="btn btn-outline" style="margin-top:12px" onclick="renderNavigatorPassPlan('${planEntrySubject}')">플랜으로 돌아가기</button></div>`}
-  };
-  function ppGradeColor(g){return g==='navi2'?'#2563EB':'#059669'}
-  window.renderNavigatorPassPlanCard=function(){
-    if(currentMode!=='pass-plan-session')return;
-    if(planSessionIdx>=planSessionQueue.length){renderNavigatorPassPlanResult();return}
-    const q=planSessionQueue[planSessionIdx],selected=planSessionAnswers[planSessionIdx],confidence=planSessionConfidence[planSessionIdx],correct=q['정답'],showFeedback=selected!==null;
-    const grade=q._planGrade,color=ppGradeColor(grade),markers=['㉮','㉯','㉰','㉱'];
-    const isCorrect=showFeedback&&selected===correct;
-    const canNext=showFeedback;
-    app.innerHTML=`
-      <div style="padding-top:20px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:8px"><button class="btn btn-outline" style="width:auto" onclick="showConfirm('오늘 숙제를 중단하시겠습니까? 진행 기록은 저장됩니다.',()=>renderNavigatorPassPlan('${planEntrySubject}'))">${icon('arrowLeft',14)} 그만</button><div style="font-size:15px;color:var(--text);font-weight:900">문제 ${planSessionIdx+1}/${planSessionQueue.length}</div></div>
-      <div class="card" style="border-left:4px solid ${color}"><div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px"><span class="tag" style="margin:0;background:${color}18;color:${color}">${GRADE_LABELS[grade]}</span><span class="tag" style="margin:0;background:#F1F5F9;color:#475569">${q['과목']}</span><span class="tag" style="margin:0;background:#FEF3C7;color:#92400E">최근 5년 ${q._planCount}회</span><span class="tag" style="margin:0;background:#F1F5F9;color:#475569">${q._year}년 ${q['회차']}회 Q${q['번호']}</span></div>
-      <div style="font-size:16px;line-height:1.7;margin-bottom:16px;white-space:pre-wrap">${escapeHtml(q['문제'])}</div><div style="display:flex;flex-direction:column;gap:10px">${q['선택지'].map((opt,i)=>{let bg='#fff',border='#E5E7EB',col='var(--text)';if(showFeedback){if(i===correct){bg='#D1FAE5';border='#10B981';col='#065F46'}else if(i===selected){bg='#FEE2E2';border='#DC2626';col='#991B1B'}}return `<button onclick="chooseNavigatorPassPlanAnswer(${i})" ${showFeedback?'disabled':''} style="text-align:left;padding:12px 14px;background:${bg};border:2px solid ${border};border-radius:10px;color:${col};font-size:15px;line-height:1.6;cursor:${showFeedback?'default':'pointer'}"><b style="margin-right:8px">${markers[i]}</b>${escapeHtml(pastChoiceText(opt))}</button>`}).join('')}</div>
-      ${showFeedback?`<div style="margin-top:14px;padding:11px;border-radius:9px;background:${isCorrect?'#ECFDF5':'#FEF2F2'};color:${isCorrect?'#065F46':'#991B1B'};font-weight:800;text-align:center">${isCorrect?'정답':'오답 · 정답 '+markers[correct]}</div>${renderExplainBlock(q)}${isCorrect?`<div style="margin-top:12px"><div style="font-size:12px;font-weight:800;margin-bottom:7px">지금 이 문제를 답을 안 보고도 다시 맞힐 수 있습니까?</div><div style="display:flex;gap:8px"><button class="btn ${confidence==='sure'?'btn-green':'btn-outline'}" style="flex:1" onclick="setNavigatorPassPlanConfidence('sure')">확실히 안다</button><button class="btn ${confidence==='unsure'?'btn-accent':'btn-outline'}" style="flex:1" onclick="setNavigatorPassPlanConfidence('unsure')">애매 · 찍음</button></div></div>`:`<div style="font-size:11px;color:#991B1B;margin-top:10px">오답은 오늘 미해결로 남습니다. 다음 재시험에서 정답+확실이어야 제거됩니다.</div>`}`:''}
-      </div>
-      <button class="btn btn-accent" style="width:100%;margin-top:12px;background:${color};border-color:${color}" ${canNext?'':'disabled'} onclick="nextNavigatorPassPlanQuestion()">${planSessionIdx+1===planSessionQueue.length?'결과 보기':'다음 '+icon('arrowRight',14)}</button>
-      <div style="text-align:center;margin-top:8px;font-size:10px;color:var(--textMuted)">같은 날 여러 번 맞혀도 숙달로 올리지 않습니다. 다른 날 다시 정답+확실해야 숙달됩니다.</div>`;
-  };
-  window.chooseNavigatorPassPlanAnswer=function(i){
-    if(currentMode!=='pass-plan-session')return;
-    const q=planSessionQueue[planSessionIdx];
-    if(planSessionAnswers[planSessionIdx]!==null||!q||i<0||i>=q['선택지'].length)return;
-    const confidence=i===q['정답']?'sure':'wrong';
-    planSessionAnswers[planSessionIdx]=i;planSessionConfidence[planSessionIdx]=confidence;
-    if(!planSessionCommitted.has(planSessionIdx)){ppCommitOutcome(q,i,confidence);planSessionCommitted.add(planSessionIdx)}
-    ppSavePassSessionCheckpoint(planSessionIdx+1);
-    renderNavigatorPassPlanCard();
-  };
-  window.setNavigatorPassPlanConfidence=function(value){if(currentMode!=='pass-plan-session')return;if(!['sure','unsure'].includes(value))return;const q=planSessionQueue[planSessionIdx];if(planSessionAnswers[planSessionIdx]!==q['정답'])return;planSessionConfidence[planSessionIdx]=value;renderNavigatorPassPlanCard()};
-  function ppCommitOutcome(q,answer,confidence){
-    const progress=ppLoadProgress(),r=ppProgressFor(progress,q._planKey),today=ppDateKey(new Date()),correct=answer===q['정답'];
-    r.attempts=(r.attempts||0)+1;r.lastDate=today;r.lastOutcome=correct?confidence:'wrong';
-    if(correct)r.correct=(r.correct||0)+1;else r.wrong=(r.wrong||0)+1;
-    if(correct&&confidence==='unsure')r.unsure=(r.unsure||0)+1;
-    if(correct&&confidence==='sure'){
-      r.lastSureDate=today;
-      if(!r.firstPassDate)

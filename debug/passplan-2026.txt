@@ -2,7 +2,7 @@
 year_json_colon: 0
 year_unquoted_colon: 0
 korean_2026: 1
-generic_2026: 56
+generic_2026: 74
 
 ===== first 80 2026 contexts =====
 --- 1 @ 4729967 ---
@@ -913,7 +913,212 @@ all';
   })));
   // 과목 필터 결정
   let filte
---- 53 @ 22473800 ---
+--- 53 @ 22459959 ---
+[];
+    (data.groups||[]).forEach(group=>(group.hits||[]).forEach(hit=>{const y=Number(hit.year);if(Number.isFinite(y))hitYears.push(y)}));
+    const all=[...new Set([...metaYears,...hitYears])].sort((a,b)=>a-b);
+    // 2026 is the current exam year. Include it even when the source marks it as a partial year.
+    if(all.includes(2026))return all.filter(y=>y<=2026).slice(-5);
+    const partial=new Set((data.meta&&data.meta.partialYears||[]).map(Number));
+    const complete=((data.meta&&data.meta.completeYears||[]).length?(data.meta.completeYears||[]).map(Number):all.filter(y=>!partial.has(y))).sort((a,b)=>a-b);
+    return complete.sl
+--- 54 @ 22460070 ---
+nite(y))hitYears.push(y)}));
+    const all=[...new Set([...metaYears,...hitYears])].sort((a,b)=>a-b);
+    // 2026 is the current exam year. Include it even when the source marks it as a partial year.
+    if(all.includes(2026))return all.filter(y=>y<=2026).slice(-5);
+    const partial=new Set((data.meta&&data.meta.partialYears||[]).map(Number));
+    const complete=((data.meta&&data.meta.completeYears||[]).length?(data.meta.completeYears||[]).map(Number):all.filter(y=>!partial.has(y))).sort((a,b)=>a-b);
+    return complete.slice(-5);
+  }
+  function ppItemKey(gradeId,groupId){return `${gradeId}|${groupId}`}
+  function ppHas2026(item){r
+--- 55 @ 22460100 ---
+   const all=[...new Set([...metaYears,...hitYears])].sort((a,b)=>a-b);
+    // 2026 is the current exam year. Include it even when the source marks it as a partial year.
+    if(all.includes(2026))return all.filter(y=>y<=2026).slice(-5);
+    const partial=new Set((data.meta&&data.meta.partialYears||[]).map(Number));
+    const complete=((data.meta&&data.meta.completeYears||[]).length?(data.meta.completeYears||[]).map(Number):all.filter(y=>!partial.has(y))).sort((a,b)=>a-b);
+    return complete.slice(-5);
+  }
+  function ppItemKey(gradeId,groupId){return `${gradeId}|${groupId}`}
+  function ppHas2026(item){return !!(item&&Array.isArray(i
+--- 56 @ 22460478 ---
+length?(data.meta.completeYears||[]).map(Number):all.filter(y=>!partial.has(y))).sort((a,b)=>a-b);
+    return complete.slice(-5);
+  }
+  function ppItemKey(gradeId,groupId){return `${gradeId}|${groupId}`}
+  function ppHas2026(item){return !!(item&&Array.isArray(item.hits)&&item.hits.some(h=>Number(h.year)===2026))}
+  async function ppEnsureFrequency(){
+    for(const gradeId of PLAN_GRADES){
+      try{await ensureNavi3FrequencyData(gradeId)}catch(e){console.warn('[v5.07] 빈출 데이터 로드 실패',gradeId,e)}
+    }
+  }
+  async function ppBuildPools(plan){
+    await ppEnsureFrequency();
+    const pools={};
+    PLAN_GRADES.forEach(gradeId=>{
+      c
+--- 57 @ 22460566 ---
+,b)=>a-b);
+    return complete.slice(-5);
+  }
+  function ppItemKey(gradeId,groupId){return `${gradeId}|${groupId}`}
+  function ppHas2026(item){return !!(item&&Array.isArray(item.hits)&&item.hits.some(h=>Number(h.year)===2026))}
+  async function ppEnsureFrequency(){
+    for(const gradeId of PLAN_GRADES){
+      try{await ensureNavi3FrequencyData(gradeId)}catch(e){console.warn('[v5.07] 빈출 데이터 로드 실패',gradeId,e)}
+    }
+  }
+  async function ppBuildPools(plan){
+    await ppEnsureFrequency();
+    const pools={};
+    PLAN_GRADES.forEach(gradeId=>{
+      const data=n3aData(gradeId);if(!data){pools[gradeId]=[];return}
+      const selected=new 
+--- 58 @ 22462727 ---
+amDay(plan,gradeId),dday=ppDiffDays(today,exam);
+    const finalDays=Number(plan.finalDays)||4;
+    const freqRemaining=pool.filter(item=>item.count>=2&&!ppProgressFor(progress,item.key).firstPassDate);
+    const current2026Remaining=pool.filter(item=>ppHas2026(item)&&!ppProgressFor(progress,item.key).firstPassDate);
+    const stage1Remaining=[...current2026Remaining,...freqRemaining.filter(item=>!ppHas2026(item))];
+    const allRemaining=pool.filter(item=>!ppProgressFor(progress,item.key).firstPassDate);
+    const final=dday!==null&&dday>=0&&dday<=finalDays;
+    if(final)return {phase:'final',label:'시험 직전 · 2026 전체 우선',dday,freqRem
+--- 59 @ 22462764 ---
+oday,exam);
+    const finalDays=Number(plan.finalDays)||4;
+    const freqRemaining=pool.filter(item=>item.count>=2&&!ppProgressFor(progress,item.key).firstPassDate);
+    const current2026Remaining=pool.filter(item=>ppHas2026(item)&&!ppProgressFor(progress,item.key).firstPassDate);
+    const stage1Remaining=[...current2026Remaining,...freqRemaining.filter(item=>!ppHas2026(item))];
+    const allRemaining=pool.filter(item=>!ppProgressFor(progress,item.key).firstPassDate);
+    const final=dday!==null&&dday>=0&&dday<=finalDays;
+    if(final)return {phase:'final',label:'시험 직전 · 2026 전체 우선',dday,freqRemaining,current2026Remaining,allRemain
+--- 60 @ 22462863 ---
+=>item.count>=2&&!ppProgressFor(progress,item.key).firstPassDate);
+    const current2026Remaining=pool.filter(item=>ppHas2026(item)&&!ppProgressFor(progress,item.key).firstPassDate);
+    const stage1Remaining=[...current2026Remaining,...freqRemaining.filter(item=>!ppHas2026(item))];
+    const allRemaining=pool.filter(item=>!ppProgressFor(progress,item.key).firstPassDate);
+    const final=dday!==null&&dday>=0&&dday<=finalDays;
+    if(final)return {phase:'final',label:'시험 직전 · 2026 전체 우선',dday,freqRemaining,current2026Remaining,allRemaining,candidates:stage1Remaining,learningDays:Math.max(1,dday)};
+    if(stage1Remaining.length){
+    
+--- 61 @ 22462913 ---
+.firstPassDate);
+    const current2026Remaining=pool.filter(item=>ppHas2026(item)&&!ppProgressFor(progress,item.key).firstPassDate);
+    const stage1Remaining=[...current2026Remaining,...freqRemaining.filter(item=>!ppHas2026(item))];
+    const allRemaining=pool.filter(item=>!ppProgressFor(progress,item.key).firstPassDate);
+    const final=dday!==null&&dday>=0&&dday<=finalDays;
+    if(final)return {phase:'final',label:'시험 직전 · 2026 전체 우선',dday,freqRemaining,current2026Remaining,allRemaining,candidates:stage1Remaining,learningDays:Math.max(1,dday)};
+    if(stage1Remaining.length){
+      const learningDays=Math.max(1,(dday===null?14:dd
+--- 62 @ 22463123 ---
+em=>!ppHas2026(item))];
+    const allRemaining=pool.filter(item=>!ppProgressFor(progress,item.key).firstPassDate);
+    const final=dday!==null&&dday>=0&&dday<=finalDays;
+    if(final)return {phase:'final',label:'시험 직전 · 2026 전체 우선',dday,freqRemaining,current2026Remaining,allRemaining,candidates:stage1Remaining,learningDays:Math.max(1,dday)};
+    if(stage1Remaining.length){
+      const learningDays=Math.max(1,(dday===null?14:dday)-finalDays);
+      const stageDays=Math.max(1,Math.ceil(learningDays*0.45));
+      return {phase:'stage1',label:'1단계 · 2026 전체 + 최근 5개년 빈출',dday,freqRemaining,current2026Remaining,allRemaining,candidates:sta
+--- 63 @ 22463161 ---
+emaining=pool.filter(item=>!ppProgressFor(progress,item.key).firstPassDate);
+    const final=dday!==null&&dday>=0&&dday<=finalDays;
+    if(final)return {phase:'final',label:'시험 직전 · 2026 전체 우선',dday,freqRemaining,current2026Remaining,allRemaining,candidates:stage1Remaining,learningDays:Math.max(1,dday)};
+    if(stage1Remaining.length){
+      const learningDays=Math.max(1,(dday===null?14:dday)-finalDays);
+      const stageDays=Math.max(1,Math.ceil(learningDays*0.45));
+      return {phase:'stage1',label:'1단계 · 2026 전체 + 최근 5개년 빈출',dday,freqRemaining,current2026Remaining,allRemaining,candidates:stage1Remaining,learningDays:stageDays};
+
+--- 64 @ 22463455 ---
+x(1,dday)};
+    if(stage1Remaining.length){
+      const learningDays=Math.max(1,(dday===null?14:dday)-finalDays);
+      const stageDays=Math.max(1,Math.ceil(learningDays*0.45));
+      return {phase:'stage1',label:'1단계 · 2026 전체 + 최근 5개년 빈출',dday,freqRemaining,current2026Remaining,allRemaining,candidates:stage1Remaining,learningDays:stageDays};
+    }
+    const learningDays=Math.max(1,(dday===null?10:dday)-finalDays);
+    return {phase:'stage2',label:'2단계 · 최근 5개년 전체',dday,freqRemaining,allRemaining,candidates:allRemaining,learningDays};
+  }
+  function ppIsDue(rec,today){return !!(rec&&rec.dueDate&&rec.dueDate<=today&&(rec.firstPassDa
+--- 65 @ 22463502 ---
+   const learningDays=Math.max(1,(dday===null?14:dday)-finalDays);
+      const stageDays=Math.max(1,Math.ceil(learningDays*0.45));
+      return {phase:'stage1',label:'1단계 · 2026 전체 + 최근 5개년 빈출',dday,freqRemaining,current2026Remaining,allRemaining,candidates:stage1Remaining,learningDays:stageDays};
+    }
+    const learningDays=Math.max(1,(dday===null?10:dday)-finalDays);
+    return {phase:'stage2',label:'2단계 · 최근 5개년 전체',dday,freqRemaining,allRemaining,candidates:allRemaining,learningDays};
+  }
+  function ppIsDue(rec,today){return !!(rec&&rec.dueDate&&rec.dueDate<=today&&(rec.firstPassDate||rec.status==='weak'))}
+  function ppUrgentS
+--- 66 @ 22464573 ---
+(da!==db)return da.localeCompare(db);
+    return b.latest-a.latest;
+  }
+  function ppPlanSignature(plan,pools){
+    const compact={dailyCap:plan.dailyCap,finalDays:plan.finalDays,revision:plan.revision,assignmentPolicy:'2026-all-priority-v1',grades:{}};
+    PLAN_GRADES.forEach(g=>{compact.grades[g]={enabled:plan.grades[g].enabled,examDate:plan.grades[g].examDate,subjects:plan.grades[g].subjects,pool:(pools[g]||[]).length}});
+    return JSON.stringify(compact);
+  }
+  function ppAllocateNewSlots(requests,slots){
+    const out={navi2:0,navi3:0};
+    const active=PLAN_GRADES.filter(g=>requests[g]>0);
+    if(slots<=0||!active.length)retu
+--- 67 @ 22466818 ---
+e=phases[g];if(!phase||!quotas[g])return;
+      const candidates=phase.candidates.filter(item=>!ppProgressFor(progress,item.key).firstPassDate&&!dueSelected.some(d=>d.key===item.key));
+      candidates.sort((a,b)=>(ppHas2026(b)?1:0)-(ppHas2026(a)?1:0)||b.count-a.count||b.latest-a.latest);
+      newItems.push(...candidates.slice(0,quotas[g]));
+    });
+    // 남는 슬롯이 있고 현재 단계에 미학습 문제가 더 있으면 시험이 더 가까운 급부터 채웁니다.
+    slots=Math.max(0,cap-dueSelected.length-newItems.length);
+    if(slots>0){
+      const extra=[];
+      PLAN_GRADES.forEach(g=>{
+        const phase=phases[g];if(!phase)return;
+        phase.candidates.forEach(item=>{
+        
+--- 68 @ 22466837 ---
+se||!quotas[g])return;
+      const candidates=phase.candidates.filter(item=>!ppProgressFor(progress,item.key).firstPassDate&&!dueSelected.some(d=>d.key===item.key));
+      candidates.sort((a,b)=>(ppHas2026(b)?1:0)-(ppHas2026(a)?1:0)||b.count-a.count||b.latest-a.latest);
+      newItems.push(...candidates.slice(0,quotas[g]));
+    });
+    // 남는 슬롯이 있고 현재 단계에 미학습 문제가 더 있으면 시험이 더 가까운 급부터 채웁니다.
+    slots=Math.max(0,cap-dueSelected.length-newItems.length);
+    if(slots>0){
+      const extra=[];
+      PLAN_GRADES.forEach(g=>{
+        const phase=phases[g];if(!phase)return;
+        phase.candidates.forEach(item=>{
+          if(ppProgressFor(
+--- 69 @ 22467635 ---
+tem);
+        });
+      });
+      extra.sort((a,b)=>{
+        const pa=phases[a.gradeId],pb=phases[b.gradeId];
+        const da=pa&&pa.dday!=null?pa.dday:999,db=pb&&pb.dday!=null?pb.dday:999;
+        return da-db||(ppHas2026(b)?1:0)-(ppHas2026(a)?1:0)||b.count-a.count||b.latest-a.latest;
+      });
+      // 필요량보다 과도하게 앞당겨 풀지는 않도록 최대 절반만 보너스로 사용.
+      const bonus=Math.min(slots,Math.ceil(cap*0.15));
+      newItems.push(...extra.slice(0,bonus));
+    }
+    return {keys:[...dueSelected,...newItems].map(i=>i.key),createdAt:Date.now(),phases,requests,dueOverflow:Math.max(0,due.length-dueSelected.length),dueCount:dueSelected.length,newCoun
+--- 70 @ 22467654 ---
+     });
+      extra.sort((a,b)=>{
+        const pa=phases[a.gradeId],pb=phases[b.gradeId];
+        const da=pa&&pa.dday!=null?pa.dday:999,db=pb&&pb.dday!=null?pb.dday:999;
+        return da-db||(ppHas2026(b)?1:0)-(ppHas2026(a)?1:0)||b.count-a.count||b.latest-a.latest;
+      });
+      // 필요량보다 과도하게 앞당겨 풀지는 않도록 최대 절반만 보너스로 사용.
+      const bonus=Math.min(slots,Math.ceil(cap*0.15));
+      newItems.push(...extra.slice(0,bonus));
+    }
+    return {keys:[...dueSelected,...newItems].map(i=>i.key),createdAt:Date.now(),phases,requests,dueOverflow:Math.max(0,due.length-dueSelected.length),dueCount:dueSelected.length,newCount:newItems.length};
+--- 71 @ 22474704 ---
 bled&&cfg.examDate?`<button class="btn btn-outline" style="width:100%;margin-top:9px;border-color:${g==='navi2'?'#2563EB':'#059669'};color:${g==='navi2'?'#2563EB':'#059669'}" onclick="startNavigatorPassPlanMock('${g}')">2026 최신 회차 실전 모의</button>`:''}
       </div>`;
     }).join('');
@@ -921,7 +1126,7 @@ bled&&cfg.examDate?`<button class="btn btn-outline" style="width:100%;margin-top
       <div style="padding-top:22px;margin-bottom:14px"><button class="text-nav" onclick="pickPrepType('${planEntrySubject}')">${icon('arrowLeft',14)} 학습유형으로</button></div>
       <section class="card" style="background:linear-gradient(135deg,#4C1D95,#7C3AED);color:#fff;border:none;padding:22px;margin-bottom:14px">
         <div style="fo
---- 54 @ 22481877 ---
+--- 72 @ 22482781 ---
 udes(gradeId))return;
     const plan=ppLoadPlan(),data=n3aData(gradeId)||await ensureNavi3FrequencyData(gradeId);
     const subjects=ppSelectedSubjects(plan,gradeId,data);
@@ -932,7 +1137,7 @@ udes(gradeId))return;
       if(!exams.length)throw new Error('2026년 상선 기출 회차가 없습니다.');
       const latest=exams[0];
       pastSubjectId=gradeId;pastBaseShort=gradeI
---- 55 @ 22482089 ---
+--- 73 @ 22482993 ---
 adeId]} 2026 실전 모의를 준비하는 중입니다`);
     try{
       if(!pastDataSubjectsLoaded.has(gradeId))await ensurePastDataForSubject(gradeId);
@@ -943,7 +1148,7 @@ adeId]} 2026 실전 모의를 준비하는 중입니다`);
       await startPastSession('mock',subjects);
     }catch(e){
       app.innerHT
---- 56 @ 22482195 ---
+--- 74 @ 22483099 ---
 taForSubject(gradeId);
       const exams=getPastExamsByBase(gradeId,'상선').filter(p=>p.meta&&Number(p.meta.year)===2026).sort((a,b)=>Number(b.meta.session)-Number(a.meta.session));
       if(!exams.length)throw new Error('2026년 상선 기출 회차가 없습니다.');
