@@ -119,7 +119,11 @@ for key in explains:
         parts=key.split('|');bucket='|'.join(parts[:3]);explain_key_counts[bucket]=explain_key_counts.get(bucket,0)+1
 report['explain_key_counts']=explain_key_counts
 Path('debug/2026-explanation-audit.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
+missing=report['missing']+report['short_or_placeholder']
+Path('debug/2026-missing-explanations.json').write_text(json.dumps(missing,ensure_ascii=False,indent=2),encoding='utf-8')
+for subject in ['항해','운용','법규','영어','상선전문']:
+    rows=[r for r in missing if r['subject']==subject]
+    Path(f'debug/2026-missing-{subject}.json').write_text(json.dumps(rows,ensure_ascii=False,indent=2),encoding='utf-8')
 summary={g:{k:v for k,v in report['grades'][g].items() if k!='rows'} for g in ('navi2','navi3')};summary['exam_inventory']=exam_inventory;summary['explain_key_counts']=explain_key_counts
 Path('debug/2026-explanation-summary.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2),encoding='utf-8')
-Path('debug/2026-missing-explanations.json').write_text(json.dumps(report['missing']+report['short_or_placeholder'],ensure_ascii=False,indent=2),encoding='utf-8')
 print(json.dumps(summary,ensure_ascii=False))
