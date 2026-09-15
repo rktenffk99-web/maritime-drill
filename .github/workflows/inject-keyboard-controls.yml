@@ -2,7 +2,7 @@ name: Patch pass-plan app
 
 on:
   push:
-    branches: [ main, feature/same-day-confirmation ]
+    branches: [ main ]
     paths:
       - 'keyboard-controls.js'
       - 'convenience-controls.js'
