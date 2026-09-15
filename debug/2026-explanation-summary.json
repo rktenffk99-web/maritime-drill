@@ -4,37 +4,43 @@
     "present": 125,
     "short": 0,
     "missing": 0,
+    "reusable_missing": 0,
     "median_explanation_chars": 2359,
     "by_subject": {
       "항해": {
         "total": 25,
         "present": 25,
         "short": 0,
-        "missing": 0
+        "missing": 0,
+        "reusable": 0
       },
       "운용": {
         "total": 25,
         "present": 25,
         "short": 0,
-        "missing": 0
+        "missing": 0,
+        "reusable": 0
       },
       "법규": {
         "total": 25,
         "present": 25,
         "short": 0,
-        "missing": 0
+        "missing": 0,
+        "reusable": 0
       },
       "영어": {
         "total": 25,
         "present": 25,
         "short": 0,
-        "missing": 0
+        "missing": 0,
+        "reusable": 0
       },
       "상선전문": {
         "total": 25,
         "present": 25,
         "short": 0,
-        "missing": 0
+        "missing": 0,
+        "reusable": 0
       }
     },
     "by_session": {
@@ -54,29 +60,47 @@
     }
   },
   "navi3": {
-    "total": 75,
+    "total": 200,
     "present": 75,
     "short": 0,
-    "missing": 0,
+    "missing": 125,
+    "reusable_missing": 41,
     "median_explanation_chars": 2607,
     "by_subject": {
       "항해": {
-        "total": 25,
+        "total": 50,
         "present": 25,
         "short": 0,
-        "missing": 0
+        "missing": 25,
+        "reusable": 8
       },
       "법규": {
-        "total": 25,
+        "total": 50,
         "present": 25,
         "short": 0,
-        "missing": 0
+        "missing": 25,
+        "reusable": 6
       },
       "영어": {
-        "total": 25,
+        "total": 50,
         "present": 25,
         "short": 0,
-        "missing": 0
+        "missing": 25,
+        "reusable": 10
+      },
+      "운용": {
+        "total": 25,
+        "present": 0,
+        "short": 0,
+        "missing": 25,
+        "reusable": 9
+      },
+      "상선전문": {
+        "total": 25,
+        "present": 0,
+        "short": 0,
+        "missing": 25,
+        "reusable": 8
       }
     },
     "by_session": {
@@ -89,6 +113,19 @@
           "항해": 25,
           "법규": 25,
           "영어": 25
+        }
+      },
+      "3": {
+        "total": 125,
+        "present": 0,
+        "short": 0,
+        "missing": 125,
+        "subjects": {
+          "항해": 25,
+          "운용": 25,
+          "법규": 25,
+          "영어": 25,
+          "상선전문": 25
         }
       }
     }
@@ -133,52 +170,31 @@
         "법규": 25,
         "영어": 25
       }
+    },
+    {
+      "script_id": "md-bundle-past-2026-navi3-3_js",
+      "meta": {
+        "id": "2026-navi3-3",
+        "year": 2026,
+        "gradeId": "navi3",
+        "gradeShort": "navi3",
+        "gradeLabel": "navi3",
+        "session": 3,
+        "source": "Q-style embedded bundle",
+        "total": 125
+      },
+      "question_count": 125,
+      "subjects": {
+        "항해": 25,
+        "운용": 25,
+        "법규": 25,
+        "영어": 25,
+        "상선전문": 25
+      }
     }
   ],
-  "loader_hits": [
-    {
-      "needle": "const PAST_EXPLAIN_YEARS",
-      "pos": 22151375
-    },
-    {
-      "needle": "async function ensurePastExplainForYears",
-      "pos": 22156329
-    },
-    {
-      "needle": "function ensurePastExplainForYears",
-      "pos": 22156335
-    },
-    {
-      "needle": "past-explain-${year}",
-      "pos": 22156496
-    },
-    {
-      "needle": "md-bundle-past-explain",
-      "pos": 14859823
-    },
-    {
-      "needle": "md-bundle-past-explain",
-      "pos": 15596333
-    },
-    {
-      "needle": "md-bundle-past-explain",
-      "pos": 16694943
-    },
-    {
-      "needle": "md-bundle-past-explain",
-      "pos": 17964365
-    },
-    {
-      "needle": "md-bundle-past-explain",
-      "pos": 19243035
-    },
-    {
-      "needle": "md-bundle-past-explain",
-      "pos": 20529041
-    },
-    {
-      "needle": "md-bundle-past-explain",
-      "pos": 21810279
-    }
-  ]
+  "explain_key_counts": {
+    "2026|navi2|2": 125,
+    "2026|navi3|2": 75
+  }
 }
