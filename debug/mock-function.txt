@@ -1,5 +1,3 @@
-측 모의를 만드는 중입니다`);
-    try{
       await ppBuildPools(plan);
       const data=n3aData(gradeId);if(!data)throw new Error('출제 빈도 데이터를 불러오지 못했습니다.');
       const subjects=ppSelectedSubjects(plan,gradeId,data);
@@ -20,6 +18,7 @@
         return {...q,_predictiveMock:true,_predictiveConcept:ppPredictiveConcept(item,data)};
       }));
       ppSavePredictiveHistory(keys);
+      clearPastProgress();
       pastSubjectId=gradeId;pastBaseShort=gradeId;pastYear=2026;pastSession=0;pastVariant='상선';pastAllYears=false;pastReturnView='pass-plan-predictive-mock';
       pastQueue=queue;pastIdx=0;pastAnswers=new Array(queue.length).fill(null);pastMode='mock';pastStartedAt=Date.now();currentMode='past';
       renderPastCard();

@@ -1,4 +1,4 @@
- class="btn btn-accent" style="flex:1;min-width:140px;padding:14px;font-size:15px;font-weight:800" onclick="startPastSession('study','all')">전체 학습</button>
+4px;font-size:15px;font-weight:800" onclick="startPastSession('study','all')">전체 학습</button>
         <button class="btn btn-outline" style="flex:1;min-width:140px;border-color:${gColor};color:${gColor};padding:14px;font-size:15px;font-weight:800" onclick="startPastSession('mock','all')">모의시험 (${allMockCount}문)</button>
       </div>
     </div>
@@ -18,6 +18,7 @@ function goBackFromPastSession(){
   currentMode="past-menu";
   if(!pastSubjectId||!pastBaseShort){renderSubjectSelect();return;}
   if(pastReturnView==='pass-plan-predictive-mock'){
+    clearPastProgress(); // predictive-mock-resume-isolated-v1
     pastReturnView=null;
     currentMode='pass-plan';
     if(typeof window.renderNavigatorPassPlan==='function')window.renderNavigatorPassPlan(pastSubjectId||'navi2');
@@ -124,7 +125,7 @@ function pastChoiceText(value){
 
 function renderPastCard(){
   if(currentMode!=='past')return;
-  savePastProgress();
+  if(pastReturnView!=='pass-plan-predictive-mock')savePastProgress();
   if(pastIdx < 0 || pastIdx >= pastQueue.length){ renderPastResult(); return; }
   const q = pastQueue[pastIdx];
   const g = SUBJECT_GROUPS.find(x=>x.ids.includes(pastSubjectId));
@@ -495,4 +496,4 @@ function renderMaritimeVisual(id){
       <path d="M35 174 L260 174 L238 202 L62 202 Z" fill="#334155" stroke="#94A3B8" stroke-width="2"/>
       <line x1="104" y1="37" x2="104" y2="174" stroke="#64748B" stroke-width="3"/><line x1="217" y1="25" x2="217" y2="174" stroke="#64748B" stroke-width="3"/>
       <g fill="#FFFFFF" filter="url(#towGlow)"><circle cx="104" cy="42" r="7"/><circle cx="104" cy="69" r="7"/><circle cx="104" cy="96" r="7"/><circle cx="217" cy="30" r="7"/><circle cx="255" cy="164" r="7"/></g>
-      <circle cx="255" cy="135" r="7" fill="#FACC15" filter="ur
+      <circle c

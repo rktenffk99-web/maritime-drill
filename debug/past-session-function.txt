@@ -1,4 +1,4 @@
-artPastSubjectSession('mock')">선택한 과목 모의시험 (과목당 ${PAST_MOCK_PER_SUBJECT}문)</button>
+_SUBJECT}문)</button>
       </div>
     </div>
     <div class="card" style="border-left:3px solid ${gColor}">
@@ -24,6 +24,7 @@ function goBackFromPastSession(){
   currentMode="past-menu";
   if(!pastSubjectId||!pastBaseShort){renderSubjectSelect();return;}
   if(pastReturnView==='pass-plan-predictive-mock'){
+    clearPastProgress(); // predictive-mock-resume-isolated-v1
     pastReturnView=null;
     currentMode='pass-plan';
     if(typeof window.renderNavigatorPassPlan==='function')window.renderNavigatorPassPlan(pastSubjectId||'navi2');
@@ -130,7 +131,7 @@ function pastChoiceText(value){
 
 function renderPastCard(){
   if(currentMode!=='past')return;
-  savePastProgress();
+  if(pastReturnView!=='pass-plan-predictive-mock')savePastProgress();
   if(pastIdx < 0 || pastIdx >= pastQueue.length){ renderPastResult(); return; }
   const q = pastQueue[pastIdx];
   const g = SUBJECT_GROUPS.find(x=>x.ids.includes(pastSubjectId));
@@ -626,4 +627,4 @@ function renderVisualDrill(announce){
 let focusProgress={};       // {qid: sure 누적 횟수}
 let focusQueueIds=[];       // 세션 시작 시 선정된 문제 id 목록
 const FOCUS_TARGET=2;       // 각 문제당 필요한 ○(확실) 횟수
-let activeFocusTarget=FOCUS_TARGET;  // v4.68: 진입 모드별 목표(오늘의집중=2,
+let activeFocusTa
