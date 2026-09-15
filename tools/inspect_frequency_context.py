@@ -16,9 +16,8 @@ for grade in ('navi2','navi3'):
     start=code.find(assign)
     if start<0: raise SystemExit(f'assignment not found for {grade}')
     start += len(assign)
-    end=code.find(';\n})();',start)
-    if end<0: end=code.rfind(';')
-    data=json.loads(code[start:end].strip())
+    fragment=code[start:].lstrip()
+    data,_=json.JSONDecoder().raw_decode(fragment)
     meta_years=[int(y) for y in data.get('meta',{}).get('years',[])]
     hit_years=[int(h['year']) for g in data.get('groups',[]) for h in g.get('hits',[]) if str(h.get('year','')).isdigit()]
     years=sorted(set(meta_years+hit_years))
@@ -35,7 +34,8 @@ for grade in ('navi2','navi3'):
         count=len(hits)
         f=count>=2
         h26=any(int(h.get('year',0))==2026 for h in hits)
-        raw26 += sum(1 for h in hits if int(h.get('year',0))==2026)
+        raw26_here=sum(1 for h in hits if int(h.get('year',0))==2026)
+        raw26 += raw26_here
         if f: freq+=1
         if h26: has26+=1
         if f and h26: overlap+=1
@@ -45,7 +45,7 @@ for grade in ('navi2','navi3'):
         if h26: s['has2026']+=1
         if f and h26: s['overlap']+=1
         if f or h26: s['union']+=1
-        s['raw2026'] += sum(1 for h in hits if int(h.get('year',0))==2026)
+        s['raw2026'] += raw26_here
     results[grade]={
       'trainingYears':training,
       'selectedSubjects':sorted(selected[grade]),
