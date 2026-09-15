@@ -1,0 +1,35 @@
+{
+  "summary": {
+    "exams": [
+      {
+        "id": "md-bundle-past-2026-navi2-2_js",
+        "grade": "navi2",
+        "session": 2,
+        "total": 125
+      },
+      {
+        "id": "md-bundle-past-2026-navi3-2_js",
+        "grade": "navi3",
+        "session": 2,
+        "total": 75
+      }
+    ],
+    "questions_total": 200,
+    "explanations_total_keys": 200,
+    "covered": 200,
+    "missing": 0,
+    "short": 0,
+    "navi2": {
+      "questions": 125,
+      "covered": 125,
+      "missing": 0
+    },
+    "navi3": {
+      "questions": 75,
+      "covered": 75,
+      "missing": 0
+    }
+  },
+  "missing": [],
+  "short": []
+}
