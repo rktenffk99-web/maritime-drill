@@ -20,6 +20,23 @@
     return Object.prototype.hasOwnProperty.call(map,event.code)?map[event.code]:-1;
   }
 
+  function cleanLegacyConfidenceUi(){
+    const root=document.getElementById('app');
+    if(!root) return;
+    const prompt='지금 이 문제를 답을 안 보고도 다시 맞힐 수 있습니까?';
+    for(const el of root.querySelectorAll('div')){
+      if(el.children.length===0 && el.textContent.trim()===prompt){
+        const wrapper=el.parentElement;
+        if(wrapper) wrapper.remove();
+        break;
+      }
+    }
+  }
+
+  const observer=new MutationObserver(cleanLegacyConfidenceUi);
+  observer.observe(document.documentElement,{childList:true,subtree:true});
+  cleanLegacyConfidenceUi();
+
   document.addEventListener('keydown',function(event){
     if(event.defaultPrevented || event.ctrlKey || event.metaKey || event.altKey || isEditableTarget(event.target)) return;
     try{
