@@ -2,7 +2,7 @@ name: Patch pass-plan app
 
 on:
   push:
-    branches: [ main, feature/predictive-mock-v1 ]
+    branches: [ main ]
     paths:
       - 'keyboard-controls.js'
       - 'convenience-controls.js'
@@ -13,7 +13,6 @@ on:
       - 'tools/patch_predictive_mock.py'
       - 'tools/patch_predictive_mock_followup.py'
       - 'tools/test_predictive_mock.py'
-      - 'tools/inspect_predictive_mock_context.py'
       - '.github/workflows/inject-keyboard-controls.yml'
   workflow_dispatch:
 
@@ -34,16 +33,14 @@ jobs:
           python tools/patch_predictive_mock.py
           python tools/patch_predictive_mock_followup.py
           python tools/test_predictive_mock.py
-          if [ -f tools/inspect_predictive_mock_context.py ]; then python tools/inspect_predictive_mock_context.py; fi
       - name: Commit index update
         run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add index.html
-          if [ -d debug ]; then git add debug; fi
-          if git diff --cached --quiet; then
+          if git diff --quiet -- index.html; then
             echo 'No change needed.'
             exit 0
           fi
-          git commit -m 'Finalize predictive mock mode'
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Build predictive mock mode'
           git push
