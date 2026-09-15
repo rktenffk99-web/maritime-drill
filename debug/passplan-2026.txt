@@ -952,29 +952,3 @@ taForSubject(gradeId);
       await startPastSession('mock',subjects);
     }catch(e){
       app.innerHTML=`<div class="card" style="margin-top:30px"><b>실전 모의를 시작하지 못했습니다.</b><div style="font-size:12px;margin-t
-
-===== 2026 nearby grade/data markers =====
-7: navi2, 2급 항해사
-8: navi2, 2급 항해사
-9: navi2, 2급 항해사
-10: navi2, 2급 항해사
-12: navi2
-13: navi2, navi3, 3급 항해사
-14: navi2, navi3, 3급 항해사
-15: navi3
-16: navi3
-39: navi2, 2급 항해사
-40: navi2, 2급 항해사
-41: navi2, navi3
-42: navi2
-43: navi3
-44: navi3
-47: navi2, navi3
-48: navi2, navi3
-49: navi2, navi3
-51: navi3, year
-52: year
-53: navi2, 3급 항해사
-54: year
-55: year
-56: year
