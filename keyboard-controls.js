@@ -68,3 +68,17 @@
     }
   },true);
 })();
+
+// Load the cross-device merge patch while the document is still parsing so it
+// replaces the v5.08 Drive hooks before driveSyncInit() runs on the first timer tick.
+(function(){
+  const src='drive-sync-v2.js';
+  if(document.readyState==='loading'){
+    document.write('<script src="'+src+'"><'+'/script>');
+  }else{
+    const script=document.createElement('script');
+    script.src=src;
+    script.async=false;
+    document.head.appendChild(script);
+  }
+})();
