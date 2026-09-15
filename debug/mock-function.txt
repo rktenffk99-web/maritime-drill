@@ -1,42 +1,45 @@
-ecked);plan.grades[g].examDate=date?date.value:'';
-      const boxes=[...document.querySelectorAll(`input[data-pp-subject="${g}"]`)];
-      plan.grades[g].subjects=boxes.filter(b=>b.checked).map(b=>b.value);
-    });
-    const cap=document.getElementById('pp-daily-cap'),finalDays=document.getElementById('pp-final-days');
-    plan.dailyCap=Math.max(40,Math.min(250,Number(cap&&cap.value)||120));
-    plan.finalDays=Math.max(2,Math.min(7,Number(finalDays&&finalDays.value)||4));
-    const today=ppDateKey(new Date());
-    const invalid=PLAN_GRADES.filter(g=>plan.grades[g].enabled&&(!plan.grades[g].examDate||ppDiffDays(today,plan.grades[g].examDate)<0));
-    if(invalid.length){showToast('활성화한 급수의 시험일을 오늘 이후 날짜로 설정하세요.');return}
-    if(PLAN_GRADES.some(g=>plan.grades[g].enabled&&(!plan.grades[g].subjects||!plan.grades[g].subjects.length))){showToast('활성화한 급수에서 최소 1개 과목을 선택하세요.');return}
-    ppSavePlan(plan);showToast('합격 플랜 설정을 저장했습니다.');renderNavigatorPassPlan(planEntrySubject);
+측 모의를 만드는 중입니다`);
+    try{
+      await ppBuildPools(plan);
+      const data=n3aData(gradeId);if(!data)throw new Error('출제 빈도 데이터를 불러오지 못했습니다.');
+      const subjects=ppSelectedSubjects(plan,gradeId,data);
+      if(!subjects.length)throw new Error('응시 과목을 1개 이상 선택하세요.');
+      const pool=planPools[gradeId]||[],history=ppLoadPredictiveHistory(),selected=[];
+      for(const subject of subjects){
+        const candidates=pool.filter(item=>item.subject===subject);
+        const draw=ppPredictiveSample(candidates,data,Math.min(PAST_MOCK_PER_SUBJECT,candidates.length),history);
+        selected.push(...draw);
+      }
+      if(!selected.length)throw new Error('실전예측 모의에 사용할 문제가 없습니다.');
+      const keys=selected.map(item=>item.key);
+      const questions=await ppHydrateKeys(keys);
+      if(questions.length!==keys.length)throw new Error('일부 기출문제 원문을 찾지 못했습니다.');
+      const itemMap=new Map(selected.map(item=>[item.key,item]));
+      const queue=shuffle(questions.map(q=>{
+        const item=itemMap.get(q._planKey);
+        return {...q,_predictiveMock:true,_predictiveConcept:ppPredictiveConcept(item,data)};
+      }));
+      ppSavePredictiveHistory(keys);
+      pastSubjectId=gradeId;pastBaseShort=gradeId;pastYear=2026;pastSession=0;pastVariant='상선';pastAllYears=false;pastReturnView='pass-plan-predictive-mock';
+      pastQueue=queue;pastIdx=0;pastAnswers=new Array(queue.length).fill(null);pastMode='mock';pastStartedAt=Date.now();currentMode='past';
+      renderPastCard();
+    }catch(e){
+      app.innerHTML=`<div class="card" style="margin-top:30px"><b>실전예측 모의를 시작하지 못했습니다.</b><div style="font-size:12px;margin-top:7px">${escapeHtml(e.message||String(e))}</div><button class="btn btn-outline" style="margin-top:12px" onclick="renderNavigatorPassPlan('${planEntrySubject}')">합격 플랜으로 돌아가기</button></div>`;
+    }
   };
-  window.recalculateNavigatorPassPlanToday=function(){
-    const daily=ppLoadDaily(),today=ppDateKey(new Date());delete daily[today];ppSaveDaily(daily);renderNavigatorPassPlan(planEntrySubject);
-  };
-  window.resetNavigatorPassPlanProgress=function(){
-    showConfirm('2·3급 합격 플랜의 학습 진도와 오늘 숙제를 모두 초기화하시겠습니까?\n기존 일반 오답노트와 기출 풀이 기록은 유지됩니다.',()=>{
-      safeStorageSet(PROGRESS_KEY,'{}','합격 플랜 진도');safeStorageSet(DAILY_KEY,'{}','합격 플랜 오늘 숙제');renderNavigatorPassPlan(planEntrySubject);
+  window.commitNavigatorPredictiveMockResult=function(queue,answers){
+    const progress=ppLoadProgress(),today=ppDateKey(new Date());
+    (queue||[]).forEach((q,i)=>{
+      if(!q||!q._predictiveMock||!q._planKey)return;
+      if(answers&&answers[i]===q['정답'])return;
+      const r=ppProgressFor(progress,q._planKey);
+      r.attempts=(r.attempts||0)+1;r.wrong=(r.wrong||0)+1;r.lastDate=today;r.lastOutcome='wrong';
+      r.status='weak';r.mastered=false;r.recoveryStartDate=today;r.sameDayFirstCorrectDate=null;r.sameDayConfirmedDate=null;r.dueDate=today;
     });
+    ppSaveProgress(progress);
+    const daily=ppLoadDaily();delete daily[today];ppSaveDaily(daily);
   };
 
-  function ppFindQuestion(gradeId,item){
-    for(const hit of item.hits){
-      const exam=getPastExam(gradeId,hit.year,hit.session);if(!exam)continue;
-      const q=exam.questions.find(q=>q['과목']===item.subject&&Number(q['번호'])===Number(hit.number)&&n3aNormalizeQuestion(q['문제'])===item.normalized);
-      if(q)return {...q,_year:hit.year,_session:hit.session,'회차':hit.session,_short:gradeId,_planKey:item.key,_planGrade:gradeId,_planCount:item.count,_planGroupId:item.groupId};
-    }
-    return null;
-  }
-  async function ppHydrateKeys(keys){
-    const grades=[...new Set(keys.map(k=>(ppGetItemByKey(k)||{}).gradeId).filter(Boolean))];
-    renderPastLoading('오늘 숙제 문제를 준비하는 중입니다');
-    for(const g of grades){if(!pastDataSubjectsLoaded.has(g))await ensurePastDataForSubject(g)}
-    const out=[];
-    keys.forEach(key=>{const item=ppGetItemByKey(key);if(!item)return;const q=ppFindQuestion(item.gradeId,item);if(q)out.push(q)});
-    await ensurePastExplainForYears(out.map(q=>q._year));
-    return out;
-  }
   window.startNavigatorPassPlanMock=async function(gradeId){
     if(!PLAN_GRADES.includes(gradeId))return;
     const plan=ppLoadPlan(),data=n3aData(gradeId)||await ensureNavi3FrequencyData(gradeId);

@@ -1,5 +1,4 @@
-gColor};padding:14px;font-size:15px;font-weight:800" onclick="startPastSubjectSession('study')">선택한 과목 학습</button>
-        <button class="btn btn-outline" style="width:100%;border-color:${gColor};color:${gColor};padding:14px;font-size:15px;font-weight:800" onclick="startPastSubjectSession('mock')">선택한 과목 모의시험 (과목당 ${PAST_MOCK_PER_SUBJECT}문)</button>
+artPastSubjectSession('mock')">선택한 과목 모의시험 (과목당 ${PAST_MOCK_PER_SUBJECT}문)</button>
       </div>
     </div>
     <div class="card" style="border-left:3px solid ${gColor}">
@@ -24,6 +23,13 @@ function setPastRunnerVariant(v){
 function goBackFromPastSession(){
   currentMode="past-menu";
   if(!pastSubjectId||!pastBaseShort){renderSubjectSelect();return;}
+  if(pastReturnView==='pass-plan-predictive-mock'){
+    pastReturnView=null;
+    currentMode='pass-plan';
+    if(typeof window.renderNavigatorPassPlan==='function')window.renderNavigatorPassPlan(pastSubjectId||'navi2');
+    else renderSubjectSelect();
+    return;
+  }
   if(pastReturnView==='navi3-practice'){
     const target=navi3PracticeReturn;
     pastReturnView=null;
@@ -143,7 +149,7 @@ function renderPastCard(){
           ${marked?icon('star',18):icon('starOutline',18)}
         </button>
         <div style="font-size:13px;color:var(--textDim);font-weight:600">
-          ${pastMode==='mock'?'모의 ':''}${pastIdx+1} / ${pastQueue.length}
+          ${q._predictiveMock?'실전예측 ':pastMode==='mock'?'모의 ':''}${pastIdx+1} / ${pastQueue.length}
         </div>
       </div>
     </div>
@@ -210,6 +216,8 @@ function renderPastResult(){
   clearPastProgress();
   const total = pastQueue.length;
   const isNavi3Practice = pastReturnView === 'navi3-practice';
+  const isPredictiveMock = pastReturnView === 'pass-plan-predictive-mock' || pastQueue.some(q=>q&&q._predictiveMock);
+  const predictiveGrade = (pastQueue.find(q=>q&&q._planGrade)||{})._planGrade || pastSubjectId || 'navi2';
   const analysisGradeLabel = ((n3aData()&&n3aData().meta&&n3aData().meta.gradeLabel)||'항해사').replace(/\s*\(상선\)\s*/g,'');
   let correct = 0;
   const wrongs = [];
@@ -223,6 +231,9 @@ function renderPastResult(){
   pastQueue.forEach((q,i)=>{
     if(pastAnswers[i] === q['정답']) removePastWrong(pqid(q));
   });
+  if(isPredictiveMock&&typeof window.commitNavigatorPredictiveMockResult==='function'){
+    window.commitNavigatorPredictiveMockResult(pastQueue,pastAnswers);
+  }
   if(!pastAllYears && !pastReturnView && pastBaseShort && pastYear && pastSession){
     recordPastSession(pastBaseShort, pastYear, pastSession, correct, total, pastMode);
   }
@@ -234,7 +245,7 @@ function renderPastResult(){
   const optMarkers = ['㉮','㉯','㉰','㉱'];
   app.innerHTML = `
     <div style="padding-top:20px;margin-bottom:16px">
-      <div style="font-size:12px;color:var(--textDim);font-weight:700;letter-spacing:2px;margin-bottom:6px">${pastMode==='mock'?'모의시험 결과':'학습 결과'}</div>
+      <div style="font-size:12px;color:var(--textDim);font-weight:700;letter-spacing:2px;margin-bottom:6px">${isPredictiveMock?'실전예측 모의 결과':pastMode==='mock'?'모의시험 결과':'학습 결과'}</div>
       <h1 style="font-size:24px;font-weight:800;margin:0;color:${gColor}">${isNavi3Practice?`${escapeHtml(analysisGradeLabel)} · ${escapeHtml(navi3PracticeLabel)}`:`${s?s.name:''} · 필기 기출`}</h1>
     </div>
     <div class="card" style="text-align:center;border-left:3px solid ${gColor}">
@@ -263,7 +274,7 @@ function renderPastResult(){
     `}
     ${wrongs.length?'<button class="btn btn-green mb12" onclick="retryPastSessionWrongs()">이번 오답만 다시 풀기 ('+wrongs.length+'문제)</button>':''}
     <div class="flex gap8" style="margin-top:12px">
-      ${isNavi3Practice?`<button class="btn btn-outline" style="flex:1" onclick="goBackFromPastSession()">빈출 분석으로</button><button class="btn btn-accent" style="flex:1" onclick="restartNavi3FrequencyPractice()">같은 문제 다시 풀기</button>`:`<button class="btn btn-outline" style="flex:1" onclick="goBackFromPastSession()">${pastAllYears?'다시 선택':'이 회차 다시'}</button><button class="btn btn-accent" style="flex:1" onclick="pickPrepType(pastSubjectId)">과목 홈</button>`}
+      ${isPredictiveMock?`<button class="btn btn-outline" style="flex:1" onclick="goBackFromPastSession()">합격 플랜으로</button><button class="btn btn-accent" style="flex:1" onclick="startNavigatorPredictiveMock('${predictiveGrade}')">새 예측 모의</button>`:isNavi3Practice?`<button class="btn btn-outline" style="flex:1" onclick="goBackFromPastSession()">빈출 분석으로</button><button class="btn btn-accent" style="flex:1" onclick="restartNavi3FrequencyPractice()">같은 문제 다시 풀기</button>`:`<button class="btn btn-outline" style="flex:1" onclick="goBackFromPastSession()">${pastAllYears?'다시 선택':'이 회차 다시'}</button><button class="btn btn-accent" style="flex:1" onclick="pickPrepType(pastSubjectId)">과목 홈</button>`}
     </div>
   `;
 }
@@ -615,19 +626,4 @@ function renderVisualDrill(announce){
 let focusProgress={};       // {qid: sure 누적 횟수}
 let focusQueueIds=[];       // 세션 시작 시 선정된 문제 id 목록
 const FOCUS_TARGET=2;       // 각 문제당 필요한 ○(확실) 횟수
-let activeFocusTarget=FOCUS_TARGET;  // v4.68: 진입 모드별 목표(오늘의집중=2, 전체숙달=1)
-const FOCUS_N_KEY='md_focus_n';
-function getFocusN(){try{const r=localStorage.getItem(FOCUS_N_KEY);const n=r?parseInt(r):10;return (isNaN(n)||n<1)?10:n;}catch(e){return 10;}}
-function setFocusN(n){return safeStorageSet(FOCUS_N_KEY,String(n),'집중 학습 설정')}
-function setFocusNPrompt(){
-  const cur=getFocusN();
-  appPrompt({title:'오늘의 집중 설정',label:'한 세션 문제 수 (1~30)',type:'number',value:cur,min:1,max:30},v=>{
-    const n=parseInt(v);
-    if(isNaN(n)||n<1||n>30){alert("1~30 사이의 숫자를 입력하세요.");return;}
-    setFocusN(n);renderHome();
-  });
-}
-
-// v4.84: 집중 세트 크기와 분리된 과목별 하루 신규 목표입니다.
-const DAILY_NEW_TARGET_DEFAULT=10;
-function dailyNewTargetKey(){return 'md_daily_new_target_'+(cu
+let activeFocusTarget=FOCUS_TARGET;  // v4.68: 진입 모드별 목표(오늘의집중=2,
