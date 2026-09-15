@@ -5,49 +5,52 @@
       "present": 125,
       "short": 0,
       "missing": 0,
-      "with_exact_reusable_when_not_present": 0,
-      "with_same_text_reusable_when_not_present": 0,
       "median_explanation_chars": 2359,
       "by_subject": {
         "항해": {
           "total": 25,
           "present": 25,
           "short": 0,
-          "missing": 0,
-          "exact_reusable_missing": 0,
-          "same_text_reusable_missing": 0
+          "missing": 0
         },
         "운용": {
           "total": 25,
           "present": 25,
           "short": 0,
-          "missing": 0,
-          "exact_reusable_missing": 0,
-          "same_text_reusable_missing": 0
+          "missing": 0
         },
         "법규": {
           "total": 25,
           "present": 25,
           "short": 0,
-          "missing": 0,
-          "exact_reusable_missing": 0,
-          "same_text_reusable_missing": 0
+          "missing": 0
         },
         "영어": {
           "total": 25,
           "present": 25,
           "short": 0,
-          "missing": 0,
-          "exact_reusable_missing": 0,
-          "same_text_reusable_missing": 0
+          "missing": 0
         },
         "상선전문": {
           "total": 25,
           "present": 25,
           "short": 0,
+          "missing": 0
+        }
+      },
+      "by_session": {
+        "2": {
+          "total": 125,
+          "present": 125,
+          "short": 0,
           "missing": 0,
-          "exact_reusable_missing": 0,
-          "same_text_reusable_missing": 0
+          "subjects": {
+            "항해": 25,
+            "운용": 25,
+            "법규": 25,
+            "영어": 25,
+            "상선전문": 25
+          }
         }
       },
       "rows": [
@@ -60,9 +63,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 3087,
-          "exact_previous_ids": [
-            "2025|navi2|3|항해|1"
-          ],
           "exact_reusable_ids": [
             "2025|navi2|3|항해|1"
           ],
@@ -81,7 +81,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2227,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -94,7 +93,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2330,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -107,7 +105,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2646,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -120,9 +117,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2117,
-          "exact_previous_ids": [
-            "2025|navi2|4|항해|3"
-          ],
           "exact_reusable_ids": [
             "2025|navi2|4|항해|3"
           ],
@@ -139,12 +133,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2583,
-          "exact_previous_ids": [
-            "2024|navi2|3|항해|6",
-            "2024|navi2|4|항해|6",
-            "2025|navi2|1|항해|6",
-            "2025|navi2|3|항해|6"
-          ],
           "exact_reusable_ids": [
             "2024|navi2|3|항해|6",
             "2024|navi2|4|항해|6",
@@ -167,7 +155,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 2430,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": [
             "2025|navi2|1|항해|10"
@@ -182,7 +169,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 2671,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -195,7 +181,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 3018,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -208,7 +193,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2298,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -221,13 +205,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2359,
-          "exact_previous_ids": [
-            "2024|navi2|2|항해|10",
-            "2024|navi2|3|항해|10",
-            "2024|navi2|4|항해|10",
-            "2025|navi2|2|항해|11",
-            "2025|navi2|4|항해|11"
-          ],
           "exact_reusable_ids": [
             "2024|navi2|2|항해|10",
             "2024|navi2|3|항해|10",
@@ -252,10 +229,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 1924,
-          "exact_previous_ids": [
-            "2025|navi2|1|항해|12",
-            "2025|navi2|4|항해|12"
-          ],
           "exact_reusable_ids": [
             "2025|navi2|1|항해|12",
             "2025|navi2|4|항해|12"
@@ -274,7 +247,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 2335,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -287,10 +259,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 1840,
-          "exact_previous_ids": [
-            "2025|navi2|2|항해|14",
-            "2025|navi2|3|항해|15"
-          ],
           "exact_reusable_ids": [
             "2025|navi2|2|항해|14",
             "2025|navi2|3|항해|15"
@@ -309,7 +277,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 1912,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -322,7 +289,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 1788,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -335,7 +301,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2560,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -348,7 +313,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 1869,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -361,7 +325,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 2244,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -374,7 +337,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 1860,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -387,7 +349,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 1819,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -400,7 +361,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 2257,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -413,7 +373,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2168,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": [
             "2024|navi2|1|항해|23",
@@ -429,7 +388,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 2306,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -442,7 +400,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 2222,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": [
             "2022|navi2|3|항해|25"
@@ -457,7 +414,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 2720,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -470,9 +426,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 1651,
-          "exact_previous_ids": [
-            "2021|navi2|1|운용|3"
-          ],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -485,9 +438,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 1581,
-          "exact_previous_ids": [
-            "2025|navi2|2|운용|2"
-          ],
           "exact_reusable_ids": [
             "2025|navi2|2|운용|2"
           ],
@@ -504,7 +454,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2311,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -517,10 +466,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 2105,
-          "exact_previous_ids": [
-            "2024|navi2|2|운용|7",
-            "2024|navi2|3|운용|6"
-          ],
           "exact_reusable_ids": [
             "2024|navi2|2|운용|7",
             "2024|navi2|3|운용|6"
@@ -539,7 +484,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2034,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -552,7 +496,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 2711,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": [
             "2020|navi2|2|운용|7",
@@ -568,7 +511,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2404,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -581,9 +523,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2473,
-          "exact_previous_ids": [
-            "2025|navi2|1|운용|10"
-          ],
           "exact_reusable_ids": [
             "2025|navi2|1|운용|10"
           ],
@@ -600,7 +539,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2006,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -613,7 +551,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2367,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -626,7 +563,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2589,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -639,7 +575,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2868,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -652,7 +587,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2009,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -665,7 +599,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 1829,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -678,7 +611,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 1765,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": [
             "2020|navi2|4|운용|16",
@@ -696,7 +628,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 2165,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -709,7 +640,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2103,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -722,7 +652,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2021,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -735,10 +664,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 2061,
-          "exact_previous_ids": [
-            "2025|navi2|3|운용|20",
-            "2025|navi2|4|운용|20"
-          ],
           "exact_reusable_ids": [
             "2025|navi2|3|운용|20",
             "2025|navi2|4|운용|20"
@@ -757,7 +682,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 2251,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -770,7 +694,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 2428,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -783,7 +706,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 1722,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": [
             "2025|navi2|3|운용|23"
@@ -798,9 +720,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 1494,
-          "exact_previous_ids": [
-            "2024|navi2|2|운용|25"
-          ],
           "exact_reusable_ids": [
             "2024|navi2|2|운용|25"
           ],
@@ -817,7 +736,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2105,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -830,7 +748,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2427,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -843,7 +760,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 2034,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -856,9 +772,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2093,
-          "exact_previous_ids": [
-            "2022|navi2|2|법규|3"
-          ],
           "exact_reusable_ids": [
             "2022|navi2|2|법규|3"
           ],
@@ -875,7 +788,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 1931,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -888,7 +800,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 2712,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -901,10 +812,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 2139,
-          "exact_previous_ids": [
-            "2023|navi2|2|법규|6",
-            "2025|navi2|1|법규|6"
-          ],
           "exact_reusable_ids": [
             "2023|navi2|2|법규|6",
             "2025|navi2|1|법규|6"
@@ -924,7 +831,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2105,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -937,7 +843,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 2677,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -950,9 +855,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 1806,
-          "exact_previous_ids": [
-            "2025|navi2|4|법규|10"
-          ],
           "exact_reusable_ids": [
             "2025|navi2|4|법규|10"
           ],
@@ -971,7 +873,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2169,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -984,7 +885,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2144,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -997,7 +897,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 2464,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1010,7 +909,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 2282,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1023,7 +921,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 2191,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": [
             "2024|navi2|1|법규|18"
@@ -1038,7 +935,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2827,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1051,7 +947,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2205,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1064,7 +959,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2325,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1077,7 +971,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2204,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": [
             "2025|navi2|4|법규|20"
@@ -1092,7 +985,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 3099,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1105,7 +997,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 2359,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1118,9 +1009,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 3006,
-          "exact_previous_ids": [
-            "2025|navi2|1|법규|22"
-          ],
           "exact_reusable_ids": [
             "2025|navi2|1|법규|22"
           ],
@@ -1137,7 +1025,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 3103,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1150,7 +1037,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 1963,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1163,7 +1049,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2598,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1176,7 +1061,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2403,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1189,7 +1073,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 4175,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1202,7 +1085,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 3956,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1215,7 +1097,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 4224,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1228,9 +1109,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 3263,
-          "exact_previous_ids": [
-            "2021|navi2|2|영어|6"
-          ],
           "exact_reusable_ids": [
             "2021|navi2|2|영어|6"
           ],
@@ -1247,7 +1125,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 4521,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1260,10 +1137,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 3452,
-          "exact_previous_ids": [
-            "2021|navi2|2|영어|1",
-            "2023|navi2|3|영어|4"
-          ],
           "exact_reusable_ids": [
             "2021|navi2|2|영어|1",
             "2023|navi2|3|영어|4"
@@ -1283,7 +1156,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 3392,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": [
             "2024|navi2|4|영어|4"
@@ -1298,7 +1170,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 3571,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1311,7 +1182,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 4668,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1324,7 +1194,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 4415,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1337,9 +1206,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 4635,
-          "exact_previous_ids": [
-            "2025|navi2|3|영어|11"
-          ],
           "exact_reusable_ids": [
             "2025|navi2|3|영어|11"
           ],
@@ -1356,7 +1222,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 4531,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1369,7 +1234,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 4649,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1382,7 +1246,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 4389,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1395,7 +1258,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 4269,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1408,7 +1270,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 4188,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1421,13 +1282,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 4062,
-          "exact_previous_ids": [
-            "2022|navi2|4|영어|19",
-            "2023|navi2|3|영어|14",
-            "2024|navi2|2|영어|16",
-            "2025|navi2|1|영어|16",
-            "2025|navi2|4|영어|15"
-          ],
           "exact_reusable_ids": [
             "2022|navi2|4|영어|19",
             "2023|navi2|3|영어|14",
@@ -1452,7 +1306,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 4765,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1465,7 +1318,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 4949,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1478,9 +1330,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 4468,
-          "exact_previous_ids": [
-            "2024|navi2|3|영어|22"
-          ],
           "exact_reusable_ids": [
             "2024|navi2|3|영어|22"
           ],
@@ -1497,7 +1346,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 5042,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1510,7 +1358,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 5021,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1523,7 +1370,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 4185,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1536,7 +1382,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 3867,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1549,9 +1394,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 4307,
-          "exact_previous_ids": [
-            "2023|navi2|4|영어|25"
-          ],
           "exact_reusable_ids": [
             "2023|navi2|4|영어|25"
           ],
@@ -1568,7 +1410,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2480,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1581,7 +1422,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 2365,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1594,7 +1434,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 2456,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1607,7 +1446,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2339,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1620,7 +1458,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2242,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1633,7 +1470,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2416,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": [
             "2022|navi2|3|상선전문|9",
@@ -1649,7 +1485,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2845,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1662,7 +1497,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 3058,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1675,7 +1509,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 1867,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1688,7 +1521,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2197,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1701,7 +1533,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 3351,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1714,7 +1545,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2489,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1727,7 +1557,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 2000,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1740,7 +1569,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 2502,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1753,9 +1581,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 2023,
-          "exact_previous_ids": [
-            "2023|navi2|4|상선전문|14"
-          ],
           "exact_reusable_ids": [
             "2023|navi2|4|상선전문|14"
           ],
@@ -1772,7 +1597,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 2350,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1785,7 +1609,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2594,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1798,7 +1621,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 2738,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1811,7 +1633,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2034,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": [
             "2022|navi2|2|상선전문|18",
@@ -1827,7 +1648,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 2151,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1840,7 +1660,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2026,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1853,12 +1672,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 2255,
-          "exact_previous_ids": [
-            "2024|navi2|1|상선전문|22",
-            "2025|navi2|1|상선전문|23",
-            "2025|navi2|3|상선전문|23",
-            "2025|navi2|4|상선전문|22"
-          ],
           "exact_reusable_ids": [
             "2024|navi2|1|상선전문|22",
             "2025|navi2|1|상선전문|23",
@@ -1881,9 +1694,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2261,
-          "exact_previous_ids": [
-            "2025|navi2|3|상선전문|24"
-          ],
           "exact_reusable_ids": [
             "2025|navi2|3|상선전문|24"
           ],
@@ -1900,7 +1710,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 2452,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": [
             "2023|navi2|2|상선전문|25",
@@ -1916,7 +1725,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2127,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         }
@@ -1927,33 +1735,38 @@
       "present": 75,
       "short": 0,
       "missing": 0,
-      "with_exact_reusable_when_not_present": 0,
-      "with_same_text_reusable_when_not_present": 0,
       "median_explanation_chars": 2607,
       "by_subject": {
         "항해": {
           "total": 25,
           "present": 25,
           "short": 0,
-          "missing": 0,
-          "exact_reusable_missing": 0,
-          "same_text_reusable_missing": 0
+          "missing": 0
         },
         "법규": {
           "total": 25,
           "present": 25,
           "short": 0,
-          "missing": 0,
-          "exact_reusable_missing": 0,
-          "same_text_reusable_missing": 0
+          "missing": 0
         },
         "영어": {
           "total": 25,
           "present": 25,
           "short": 0,
+          "missing": 0
+        }
+      },
+      "by_session": {
+        "2": {
+          "total": 75,
+          "present": 75,
+          "short": 0,
           "missing": 0,
-          "exact_reusable_missing": 0,
-          "same_text_reusable_missing": 0
+          "subjects": {
+            "항해": 25,
+            "법규": 25,
+            "영어": 25
+          }
         }
       },
       "rows": [
@@ -1966,7 +1779,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2151,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1979,7 +1791,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 2744,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -1992,7 +1803,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2457,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2005,9 +1815,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2282,
-          "exact_previous_ids": [
-            "2024|navi3|2|항해|2"
-          ],
           "exact_reusable_ids": [
             "2024|navi3|2|항해|2"
           ],
@@ -2024,7 +1831,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 2927,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2037,7 +1843,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 2236,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2050,7 +1855,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 1940,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2063,7 +1867,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2732,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2076,7 +1879,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 1754,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2089,7 +1891,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 1843,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2102,11 +1903,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 2423,
-          "exact_previous_ids": [
-            "2023|navi3|3|항해|11",
-            "2023|navi3|4|항해|10",
-            "2024|navi3|3|항해|11"
-          ],
           "exact_reusable_ids": [
             "2023|navi3|3|항해|11",
             "2023|navi3|4|항해|10",
@@ -2127,7 +1923,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 2808,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2140,7 +1935,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2322,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2153,9 +1947,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 2059,
-          "exact_previous_ids": [
-            "2025|navi3|3|항해|14"
-          ],
           "exact_reusable_ids": [
             "2025|navi3|3|항해|14"
           ],
@@ -2172,7 +1963,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2090,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2185,9 +1975,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 1848,
-          "exact_previous_ids": [
-            "2024|navi3|4|항해|16"
-          ],
           "exact_reusable_ids": [
             "2024|navi3|4|항해|16"
           ],
@@ -2204,7 +1991,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 2364,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2217,10 +2003,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 1816,
-          "exact_previous_ids": [
-            "2021|navi3|2|항해|17",
-            "2024|navi3|1|항해|18"
-          ],
           "exact_reusable_ids": [
             "2021|navi3|2|항해|17",
             "2024|navi3|1|항해|18"
@@ -2239,7 +2021,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 1956,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2252,9 +2033,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2665,
-          "exact_previous_ids": [
-            "2025|navi3|4|항해|22"
-          ],
           "exact_reusable_ids": [
             "2025|navi3|4|항해|22"
           ],
@@ -2271,7 +2049,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2134,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2284,7 +2061,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 2035,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2297,7 +2073,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 2293,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2310,7 +2085,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 2270,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2323,7 +2097,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 2819,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2336,7 +2109,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2233,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2349,9 +2121,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 1761,
-          "exact_previous_ids": [
-            "2021|navi3|1|법규|2"
-          ],
           "exact_reusable_ids": [
             "2021|navi3|1|법규|2"
           ],
@@ -2368,7 +2137,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 2183,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2381,7 +2149,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 2521,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2394,7 +2161,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 2229,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2407,7 +2173,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2054,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2420,7 +2185,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 1851,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2433,7 +2197,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2374,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2446,7 +2209,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 2276,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2459,7 +2221,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2633,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2472,7 +2233,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 1821,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2485,9 +2245,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 1971,
-          "exact_previous_ids": [
-            "2025|navi3|4|법규|12"
-          ],
           "exact_reusable_ids": [
             "2025|navi3|4|법규|12"
           ],
@@ -2504,7 +2261,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 2701,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2517,7 +2273,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 2821,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2530,10 +2285,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 2138,
-          "exact_previous_ids": [
-            "2021|navi3|3|법규|13",
-            "2023|navi3|2|법규|13"
-          ],
           "exact_reusable_ids": [
             "2021|navi3|3|법규|13",
             "2023|navi3|2|법규|13"
@@ -2552,7 +2303,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 2175,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2565,7 +2315,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 1986,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": [
             "2025|navi3|1|법규|15"
@@ -2580,7 +2329,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 2334,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2593,7 +2341,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 3808,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2606,7 +2353,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 2629,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2619,7 +2365,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 1861,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2632,7 +2377,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 3025,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2645,7 +2389,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 2607,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2658,7 +2401,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 2291,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2671,7 +2413,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 2518,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2684,7 +2425,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 5090,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2697,11 +2437,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 3201,
-          "exact_previous_ids": [
-            "2020|navi3|2|영어|3",
-            "2021|navi3|1|영어|3",
-            "2022|navi3|1|영어|7"
-          ],
           "exact_reusable_ids": [
             "2020|navi3|2|영어|3",
             "2021|navi3|1|영어|3",
@@ -2722,12 +2457,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 3873,
-          "exact_previous_ids": [
-            "2023|navi3|3|영어|5",
-            "2023|navi3|4|영어|9",
-            "2024|navi3|4|영어|8",
-            "2025|navi3|4|영어|4"
-          ],
           "exact_reusable_ids": [
             "2023|navi3|3|영어|5",
             "2023|navi3|4|영어|9",
@@ -2751,7 +2480,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 3560,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2764,7 +2492,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 4352,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2777,7 +2504,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 3776,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2790,7 +2516,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 5336,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2803,7 +2528,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 4061,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2816,10 +2540,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 3406,
-          "exact_previous_ids": [
-            "2020|navi3|4|영어|10",
-            "2022|navi3|3|영어|10"
-          ],
           "exact_reusable_ids": [
             "2020|navi3|4|영어|10",
             "2022|navi3|3|영어|10"
@@ -2838,7 +2558,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 4957,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2851,7 +2570,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 3312,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2864,7 +2582,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 4360,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2877,9 +2594,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 3732,
-          "exact_previous_ids": [
-            "2025|navi3|1|영어|14"
-          ],
           "exact_reusable_ids": [
             "2025|navi3|1|영어|14"
           ],
@@ -2896,7 +2610,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 4349,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2909,7 +2622,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 3714,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2922,9 +2634,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 3487,
-          "exact_previous_ids": [
-            "2020|navi3|3|영어|17"
-          ],
           "exact_reusable_ids": [
             "2020|navi3|3|영어|17"
           ],
@@ -2941,10 +2650,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 4542,
-          "exact_previous_ids": [
-            "2021|navi3|3|영어|17",
-            "2022|navi3|3|영어|24"
-          ],
           "exact_reusable_ids": [
             "2021|navi3|3|영어|17",
             "2022|navi3|3|영어|24"
@@ -2963,7 +2668,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 4879,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2976,7 +2680,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 4250,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -2989,10 +2692,6 @@
           "answer": 3,
           "status": "present",
           "explanation_chars": 5098,
-          "exact_previous_ids": [
-            "2024|navi3|1|영어|19",
-            "2024|navi3|2|영어|16"
-          ],
           "exact_reusable_ids": [
             "2024|navi3|1|영어|19",
             "2024|navi3|2|영어|16"
@@ -3011,10 +2710,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 4556,
-          "exact_previous_ids": [
-            "2023|navi3|1|영어|19",
-            "2023|navi3|4|영어|22"
-          ],
           "exact_reusable_ids": [
             "2023|navi3|1|영어|19",
             "2023|navi3|4|영어|22"
@@ -3033,9 +2728,6 @@
           "answer": 1,
           "status": "present",
           "explanation_chars": 4959,
-          "exact_previous_ids": [
-            "2025|navi3|1|영어|24"
-          ],
           "exact_reusable_ids": [
             "2025|navi3|1|영어|24"
           ],
@@ -3052,7 +2744,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 4449,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -3065,7 +2756,6 @@
           "answer": 2,
           "status": "present",
           "explanation_chars": 4288,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         },
@@ -3078,7 +2768,6 @@
           "answer": 0,
           "status": "present",
           "explanation_chars": 4272,
-          "exact_previous_ids": [],
           "exact_reusable_ids": [],
           "same_text_reusable_ids": []
         }
@@ -3086,5 +2775,57 @@
     }
   },
   "missing": [],
-  "short_or_placeholder": []
+  "short_or_placeholder": [],
+  "loader": [
+    {
+      "needle": "async function ensurePastExplainForYears",
+      "pos": 22156329,
+      "snippet": "urn m && allowed.has(m[1]);\n  });\n}\nfunction getPastYearsForSubject(subjectId){\n  return [...new Set(getPastDataFilesForSubject(subjectId).map(file=>{\n    const m=file.match(/^past-(\\d{4})-/);\n    return m ? Number(m[1]) : null;\n  }).filter(Boolean))].sort((a,b)=>a-b);\n}\nfunction renderPastLoading(message){\n  app.innerHTML=`\n    <div class=\"card\" style=\"margin-top:32px;padding:28px;text-align:center\">\n      <div style=\"width:36px;height:36px;margin:0 auto 12px;color:var(--accent)\">${icon('refresh',36)}</div>\n      <div style=\"font-size:15px;font-weight:800;color:var(--text)\">${escapeHtml(message||'기출 데이터를 불러오는 중입니다')}</div>\n      <div style=\"font-size:12px;color:var(--textDim);margin-top:6px\">선택한 면허 자료만 읽습니다</div>\n    </div>`;\n}\nfunction renderPastLoadError(subjectId, failedFiles){\n  const failedCount=(failedFiles||[]).length;\n  const retryArg=JSON.stringify(subjectId);\n  app.innerHTML=`\n    <div class=\"card\" style=\"margin-top:32px;padding:26px;text-align:center;border-left:4px solid #DC2626\">\n      <div style=\"font-size:16px;font-weight:800;color:#991B1B;margin-bottom:8px\">기출 문제를 모두 불러오지 못했습니다</div>\n      <div style=\"font-size:13px;color:var(--textDim);line-height:1.65\">누락된 파일 ${failedCount}개가 있어 불완전한 상태로 시험을 시작하지 않았습니다.<br>내장 데이터를 열지 못했습니다. Android Chrome을 최신 버전으로 업데이트한 뒤 다시 열어주세요.</div>\n      <div style=\"display:flex;gap:8px;margin-top:18px\">\n        <button class=\"btn btn-outline\" style=\"flex:1\" onclick=\"renderSubjectSelect()\">면허 선택</button>\n        <button class=\"btn btn-accent\" style=\"flex:1\" onclick='renderPastHome(${retryArg})'>다시 시도</button>\n      </div>\n    </div>`;\n}\nasync function ensurePastDataForSubject(subjectId){\n  const files=getPastDataFilesForSubject(subjectId);\n  if(!files.length) return [];\n  const results=await loadScriptsWithLimit(files,8);\n  const failedFiles=files.filter((file,index)=>{\n    const registryId=file.slice(5,-3);\n    return !results[index] || !window.MD_PAST || !window.MD_PAST[registryId];\n  });\n  if(failedFiles.length){\n    const error=new Error(`기출 파일 ${failedFiles.length}개 로드 실패`);\n    error.failedFiles=failedFiles;\n    throw error;\n  }\n  pastDataSubjectsLoaded.add(subjectId);\n  return getPastExamsForSubject(subjectId);\n}\nasync function ensurePastExplainForYears(years){\n  const targets=[...new Set((years||[]).map(Number))]\n    .filter(year=>PAST_EXPLAIN_YEARS.has(year))\n    .map(year=>`past-explain-${year}.js`);\n  if(!targets.length) return {failedFiles:[]};\n  const results=await loadScriptsWithLimit(targets,2);\n  const failedFiles=targets.filter((file,index)=>!results[index]);\n  if(failedFiles.length && typeof showToast==='function'){\n    showToast(`해설 파일 ${failedFiles.length}개를 불러오지 못했습니다. 문제 풀이는 계속할 수 있습니다.`);\n  }\n  return {failedFiles};\n}\n// v4.34: 변종(short) → base(상선/어선 합친 공통 코드) 매핑\n//   navi3e→navi3, navi5de→navi5, engi3→engi3, small→small\n// v4.45: engi5d→engi5 (5급 기관사 국내한정 변종)\nfunction baseFromShort(short){\n  if(!short) return short;\n  // navi 계열: 'e'/'de'/'d' 접미사 제거 (어선·국내한정 접미사)\n  if(/^navi\\d/.test(short)) return short.replace(/(de|e|d)$/,'');\n  // engi 계열: 'd' 접미사 제거 (국내한정 접미사, 현재 5급만)\n  if(/^engi\\d/.test(short)) return short.replace(/d$/,'');\n  return short;\n}\n// v4.34: base gradeShort → \"3급 항해사\" 같이 변종 괄호를 제거한 상위 라벨\nconst BASE_GRADE_LABEL = {\n  'navi1':'1급 항해사','navi2':'2급 항해사','navi3':'3급 항해사','navi4':'4급 항해사',\n  'navi5':'5급 항해사','navi6':'6급 항해사',\n  'engi1':'1급 기관사','engi2':'2급 기관사','engi3':'3급 기관사','engi4':'4급 기관사',\n  'engi5':'5급 기관사','engi6':'6급 기관사',\n  'small':'소형선박조종사'\n};\n// v4.34: short(변종) → 상선/어선/국내한정 구분 라벨 ('' 이면 구분 불필요)\n// v4.45: engi5/engi5d → '일반'/'국내한정' 구분 추가\nfunction variantLabel(short){\n  if(/^navi\\d/.test(short)){\n    const m = short.match(/^navi\\d(de|e|d)?$/);\n    if(!m) return '';\n    const suf = m[1] || '';\n    if(suf === '') return '상선';\n    if(suf === 'd') return '국내한정(상선)';\n    if(suf === 'e') return '어선';\n    if(suf === 'de') return '국내한정(어선)';\n  }\n  if(/^engi\\d/.test(short)){\n    if(short === 'engi5')  return '일반';\n    if(short === 'engi5d') return '국내한정';\n  }\n  return '';\n}\n// v4.34: variant='all'|'상선'|'어선' 필터 통과 여부\n// v4.45: engi5 계열용 '일반'/'국내한정' variant 추가\nfunction variantMatches(short, variant){\n  if(!variant || variant === 'all') return true;\n  const lab = variantLabel(short);\n  if(variant === '상선') return lab === '상선' || lab === '국내한정(상선)';\n  if(variant === '어선') return lab === '어선' || lab === '국내한정(어선)';\n  if(variant === '일반') return lab === '일반';\n  if(variant === '국내한정') return lab === '국내한정';\n  return true;\n}\n// v4.45: 현재 exams 풀에서 노출할 variant 필터 (title + 선택지)를 결정.\n//   navi: '상선'/'어선' (국내한정은 각각에 합류)\n//   engi5: '일반'/'국내한정'\n//   필터가 불필요(변종 1종 이하)하면 choices=[]\nfunction getVariantChoices(exams){\n  const labs = [...new Set(exams.map(p => variantLabel(p.meta.gradeShort)).filter(Boolean))];\n  const hasSS = labs.some(l => l.indexOf('상선')>=0);\n  const hasYU = labs.some(l => l.indexOf('어선')>=0);\n  if(hasSS && hasYU){\n    return {title:'상선 / 어선', choices:['상선','어선']};\n  }\n  const hasNormal = labs.includes('일반');\n  const hasRestrict = labs.includes('국내한정');\n  if(hasNormal && hasRestrict){\n    return {title:'일반 / 국내한정', choices:['일반','국내한정']};\n  }\n  return {title:'', choices:[]};\n}\nfunction getPastExamsForSubject(subjectId){\n  if(!window.MD_PAST) return [];\n  const shorts = PAST_GRADE_MAP[subjectId] || [subjectId];\n  return Object.values(window.MD_PAST).filter(p => p.meta && shorts.includes(p.meta.gradeShort));\n}\n// v4.34: base(예: 'navi3')에 속한 모든 변종(navi3+navi3e) 시험 반환\nfunction getPastExamsByBase(baseShort, variant){\n  if(!window.MD_PAST) return [];\n  return Object.values(window.MD_PAST).filter(p => {\n    if(!p.meta) return false;\n    if(baseFromShort(p.meta.gradeShort) !== baseShort) return false;\n    return variantMatches(p.meta.gradeShort, variant);\n  });\n}\nfunction getPastExam(short, year, session){\n  if(!window.MD_PAST) return null;\n  const id = `${year}-${short}-${session}`;\n  return window.MD_PAST[id] || null;\n}\n\n// ── v5.00: 1~5급 항해사(상선) 공통 빈출 분석 ──\nconst NAVI_ANALYSIS_GRADES=['navi1','navi2','navi3','navi4','navi5'];\nconst NAVI3_ANALYSIS_LIMIT=50;\nconst naviAnalysisStates={};\nlet naviAnalysisSubjectId='navi3';\nlet navi3AnalysisState=naviAnalysisStates.navi3={view:'repeats',subject:'all',range:'all',subjects:null,years:null,minCount:2,sort:'score',query:'',limit:NAVI3_ANALYSIS_LIMIT,_filterLoaded:false};\nlet navi3AnalysisDetail=null;\nconst N3A_FILTER_STORAGE_PREFIX='md_navi_frequency_filters_v1_';\nfunction n3aNormalizeQuestion(value){return String(value||'').normalize('NFKC').toLowerCase().replace(/[\\s\\p{P}\\p{S}]+/gu,'')}\nfunction n3aFilterStorageKey(){return `${N3A_FILTER_STORAGE_PREFIX}${naviAnalysisSubjectId}`}\nfunction n3aEnsureFilterState(data){\n  const state=navi3AnalysisState;\n  const subjects=(data&&data.subjects||[]).map(String);\n  const years=(data&&data.meta&&data.meta.years||[]).map(Number).sort((a,b)=>a-b);\n  if(!state._filterLoaded){\n    const saved=safeStorageGetJSON(n3aFilterStorageKey(),{},'빈출 필터');\n    state.subjects=Array.isArray(saved.subjects)?saved.subjects.map(String):subjects.slice();\n    state.years=Array.isArray(saved.years)?saved.years.map(Number):years.slice();\n    state.minCount=[1,2,3,4].includes(Number(saved.minCount))?Number(saved.minCount):2;\n    stat"
+    },
+    {
+      "needle": "function ensurePastExplainForYears",
+      "pos": 22156335,
+      "snippet": "&& allowed.has(m[1]);\n  });\n}\nfunction getPastYearsForSubject(subjectId){\n  return [...new Set(getPastDataFilesForSubject(subjectId).map(file=>{\n    const m=file.match(/^past-(\\d{4})-/);\n    return m ? Number(m[1]) : null;\n  }).filter(Boolean))].sort((a,b)=>a-b);\n}\nfunction renderPastLoading(message){\n  app.innerHTML=`\n    <div class=\"card\" style=\"margin-top:32px;padding:28px;text-align:center\">\n      <div style=\"width:36px;height:36px;margin:0 auto 12px;color:var(--accent)\">${icon('refresh',36)}</div>\n      <div style=\"font-size:15px;font-weight:800;color:var(--text)\">${escapeHtml(message||'기출 데이터를 불러오는 중입니다')}</div>\n      <div style=\"font-size:12px;color:var(--textDim);margin-top:6px\">선택한 면허 자료만 읽습니다</div>\n    </div>`;\n}\nfunction renderPastLoadError(subjectId, failedFiles){\n  const failedCount=(failedFiles||[]).length;\n  const retryArg=JSON.stringify(subjectId);\n  app.innerHTML=`\n    <div class=\"card\" style=\"margin-top:32px;padding:26px;text-align:center;border-left:4px solid #DC2626\">\n      <div style=\"font-size:16px;font-weight:800;color:#991B1B;margin-bottom:8px\">기출 문제를 모두 불러오지 못했습니다</div>\n      <div style=\"font-size:13px;color:var(--textDim);line-height:1.65\">누락된 파일 ${failedCount}개가 있어 불완전한 상태로 시험을 시작하지 않았습니다.<br>내장 데이터를 열지 못했습니다. Android Chrome을 최신 버전으로 업데이트한 뒤 다시 열어주세요.</div>\n      <div style=\"display:flex;gap:8px;margin-top:18px\">\n        <button class=\"btn btn-outline\" style=\"flex:1\" onclick=\"renderSubjectSelect()\">면허 선택</button>\n        <button class=\"btn btn-accent\" style=\"flex:1\" onclick='renderPastHome(${retryArg})'>다시 시도</button>\n      </div>\n    </div>`;\n}\nasync function ensurePastDataForSubject(subjectId){\n  const files=getPastDataFilesForSubject(subjectId);\n  if(!files.length) return [];\n  const results=await loadScriptsWithLimit(files,8);\n  const failedFiles=files.filter((file,index)=>{\n    const registryId=file.slice(5,-3);\n    return !results[index] || !window.MD_PAST || !window.MD_PAST[registryId];\n  });\n  if(failedFiles.length){\n    const error=new Error(`기출 파일 ${failedFiles.length}개 로드 실패`);\n    error.failedFiles=failedFiles;\n    throw error;\n  }\n  pastDataSubjectsLoaded.add(subjectId);\n  return getPastExamsForSubject(subjectId);\n}\nasync function ensurePastExplainForYears(years){\n  const targets=[...new Set((years||[]).map(Number))]\n    .filter(year=>PAST_EXPLAIN_YEARS.has(year))\n    .map(year=>`past-explain-${year}.js`);\n  if(!targets.length) return {failedFiles:[]};\n  const results=await loadScriptsWithLimit(targets,2);\n  const failedFiles=targets.filter((file,index)=>!results[index]);\n  if(failedFiles.length && typeof showToast==='function'){\n    showToast(`해설 파일 ${failedFiles.length}개를 불러오지 못했습니다. 문제 풀이는 계속할 수 있습니다.`);\n  }\n  return {failedFiles};\n}\n// v4.34: 변종(short) → base(상선/어선 합친 공통 코드) 매핑\n//   navi3e→navi3, navi5de→navi5, engi3→engi3, small→small\n// v4.45: engi5d→engi5 (5급 기관사 국내한정 변종)\nfunction baseFromShort(short){\n  if(!short) return short;\n  // navi 계열: 'e'/'de'/'d' 접미사 제거 (어선·국내한정 접미사)\n  if(/^navi\\d/.test(short)) return short.replace(/(de|e|d)$/,'');\n  // engi 계열: 'd' 접미사 제거 (국내한정 접미사, 현재 5급만)\n  if(/^engi\\d/.test(short)) return short.replace(/d$/,'');\n  return short;\n}\n// v4.34: base gradeShort → \"3급 항해사\" 같이 변종 괄호를 제거한 상위 라벨\nconst BASE_GRADE_LABEL = {\n  'navi1':'1급 항해사','navi2':'2급 항해사','navi3':'3급 항해사','navi4':'4급 항해사',\n  'navi5':'5급 항해사','navi6':'6급 항해사',\n  'engi1':'1급 기관사','engi2':'2급 기관사','engi3':'3급 기관사','engi4':'4급 기관사',\n  'engi5':'5급 기관사','engi6':'6급 기관사',\n  'small':'소형선박조종사'\n};\n// v4.34: short(변종) → 상선/어선/국내한정 구분 라벨 ('' 이면 구분 불필요)\n// v4.45: engi5/engi5d → '일반'/'국내한정' 구분 추가\nfunction variantLabel(short){\n  if(/^navi\\d/.test(short)){\n    const m = short.match(/^navi\\d(de|e|d)?$/);\n    if(!m) return '';\n    const suf = m[1] || '';\n    if(suf === '') return '상선';\n    if(suf === 'd') return '국내한정(상선)';\n    if(suf === 'e') return '어선';\n    if(suf === 'de') return '국내한정(어선)';\n  }\n  if(/^engi\\d/.test(short)){\n    if(short === 'engi5')  return '일반';\n    if(short === 'engi5d') return '국내한정';\n  }\n  return '';\n}\n// v4.34: variant='all'|'상선'|'어선' 필터 통과 여부\n// v4.45: engi5 계열용 '일반'/'국내한정' variant 추가\nfunction variantMatches(short, variant){\n  if(!variant || variant === 'all') return true;\n  const lab = variantLabel(short);\n  if(variant === '상선') return lab === '상선' || lab === '국내한정(상선)';\n  if(variant === '어선') return lab === '어선' || lab === '국내한정(어선)';\n  if(variant === '일반') return lab === '일반';\n  if(variant === '국내한정') return lab === '국내한정';\n  return true;\n}\n// v4.45: 현재 exams 풀에서 노출할 variant 필터 (title + 선택지)를 결정.\n//   navi: '상선'/'어선' (국내한정은 각각에 합류)\n//   engi5: '일반'/'국내한정'\n//   필터가 불필요(변종 1종 이하)하면 choices=[]\nfunction getVariantChoices(exams){\n  const labs = [...new Set(exams.map(p => variantLabel(p.meta.gradeShort)).filter(Boolean))];\n  const hasSS = labs.some(l => l.indexOf('상선')>=0);\n  const hasYU = labs.some(l => l.indexOf('어선')>=0);\n  if(hasSS && hasYU){\n    return {title:'상선 / 어선', choices:['상선','어선']};\n  }\n  const hasNormal = labs.includes('일반');\n  const hasRestrict = labs.includes('국내한정');\n  if(hasNormal && hasRestrict){\n    return {title:'일반 / 국내한정', choices:['일반','국내한정']};\n  }\n  return {title:'', choices:[]};\n}\nfunction getPastExamsForSubject(subjectId){\n  if(!window.MD_PAST) return [];\n  const shorts = PAST_GRADE_MAP[subjectId] || [subjectId];\n  return Object.values(window.MD_PAST).filter(p => p.meta && shorts.includes(p.meta.gradeShort));\n}\n// v4.34: base(예: 'navi3')에 속한 모든 변종(navi3+navi3e) 시험 반환\nfunction getPastExamsByBase(baseShort, variant){\n  if(!window.MD_PAST) return [];\n  return Object.values(window.MD_PAST).filter(p => {\n    if(!p.meta) return false;\n    if(baseFromShort(p.meta.gradeShort) !== baseShort) return false;\n    return variantMatches(p.meta.gradeShort, variant);\n  });\n}\nfunction getPastExam(short, year, session){\n  if(!window.MD_PAST) return null;\n  const id = `${year}-${short}-${session}`;\n  return window.MD_PAST[id] || null;\n}\n\n// ── v5.00: 1~5급 항해사(상선) 공통 빈출 분석 ──\nconst NAVI_ANALYSIS_GRADES=['navi1','navi2','navi3','navi4','navi5'];\nconst NAVI3_ANALYSIS_LIMIT=50;\nconst naviAnalysisStates={};\nlet naviAnalysisSubjectId='navi3';\nlet navi3AnalysisState=naviAnalysisStates.navi3={view:'repeats',subject:'all',range:'all',subjects:null,years:null,minCount:2,sort:'score',query:'',limit:NAVI3_ANALYSIS_LIMIT,_filterLoaded:false};\nlet navi3AnalysisDetail=null;\nconst N3A_FILTER_STORAGE_PREFIX='md_navi_frequency_filters_v1_';\nfunction n3aNormalizeQuestion(value){return String(value||'').normalize('NFKC').toLowerCase().replace(/[\\s\\p{P}\\p{S}]+/gu,'')}\nfunction n3aFilterStorageKey(){return `${N3A_FILTER_STORAGE_PREFIX}${naviAnalysisSubjectId}`}\nfunction n3aEnsureFilterState(data){\n  const state=navi3AnalysisState;\n  const subjects=(data&&data.subjects||[]).map(String);\n  const years=(data&&data.meta&&data.meta.years||[]).map(Number).sort((a,b)=>a-b);\n  if(!state._filterLoaded){\n    const saved=safeStorageGetJSON(n3aFilterStorageKey(),{},'빈출 필터');\n    state.subjects=Array.isArray(saved.subjects)?saved.subjects.map(String):subjects.slice();\n    state.years=Array.isArray(saved.years)?saved.years.map(Number):years.slice();\n    state.minCount=[1,2,3,4].includes(Number(saved.minCount))?Number(saved.minCount):2;\n    state._fil"
+    },
+    {
+      "needle": "past-explain-${year}",
+      "pos": 22156496,
+      "snippet": ".match(/^past-(\\d{4})-/);\n    return m ? Number(m[1]) : null;\n  }).filter(Boolean))].sort((a,b)=>a-b);\n}\nfunction renderPastLoading(message){\n  app.innerHTML=`\n    <div class=\"card\" style=\"margin-top:32px;padding:28px;text-align:center\">\n      <div style=\"width:36px;height:36px;margin:0 auto 12px;color:var(--accent)\">${icon('refresh',36)}</div>\n      <div style=\"font-size:15px;font-weight:800;color:var(--text)\">${escapeHtml(message||'기출 데이터를 불러오는 중입니다')}</div>\n      <div style=\"font-size:12px;color:var(--textDim);margin-top:6px\">선택한 면허 자료만 읽습니다</div>\n    </div>`;\n}\nfunction renderPastLoadError(subjectId, failedFiles){\n  const failedCount=(failedFiles||[]).length;\n  const retryArg=JSON.stringify(subjectId);\n  app.innerHTML=`\n    <div class=\"card\" style=\"margin-top:32px;padding:26px;text-align:center;border-left:4px solid #DC2626\">\n      <div style=\"font-size:16px;font-weight:800;color:#991B1B;margin-bottom:8px\">기출 문제를 모두 불러오지 못했습니다</div>\n      <div style=\"font-size:13px;color:var(--textDim);line-height:1.65\">누락된 파일 ${failedCount}개가 있어 불완전한 상태로 시험을 시작하지 않았습니다.<br>내장 데이터를 열지 못했습니다. Android Chrome을 최신 버전으로 업데이트한 뒤 다시 열어주세요.</div>\n      <div style=\"display:flex;gap:8px;margin-top:18px\">\n        <button class=\"btn btn-outline\" style=\"flex:1\" onclick=\"renderSubjectSelect()\">면허 선택</button>\n        <button class=\"btn btn-accent\" style=\"flex:1\" onclick='renderPastHome(${retryArg})'>다시 시도</button>\n      </div>\n    </div>`;\n}\nasync function ensurePastDataForSubject(subjectId){\n  const files=getPastDataFilesForSubject(subjectId);\n  if(!files.length) return [];\n  const results=await loadScriptsWithLimit(files,8);\n  const failedFiles=files.filter((file,index)=>{\n    const registryId=file.slice(5,-3);\n    return !results[index] || !window.MD_PAST || !window.MD_PAST[registryId];\n  });\n  if(failedFiles.length){\n    const error=new Error(`기출 파일 ${failedFiles.length}개 로드 실패`);\n    error.failedFiles=failedFiles;\n    throw error;\n  }\n  pastDataSubjectsLoaded.add(subjectId);\n  return getPastExamsForSubject(subjectId);\n}\nasync function ensurePastExplainForYears(years){\n  const targets=[...new Set((years||[]).map(Number))]\n    .filter(year=>PAST_EXPLAIN_YEARS.has(year))\n    .map(year=>`past-explain-${year}.js`);\n  if(!targets.length) return {failedFiles:[]};\n  const results=await loadScriptsWithLimit(targets,2);\n  const failedFiles=targets.filter((file,index)=>!results[index]);\n  if(failedFiles.length && typeof showToast==='function'){\n    showToast(`해설 파일 ${failedFiles.length}개를 불러오지 못했습니다. 문제 풀이는 계속할 수 있습니다.`);\n  }\n  return {failedFiles};\n}\n// v4.34: 변종(short) → base(상선/어선 합친 공통 코드) 매핑\n//   navi3e→navi3, navi5de→navi5, engi3→engi3, small→small\n// v4.45: engi5d→engi5 (5급 기관사 국내한정 변종)\nfunction baseFromShort(short){\n  if(!short) return short;\n  // navi 계열: 'e'/'de'/'d' 접미사 제거 (어선·국내한정 접미사)\n  if(/^navi\\d/.test(short)) return short.replace(/(de|e|d)$/,'');\n  // engi 계열: 'd' 접미사 제거 (국내한정 접미사, 현재 5급만)\n  if(/^engi\\d/.test(short)) return short.replace(/d$/,'');\n  return short;\n}\n// v4.34: base gradeShort → \"3급 항해사\" 같이 변종 괄호를 제거한 상위 라벨\nconst BASE_GRADE_LABEL = {\n  'navi1':'1급 항해사','navi2':'2급 항해사','navi3':'3급 항해사','navi4':'4급 항해사',\n  'navi5':'5급 항해사','navi6':'6급 항해사',\n  'engi1':'1급 기관사','engi2':'2급 기관사','engi3':'3급 기관사','engi4':'4급 기관사',\n  'engi5':'5급 기관사','engi6':'6급 기관사',\n  'small':'소형선박조종사'\n};\n// v4.34: short(변종) → 상선/어선/국내한정 구분 라벨 ('' 이면 구분 불필요)\n// v4.45: engi5/engi5d → '일반'/'국내한정' 구분 추가\nfunction variantLabel(short){\n  if(/^navi\\d/.test(short)){\n    const m = short.match(/^navi\\d(de|e|d)?$/);\n    if(!m) return '';\n    const suf = m[1] || '';\n    if(suf === '') return '상선';\n    if(suf === 'd') return '국내한정(상선)';\n    if(suf === 'e') return '어선';\n    if(suf === 'de') return '국내한정(어선)';\n  }\n  if(/^engi\\d/.test(short)){\n    if(short === 'engi5')  return '일반';\n    if(short === 'engi5d') return '국내한정';\n  }\n  return '';\n}\n// v4.34: variant='all'|'상선'|'어선' 필터 통과 여부\n// v4.45: engi5 계열용 '일반'/'국내한정' variant 추가\nfunction variantMatches(short, variant){\n  if(!variant || variant === 'all') return true;\n  const lab = variantLabel(short);\n  if(variant === '상선') return lab === '상선' || lab === '국내한정(상선)';\n  if(variant === '어선') return lab === '어선' || lab === '국내한정(어선)';\n  if(variant === '일반') return lab === '일반';\n  if(variant === '국내한정') return lab === '국내한정';\n  return true;\n}\n// v4.45: 현재 exams 풀에서 노출할 variant 필터 (title + 선택지)를 결정.\n//   navi: '상선'/'어선' (국내한정은 각각에 합류)\n//   engi5: '일반'/'국내한정'\n//   필터가 불필요(변종 1종 이하)하면 choices=[]\nfunction getVariantChoices(exams){\n  const labs = [...new Set(exams.map(p => variantLabel(p.meta.gradeShort)).filter(Boolean))];\n  const hasSS = labs.some(l => l.indexOf('상선')>=0);\n  const hasYU = labs.some(l => l.indexOf('어선')>=0);\n  if(hasSS && hasYU){\n    return {title:'상선 / 어선', choices:['상선','어선']};\n  }\n  const hasNormal = labs.includes('일반');\n  const hasRestrict = labs.includes('국내한정');\n  if(hasNormal && hasRestrict){\n    return {title:'일반 / 국내한정', choices:['일반','국내한정']};\n  }\n  return {title:'', choices:[]};\n}\nfunction getPastExamsForSubject(subjectId){\n  if(!window.MD_PAST) return [];\n  const shorts = PAST_GRADE_MAP[subjectId] || [subjectId];\n  return Object.values(window.MD_PAST).filter(p => p.meta && shorts.includes(p.meta.gradeShort));\n}\n// v4.34: base(예: 'navi3')에 속한 모든 변종(navi3+navi3e) 시험 반환\nfunction getPastExamsByBase(baseShort, variant){\n  if(!window.MD_PAST) return [];\n  return Object.values(window.MD_PAST).filter(p => {\n    if(!p.meta) return false;\n    if(baseFromShort(p.meta.gradeShort) !== baseShort) return false;\n    return variantMatches(p.meta.gradeShort, variant);\n  });\n}\nfunction getPastExam(short, year, session){\n  if(!window.MD_PAST) return null;\n  const id = `${year}-${short}-${session}`;\n  return window.MD_PAST[id] || null;\n}\n\n// ── v5.00: 1~5급 항해사(상선) 공통 빈출 분석 ──\nconst NAVI_ANALYSIS_GRADES=['navi1','navi2','navi3','navi4','navi5'];\nconst NAVI3_ANALYSIS_LIMIT=50;\nconst naviAnalysisStates={};\nlet naviAnalysisSubjectId='navi3';\nlet navi3AnalysisState=naviAnalysisStates.navi3={view:'repeats',subject:'all',range:'all',subjects:null,years:null,minCount:2,sort:'score',query:'',limit:NAVI3_ANALYSIS_LIMIT,_filterLoaded:false};\nlet navi3AnalysisDetail=null;\nconst N3A_FILTER_STORAGE_PREFIX='md_navi_frequency_filters_v1_';\nfunction n3aNormalizeQuestion(value){return String(value||'').normalize('NFKC').toLowerCase().replace(/[\\s\\p{P}\\p{S}]+/gu,'')}\nfunction n3aFilterStorageKey(){return `${N3A_FILTER_STORAGE_PREFIX}${naviAnalysisSubjectId}`}\nfunction n3aEnsureFilterState(data){\n  const state=navi3AnalysisState;\n  const subjects=(data&&data.subjects||[]).map(String);\n  const years=(data&&data.meta&&data.meta.years||[]).map(Number).sort((a,b)=>a-b);\n  if(!state._filterLoaded){\n    const saved=safeStorageGetJSON(n3aFilterStorageKey(),{},'빈출 필터');\n    state.subjects=Array.isArray(saved.subjects)?saved.subjects.map(String):subjects.slice();\n    state.years=Array.isArray(saved.years)?saved.years.map(Number):years.slice();\n    state.minCount=[1,2,3,4].includes(Number(saved.minCount))?Number(saved.minCount):2;\n    state._filterLoaded=true;\n  }\n  if(!Array.isArray(state.subjects))state.subjects=subjects.slice();\n  if(!Array.isArray(state.years))state.years=years.slice();\n  state.subj"
+    },
+    {
+      "needle": "md-bundle-past-explain",
+      "pos": 14859823,
+      "snippet": "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</script>\n<script type=\"application/gzip\" id=\"md-bundle-past-explain-2020_js\">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"
+    },
+    {
+      "needle": "md-bundle-past-explain",
+      "pos": 15596333,
+      "snippet": "V5vraCsffPrxgFnzA32ZrYDg2XDE/ucvIovnhQ2Ihanw+N9t/swwDss9hw/2Df8IgXVYnYBTWnFbNXBWmTyXPRqh0qsb8Vd2YWZLUDRkwBOB8ggtC+FTJQ+ZJFWqeSg72xDeRGJTTKTrneCRrd3CQgGnYmsNfPn5HAZJgaG7Cux4Y9+HRELSu40m1MXmbTYk91wEax0MQRaBhqsoBdRJ2dAiQNTAzIIkdzc4/4HgFQs4MeIWwMGy83N9dajxNOoRS6Yein+gNgoX304HXp0ata1Wh8am5X4JmuNjf36OCrykJWoczAkRPGRMJxn4FFWbQqWQBEcm396Sva7tI9UpwcjFYavH8F26JDJng5oEjoRFRzaZBU2J6ww+3aYXXqp++mDjP3/MqB7Nr7NQIpEtluuDcFZxUmG4HhDTPfRvOVmAHG7UIqi4RUh7QSKbmKMKF3AENO7cJmmXa7tbDWiWCWK85qNrxU9l4cbo952stqIrcvvVZ6pzDpqUKgfMpZrfqBT2hF3GMHvaKMhcF4RIRDibUcSAoD3HCC08cGYC9e1pVkJ0EQplgqrcc2rTikkOovX409tV7fTR78kDwae/S69tIwyOCCs0KMV53VBUlUP4tStJHkYGIZMvOUG8OhWULKodyFRctj1BiFKcnauVgF8DvGE+G+5JxIUZwQSYHP9UaAGNCSj5ffCIN6pq9Xa00Ra2I7Knxc32bQaqAp5htCaXQ89WY1DsYG1G5+AilItIcCgRSI+6DdJYPPvuBhxNX/dBiSETbd+K6a7Wrd4ZSkZ0kYEZ2KQXhuXG2frojwm0pxkkU0KnSLDpv/CBWU4PCa2ylo8aDXHPlT8SWA6x0MSXGy9378Y0bBIrQf8nvDhRxyQODZUJ47EE49yqGdpAfEOKflAPNJ/YqM0u0dIXp5hkWLZ4VdAdJgE+UY7Lmmvs8mYUqHQMJbi8nWbGO/RuNT4qFbnGX8LLl2mh4nUBkKLFifPSuunmHFunUl46pzi6p1GtAkx6Gi4yk8FcyzxpI14Pa1tiazjjc5+kJJO8mKCe0EtWVNErqPxgKbjsREhqjHBC20g1JZGL+1a6NN4vrgbsWIE5nG5iY14bKnSoIC8SK+fxcBv3XTbp6XIGGk900zJV6xhwD2/vn5l8movTm0h3SQm9Oa8T/8OjY86uvGJ+gId6qsgi4RhInaD4Vc1ALIsBmM+KgafLw1HuElFGF+MfQcUb0CeAWJLDSProVFNv/2u8Nc+bBSPfxu7ij/JEpysD6Kjd65bUQbNCgkSzFlAiOtEqwWtYorMAwYyBBO4yK2G49nRUIpswcwk4U4/N9yxVmrRmBA1c6LVEK+TlLU3FXBfsu0OcATaIvxFRr/oIFzBlcOPekGAJQ7udAT/ge7m0CKW5szZmzciaQ7P2sR6LblLhWamyXBCgV6Ml3BAD6TxPxQgtCLGVvvUc75tszTtE4FOvtCz93goYW8K5XqYW0jan3U982oZ/amwGDpq9qExu4DqoFEWS+00SLvj3aEM+6UG6H7S19NrmF/6aexwVuedmGRYxmvONVJ0t79WnOjiqcEbW98l5mkiEF7EdcX7JuYl2ioxxBrHaLVOPQBLlfCB8l7L3Bw6lf9t2ID1if4d7WGSnlKGioQJfgTyNUih6y801TUOc/XV00ROltx4cXB/RU/HTrgw4tOKwh7MbcO8vcPK1W0cJ/1xQata30x69O+3/YNaEmD7IqzlMOsGWBxCwMkBkChBwBXAlVq3cAhC4SYL4O2oK1Cj8Zbhlax1E6FzLC2/BDRZKpTKIHPQJ+1X+OrFqKZ0Hw6In6j3KOPDRiTQKIiLJAWtAsj74kgd2bXAy+qUoTueVd+zTh2vV6sRuGnFuOtbIZvKM9uQANfvkGVKzpCGwbyZJRfEr167TY2UtRMfxS9QI7kpKLoZGlVFddqfIDgZMxnqXpawlzfTBmezAf1IHiJUwezxIPHJ6PugnyVgh4hvOScAljfk+uvWx69QsHNjrUVuxkPlfQ8pB+GalWAA2PJGZ/HDspSBcEw2gSeMCzsB8KsSa0VuCsBe+wVafWJR9j06FG5NipQartCWfDS48iOcETloe3XaMk9ISaigp1HPkqZYwj1Ipu6dJ6XXd2cY6KTv/s/Pf/97/4vuVTE07BRJAA=</script>\n<script type=\"application/gzip\" id=\"md-bundle-past-explain-2021_js\">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"
+    },
+    {
+      "needle": "md-bundle-past-explain",
+      "pos": 16694943,
+      "snippet": "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</script>\n<script type=\"application/gzip\" id=\"md-bundle-past-explain-2022_js\">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"
+    },
+    {
+      "needle": "md-bundle-past-explain",
+      "pos": 17964365,
+      "snippet": "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</script>\n<script type=\"application/gzip\" id=\"md-bundle-past-explain-2023_js\">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"
+    },
+    {
+      "needle": "md-bundle-past-explain",
+      "pos": 19243035,
+      "snippet": "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</script>\n<script type=\"application/gzip\" id=\"md-bundle-past-explain-2024_js\">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"
+    },
+    {
+      "needle": "md-bundle-past-explain",
+      "pos": 20529041,
+      "snippet": "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</script>\n<script type=\"application/gzip\" id=\"md-bundle-past-explain-2025_js\">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"
+    },
+    {
+      "needle": "md-bundle-past-explain",
+      "pos": 21810279,
+      "snippet": "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</script>\n<script type=\"application/gzip\" id=\"md-bundle-past-explain-2026_js\">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"
+    }
+  ]
 }

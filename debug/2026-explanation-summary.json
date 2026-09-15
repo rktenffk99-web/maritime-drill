@@ -4,49 +4,52 @@
     "present": 125,
     "short": 0,
     "missing": 0,
-    "with_exact_reusable_when_not_present": 0,
-    "with_same_text_reusable_when_not_present": 0,
     "median_explanation_chars": 2359,
     "by_subject": {
       "항해": {
         "total": 25,
         "present": 25,
         "short": 0,
-        "missing": 0,
-        "exact_reusable_missing": 0,
-        "same_text_reusable_missing": 0
+        "missing": 0
       },
       "운용": {
         "total": 25,
         "present": 25,
         "short": 0,
-        "missing": 0,
-        "exact_reusable_missing": 0,
-        "same_text_reusable_missing": 0
+        "missing": 0
       },
       "법규": {
         "total": 25,
         "present": 25,
         "short": 0,
-        "missing": 0,
-        "exact_reusable_missing": 0,
-        "same_text_reusable_missing": 0
+        "missing": 0
       },
       "영어": {
         "total": 25,
         "present": 25,
         "short": 0,
-        "missing": 0,
-        "exact_reusable_missing": 0,
-        "same_text_reusable_missing": 0
+        "missing": 0
       },
       "상선전문": {
         "total": 25,
         "present": 25,
         "short": 0,
+        "missing": 0
+      }
+    },
+    "by_session": {
+      "2": {
+        "total": 125,
+        "present": 125,
+        "short": 0,
         "missing": 0,
-        "exact_reusable_missing": 0,
-        "same_text_reusable_missing": 0
+        "subjects": {
+          "항해": 25,
+          "운용": 25,
+          "법규": 25,
+          "영어": 25,
+          "상선전문": 25
+        }
       }
     }
   },
@@ -55,34 +58,81 @@
     "present": 75,
     "short": 0,
     "missing": 0,
-    "with_exact_reusable_when_not_present": 0,
-    "with_same_text_reusable_when_not_present": 0,
     "median_explanation_chars": 2607,
     "by_subject": {
       "항해": {
         "total": 25,
         "present": 25,
         "short": 0,
-        "missing": 0,
-        "exact_reusable_missing": 0,
-        "same_text_reusable_missing": 0
+        "missing": 0
       },
       "법규": {
         "total": 25,
         "present": 25,
         "short": 0,
-        "missing": 0,
-        "exact_reusable_missing": 0,
-        "same_text_reusable_missing": 0
+        "missing": 0
       },
       "영어": {
         "total": 25,
         "present": 25,
         "short": 0,
+        "missing": 0
+      }
+    },
+    "by_session": {
+      "2": {
+        "total": 75,
+        "present": 75,
+        "short": 0,
         "missing": 0,
-        "exact_reusable_missing": 0,
-        "same_text_reusable_missing": 0
+        "subjects": {
+          "항해": 25,
+          "법규": 25,
+          "영어": 25
+        }
       }
     }
-  }
+  },
+  "loader_hits": [
+    {
+      "needle": "async function ensurePastExplainForYears",
+      "pos": 22156329
+    },
+    {
+      "needle": "function ensurePastExplainForYears",
+      "pos": 22156335
+    },
+    {
+      "needle": "past-explain-${year}",
+      "pos": 22156496
+    },
+    {
+      "needle": "md-bundle-past-explain",
+      "pos": 14859823
+    },
+    {
+      "needle": "md-bundle-past-explain",
+      "pos": 15596333
+    },
+    {
+      "needle": "md-bundle-past-explain",
+      "pos": 16694943
+    },
+    {
+      "needle": "md-bundle-past-explain",
+      "pos": 17964365
+    },
+    {
+      "needle": "md-bundle-past-explain",
+      "pos": 19243035
+    },
+    {
+      "needle": "md-bundle-past-explain",
+      "pos": 20529041
+    },
+    {
+      "needle": "md-bundle-past-explain",
+      "pos": 21810279
+    }
+  ]
 }
