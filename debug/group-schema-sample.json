@@ -1,0 +1,963 @@
+{
+  "navi2": [
+    {
+      "group_keys": [
+        "id",
+        "subject",
+        "question",
+        "normalized",
+        "hits"
+      ],
+      "group": {
+        "id": "q-xy5moe",
+        "subject": "영어",
+        "question": "Select one which has wrong expression in SMCP.",
+        "normalized": "selectonewhichhaswrongexpressioninsmcp",
+        "hits": [
+          {
+            "year": 2020,
+            "session": 4,
+            "number": 3
+          },
+          {
+            "year": 2021,
+            "session": 1,
+            "number": 6
+          },
+          {
+            "year": 2021,
+            "session": 2,
+            "number": 5
+          },
+          {
+            "year": 2021,
+            "session": 3,
+            "number": 1
+          },
+          {
+            "year": 2021,
+            "session": 4,
+            "number": 5
+          },
+          {
+            "year": 2022,
+            "session": 1,
+            "number": 4
+          },
+          {
+            "year": 2022,
+            "session": 1,
+            "number": 6
+          },
+          {
+            "year": 2022,
+            "session": 2,
+            "number": 4
+          },
+          {
+            "year": 2022,
+            "session": 3,
+            "number": 5
+          },
+          {
+            "year": 2022,
+            "session": 4,
+            "number": 1
+          },
+          {
+            "year": 2023,
+            "session": 1,
+            "number": 4
+          },
+          {
+            "year": 2023,
+            "session": 4,
+            "number": 5
+          }
+        ]
+      },
+      "first_hit_keys": [
+        "year",
+        "session",
+        "number"
+      ]
+    },
+    {
+      "group_keys": [
+        "id",
+        "subject",
+        "question",
+        "normalized",
+        "hits"
+      ],
+      "group": {
+        "id": "q-q59mxr",
+        "subject": "영어",
+        "question": "Select a group which has no relation each other.",
+        "normalized": "selectagroupwhichhasnorelationeachother",
+        "hits": [
+          {
+            "year": 2020,
+            "session": 4,
+            "number": 2
+          },
+          {
+            "year": 2021,
+            "session": 1,
+            "number": 4
+          },
+          {
+            "year": 2021,
+            "session": 2,
+            "number": 2
+          },
+          {
+            "year": 2021,
+            "session": 4,
+            "number": 3
+          },
+          {
+            "year": 2022,
+            "session": 1,
+            "number": 2
+          },
+          {
+            "year": 2022,
+            "session": 2,
+            "number": 3
+          },
+          {
+            "year": 2022,
+            "session": 3,
+            "number": 2
+          },
+          {
+            "year": 2022,
+            "session": 4,
+            "number": 2
+          },
+          {
+            "year": 2023,
+            "session": 1,
+            "number": 2
+          },
+          {
+            "year": 2023,
+            "session": 2,
+            "number": 2
+          },
+          {
+            "year": 2023,
+            "session": 4,
+            "number": 2
+          }
+        ]
+      },
+      "first_hit_keys": [
+        "year",
+        "session",
+        "number"
+      ]
+    },
+    {
+      "group_keys": [
+        "id",
+        "subject",
+        "question",
+        "normalized",
+        "hits"
+      ],
+      "group": {
+        "id": "q-mhsxky",
+        "subject": "운용",
+        "question": "국제항공 및 해상수색구조 편람상 여러 척의 선박이조난 선박 수색에 참여할 때 수색속력의 기준은?",
+        "normalized": "국제항공및해상수색구조편람상여러척의선박이조난선박수색에참여할때수색속력의기준은",
+        "hits": [
+          {
+            "year": 2022,
+            "session": 4,
+            "number": 21
+          },
+          {
+            "year": 2023,
+            "session": 1,
+            "number": 20
+          },
+          {
+            "year": 2023,
+            "session": 3,
+            "number": 20
+          },
+          {
+            "year": 2023,
+            "session": 4,
+            "number": 20
+          },
+          {
+            "year": 2024,
+            "session": 1,
+            "number": 20
+          },
+          {
+            "year": 2024,
+            "session": 2,
+            "number": 20
+          },
+          {
+            "year": 2024,
+            "session": 3,
+            "number": 20
+          },
+          {
+            "year": 2024,
+            "session": 4,
+            "number": 21
+          }
+        ]
+      },
+      "first_hit_keys": [
+        "year",
+        "session",
+        "number"
+      ]
+    },
+    {
+      "group_keys": [
+        "id",
+        "subject",
+        "question",
+        "normalized",
+        "hits"
+      ],
+      "group": {
+        "id": "q-1oersay",
+        "subject": "항해",
+        "question": "천체를 관측하여 컴퍼스 오차를 측정할 수 있는 방법이 아닌 것은?",
+        "normalized": "천체를관측하여컴퍼스오차를측정할수있는방법이아닌것은",
+        "hits": [
+          {
+            "year": 2023,
+            "session": 2,
+            "number": 10
+          },
+          {
+            "year": 2023,
+            "session": 3,
+            "number": 10
+          },
+          {
+            "year": 2024,
+            "session": 2,
+            "number": 10
+          },
+          {
+            "year": 2024,
+            "session": 3,
+            "number": 10
+          },
+          {
+            "year": 2024,
+            "session": 4,
+            "number": 10
+          },
+          {
+            "year": 2025,
+            "session": 2,
+            "number": 11
+          },
+          {
+            "year": 2025,
+            "session": 4,
+            "number": 11
+          },
+          {
+            "year": 2026,
+            "session": 2,
+            "number": 11
+          }
+        ]
+      },
+      "first_hit_keys": [
+        "year",
+        "session",
+        "number"
+      ]
+    },
+    {
+      "group_keys": [
+        "id",
+        "subject",
+        "question",
+        "normalized",
+        "hits"
+      ],
+      "group": {
+        "id": "q-nsjb2i",
+        "subject": "상선전문",
+        "question": "항해용선계약에서 정박기간 산정 방법 중 하역 기간개시부터 종료까지 계속된 경과일수로 정박기간을 정하는 방법은?",
+        "normalized": "항해용선계약에서정박기간산정방법중하역기간개시부터종료까지계속된경과일수로정박기간을정하는방법은",
+        "hits": [
+          {
+            "year": 2020,
+            "session": 2,
+            "number": 17
+          },
+          {
+            "year": 2021,
+            "session": 1,
+            "number": 15
+          },
+          {
+            "year": 2021,
+            "session": 2,
+            "number": 16
+          },
+          {
+            "year": 2022,
+            "session": 2,
+            "number": 15
+          },
+          {
+            "year": 2024,
+            "session": 4,
+            "number": 18
+          },
+          {
+            "year": 2025,
+            "session": 1,
+            "number": 15
+          },
+          {
+            "year": 2025,
+            "session": 3,
+            "number": 16
+          }
+        ]
+      },
+      "first_hit_keys": [
+        "year",
+        "session",
+        "number"
+      ]
+    },
+    {
+      "group_keys": [
+        "id",
+        "subject",
+        "question",
+        "normalized",
+        "hits"
+      ],
+      "group": {
+        "id": "q-4qhd4f",
+        "subject": "항해",
+        "question": "도플러 로그의 오차가 아닌 것은?",
+        "normalized": "도플러로그의오차가아닌것은",
+        "hits": [
+          {
+            "year": 2021,
+            "session": 4,
+            "number": 4
+          },
+          {
+            "year": 2022,
+            "session": 1,
+            "number": 4
+          },
+          {
+            "year": 2022,
+            "session": 3,
+            "number": 4
+          },
+          {
+            "year": 2024,
+            "session": 3,
+            "number": 3
+          },
+          {
+            "year": 2024,
+            "session": 4,
+            "number": 5
+          },
+          {
+            "year": 2025,
+            "session": 2,
+            "number": 4
+          },
+          {
+            "year": 2025,
+            "session": 4,
+            "number": 4
+          }
+        ]
+      },
+      "first_hit_keys": [
+        "year",
+        "session",
+        "number"
+      ]
+    },
+    {
+      "group_keys": [
+        "id",
+        "subject",
+        "question",
+        "normalized",
+        "hits"
+      ],
+      "group": {
+        "id": "q-8f0i0h",
+        "subject": "항해",
+        "question": "자오선고도위도법에서 태양을 주로 이용하는 이유는?",
+        "normalized": "자오선고도위도법에서태양을주로이용하는이유는",
+        "hits": [
+          {
+            "year": 2020,
+            "session": 3,
+            "number": 12
+          },
+          {
+            "year": 2021,
+            "session": 1,
+            "number": 11
+          },
+          {
+            "year": 2021,
+            "session": 2,
+            "number": 10
+          },
+          {
+            "year": 2021,
+            "session": 3,
+            "number": 11
+          },
+          {
+            "year": 2022,
+            "session": 1,
+            "number": 10
+          },
+          {
+            "year": 2022,
+            "session": 3,
+            "number": 12
+          },
+          {
+            "year": 2022,
+            "session": 4,
+            "number": 12
+          }
+        ]
+      },
+      "first_hit_keys": [
+        "year",
+        "session",
+        "number"
+      ]
+    },
+    {
+      "group_keys": [
+        "id",
+        "subject",
+        "question",
+        "normalized",
+        "hits"
+      ],
+      "group": {
+        "id": "q-i59fa",
+        "subject": "법규",
+        "question": "해상교통안전법상 선박의 안전관리체제 수립에 포함되어야 하는 사항이 아닌 것은?",
+        "normalized": "해상교통안전법상선박의안전관리체제수립에포함되어야하는사항이아닌것은",
+        "hits": [
+          {
+            "year": 2024,
+            "session": 1,
+            "number": 11
+          },
+          {
+            "year": 2024,
+            "session": 3,
+            "number": 11
+          },
+          {
+            "year": 2024,
+            "session": 4,
+            "number": 12
+          },
+          {
+            "year": 2025,
+            "session": 1,
+            "number": 11
+          },
+          {
+            "year": 2025,
+            "session": 2,
+            "number": 11
+          },
+          {
+            "year": 2025,
+            "session": 4,
+            "number": 11
+          }
+        ]
+      },
+      "first_hit_keys": [
+        "year",
+        "session",
+        "number"
+      ]
+    }
+  ],
+  "navi3": [
+    {
+      "group_keys": [
+        "id",
+        "subject",
+        "question",
+        "normalized",
+        "hits"
+      ],
+      "group": {
+        "id": "q-120fjpk",
+        "subject": "법규",
+        "question": "국제해상충돌방지규칙상 예인선이 아래의 등화를 표시하여야 하는 경우는?",
+        "normalized": "국제해상충돌방지규칙상예인선이아래의등화를표시하여야하는경우는",
+        "hits": [
+          {
+            "year": 2021,
+            "session": 1,
+            "number": 21
+          },
+          {
+            "year": 2022,
+            "session": 3,
+            "number": 23
+          },
+          {
+            "year": 2023,
+            "session": 2,
+            "number": 23
+          },
+          {
+            "year": 2023,
+            "session": 4,
+            "number": 23
+          },
+          {
+            "year": 2024,
+            "session": 1,
+            "number": 22
+          },
+          {
+            "year": 2025,
+            "session": 2,
+            "number": 22
+          },
+          {
+            "year": 2025,
+            "session": 4,
+            "number": 23
+          }
+        ]
+      },
+      "first_hit_keys": [
+        "year",
+        "session",
+        "number"
+      ]
+    },
+    {
+      "group_keys": [
+        "id",
+        "subject",
+        "question",
+        "normalized",
+        "hits"
+      ],
+      "group": {
+        "id": "q-15jxjne",
+        "subject": "상선전문",
+        "question": "선박법상 한국선박의 의무가 아닌 것은?",
+        "normalized": "선박법상한국선박의의무가아닌것은",
+        "hits": [
+          {
+            "year": 2023,
+            "session": 1,
+            "number": 8
+          },
+          {
+            "year": 2023,
+            "session": 3,
+            "number": 10
+          },
+          {
+            "year": 2023,
+            "session": 4,
+            "number": 10
+          },
+          {
+            "year": 2024,
+            "session": 4,
+            "number": 9
+          },
+          {
+            "year": 2025,
+            "session": 1,
+            "number": 10
+          },
+          {
+            "year": 2025,
+            "session": 3,
+            "number": 10
+          },
+          {
+            "year": 2025,
+            "session": 4,
+            "number": 9
+          }
+        ]
+      },
+      "first_hit_keys": [
+        "year",
+        "session",
+        "number"
+      ]
+    },
+    {
+      "group_keys": [
+        "id",
+        "subject",
+        "question",
+        "normalized",
+        "hits"
+      ],
+      "group": {
+        "id": "q-jwb2u1",
+        "subject": "상선전문",
+        "question": "적화계수(Stowage factor)에 관한 설명으로 옳지 않은것은?",
+        "normalized": "적화계수stowagefactor에관한설명으로옳지않은것은",
+        "hits": [
+          {
+            "year": 2020,
+            "session": 4,
+            "number": 5
+          },
+          {
+            "year": 2021,
+            "session": 3,
+            "number": 6
+          },
+          {
+            "year": 2022,
+            "session": 4,
+            "number": 6
+          },
+          {
+            "year": 2023,
+            "session": 3,
+            "number": 5
+          },
+          {
+            "year": 2023,
+            "session": 4,
+            "number": 7
+          },
+          {
+            "year": 2025,
+            "session": 1,
+            "number": 6
+          },
+          {
+            "year": 2025,
+            "session": 3,
+            "number": 6
+          }
+        ]
+      },
+      "first_hit_keys": [
+        "year",
+        "session",
+        "number"
+      ]
+    },
+    {
+      "group_keys": [
+        "id",
+        "subject",
+        "question",
+        "normalized",
+        "hits"
+      ],
+      "group": {
+        "id": "q-zmnyra",
+        "subject": "영어",
+        "question": "Select one which has correct SMCP expression.",
+        "normalized": "selectonewhichhascorrectsmcpexpression",
+        "hits": [
+          {
+            "year": 2023,
+            "session": 1,
+            "number": 10
+          },
+          {
+            "year": 2024,
+            "session": 1,
+            "number": 9
+          },
+          {
+            "year": 2024,
+            "session": 2,
+            "number": 9
+          },
+          {
+            "year": 2024,
+            "session": 3,
+            "number": 9
+          },
+          {
+            "year": 2025,
+            "session": 2,
+            "number": 10
+          },
+          {
+            "year": 2025,
+            "session": 4,
+            "number": 8
+          },
+          {
+            "year": 2026,
+            "session": 3,
+            "number": 10
+          }
+        ]
+      },
+      "first_hit_keys": [
+        "year",
+        "session",
+        "number"
+      ]
+    },
+    {
+      "group_keys": [
+        "id",
+        "subject",
+        "question",
+        "normalized",
+        "hits"
+      ],
+      "group": {
+        "id": "q-8bjvom",
+        "subject": "영어",
+        "question": "Select the correct one for the blank. \"( ) is a periodical publication of astronomical data useful to navigators.\"",
+        "normalized": "selectthecorrectonefortheblankisaperiodicalpublicationofastronomicaldatausefultonavigators",
+        "hits": [
+          {
+            "year": 2020,
+            "session": 3,
+            "number": 12
+          },
+          {
+            "year": 2020,
+            "session": 4,
+            "number": 11
+          },
+          {
+            "year": 2022,
+            "session": 4,
+            "number": 11
+          },
+          {
+            "year": 2023,
+            "session": 3,
+            "number": 11
+          },
+          {
+            "year": 2023,
+            "session": 4,
+            "number": 13
+          },
+          {
+            "year": 2024,
+            "session": 1,
+            "number": 12
+          },
+          {
+            "year": 2025,
+            "session": 2,
+            "number": 12
+          }
+        ]
+      },
+      "first_hit_keys": [
+        "year",
+        "session",
+        "number"
+      ]
+    },
+    {
+      "group_keys": [
+        "id",
+        "subject",
+        "question",
+        "normalized",
+        "hits"
+      ],
+      "group": {
+        "id": "q-1bo5trl",
+        "subject": "영어",
+        "question": "What is a circular area within definite limits in which traffic moves in a counter-clockwise direction around a specified point or zone?",
+        "normalized": "whatisacircularareawithindefinitelimitsinwhichtrafficmovesinacounterclockwisedirectionaroundaspecifiedpointorzone",
+        "hits": [
+          {
+            "year": 2020,
+            "session": 3,
+            "number": 18
+          },
+          {
+            "year": 2020,
+            "session": 4,
+            "number": 20
+          },
+          {
+            "year": 2022,
+            "session": 4,
+            "number": 18
+          },
+          {
+            "year": 2024,
+            "session": 1,
+            "number": 17
+          },
+          {
+            "year": 2024,
+            "session": 2,
+            "number": 18
+          },
+          {
+            "year": 2024,
+            "session": 3,
+            "number": 21
+          },
+          {
+            "year": 2025,
+            "session": 2,
+            "number": 18
+          }
+        ]
+      },
+      "first_hit_keys": [
+        "year",
+        "session",
+        "number"
+      ]
+    },
+    {
+      "group_keys": [
+        "id",
+        "subject",
+        "question",
+        "normalized",
+        "hits"
+      ],
+      "group": {
+        "id": "q-12oiepj",
+        "subject": "항해",
+        "question": "선박의 레이더에서 발사된 전파를 받은 때에만 응답하여 레이더 화면상에 일정 형태의 신호를 나타내는 전파표지는?",
+        "normalized": "선박의레이더에서발사된전파를받은때에만응답하여레이더화면상에일정형태의신호를나타내는전파표지는",
+        "hits": [
+          {
+            "year": 2023,
+            "session": 1,
+            "number": 7
+          },
+          {
+            "year": 2023,
+            "session": 3,
+            "number": 7
+          },
+          {
+            "year": 2024,
+            "session": 1,
+            "number": 7
+          },
+          {
+            "year": 2024,
+            "session": 2,
+            "number": 6
+          },
+          {
+            "year": 2025,
+            "session": 1,
+            "number": 6
+          },
+          {
+            "year": 2025,
+            "session": 3,
+            "number": 7
+          },
+          {
+            "year": 2025,
+            "session": 4,
+            "number": 6
+          }
+        ]
+      },
+      "first_hit_keys": [
+        "year",
+        "session",
+        "number"
+      ]
+    },
+    {
+      "group_keys": [
+        "id",
+        "subject",
+        "question",
+        "normalized",
+        "hits"
+      ],
+      "group": {
+        "id": "q-18eykg5",
+        "subject": "법규",
+        "question": "( )에 순서대로 적합한 것은? \"국제해상충돌방지규칙상 레이더를 장비하고 작동가능하면 충돌의 위험에 대한 조기 경보를 얻기 위한 ( )와 탐지된 물체에 대한 ( ) 또는 같은 효과를 얻을 수 있는 탐지된 물표의 ( ) 등을 포함하여 레이더 장비를 올바르게 사용하여야 한다.\"",
+        "normalized": "에순서대로적합한것은국제해상충돌방지규칙상레이더를장비하고작동가능하면충돌의위험에대한조기경보를얻기위한와탐지된물체에대한또는같은효과를얻을수있는탐지된물표의등을포함하여레이더장비를올바르게사용하여야한다",
+        "hits": [
+          {
+            "year": 2020,
+            "session": 2,
+            "number": 14
+          },
+          {
+            "year": 2021,
+            "session": 2,
+            "number": 16
+          },
+          {
+            "year": 2021,
+            "session": 4,
+            "number": 16
+          },
+          {
+            "year": 2022,
+            "session": 2,
+            "number": 17
+          },
+          {
+            "year": 2022,
+            "session": 3,
+            "number": 14
+          },
+          {
+            "year": 2025,
+            "session": 4,
+            "number": 16
+          }
+        ]
+      },
+      "first_hit_keys": [
+        "year",
+        "session",
+        "number"
+      ]
+    }
+  ]
+}
