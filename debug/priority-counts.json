@@ -1,0 +1,125 @@
+{
+  "navi2": {
+    "trainingYears": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "selectedSubjects": [
+      "법규",
+      "상선전문",
+      "영어",
+      "운용",
+      "항해"
+    ],
+    "totalUniqueGroupsInSelectedSubjects": 2079,
+    "frequentGroupsCount2Plus": 373,
+    "groupsWith2026Hit": 124,
+    "overlapFrequentAnd2026": 36,
+    "priorityUnionUniqueGroups": 461,
+    "raw2026Occurrences": 125,
+    "meta": {
+      "examCount": 24,
+      "questionCount": 2993,
+      "uniqueQuestionCount": 2079,
+      "repeatedGroupCount": 570,
+      "note": "보유 상선 기출 2020~2026 기준. 2026년은 제2회 125문항만 수록된 진행 중 자료."
+    },
+    "bySubject": {
+      "영어": {
+        "freq": 75,
+        "has2026": 24,
+        "overlap": 7,
+        "union": 92,
+        "raw2026": 25
+      },
+      "운용": {
+        "freq": 69,
+        "has2026": 25,
+        "overlap": 8,
+        "union": 86,
+        "raw2026": 25
+      },
+      "항해": {
+        "freq": 95,
+        "has2026": 25,
+        "overlap": 9,
+        "union": 111,
+        "raw2026": 25
+      },
+      "상선전문": {
+        "freq": 64,
+        "has2026": 25,
+        "overlap": 6,
+        "union": 83,
+        "raw2026": 25
+      },
+      "법규": {
+        "freq": 70,
+        "has2026": 25,
+        "overlap": 6,
+        "union": 89,
+        "raw2026": 25
+      }
+    }
+  },
+  "navi3": {
+    "trainingYears": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "selectedSubjects": [
+      "법규",
+      "상선전문",
+      "항해"
+    ],
+    "totalUniqueGroupsInSelectedSubjects": 1265,
+    "frequentGroupsCount2Plus": 249,
+    "groupsWith2026Hit": 125,
+    "overlapFrequentAnd2026": 32,
+    "priorityUnionUniqueGroups": 342,
+    "raw2026Occurrences": 125,
+    "meta": {
+      "examCount": 25,
+      "questionCount": 3072,
+      "uniqueQuestionCount": 2089,
+      "repeatedGroupCount": 648,
+      "note": "보유 상선 기출 2020~2026 기준. 2026년은 제2회 75문항, 제3회 125문항만 수록된 진행 중 자료."
+    },
+    "bySubject": {
+      "법규": {
+        "freq": 80,
+        "has2026": 50,
+        "overlap": 10,
+        "union": 120,
+        "raw2026": 50
+      },
+      "상선전문": {
+        "freq": 81,
+        "has2026": 25,
+        "overlap": 9,
+        "union": 97,
+        "raw2026": 25
+      },
+      "항해": {
+        "freq": 88,
+        "has2026": 50,
+        "overlap": 13,
+        "union": 125,
+        "raw2026": 50
+      }
+    }
+  },
+  "combined": {
+    "frequentGroupsCount2Plus": 622,
+    "groupsWith2026Hit": 249,
+    "overlapFrequentAnd2026": 68,
+    "priorityUnionUniqueGroups": 803,
+    "raw2026Occurrences": 250
+  }
+}
