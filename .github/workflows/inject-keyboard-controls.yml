@@ -11,6 +11,7 @@ on:
       - 'tools/patch_2026_navigation.py'
       - 'tools/patch_same_day_confirmation.py'
       - 'tools/patch_predictive_mock.py'
+      - 'tools/patch_predictive_mock_followup.py'
       - 'tools/test_predictive_mock.py'
       - 'tools/inspect_predictive_mock_context.py'
       - '.github/workflows/inject-keyboard-controls.yml'
@@ -31,6 +32,7 @@ jobs:
           python tools/patch_2026_navigation.py
           python tools/patch_same_day_confirmation.py
           python tools/patch_predictive_mock.py
+          python tools/patch_predictive_mock_followup.py
           python tools/test_predictive_mock.py
           if [ -f tools/inspect_predictive_mock_context.py ]; then python tools/inspect_predictive_mock_context.py; fi
       - name: Commit index update
@@ -43,5 +45,5 @@ jobs:
             echo 'No change needed.'
             exit 0
           fi
-          git commit -m 'Validate predictive mock mode'
+          git commit -m 'Finalize predictive mock mode'
           git push
