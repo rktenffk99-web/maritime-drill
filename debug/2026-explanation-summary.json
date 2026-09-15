@@ -4,7 +4,8 @@
     "present": 125,
     "short": 0,
     "missing": 0,
-    "reusable_missing": 0,
+    "exact_reusable_missing": 0,
+    "text_reusable_missing": 0,
     "median_explanation_chars": 2359,
     "by_subject": {
       "항해": {
@@ -12,35 +13,40 @@
         "present": 25,
         "short": 0,
         "missing": 0,
-        "reusable": 0
+        "exact_reusable": 0,
+        "text_reusable": 0
       },
       "운용": {
         "total": 25,
         "present": 25,
         "short": 0,
         "missing": 0,
-        "reusable": 0
+        "exact_reusable": 0,
+        "text_reusable": 0
       },
       "법규": {
         "total": 25,
         "present": 25,
         "short": 0,
         "missing": 0,
-        "reusable": 0
+        "exact_reusable": 0,
+        "text_reusable": 0
       },
       "영어": {
         "total": 25,
         "present": 25,
         "short": 0,
         "missing": 0,
-        "reusable": 0
+        "exact_reusable": 0,
+        "text_reusable": 0
       },
       "상선전문": {
         "total": 25,
         "present": 25,
         "short": 0,
         "missing": 0,
-        "reusable": 0
+        "exact_reusable": 0,
+        "text_reusable": 0
       }
     },
     "by_session": {
@@ -64,7 +70,8 @@
     "present": 75,
     "short": 0,
     "missing": 125,
-    "reusable_missing": 41,
+    "exact_reusable_missing": 23,
+    "text_reusable_missing": 41,
     "median_explanation_chars": 2607,
     "by_subject": {
       "항해": {
@@ -72,35 +79,40 @@
         "present": 25,
         "short": 0,
         "missing": 25,
-        "reusable": 8
+        "exact_reusable": 3,
+        "text_reusable": 8
       },
       "법규": {
         "total": 50,
         "present": 25,
         "short": 0,
         "missing": 25,
-        "reusable": 6
+        "exact_reusable": 4,
+        "text_reusable": 6
       },
       "영어": {
         "total": 50,
         "present": 25,
         "short": 0,
         "missing": 25,
-        "reusable": 10
+        "exact_reusable": 7,
+        "text_reusable": 10
       },
       "운용": {
         "total": 25,
         "present": 0,
         "short": 0,
         "missing": 25,
-        "reusable": 9
+        "exact_reusable": 6,
+        "text_reusable": 9
       },
       "상선전문": {
         "total": 25,
         "present": 0,
         "short": 0,
         "missing": 25,
-        "reusable": 8
+        "exact_reusable": 3,
+        "text_reusable": 8
       }
     },
     "by_session": {

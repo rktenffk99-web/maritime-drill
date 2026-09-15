@@ -5,7 +5,8 @@
       "present": 125,
       "short": 0,
       "missing": 0,
-      "reusable_missing": 0,
+      "exact_reusable_missing": 0,
+      "text_reusable_missing": 0,
       "median_explanation_chars": 2359,
       "by_subject": {
         "항해": {
@@ -13,35 +14,40 @@
           "present": 25,
           "short": 0,
           "missing": 0,
-          "reusable": 0
+          "exact_reusable": 0,
+          "text_reusable": 0
         },
         "운용": {
           "total": 25,
           "present": 25,
           "short": 0,
           "missing": 0,
-          "reusable": 0
+          "exact_reusable": 0,
+          "text_reusable": 0
         },
         "법규": {
           "total": 25,
           "present": 25,
           "short": 0,
           "missing": 0,
-          "reusable": 0
+          "exact_reusable": 0,
+          "text_reusable": 0
         },
         "영어": {
           "total": 25,
           "present": 25,
           "short": 0,
           "missing": 0,
-          "reusable": 0
+          "exact_reusable": 0,
+          "text_reusable": 0
         },
         "상선전문": {
           "total": 25,
           "present": 25,
           "short": 0,
           "missing": 0,
-          "reusable": 0
+          "exact_reusable": 0,
+          "text_reusable": 0
         }
       },
       "by_session": {
@@ -278,6 +284,8 @@
           "status": "present",
           "explanation_chars": 2359,
           "exact_reusable_ids": [
+            "2023|navi2|2|항해|10",
+            "2023|navi2|3|항해|10",
             "2024|navi2|2|항해|10",
             "2024|navi2|3|항해|10",
             "2024|navi2|4|항해|10",
@@ -285,6 +293,8 @@
             "2025|navi2|4|항해|11"
           ],
           "same_text_reusable_ids": [
+            "2023|navi2|2|항해|10",
+            "2023|navi2|3|항해|10",
             "2024|navi2|2|항해|10",
             "2024|navi2|3|항해|10",
             "2024|navi2|4|항해|10",
@@ -2491,7 +2501,8 @@
       "present": 75,
       "short": 0,
       "missing": 125,
-      "reusable_missing": 41,
+      "exact_reusable_missing": 23,
+      "text_reusable_missing": 41,
       "median_explanation_chars": 2607,
       "by_subject": {
         "항해": {
@@ -2499,35 +2510,40 @@
           "present": 25,
           "short": 0,
           "missing": 25,
-          "reusable": 8
+          "exact_reusable": 3,
+          "text_reusable": 8
         },
         "법규": {
           "total": 50,
           "present": 25,
           "short": 0,
           "missing": 25,
-          "reusable": 6
+          "exact_reusable": 4,
+          "text_reusable": 6
         },
         "영어": {
           "total": 50,
           "present": 25,
           "short": 0,
           "missing": 25,
-          "reusable": 10
+          "exact_reusable": 7,
+          "text_reusable": 10
         },
         "운용": {
           "total": 25,
           "present": 0,
           "short": 0,
           "missing": 25,
-          "reusable": 9
+          "exact_reusable": 6,
+          "text_reusable": 9
         },
         "상선전문": {
           "total": 25,
           "present": 0,
           "short": 0,
           "missing": 25,
-          "reusable": 8
+          "exact_reusable": 3,
+          "text_reusable": 8
         }
       },
       "by_session": {
@@ -3277,7 +3293,12 @@
           "status": "present",
           "explanation_chars": 2701,
           "exact_reusable_ids": [],
-          "same_text_reusable_ids": []
+          "same_text_reusable_ids": [
+            "2022|navi2|1|법규|13",
+            "2023|navi2|1|법규|13",
+            "2024|navi2|1|법규|13",
+            "2025|navi2|1|법규|14"
+          ]
         },
         {
           "id": "2026|navi3|2|법규|14",
@@ -8896,17 +8917,5 @@
   "explain_key_counts": {
     "2026|navi2|2": 125,
     "2026|navi3|2": 75
-  },
-  "loader": [
-    {
-      "needle": "const PAST_EXPLAIN_YEARS",
-      "pos": 22151375,
-      "snippet": "2.js,past-2025-navi4-3.js,past-2025-navi4-4.js,past-2025-navi4e-1.js,past-2025-navi4e-2.js,past-2025-navi4e-3.js,past-2025-navi4e-4.js,past-2025-navi5-2.js,past-2025-navi5-3.js,past-2025-navi5-4.js,past-2025-navi5d-1.js,past-2025-navi5d-2.js,past-2025-navi5d-3.js,past-2025-navi5d-4.js,past-2025-navi5de-1.js,past-2025-navi5de-2.js,past-2025-navi5de-3.js,past-2025-navi5de-4.js,past-2025-navi5e-1.js,past-2025-navi5e-2.js,past-2025-navi5e-3.js,past-2025-navi5e-4.js,past-2025-navi6-1.js,past-2025-navi6-2.js,past-2025-navi6-3.js,past-2025-navi6e-2.js,past-2025-navi6e-3.js,past-2025-navi6e-4.js,past-2025-engi1-1.js,past-2025-engi1-2.js,past-2025-engi1-3.js,past-2025-engi1-4.js,past-2025-engi2-1.js,past-2025-engi2-2.js,past-2025-engi2-3.js,past-2025-engi2-4.js,past-2025-engi3-1.js,past-2025-engi3-2.js,past-2025-engi3-3.js,past-2025-engi3-4.js,past-2025-engi4-1.js,past-2025-engi4-2.js,past-2025-engi4-3.js,past-2025-engi4-4.js,past-2025-engi5-1.js,past-2025-engi5-2.js,past-2025-engi5-3.js,past-2025-engi5-4.js,past-2025-engi5d-1.js,past-2025-engi5d-2.js,past-2025-engi5d-3.js,past-2025-engi5d-4.js,past-2025-engi6-1.js,past-2025-engi6-2.js,past-2025-engi6-3.js,past-2025-engi6-4.js`.split(',');\nconst PAST_EXPLAIN_YEARS = new Set([2020,2021,2022,2023,2024,2025,2026]);\nconst optionalScriptLoads = new Map();\nconst pastDataSubjectsLoaded = new Set();\n\n// MD_ANDROID_LOADER_START\nfunction getBundledOptionalScript(src){\n  const id='md-bundle-'+String(src||'').replace(/[^a-zA-Z0-9_-]/g,'_');\n  const node=document.getElementById(id);\n  return node?node.textContent.trim():'';\n}\nasync function inflateBundledScript(payload){\n  if(typeof DecompressionStream==='undefined'){\n    throw new Error('Android Chrome 최신 버전이 필요합니다.');\n  }\n  const binary=atob(payload);\n  const bytes=new Uint8Array(binary.length);\n  for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);\n  const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));\n  return new Response(stream).text();\n}\nfunction runBundledScript(code,src){\n  (0,eval)(code+'\\n//# sourceURL='+src);\n}\nfunction loadOptionalScript(src){\n  if(optionalScriptLoads.has(src)) return optionalScriptLoads.get(src);\n  const payload=getBundledOptionalScript(src);\n  if(payload){\n    const task=(async()=>{\n      try{\n        const code=await inflateBundledScript(payload);\n        runBundledScript(code,src);\n        return true;\n      }catch(err){\n        console.error('내장 데이터 로드 실패:',src,err);\n        optionalScriptLoads.delete(src);\n        return false;\n      }\n    })();\n    optionalScriptLoads.set(src,task);\n    return task;\n  }\n  const task=new Promise(resolve=>{\n    const script=document.createElement('script');\n    script.src=src;\n    script.async=true;\n    let settled=false;\n    const finish=ok=>{\n      if(settled) return;\n      settled=true;\n      clearTimeout(timer);\n      if(!ok){ script.remove(); optionalScriptLoads.delete(src); }\n      resolve(ok);\n    };\n    const timer=setTimeout(()=>finish(false),20000);\n    script.onload=()=>finish(true);\n    script.onerror=()=>finish(false);\n    document.head.appendChild(script);\n  });\n  optionalScriptLoads.set(src,task);\n  return task;\n}\n// MD_ANDROID_LOADER_END\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nasync function loadScriptsWithLimit(files, limit){\n  const list=[...(files||[])];\n  if(!list.length) return [];\n  const results=new Array(list.length).fill(false);\n  let next=0;\n  async function worker(){\n    while(next<list.length){\n      const index=next++;\n      results[index]=await loadOptionalScript(list[index]);\n    }\n  }\n  const workers=Array.from({length:Math.min(Math.max(1,limit||1),list.length)},()=>worker());\n  await Promise.all(workers);\n  return results;\n}\nfunction getPastDataFilesForSubject(subjectId){\n  const shorts=PAST_GRADE_MAP[subjectId]||[];\n  if(!shorts.length) return [];\n  const allowed=new Set(shorts);\n  return PAST_DATA_FILES.filter(file=>{\n    const m=file.match(/^past-\\d{4}-(.+)-\\d+\\.js$/);\n    return m && allowed.has(m[1]);\n  });\n}\nfunction g"
-    },
-    {
-      "needle": "async function ensurePastExplainForYears",
-      "pos": 22156329,
-      "snippet": "DC2626\">\n      <div style=\"font-size:16px;font-weight:800;color:#991B1B;margin-bottom:8px\">기출 문제를 모두 불러오지 못했습니다</div>\n      <div style=\"font-size:13px;color:var(--textDim);line-height:1.65\">누락된 파일 ${failedCount}개가 있어 불완전한 상태로 시험을 시작하지 않았습니다.<br>내장 데이터를 열지 못했습니다. Android Chrome을 최신 버전으로 업데이트한 뒤 다시 열어주세요.</div>\n      <div style=\"display:flex;gap:8px;margin-top:18px\">\n        <button class=\"btn btn-outline\" style=\"flex:1\" onclick=\"renderSubjectSelect()\">면허 선택</button>\n        <button class=\"btn btn-accent\" style=\"flex:1\" onclick='renderPastHome(${retryArg})'>다시 시도</button>\n      </div>\n    </div>`;\n}\nasync function ensurePastDataForSubject(subjectId){\n  const files=getPastDataFilesForSubject(subjectId);\n  if(!files.length) return [];\n  const results=await loadScriptsWithLimit(files,8);\n  const failedFiles=files.filter((file,index)=>{\n    const registryId=file.slice(5,-3);\n    return !results[index] || !window.MD_PAST || !window.MD_PAST[registryId];\n  });\n  if(failedFiles.length){\n    const error=new Error(`기출 파일 ${failedFiles.length}개 로드 실패`);\n    error.failedFiles=failedFiles;\n    throw error;\n  }\n  pastDataSubjectsLoaded.add(subjectId);\n  return getPastExamsForSubject(subjectId);\n}\nasync function ensurePastExplainForYears(years){\n  const targets=[...new Set((years||[]).map(Number))]\n    .filter(year=>PAST_EXPLAIN_YEARS.has(year))\n    .map(year=>`past-explain-${year}.js`);\n  if(!targets.length) return {failedFiles:[]};\n  const results=await loadScriptsWithLimit(targets,2);\n  const failedFiles=targets.filter((file,index)=>!results[index]);\n  if(failedFiles.length && typeof showToast==='function'){\n    showToast(`해설 파일 ${failedFiles.length}개를 불러오지 못했습니다. 문제 풀이는 계속할 수 있습니다.`);\n  }\n  return {failedFiles};\n}\n// v4.34: 변종(short) → base(상선/어선 합친 공통 코드) 매핑\n//   navi3e→navi3, navi5de→navi5, engi3→engi3, small→small\n// v4.45: engi5d→engi5 (5급 기관사 국내한정 변종)\nfunction baseFromShort(short){\n  if(!short) return short;\n  // navi 계열: 'e'/'de'/'d' 접미사 제거 (어선·국내한정 접미사)\n  if(/^navi\\d/.test(short)) return short.replace(/(de|e|d)$/,'');\n  // engi 계열: 'd' 접미사 제거 (국내한정 접미사, 현재 5급만)\n  if(/^engi\\d/.test(short)) return short.replace(/d$/,'');\n  return short;\n}\n// v4.34: base gradeShort → \"3급 항해사\" 같이 변종 괄호를 제거한 상위 라벨\nconst BASE_GRADE_LABEL = {\n  'navi1':'1급 항해사','navi2':'2급 항해사','navi3':'3급 항해사','navi4':'4급 항해사',\n  'navi5':'5급 항해사','navi6':'6급 항해사',\n  'engi1':'1급 기관사','engi2':'2급 기관사','engi3':'3급 기관사','engi4':'4급 기관사',\n  'engi5':'5급 기관사','engi6':'6급 기관사',\n  'small':'소형선박조종사'\n};\n// v4.34: short(변종) → 상선/어선/국내한정 구분 라벨 ('' 이면 구분 불필요)\n// v4.45: engi5/engi5d → '일반'/'국내한정' 구분 추가\nfunction variantLabel(short){\n  if(/^navi\\d/.test(short)){\n    const m = short.match(/^navi\\d(de|e|d)?$/);\n    if(!m) return '';\n    const suf = m[1] || '';\n    if(suf === '') return '상선';\n    if(suf === 'd') return '국내한정(상선)';\n    if(suf === 'e') return '어선';\n    if(suf === 'de') return '국내한정(어선)';\n  }\n  if(/^engi\\d/.test(short)){\n    if(short === 'engi5')  return '일반';\n    if(short === 'engi5d') return '국내한정';\n  }\n  return '';\n}\n// v4.34: variant='all'|'상선'|'어선' 필터 통과 여부\n// v4.45: engi5 계열용 '일반'/'국내한정' variant 추가\nfunction variantMatches(short, variant){\n  if(!variant || variant === 'all') return true;\n  const lab = variantLabel(short);\n  if(variant === '상선') return lab === '상선' || lab === '국내한정(상선)';\n  if(variant === '어선') return lab === '어선' || lab === '국내한정(어선)';\n  if(variant === '일반') return lab === '일반';\n  if(variant === '국내한정') return lab === '국내한정';\n  return true;\n}\n// v4.45: 현재 exams 풀에서 노출할 variant 필터 (title + 선택지)를 결정.\n//   navi: '상선'/'어선' (국내한정은 각각에 합류)\n//   engi5: '일반'/'국내한정'\n//   필터가 불필요(변종 1종 이하)하면 choices=[]\nfunction getVariantChoices(exams){\n  const labs = [...new Set(exams.map(p => variantLabel(p.meta.gradeShort)).filter(Boolean))];\n  const hasSS = labs.some(l => l.indexOf('상선')>=0);\n  const hasYU = labs.some(l => l.indexOf('어선')>=0);\n  if(hasSS && hasYU){\n    return {title:'상선 / 어선', choices:['상선','어선']};\n  }\n  const hasNormal = labs.includes('일반');\n  const hasRestrict "
-    }
-  ]
+  }
 }
