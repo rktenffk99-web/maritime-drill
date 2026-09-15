@@ -1,17 +1,23 @@
-name: Test weak drills
+name: Build weak drills on feature
 on:
   push:
     branches: [ feature/today-wrong-and-frequent-wrong ]
     paths:
       - 'tools/patch_weak_drills.py'
       - 'tools/test_weak_drills.py'
+      - '.github/workflows/inject-keyboard-controls.yml'
       - '.github/workflows/inspect-weak-drill.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Apply existing patches then weak-drill patch
+      - name: Apply and test patches
         run: |
           python tools/patch_pass_plan.py
           python tools/patch_convenience.py
@@ -24,3 +30,14 @@ jobs:
           python tools/test_predictive_mock.py
           python tools/test_2026_session3_explanations.py
           python tools/test_weak_drills.py
+      - name: Commit generated index
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No generated index change.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Add focused wrong-answer drills'
+          git push
