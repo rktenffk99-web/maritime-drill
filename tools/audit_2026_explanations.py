@@ -20,7 +20,10 @@ for m in re.finditer(r'<script([^>]*)>(.*?)</script>',src,re.S|re.I):
     attrs=m.group(1); body=m.group(2)
     mid=re.search(r'\bid=["\']([^"\']+)["\']',attrs,re.I)
     sid=mid.group(1) if mid else '(no-id)'
-    scripts.append((sid,decode_script(body)))
+    text=decode_script(body)
+    scripts.append((sid,text))
+    if sid in ('md-bundle-past-2026-navi3-3_js','md-bundle-past-2026-navi2-3_js'):
+        Path(f'debug/{sid}.txt').write_text(text[:12000],encoding='utf-8')
 
 exams=[]; exam_inventory=[]
 for sid,text in scripts:
