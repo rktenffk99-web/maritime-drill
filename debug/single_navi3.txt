@@ -1,0 +1,759 @@
+ds}`;
+  })();
+  app.innerHTML = `
+    <div style="padding-top:24px;margin-bottom:20px">
+      <button type="button" class="text-nav" onclick="renderSubjectSelect()">${icon('arrowLeft',14)} 과목 선택으로</button>
+      <h1 style="font-size:24px;font-weight:800;margin:0 0 4px 0;color:${gColor}">${s.name}</h1>
+      <p style="font-size:13px;color:var(--textDim)">${lowerNavigator?'일반 응시와 특수 응시 경로를 구분해 선택하세요':'학습 유형을 선택하세요'}</p>
+    </div>
+    ${renderPastResumeCard(subjectId)}
+    ${lowerNavigator?renderLowerNavigatorExamNotice():''}
+    ${lowerNavigator?writtenCard+oralCard:oralCard+writtenCard}
+  `;
+}
+
+// ──────────────────────────────────────────────────
+// v4.27: 기출문제(필기시험) 모드 — 급 → 년도 → 회차 → 과목
+// v4.32: 과목(subjectId) → 포함할 gradeShort 목록 매핑
+//        (상선/어선/국내한정 변종을 한 과목 아래에 묶어서 표시)
+// v4.34: 상선/어선 변종을 base 코드 단위(navi1..navi6, engi*, small)로 통합 표시
+// ──────────────────────────────────────────────────
+const PAST_GRADE_MAP = {
+  'navi1':  ['navi1','navi1e'],
+  'navi2':  ['navi2','navi2e'],
+  'navi3':  ['navi3','navi3e'],
+  'navi4':  ['navi4','navi4e'],
+  'navi5':  ['navi5','navi5e','navi5d','navi5de'],
+  'navi6':  ['navi6','navi6e'],
+  'engi1':  ['engi1'],
+  'engi2':  ['engi2'],
+  'engi3':  ['engi3'],
+  'engi4':  ['engi4'],
+  'engi5':  ['engi5','engi5d'],
+  'engi6':  ['engi6'],
+  'small':  ['small']
+};
+// v4.81: 기출 435개를 최초 화면에서 전부 읽지 않고 선택 면허만 불러옵니다.
+const PAST_DATA_FILES = `past-2020-engi1-2.js,past-2020-engi1-3.js,past-2020-engi1-4.js,past-2020-engi2-2.js,past-2020-engi2-3.js,past-2020-engi2-4.js,past-2020-engi3-2.js,past-2020-engi3-3.js,past-2020-engi3-4.js,past-2020-engi4-2.js,past-2020-engi4-3.js,past-2020-engi4-4.js,past-2020-engi6-2.js,past-2020-engi6-3.js,past-2020-engi6-4.js,past-2020-small-2.js,past-2020-small-3.js,past-2020-small-4.js,past-2020-navi1-2.js,past-2020-navi1-3.js,past-2020-navi1-4.js,past-2020-navi2-2.js,past-2020-navi2-3.js,past-2020-navi2-4.js,past-2020-navi3-2.js,past-2020-navi3-3.js,past-2020-navi3-4.js,past-2020-navi4-2.js,past-2020-navi4-3.js,past-2020-navi4-4.js,past-2020-navi6-2.js,past-2020-navi6-3.js,past-2020-navi6-4.js,past-2021-engi1-1.js,past-2021-engi1-2.js,past-2021-engi1-3.js,past-2021-engi1-4.js,past-2021-engi2-1.js,past-2021-engi2-2.js,past-2021-engi2-3.js,past-2021-engi2-4.js,past-2021-engi3-1.js,past-2021-engi3-2.js,past-2021-engi3-3.js,past-2021-engi3-4.js,past-2021-engi4-1.js,past-2021-engi4-2.js,past-2021-engi4-3.js,past-2021-engi4-4.js,past-2021-engi6-1.js,past-2021-engi6-2.js,past-2021-engi6-3.js,past-2021-engi6-4.js,past-2021-small-1.js,past-2021-small-2.js,past-2021-small-3.js,past-2021-small-4.js,past-2021-navi1-1.js,past-2021-navi1-2.js,past-2021-navi1-3.js,past-2021-navi1-4.js,past-2021-navi1e-1.js,past-2021-navi1e-2.js,past-2021-navi1e-3.js,past-2021-navi1e-4.js,past-2021-navi2-1.js,past-2021-navi2-2.js,past-2021-navi2-3.js,past-2021-navi2-4.js,past-2021-navi2e-1.js,past-2021-navi2e-2.js,past-2021-navi2e-3.js,past-2021-navi2e-4.js,past-2021-navi3-1.js,past-2021-navi3-2.js,past-2021-navi3-3.js,past-2021-navi3-4.js,past-2021-navi3e-1.js,past-2021-navi3e-2.js,past-2021-navi3e-3.js,past-2021-navi3e-4.js,past-2021-navi4-1.js,past-2021-navi4-2.js,past-2021-navi4-3.js,past-2021-navi4-4.js,past-2021-navi4e-1.js,past-2021-navi4e-2.js,past-2021-navi4e-3.js,past-2021-navi4e-4.js,past-2021-navi5-1.js,past-2021-navi5-2.js,past-2021-navi5-3.js,past-2021-navi5-4.js,past-2021-navi5d-1.js,past-2021-navi5d-2.js,past-2021-navi5d-3.js,past-2021-navi5d-4.js,past-2021-navi5de-1.js,past-2021-navi5de-2.js,past-2021-navi5de-3.js,past-2021-navi5de-4.js,past-2021-navi5e-1.js,past-2021-navi5e-2.js,past-2021-navi5e-3.js,past-2021-navi5e-4.js,past-2021-navi6-1.js,past-2021-navi6-2.js,past-2021-navi6-3.js,past-2021-navi6-4.js,past-2021-navi6e-1.js,past-2021-navi6e-2.js,past-2021-navi6e-3.js,past-2021-navi6e-4.js,past-2022-engi1-1.js,past-2022-engi1-2.js,past-2022-engi1-3.js,past-2022-engi1-4.js,past-2022-engi2-1.js,past-2022-engi2-2.js,past-2022-engi2-3.js,past-2022-engi2-4.js,past-2022-engi3-1.js,past-2022-
+
+);
+  app.innerHTML = `
+    <div style="padding-top:24px;margin-bottom:20px">
+      <button type="button" class="text-nav" onclick="renderSubjectSelect()">${icon('arrowLeft',14)} 과목 선택으로</button>
+      <h1 style="font-size:24px;font-weight:800;margin:0 0 4px 0;color:${gColor}">${s.name}</h1>
+      <p style="font-size:13px;color:var(--textDim)">${lowerNavigator?'일반 응시와 특수 응시 경로를 구분해 선택하세요':'학습 유형을 선택하세요'}</p>
+    </div>
+    ${renderPastResumeCard(subjectId)}
+    ${lowerNavigator?renderLowerNavigatorExamNotice():''}
+    ${lowerNavigator?writtenCard+oralCard:oralCard+writtenCard}
+  `;
+}
+
+// ──────────────────────────────────────────────────
+// v4.27: 기출문제(필기시험) 모드 — 급 → 년도 → 회차 → 과목
+// v4.32: 과목(subjectId) → 포함할 gradeShort 목록 매핑
+//        (상선/어선/국내한정 변종을 한 과목 아래에 묶어서 표시)
+// v4.34: 상선/어선 변종을 base 코드 단위(navi1..navi6, engi*, small)로 통합 표시
+// ──────────────────────────────────────────────────
+const PAST_GRADE_MAP = {
+  'navi1':  ['navi1','navi1e'],
+  'navi2':  ['navi2','navi2e'],
+  'navi3':  ['navi3','navi3e'],
+  'navi4':  ['navi4','navi4e'],
+  'navi5':  ['navi5','navi5e','navi5d','navi5de'],
+  'navi6':  ['navi6','navi6e'],
+  'engi1':  ['engi1'],
+  'engi2':  ['engi2'],
+  'engi3':  ['engi3'],
+  'engi4':  ['engi4'],
+  'engi5':  ['engi5','engi5d'],
+  'engi6':  ['engi6'],
+  'small':  ['small']
+};
+// v4.81: 기출 435개를 최초 화면에서 전부 읽지 않고 선택 면허만 불러옵니다.
+const PAST_DATA_FILES = `past-2020-engi1-2.js,past-2020-engi1-3.js,past-2020-engi1-4.js,past-2020-engi2-2.js,past-2020-engi2-3.js,past-2020-engi2-4.js,past-2020-engi3-2.js,past-2020-engi3-3.js,past-2020-engi3-4.js,past-2020-engi4-2.js,past-2020-engi4-3.js,past-2020-engi4-4.js,past-2020-engi6-2.js,past-2020-engi6-3.js,past-2020-engi6-4.js,past-2020-small-2.js,past-2020-small-3.js,past-2020-small-4.js,past-2020-navi1-2.js,past-2020-navi1-3.js,past-2020-navi1-4.js,past-2020-navi2-2.js,past-2020-navi2-3.js,past-2020-navi2-4.js,past-2020-navi3-2.js,past-2020-navi3-3.js,past-2020-navi3-4.js,past-2020-navi4-2.js,past-2020-navi4-3.js,past-2020-navi4-4.js,past-2020-navi6-2.js,past-2020-navi6-3.js,past-2020-navi6-4.js,past-2021-engi1-1.js,past-2021-engi1-2.js,past-2021-engi1-3.js,past-2021-engi1-4.js,past-2021-engi2-1.js,past-2021-engi2-2.js,past-2021-engi2-3.js,past-2021-engi2-4.js,past-2021-engi3-1.js,past-2021-engi3-2.js,past-2021-engi3-3.js,past-2021-engi3-4.js,past-2021-engi4-1.js,past-2021-engi4-2.js,past-2021-engi4-3.js,past-2021-engi4-4.js,past-2021-engi6-1.js,past-2021-engi6-2.js,past-2021-engi6-3.js,past-2021-engi6-4.js,past-2021-small-1.js,past-2021-small-2.js,past-2021-small-3.js,past-2021-small-4.js,past-2021-navi1-1.js,past-2021-navi1-2.js,past-2021-navi1-3.js,past-2021-navi1-4.js,past-2021-navi1e-1.js,past-2021-navi1e-2.js,past-2021-navi1e-3.js,past-2021-navi1e-4.js,past-2021-navi2-1.js,past-2021-navi2-2.js,past-2021-navi2-3.js,past-2021-navi2-4.js,past-2021-navi2e-1.js,past-2021-navi2e-2.js,past-2021-navi2e-3.js,past-2021-navi2e-4.js,past-2021-navi3-1.js,past-2021-navi3-2.js,past-2021-navi3-3.js,past-2021-navi3-4.js,past-2021-navi3e-1.js,past-2021-navi3e-2.js,past-2021-navi3e-3.js,past-2021-navi3e-4.js,past-2021-navi4-1.js,past-2021-navi4-2.js,past-2021-navi4-3.js,past-2021-navi4-4.js,past-2021-navi4e-1.js,past-2021-navi4e-2.js,past-2021-navi4e-3.js,past-2021-navi4e-4.js,past-2021-navi5-1.js,past-2021-navi5-2.js,past-2021-navi5-3.js,past-2021-navi5-4.js,past-2021-navi5d-1.js,past-2021-navi5d-2.js,past-2021-navi5d-3.js,past-2021-navi5d-4.js,past-2021-navi5de-1.js,past-2021-navi5de-2.js,past-2021-navi5de-3.js,past-2021-navi5de-4.js,past-2021-navi5e-1.js,past-2021-navi5e-2.js,past-2021-navi5e-3.js,past-2021-navi5e-4.js,past-2021-navi6-1.js,past-2021-navi6-2.js,past-2021-navi6-3.js,past-2021-navi6-4.js,past-2021-navi6e-1.js,past-2021-navi6e-2.js,past-2021-navi6e-3.js,past-2021-navi6e-4.js,past-2022-engi1-1.js,past-2022-engi1-2.js,past-2022-engi1-3.js,past-2022-engi1-4.js,past-2022-engi2-1.js,past-2022-engi2-2.js,past-2022-engi2-3.js,past-2022-engi2-4.js,past-2022-engi3-1.js,past-2022-engi3-2.js,
+
+map(Number))]
+    .filter(year=>PAST_EXPLAIN_YEARS.has(year))
+    .map(year=>`past-explain-${year}.js`);
+  if(!targets.length) return {failedFiles:[]};
+  const results=await loadScriptsWithLimit(targets,2);
+  const failedFiles=targets.filter((file,index)=>!results[index]);
+  if(failedFiles.length && typeof showToast==='function'){
+    showToast(`해설 파일 ${failedFiles.length}개를 불러오지 못했습니다. 문제 풀이는 계속할 수 있습니다.`);
+  }
+  return {failedFiles};
+}
+// v4.34: 변종(short) → base(상선/어선 합친 공통 코드) 매핑
+//   navi3e→navi3, navi5de→navi5, engi3→engi3, small→small
+// v4.45: engi5d→engi5 (5급 기관사 국내한정 변종)
+function baseFromShort(short){
+  if(!short) return short;
+  // navi 계열: 'e'/'de'/'d' 접미사 제거 (어선·국내한정 접미사)
+  if(/^navi\d/.test(short)) return short.replace(/(de|e|d)$/,'');
+  // engi 계열: 'd' 접미사 제거 (국내한정 접미사, 현재 5급만)
+  if(/^engi\d/.test(short)) return short.replace(/d$/,'');
+  return short;
+}
+// v4.34: base gradeShort → "3급 항해사" 같이 변종 괄호를 제거한 상위 라벨
+const BASE_GRADE_LABEL = {
+  'navi1':'1급 항해사','navi2':'2급 항해사','navi3':'3급 항해사','navi4':'4급 항해사',
+  'navi5':'5급 항해사','navi6':'6급 항해사',
+  'engi1':'1급 기관사','engi2':'2급 기관사','engi3':'3급 기관사','engi4':'4급 기관사',
+  'engi5':'5급 기관사','engi6':'6급 기관사',
+  'small':'소형선박조종사'
+};
+// v4.34: short(변종) → 상선/어선/국내한정 구분 라벨 ('' 이면 구분 불필요)
+// v4.45: engi5/engi5d → '일반'/'국내한정' 구분 추가
+function variantLabel(short){
+  if(/^navi\d/.test(short)){
+    const m = short.match(/^navi\d(de|e|d)?$/);
+    if(!m) return '';
+    const suf = m[1] || '';
+    if(suf === '') return '상선';
+    if(suf === 'd') return '국내한정(상선)';
+    if(suf === 'e') return '어선';
+    if(suf === 'de') return '국내한정(어선)';
+  }
+  if(/^engi\d/.test(short)){
+    if(short === 'engi5')  return '일반';
+    if(short === 'engi5d') return '국내한정';
+  }
+  return '';
+}
+// v4.34: variant='all'|'상선'|'어선' 필터 통과 여부
+// v4.45: engi5 계열용 '일반'/'국내한정' variant 추가
+function variantMatches(short, variant){
+  if(!variant || variant === 'all') return true;
+  const lab = variantLabel(short);
+  if(variant === '상선') return lab === '상선' || lab === '국내한정(상선)';
+  if(variant === '어선') return lab === '어선' || lab === '국내한정(어선)';
+  if(variant === '일반') return lab === '일반';
+  if(variant === '국내한정') return lab === '국내한정';
+  return true;
+}
+// v4.45: 현재 exams 풀에서 노출할 variant 필터 (title + 선택지)를 결정.
+//   navi: '상선'/'어선' (국내한정은 각각에 합류)
+//   engi5: '일반'/'국내한정'
+//   필터가 불필요(변종 1종 이하)하면 choices=[]
+function getVariantChoices(exams){
+  const labs = [...new Set(exams.map(p => variantLabel(p.meta.gradeShort)).filter(Boolean))];
+  const hasSS = labs.some(l => l.indexOf('상선')>=0);
+  const hasYU = labs.some(l => l.indexOf('어선')>=0);
+  if(hasSS && hasYU){
+    return {title:'상선 / 어선', choices:['상선','어선']};
+  }
+  const hasNormal = labs.includes('일반');
+  const hasRestrict = labs.includes('국내한정');
+  if(hasNormal && hasRestrict){
+    return {title:'일반 / 국내한정', choices:['일반','국내한정']};
+  }
+  return {title:'', choices:[]};
+}
+function getPastExamsForSubject(subjectId){
+  if(!window.MD_PAST) return [];
+  const shorts = PAST_GRADE_MAP[subjectId] || [subjectId];
+  return Object.values(window.MD_PAST).filter(p => p.meta && shorts.includes(p.meta.gradeShort));
+}
+// v4.34: base(예: 'navi3')에 속한 모든 변종(navi3+navi3e) 시험 반환
+function getPastExamsByBase(baseShort, variant){
+  if(!window.MD_PAST) return [];
+  return Object.values(window.MD_PAST).filter(p => {
+    if(!p.meta) return false;
+    if(baseFromShort(p.meta.gradeShort) !== baseShort) return false;
+    return variantMatches(p.meta.gradeShort, variant);
+  });
+}
+function getPastExam(short, year, session){
+  if(!window.MD_PAST) return null;
+  const id = `${year}-${short}-${session}`;
+  return window.MD_PAST[id] || null;
+}
+
+// ── v5.00: 1~5급 항해사(상선) 공통 빈출 분석 ──
+const NAVI_ANALYSIS_GRADES=['navi1','navi2','navi3','navi4','navi5'];
+const NAVI3_ANALYSIS_LIMIT=50;
+const naviAnalysisStates={};
+let naviAnalysisSubjectId='navi3';
+let navi3AnalysisState=naviAnalysisStates.navi3={view:'repeats',subject:'all',range:'all',subjects:null,years:null,minCount:2,sort:'score',query:'',limit:NAVI3_ANALYSIS_LIMIT,_filter
+
+'일반';
+  if(variant === '국내한정') return lab === '국내한정';
+  return true;
+}
+// v4.45: 현재 exams 풀에서 노출할 variant 필터 (title + 선택지)를 결정.
+//   navi: '상선'/'어선' (국내한정은 각각에 합류)
+//   engi5: '일반'/'국내한정'
+//   필터가 불필요(변종 1종 이하)하면 choices=[]
+function getVariantChoices(exams){
+  const labs = [...new Set(exams.map(p => variantLabel(p.meta.gradeShort)).filter(Boolean))];
+  const hasSS = labs.some(l => l.indexOf('상선')>=0);
+  const hasYU = labs.some(l => l.indexOf('어선')>=0);
+  if(hasSS && hasYU){
+    return {title:'상선 / 어선', choices:['상선','어선']};
+  }
+  const hasNormal = labs.includes('일반');
+  const hasRestrict = labs.includes('국내한정');
+  if(hasNormal && hasRestrict){
+    return {title:'일반 / 국내한정', choices:['일반','국내한정']};
+  }
+  return {title:'', choices:[]};
+}
+function getPastExamsForSubject(subjectId){
+  if(!window.MD_PAST) return [];
+  const shorts = PAST_GRADE_MAP[subjectId] || [subjectId];
+  return Object.values(window.MD_PAST).filter(p => p.meta && shorts.includes(p.meta.gradeShort));
+}
+// v4.34: base(예: 'navi3')에 속한 모든 변종(navi3+navi3e) 시험 반환
+function getPastExamsByBase(baseShort, variant){
+  if(!window.MD_PAST) return [];
+  return Object.values(window.MD_PAST).filter(p => {
+    if(!p.meta) return false;
+    if(baseFromShort(p.meta.gradeShort) !== baseShort) return false;
+    return variantMatches(p.meta.gradeShort, variant);
+  });
+}
+function getPastExam(short, year, session){
+  if(!window.MD_PAST) return null;
+  const id = `${year}-${short}-${session}`;
+  return window.MD_PAST[id] || null;
+}
+
+// ── v5.00: 1~5급 항해사(상선) 공통 빈출 분석 ──
+const NAVI_ANALYSIS_GRADES=['navi1','navi2','navi3','navi4','navi5'];
+const NAVI3_ANALYSIS_LIMIT=50;
+const naviAnalysisStates={};
+let naviAnalysisSubjectId='navi3';
+let navi3AnalysisState=naviAnalysisStates.navi3={view:'repeats',subject:'all',range:'all',subjects:null,years:null,minCount:2,sort:'score',query:'',limit:NAVI3_ANALYSIS_LIMIT,_filterLoaded:false};
+let navi3AnalysisDetail=null;
+const N3A_FILTER_STORAGE_PREFIX='md_navi_frequency_filters_v1_';
+function n3aNormalizeQuestion(value){return String(value||'').normalize('NFKC').toLowerCase().replace(/[\s\p{P}\p{S}]+/gu,'')}
+function n3aFilterStorageKey(){return `${N3A_FILTER_STORAGE_PREFIX}${naviAnalysisSubjectId}`}
+function n3aEnsureFilterState(data){
+  const state=navi3AnalysisState;
+  const subjects=(data&&data.subjects||[]).map(String);
+  const years=(data&&data.meta&&data.meta.years||[]).map(Number).sort((a,b)=>a-b);
+  if(!state._filterLoaded){
+    const saved=safeStorageGetJSON(n3aFilterStorageKey(),{},'빈출 필터');
+    state.subjects=Array.isArray(saved.subjects)?saved.subjects.map(String):subjects.slice();
+    state.years=Array.isArray(saved.years)?saved.years.map(Number):years.slice();
+    state.minCount=[1,2,3,4].includes(Number(saved.minCount))?Number(saved.minCount):2;
+    state._filterLoaded=true;
+  }
+  if(!Array.isArray(state.subjects))state.subjects=subjects.slice();
+  if(!Array.isArray(state.years))state.years=years.slice();
+  state.subjects=state.subjects.filter(subject=>subjects.includes(subject));
+  state.years=state.years.map(Number).filter(year=>years.includes(year));
+  if(![1,2,3,4].includes(Number(state.minCount)))state.minCount=2;
+  return state;
+}
+function n3aSaveFilterState(){
+  const state=navi3AnalysisState;
+  safeStorageSet(n3aFilterStorageKey(),JSON.stringify({subjects:state.subjects||[],years:state.years||[],minCount:Number(state.minCount)||2}),'빈출 필터');
+}
+function n3aSubjectSelected(subject){return Array.isArray(navi3AnalysisState.subjects)&&navi3AnalysisState.subjects.includes(subject)}
+function n3aToggleSubject(subject,checked){
+  const data=n3aData();if(!data)return;
+  n3aEnsureFilterState(data);
+  const set=new Set(navi3AnalysisState.subjects||[]);
+  checked?set.add(subject):set.delete(subject);
+  navi3AnalysisState.subjects=(data.subjects||[]).filter(item=>set.has(item));
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();renderNavi3Frequency();
+}
+function n3aPresetSubjects(mode){
+  const data=n3aData();if(!data)retu
+
+t hasRestrict = labs.includes('국내한정');
+  if(hasNormal && hasRestrict){
+    return {title:'일반 / 국내한정', choices:['일반','국내한정']};
+  }
+  return {title:'', choices:[]};
+}
+function getPastExamsForSubject(subjectId){
+  if(!window.MD_PAST) return [];
+  const shorts = PAST_GRADE_MAP[subjectId] || [subjectId];
+  return Object.values(window.MD_PAST).filter(p => p.meta && shorts.includes(p.meta.gradeShort));
+}
+// v4.34: base(예: 'navi3')에 속한 모든 변종(navi3+navi3e) 시험 반환
+function getPastExamsByBase(baseShort, variant){
+  if(!window.MD_PAST) return [];
+  return Object.values(window.MD_PAST).filter(p => {
+    if(!p.meta) return false;
+    if(baseFromShort(p.meta.gradeShort) !== baseShort) return false;
+    return variantMatches(p.meta.gradeShort, variant);
+  });
+}
+function getPastExam(short, year, session){
+  if(!window.MD_PAST) return null;
+  const id = `${year}-${short}-${session}`;
+  return window.MD_PAST[id] || null;
+}
+
+// ── v5.00: 1~5급 항해사(상선) 공통 빈출 분석 ──
+const NAVI_ANALYSIS_GRADES=['navi1','navi2','navi3','navi4','navi5'];
+const NAVI3_ANALYSIS_LIMIT=50;
+const naviAnalysisStates={};
+let naviAnalysisSubjectId='navi3';
+let navi3AnalysisState=naviAnalysisStates.navi3={view:'repeats',subject:'all',range:'all',subjects:null,years:null,minCount:2,sort:'score',query:'',limit:NAVI3_ANALYSIS_LIMIT,_filterLoaded:false};
+let navi3AnalysisDetail=null;
+const N3A_FILTER_STORAGE_PREFIX='md_navi_frequency_filters_v1_';
+function n3aNormalizeQuestion(value){return String(value||'').normalize('NFKC').toLowerCase().replace(/[\s\p{P}\p{S}]+/gu,'')}
+function n3aFilterStorageKey(){return `${N3A_FILTER_STORAGE_PREFIX}${naviAnalysisSubjectId}`}
+function n3aEnsureFilterState(data){
+  const state=navi3AnalysisState;
+  const subjects=(data&&data.subjects||[]).map(String);
+  const years=(data&&data.meta&&data.meta.years||[]).map(Number).sort((a,b)=>a-b);
+  if(!state._filterLoaded){
+    const saved=safeStorageGetJSON(n3aFilterStorageKey(),{},'빈출 필터');
+    state.subjects=Array.isArray(saved.subjects)?saved.subjects.map(String):subjects.slice();
+    state.years=Array.isArray(saved.years)?saved.years.map(Number):years.slice();
+    state.minCount=[1,2,3,4].includes(Number(saved.minCount))?Number(saved.minCount):2;
+    state._filterLoaded=true;
+  }
+  if(!Array.isArray(state.subjects))state.subjects=subjects.slice();
+  if(!Array.isArray(state.years))state.years=years.slice();
+  state.subjects=state.subjects.filter(subject=>subjects.includes(subject));
+  state.years=state.years.map(Number).filter(year=>years.includes(year));
+  if(![1,2,3,4].includes(Number(state.minCount)))state.minCount=2;
+  return state;
+}
+function n3aSaveFilterState(){
+  const state=navi3AnalysisState;
+  safeStorageSet(n3aFilterStorageKey(),JSON.stringify({subjects:state.subjects||[],years:state.years||[],minCount:Number(state.minCount)||2}),'빈출 필터');
+}
+function n3aSubjectSelected(subject){return Array.isArray(navi3AnalysisState.subjects)&&navi3AnalysisState.subjects.includes(subject)}
+function n3aToggleSubject(subject,checked){
+  const data=n3aData();if(!data)return;
+  n3aEnsureFilterState(data);
+  const set=new Set(navi3AnalysisState.subjects||[]);
+  checked?set.add(subject):set.delete(subject);
+  navi3AnalysisState.subjects=(data.subjects||[]).filter(item=>set.has(item));
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();renderNavi3Frequency();
+}
+function n3aPresetSubjects(mode){
+  const data=n3aData();if(!data)return;n3aEnsureFilterState(data);
+  navi3AnalysisState.subjects=mode==='none'?[]:[...(data.subjects||[])];
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();renderNavi3Frequency();
+}
+function n3aToggleYear(year,checked){
+  const data=n3aData();if(!data)return;n3aEnsureFilterState(data);
+  const set=new Set((navi3AnalysisState.years||[]).map(Number));
+  checked?set.add(Number(year)):set.delete(Number(year));
+  navi3AnalysisState.years=(data.meta.years||[]).map(Number).filter(item=>set.has(item));
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterSta
+
+일반','국내한정']};
+  }
+  return {title:'', choices:[]};
+}
+function getPastExamsForSubject(subjectId){
+  if(!window.MD_PAST) return [];
+  const shorts = PAST_GRADE_MAP[subjectId] || [subjectId];
+  return Object.values(window.MD_PAST).filter(p => p.meta && shorts.includes(p.meta.gradeShort));
+}
+// v4.34: base(예: 'navi3')에 속한 모든 변종(navi3+navi3e) 시험 반환
+function getPastExamsByBase(baseShort, variant){
+  if(!window.MD_PAST) return [];
+  return Object.values(window.MD_PAST).filter(p => {
+    if(!p.meta) return false;
+    if(baseFromShort(p.meta.gradeShort) !== baseShort) return false;
+    return variantMatches(p.meta.gradeShort, variant);
+  });
+}
+function getPastExam(short, year, session){
+  if(!window.MD_PAST) return null;
+  const id = `${year}-${short}-${session}`;
+  return window.MD_PAST[id] || null;
+}
+
+// ── v5.00: 1~5급 항해사(상선) 공통 빈출 분석 ──
+const NAVI_ANALYSIS_GRADES=['navi1','navi2','navi3','navi4','navi5'];
+const NAVI3_ANALYSIS_LIMIT=50;
+const naviAnalysisStates={};
+let naviAnalysisSubjectId='navi3';
+let navi3AnalysisState=naviAnalysisStates.navi3={view:'repeats',subject:'all',range:'all',subjects:null,years:null,minCount:2,sort:'score',query:'',limit:NAVI3_ANALYSIS_LIMIT,_filterLoaded:false};
+let navi3AnalysisDetail=null;
+const N3A_FILTER_STORAGE_PREFIX='md_navi_frequency_filters_v1_';
+function n3aNormalizeQuestion(value){return String(value||'').normalize('NFKC').toLowerCase().replace(/[\s\p{P}\p{S}]+/gu,'')}
+function n3aFilterStorageKey(){return `${N3A_FILTER_STORAGE_PREFIX}${naviAnalysisSubjectId}`}
+function n3aEnsureFilterState(data){
+  const state=navi3AnalysisState;
+  const subjects=(data&&data.subjects||[]).map(String);
+  const years=(data&&data.meta&&data.meta.years||[]).map(Number).sort((a,b)=>a-b);
+  if(!state._filterLoaded){
+    const saved=safeStorageGetJSON(n3aFilterStorageKey(),{},'빈출 필터');
+    state.subjects=Array.isArray(saved.subjects)?saved.subjects.map(String):subjects.slice();
+    state.years=Array.isArray(saved.years)?saved.years.map(Number):years.slice();
+    state.minCount=[1,2,3,4].includes(Number(saved.minCount))?Number(saved.minCount):2;
+    state._filterLoaded=true;
+  }
+  if(!Array.isArray(state.subjects))state.subjects=subjects.slice();
+  if(!Array.isArray(state.years))state.years=years.slice();
+  state.subjects=state.subjects.filter(subject=>subjects.includes(subject));
+  state.years=state.years.map(Number).filter(year=>years.includes(year));
+  if(![1,2,3,4].includes(Number(state.minCount)))state.minCount=2;
+  return state;
+}
+function n3aSaveFilterState(){
+  const state=navi3AnalysisState;
+  safeStorageSet(n3aFilterStorageKey(),JSON.stringify({subjects:state.subjects||[],years:state.years||[],minCount:Number(state.minCount)||2}),'빈출 필터');
+}
+function n3aSubjectSelected(subject){return Array.isArray(navi3AnalysisState.subjects)&&navi3AnalysisState.subjects.includes(subject)}
+function n3aToggleSubject(subject,checked){
+  const data=n3aData();if(!data)return;
+  n3aEnsureFilterState(data);
+  const set=new Set(navi3AnalysisState.subjects||[]);
+  checked?set.add(subject):set.delete(subject);
+  navi3AnalysisState.subjects=(data.subjects||[]).filter(item=>set.has(item));
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();renderNavi3Frequency();
+}
+function n3aPresetSubjects(mode){
+  const data=n3aData();if(!data)return;n3aEnsureFilterState(data);
+  navi3AnalysisState.subjects=mode==='none'?[]:[...(data.subjects||[])];
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();renderNavi3Frequency();
+}
+function n3aToggleYear(year,checked){
+  const data=n3aData();if(!data)return;n3aEnsureFilterState(data);
+  const set=new Set((navi3AnalysisState.years||[]).map(Number));
+  checked?set.add(Number(year)):set.delete(Number(year));
+  navi3AnalysisState.years=(data.meta.years||[]).map(Number).filter(item=>set.has(item));
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();renderNavi3Frequency();
+}
+function n3aPresetYears(mode,skipRender){
+  const data=n3aData();if(!data)return;
+
+f(!skipRender)renderNavi3Frequency();
+}
+function n3aSetMinCount(value,skipRender){
+  const n=Number(value);navi3AnalysisState.minCount=[1,2,3,4].includes(n)?n:2;
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();if(!skipRender)renderNavi3Frequency();
+}
+function n3aQuickRecentFive(){
+  const data=n3aData();if(!data)return;n3aEnsureFilterState(data);
+  const all=(data.meta.years||[]).map(Number).sort((a,b)=>a-b);
+  const partial=new Set((data.meta.partialYears||[]).map(Number));
+  const complete=((data.meta.completeYears||[]).length?(data.meta.completeYears||[]).map(Number):all.filter(year=>!partial.has(year))).sort((a,b)=>a-b);
+  navi3AnalysisState.years=complete.slice(-5);
+  navi3AnalysisState.minCount=2;
+  navi3AnalysisState.view='repeats';
+  navi3AnalysisState.sort='count';
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;
+  n3aSaveFilterState();renderNavi3Frequency();
+}
+
+function n3aActivateGrade(subjectId){
+  if(!NAVI_ANALYSIS_GRADES.includes(subjectId))subjectId='navi3';
+  if(naviAnalysisSubjectId!==subjectId)navi3AnalysisDetail=null;
+  naviAnalysisSubjectId=subjectId;
+  if(!naviAnalysisStates[subjectId])naviAnalysisStates[subjectId]={view:'repeats',subject:'all',range:'all',subjects:null,years:null,minCount:2,sort:'score',query:'',limit:NAVI3_ANALYSIS_LIMIT,_filterLoaded:false};
+  navi3AnalysisState=naviAnalysisStates[subjectId];
+}
+function n3aData(subjectId){
+  const gradeId=subjectId||naviAnalysisSubjectId;
+  return window.MD_NAVI_FREQUENCY&&window.MD_NAVI_FREQUENCY[gradeId]||null;
+}
+const n3aOriginIndexes={};
+function n3aOriginKey(year,session,subject,number){return `${year}|${session}|${subject}|${number}`}
+function n3aQuestionOrigin(q){
+  if(!q||Number(q._year)<2026)return null;
+  const gradeId=baseFromShort(q._short||'');
+  if(!NAVI_ANALYSIS_GRADES.includes(gradeId))return null;
+  const data=n3aData(gradeId);
+  if(!data||!Array.isArray(data.classifications))return null;
+  if(!n3aOriginIndexes[gradeId]){
+    n3aOriginIndexes[gradeId]=new Map(data.classifications.map(entry=>[
+      n3aOriginKey(entry.year,entry.session,entry.subject,entry.number),entry
+    ]));
+  }
+  return n3aOriginIndexes[gradeId].get(n3aOriginKey(q._year,q._session||q['회차'],q['과목'],q['번호']))||null;
+}
+function n3aOriginTagHtml(q){
+  const origin=n3aQuestionOrigin(q);if(!origin)return '';
+  const styles={
+    new:{label:'신출',bg:'#F3E8FF',color:'#7E22CE'},
+    past:{label:'기출',bg:'#DBEAFE',color:'#1D4ED8'},
+    frequent:{label:'빈출',bg:'#FEE2E2',color:'#B91C1C'}
+  };
+  const style=styles[origin.status]||styles.new;
+  const history=origin.previousCount
+    ? `2020~2025년 동일 문항 ${origin.previousCount}회 · ${origin.previousYears.join('·')}년`
+    : '2020~2025년 동일 문항 없음';
+  const sameYear=origin.sameYearEarlierCount?` · ${origin.year}년 앞 회차 ${origin.sameYearEarlierCount}회`:'';
+  const count=origin.status==='frequent'?` · 과거 ${origin.previousCount}회`:origin.status==='past'?' · 과거 1회':'';
+  return `<span class="tag" style="background:${style.bg};color:${style.color};margin:0" title="${escapeHtml(history+sameYear)}">${style.label}${count}</span>`;
+}
+async function ensureNavi3FrequencyData(subjectId){
+  const gradeId=subjectId||naviAnalysisSubjectId;
+  const existing=n3aData(gradeId);if(existing)return existing;
+  const loaded=await loadOptionalScript(`past-analysis-${gradeId}.js`);
+  const data=n3aData(gradeId);
+  if(!loaded||!data)throw new Error(`${gradeId.replace('navi','')}급 항해사 분석 데이터를 불러오지 못했습니다.`);
+  return data;
+}
+function n3aRangeYears(data,range){
+  const all=(data.meta.years||[]).map(Number);
+  n3aEnsureFilterState(data);
+  if(Array.isArray(navi3AnalysisState.years))return new Set(navi3AnalysisState.years.map(Number).filter(year=>all.includes(year)));
+  if(range==='complete')return new Set((data.meta.completeYears||[]).map(Number));
+  if(range==='recent')return new Set(all.filter(year=>year>=2023));
+  return new Set(all);
+}
+function n3aRangeLabel(data,range){
+  const years=[...n3aRangeYears(data,range)].sort((a,b)=>a-b);
+  if(!years
+
+n이 홈으로 돌아가도록
+  pastYear = null; pastSession = null;
+  currentMode = 'past';
+  renderPastCard();
+}
+
+// Step 1: 해당 subject에 속한 세부 급(5급/6급 등) 선택
+// v4.34: 상선/어선 변종을 base로 통합. base 버킷이 1개면 자동으로 년도 선택으로 점프
+async function renderPastHome(subjectId){
+  pastSubjectId = subjectId;
+  const s = SUBJECTS.find(x=>x.id===subjectId);
+  const g = SUBJECT_GROUPS.find(x=>x.ids.includes(subjectId));
+  const gColor = g?g.color:'#1E40AF';
+  if(!s || !getPastDataFilesForSubject(subjectId).length){ renderSubjectSelect(); return; }
+  let pastList = getPastExamsForSubject(subjectId);
+  if(!pastDataSubjectsLoaded.has(subjectId)){
+    renderPastLoading(`${s.name} 기출 데이터를 불러오는 중입니다`);
+    try{
+      pastList = await ensurePastDataForSubject(subjectId);
+    }catch(error){
+      console.error('[v4.81] 기출 데이터 로드 실패:',error);
+      renderPastLoadError(subjectId,error.failedFiles||[]);
+      return;
+    }
+  }
+  if(!s || !pastList.length){ renderSubjectSelect(); return; }
+  // v4.34: base 기준으로 세부 급 묶기 (navi3 + navi3e → 'navi3' / engi5,engi6 → 별도)
+  const bucket = new Map(); // baseShort -> {label, count}
+  pastList.forEach(p => {
+    const sh = p.meta.gradeShort || 'x';
+    const base = baseFromShort(sh);
+    const label = BASE_GRADE_LABEL[base] || (p.meta.gradeLabel || base).replace(/\s*\(.+?\)\s*/g,'').trim();
+    const b = bucket.get(base) || {label, count: 0};
+    b.count += p.questions.length;
+    bucket.set(base, b);
+  });
+  const bases = [...bucket.entries()].sort((a,b)=>a[0].localeCompare(b[0]));
+
+  // v4.34 Change 3: base 버킷이 1개뿐이면 자동으로 년도 선택으로 점프 (중복 네비 제거)
+  if(bases.length === 1){
+    const [onlyBase] = bases[0];
+    renderPastYearPick(subjectId, onlyBase);
+    return;
+  }
+
+  app.innerHTML = `
+    <div style="padding-top:24px;margin-bottom:20px">
+      <button type="button" class="text-nav" onclick="pickPrepType('${subjectId}')">${icon('arrowLeft',14)} 학습유형으로</button>
+      <h1 style="font-size:24px;font-weight:800;margin:0 0 4px 0;color:${gColor}">${s.name} <span style="font-size:15px;font-weight:600;color:var(--textDim)">· 필기 기출</span></h1>
+      <p style="font-size:13px;color:var(--textDim)">세부 급을 선택하세요</p>
+    </div>
+    <div class="card">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        ${bases.map(([base,b])=>`
+          <button class="btn btn-outline" style="text-align:left;padding:20px 18px;border-color:${gColor};color:${gColor};font-size:17px;font-weight:800" onclick="renderPastYearPick('${subjectId}','${base}')">
+            ${b.label} <span style="float:right;color:var(--textDim);font-weight:600;font-size:12px;line-height:28px;display:inline-flex;align-items:center;gap:3px">${b.count}문제 ${icon('chevronRight',14)}</span>
+          </button>`).join('')}
+      </div>
+    </div>
+    <div style="text-align:center;padding:16px 0">
+      <div style="font-size:10px;color:var(--textMuted);letter-spacing:1px">Maritime Drill v${APP_VERSION} · 필기 기출</div>
+    </div>
+  `;
+}
+
+// Step 2: 년도 선택
+// v4.34: 인자명 short → baseShort (상선/어선 통합). 내부는 변종 exams 모두 포함.
+// v4.38: 과목별 모아보기(Subject Aggregate) 진입점 제거 — runner에서 동일 기능 제공.
+// v4.44: 최상단에 "전 년도 랜덤" 카드 추가 — 과목/변종 필터로 전 년도 통합 학습·모의 가능.
+function renderPastYearPick(subjectId, baseShort){
+  currentMode="past-menu";
+  pastReturnView=null;
+  pastSubjectId = subjectId; pastBaseShort = baseShort;
+  const s = SUBJECTS.find(x=>x.id===subjectId);
+  const g = SUBJECT_GROUPS.find(x=>x.ids.includes(subjectId));
+  const gColor = g?g.color:'#1E40AF';
+  const exams = getPastExamsByBase(baseShort, 'all');
+  if(!exams.length){ renderPastHome(subjectId); return; }
+  const label = BASE_GRADE_LABEL[baseShort] || (exams[0].meta.gradeLabel || baseShort).replace(/\s*\(.+?\)\s*/g,'').trim();
+  // v4.45: 현재 exam 풀에 실제 존재하는 variant로 동적 필터 구성 (navi: 상선/어선, engi5: 일반/국내한정)
+  const vc = getVariantChoices(exams);
+  const showVariantFilter = vc.choices.length > 0;
+  if(!showVariantFilter) pastYearPickVariant = 'all';
+  const curV = pastYearPickVariant || 'all';
+  // 년도별 집계 (변종 합산)
+  const years = new Map();
+  exams.f
+
+.session,'회차':r.session};map.set(pqid(full),full);}
+        examMaps.set(key,map);
+      }
+      const q=examMaps.get(key).get(r.id);if(!q)throw new Error('저장된 문항을 찾지 못했습니다. 진행 기록은 보존했습니다.');
+      return {...q,_source:r.source,_n3aGroupId:r.group};
+    });
+    if(state.answers.some((a,i)=>a!==null&&(!Number.isInteger(a)||a<0||a>=restored[i]['선택지'].length)))throw new Error('저장된 답안을 확인할 수 없습니다.');
+    await ensurePastExplainForYears(meta.refs.map(r=>r.year));
+    pastQueue=restored;pastAnswers=state.answers;pastIdx=state.idx;pastMode=state.mode;
+    // Paused time is excluded from the next displayed session duration.
+    pastStartedAt=Date.now()-Math.max(0,state.savedAt-state.startedAt);
+    pastSubjectId=meta.subjectId;pastBaseShort=meta.base;pastYear=meta.year;pastSession=meta.session;pastVariant=meta.variant;pastAllYears=meta.allYears;pastReturnView=meta.returnView;
+    if(meta.analysisSubject)n3aActivateGrade(meta.analysisSubject);
+    if(meta.returnView&&meta.returnView.startsWith('navi3'))await ensureNavi3FrequencyData(meta.analysisSubject);
+    navi3AnalysisDetail=meta.analysisDetail;navi3PracticeReturn=meta.practiceReturn;navi3PracticeLabel=meta.practiceLabel;
+    pastSavedAnswers=pastAnswers;pastProgressId=meta.id;currentMode='past';renderPastCard();
+  }catch(error){app.innerHTML=`<div class="card"><p>${escapeHtml(error.message)}</p><button class="btn btn-outline" onclick="pickPrepType('${escapeHtml(meta.subjectId)}')">학습 유형으로</button></div>`;}
+}
+function retryPastSessionWrongs(){
+  const weak=pastQueue.filter((q,i)=>pastAnswers[i]!==q['정답']);if(!weak.length)return;
+  pastQueue=shuffle(weak);pastAnswers=new Array(weak.length).fill(null);pastIdx=0;pastMode='study';pastStartedAt=Date.now();
+  pastAllYears=true;pastYear=null;pastSession=null;currentMode='past';renderPastCard();
+}
+
+// ── INIT ──
+if(window.speechSynthesis&&speechSynthesis.onvoiceschanged!==undefined){speechSynthesis.onvoiceschanged=()=>{}}
+try{
+  renderSubjectSelect();
+  window.__MD_BOOTED__=true;
+}catch(error){
+  console.error('Maritime Drill 초기화 실패:',error);
+  if(window.__MD_SHOW_BOOT_ERROR__) window.__MD_SHOW_BOOT_ERROR__('앱 초기화 오류',error&&error.message?error.message:'파일을 다시 열어 주세요.');
+}
+// ── v4.8: splash fade-out (≥800ms 표시 후 페이드아웃) ──
+setTimeout(()=>{
+  const s=document.getElementById('splash');
+  if(s){ s.classList.add('hide'); setTimeout(()=>{ try{s.remove();}catch(e){} },600); }
+  // v4.25: 첫 실행 1회 약관 동의 — splash 완전 제거 후(800+700=1500ms) 표시
+  if(!hasAgreedTerms()){ setTimeout(showTermsAgreement, 700); }
+},800);
+// v4.25: 안전장치 — 2초 뒤에도 splash가 남아있으면 강제 제거
+setTimeout(()=>{
+  const s=document.getElementById('splash');
+  if(s){ try{ s.remove(); }catch(e){} }
+}, 2500);
+
+</script>
+
+<script>
+function showToast(msg,duration){
+  duration=duration||2800;
+  let t=document.getElementById('_appToast');
+  if(!t){t=document.createElement('div');t.id='_appToast';
+    t.style.cssText='position:fixed;top:16px;left:50%;transform:translateX(-50%);background:#1E293B;color:#fff;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:700;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.35);pointer-events:none;transition:opacity .3s;opacity:0';
+    document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';
+  clearTimeout(t._tmr);t._tmr=setTimeout(()=>{t.style.opacity='0';},duration);
+}
+function showConfirm(msg,onOk){
+  window._mdConfirmOk=()=>{closeModal();if(typeof onOk==='function')onOk();};
+  openModal({
+    title:'확인',
+    body:`<p style="white-space:pre-wrap;margin:0">${escapeHTML(msg)}</p>`,
+    footer:`<button class="btn btn-outline" style="flex:1;border-color:var(--textDim);color:var(--textDim)" onclick="closeModal()">취소</button><button class="btn btn-accent" style="flex:1" onclick="window._mdConfirmOk()">확인</button>`
+  });
+}
+function appAlert(msg){
+  openModal({
+    title:'알림',
+    body:`<p style="white-space:pre-wrap;margin:0">${escapeHTML(msg)}</p>`,
+    footer:`<button class="btn btn-accent" style="flex:1" onclick="closeModal()">확인</button>`
+ 
+
+s.value==null?'':opts.value)}" ${opts.min!=null?`min="${opts.min}"`:''} ${opts.max!=null?`max="${opts.max}"`:''} style="width:100%;padding:12px;border:1px solid var(--border);border-radius:8px;font:inherit" onkeydown="if(event.key==='Enter'){event.preventDefault();window._mdPromptSubmit()}">`,
+    footer:`<button class="btn btn-outline" style="flex:1;border-color:var(--textDim);color:var(--textDim)" onclick="closeModal()">취소</button><button class="btn btn-accent" style="flex:1" onclick="window._mdPromptSubmit()">적용</button>`
+  });
+  setTimeout(()=>{const input=document.getElementById('_mdPromptInput');if(input){input.focus();input.select();}},0);
+}
+window.alert=appAlert;
+</script>
+
+<script>
+// ── v5.07: 2·3급 항해사 합격 플랜 / 오늘의 숙제 ──
+// 시험일에서 역산하여 최근 5개년 빈출 → 전체 → 시험 직전 복습 순으로 배정하고,
+// 같은 날 정답 암기만으로는 숙달 처리하지 않습니다.
+(function(){
+  const PLAN_KEY='md_nav23_pass_plan_v1';
+  const PROGRESS_KEY='md_nav23_pass_progress_v1';
+  const DAILY_KEY='md_nav23_pass_daily_v1';
+  const PLAN_GRADES=['navi2','navi3'];
+  const GRADE_LABELS={navi2:'2급 항해사',navi3:'3급 항해사'};
+  let planEntrySubject='navi2';
+  let planPools={};
+  let planSessionQueue=[];
+  let planSessionIdx=0;
+  let planSessionAnswers=[];
+  let planSessionConfidence=[];
+  let planSessionStartedAt=0;
+  let planSessionCommitted=new Set();
+
+  const PASS_SESSION_CHECKPOINT_KEY='md_pass_plan_session_checkpoint_v2';
+  function ppSavePassSessionCheckpoint(nextIndex){
+    try{
+      if(!Array.isArray(planSessionQueue)||!planSessionQueue.length)return;
+      const idx=Math.max(0,Number(nextIndex)||0);
+      if(idx>=planSessionQueue.length){localStorage.removeItem(PASS_SESSION_CHECKPOINT_KEY);return}
+      localStorage.setItem(PASS_SESSION_CHECKPOINT_KEY,JSON.stringify({
+        version:2,date:ppDateKey(new Date()),savedAt:new Date().toISOString(),
+        queueKeys:planSessionQueue.map(q=>q._planKey),nextIndex:idx,
+        answers:Array.isArray(planSessionAnswers)?planSessionAnswers.slice():[],
+        confidence:Array.isArray(planSessionConfidence)?planSessionConfidence.slice():[],
+        committed:Array.from(planSessionCommitted||[])
+      }));
+    }catch(e){console.warn('[pass-plan] checkpoint save failed',e)}
+  }
+  function ppLoadPassSessionCheckpoint(){
+    try{
+      const raw=localStorage.getItem(PASS_SESSION_CHECKPOINT_KEY);if(!raw)return null;
+      const cp=JSON.parse(raw);
+      if(!cp||cp.version!==2||cp.date!==ppDateKey(new Date())||!Array.isArray(cp.queueKeys)){
+        localStorage.removeItem(PASS_SESSION_CHECKPOINT_KEY);return null
+      }
+      return cp;
+    }catch(e){localStorage.removeItem(PASS_SESSION_CHECKPOINT_KEY);return null}
+  }
+  function ppClearPassSessionCheckpoint(){try{localStorage.removeItem(PASS_SESSION_CHECKPOINT_KEY)}catch(e){}}
+
+  function ppDateKey(date){
+    const d=date instanceof Date?date:new Date();
+    const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');
+    return `${y}-${m}-${day}`;
+  }
+  function ppParseDate(s){
+    const m=String(s||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if(!m)return null;
+    const d=new Date(Number(m[1]),Number(m[2])-1,Number(m[3]));
+    return Number.isNaN(d.getTime())?null:d;
+  }
+  function ppAddDays(s,n){
+    const d=ppParseDate(s)||new Date();
+    d.setDate(d.getDate()+Number(n||0));
+    return ppDateKey(d);
+  }
+  function ppDiffDays(from,to){
+    const a=ppParseDate(from),b=ppParseDate(to);if(!a||!b)return null;
+    return Math.round((b.getTime()-a.getTime())/86400000);
+  }
+  function ppMinDate(a,b){
+    if(!a)return b;if(!b)return a;return a<b?a:b;
+  }
+  function ppDefaultPlan(){
+    return {
+      dailyCap:120,
+      finalDays:4,
+      revision:0,
+      grades:{
+        navi2:{enabled:true,examDate:'',subjects:null},
+        navi3:{enabled:true,examDate:'',subjects:null}
+      }
+    };
+  }
+  function ppLoadPlan(){
+    const base=ppDefaultPlan();
+    try{
+      const raw=localStorage.getItem(PLAN_KEY);if(!raw)return base;
+      const saved=JSON.parse(raw)||{};
+      ba

@@ -1,0 +1,530 @@
+nt(q,includeVisual=true){
+  const oral=getPrimaryAnswer(q);
+  const hasShort=!!(q.oralAnswer && q.oralAnswer!==q.answer);
+  const visual=includeVisual && q.visualId ? renderMaritimeVisual(q.visualId) : '';
+  const detail=hasShort ? `<details style="margin-top:12px;border-top:1px solid var(--border);padding-top:10px"><summary style="cursor:pointer;color:var(--textDim);font-size:12px;font-weight:800">상세 채점요소 펼치기</summary><p style="font-size:13px;line-height:1.8;white-space:pre-wrap;margin:10px 0 0">${boldAnswer(q.answer)}</p></details>` : '';
+  return `${hasShort?'<div style="display:inline-flex;padding:3px 8px;border-radius:999px;background:#DBEAFE;color:#1D4ED8;font-size:10px;font-weight:800;margin-bottom:8px">첫 답변 · 약 20~40초</div>':''}<p style="font-size:15px;line-height:1.85;white-space:pre-wrap;margin:0;font-weight:${hasShort?'650':'400'}">${boldAnswer(oral)}</p>${visual}${detail}${renderQuestionAudit(q)}`;
+}
+function startVisualDrills(){
+  if(!currentSubject || currentSubject.id!=='navi2') return;
+  visualDrillIndex=0;
+  visualDrillRevealed=false;
+  currentMode='visual';
+  renderVisualDrill(true);
+}
+function moveVisualDrill(delta){
+  visualDrillIndex=(visualDrillIndex+delta+NAVI2_VISUAL_DRILLS.length)%NAVI2_VISUAL_DRILLS.length;
+  visualDrillRevealed=false;
+  renderVisualDrill(true);
+}
+function revealVisualDrill(){
+  visualDrillRevealed=true;
+  renderVisualDrill(false);
+  speak(NAVI2_VISUAL_DRILLS[visualDrillIndex].answer);
+}
+function rateVisualDrill(correct,confidence){
+  const drill=NAVI2_VISUAL_DRILLS[visualDrillIndex];
+  const q=drill&&QUESTIONS.find(x=>x.id===drill.qid);if(!q)return;
+  const item={...boxes[q.id]};const quality=qualityFromInput(correct,confidence);
+  if(correct&&confidence==='sure'){item.correct++;item.box=Math.min(item.box+1,3);}
+  else if(correct){item.correct++;}
+  else{item.wrong++;item.box=1;}
+  updateSpacedReview(item,quality);updateWrongRecovery(item,correct,confidence,false);
+  item.confidence=confidence;stampStudied(item);boxes[q.id]=item;save();
+  if(visualDrillIndex>=NAVI2_VISUAL_DRILLS.length-1){currentMode='home';renderHome();if(typeof showToast==='function')showToast('도판 4개 평가를 복습 일정에 반영했습니다.');return;}
+  moveVisualDrill(1);
+}
+function renderVisualDrill(announce){
+  const drill=NAVI2_VISUAL_DRILLS[visualDrillIndex];
+  if(!drill || !currentSubject || currentSubject.id!=='navi2'){ currentMode='home'; renderHome(); return; }
+  stopTTS();
+  app.innerHTML=`
+    <div class="flex" style="justify-content:space-between;align-items:center;margin:16px 0 12px">
+      <button class="btn btn-outline" style="width:auto;font-size:13px;padding:8px 12px" onclick="currentMode='home';renderHome()">${icon('arrowLeft',14)} 홈</button>
+      <div style="font-size:12px;color:var(--textDim);font-weight:700">도판 훈련 ${visualDrillIndex+1} / ${NAVI2_VISUAL_DRILLS.length}</div>
+    </div>
+    <div class="progress"><div class="progress-fill" style="width:${((visualDrillIndex+1)/NAVI2_VISUAL_DRILLS.length)*100}%;background:#1E40AF"></div></div>
+    <div class="card" style="border-left:3px solid #1E40AF">
+      <div style="font-size:11px;color:#1E40AF;font-weight:800;letter-spacing:1px;margin-bottom:8px">${escapeHTML(drill.title)}</div>
+      <p class="q-text" style="margin-bottom:12px">${escapeHTML(drill.question)}</p>
+      ${renderMaritimeVisual(drill.id)}
+    </div>
+    ${visualDrillRevealed?`<div class="answer-box"><div style="font-size:11px;font-weight:800;color:var(--accent);letter-spacing:1px;margin-bottom:8px">핵심 구술답안</div><p style="font-size:15px;line-height:1.85;margin:0;font-weight:650">${boldAnswer(drill.answer)}</p><div style="font-size:10px;color:var(--textMuted);margin-top:10px">기준: ${escapeHTML(drill.standard)}</div></div>`:''}
+    ${visualDrillRevealed?`<div style="font-size:11px;color:var(--textMuted);text-align:center;margin:10px 0 6px">방금 구술한 답을 평가하면 복습 일정에 반영됩니다.</div><div style="display:flex;gap:8px"><button class="btn" style="flex:1;background:var(--red)" onclick="rateVisualDrill(false,'unsure')">틀림
+
+DrillRevealed=true;
+  renderVisualDrill(false);
+  speak(NAVI2_VISUAL_DRILLS[visualDrillIndex].answer);
+}
+function rateVisualDrill(correct,confidence){
+  const drill=NAVI2_VISUAL_DRILLS[visualDrillIndex];
+  const q=drill&&QUESTIONS.find(x=>x.id===drill.qid);if(!q)return;
+  const item={...boxes[q.id]};const quality=qualityFromInput(correct,confidence);
+  if(correct&&confidence==='sure'){item.correct++;item.box=Math.min(item.box+1,3);}
+  else if(correct){item.correct++;}
+  else{item.wrong++;item.box=1;}
+  updateSpacedReview(item,quality);updateWrongRecovery(item,correct,confidence,false);
+  item.confidence=confidence;stampStudied(item);boxes[q.id]=item;save();
+  if(visualDrillIndex>=NAVI2_VISUAL_DRILLS.length-1){currentMode='home';renderHome();if(typeof showToast==='function')showToast('도판 4개 평가를 복습 일정에 반영했습니다.');return;}
+  moveVisualDrill(1);
+}
+function renderVisualDrill(announce){
+  const drill=NAVI2_VISUAL_DRILLS[visualDrillIndex];
+  if(!drill || !currentSubject || currentSubject.id!=='navi2'){ currentMode='home'; renderHome(); return; }
+  stopTTS();
+  app.innerHTML=`
+    <div class="flex" style="justify-content:space-between;align-items:center;margin:16px 0 12px">
+      <button class="btn btn-outline" style="width:auto;font-size:13px;padding:8px 12px" onclick="currentMode='home';renderHome()">${icon('arrowLeft',14)} 홈</button>
+      <div style="font-size:12px;color:var(--textDim);font-weight:700">도판 훈련 ${visualDrillIndex+1} / ${NAVI2_VISUAL_DRILLS.length}</div>
+    </div>
+    <div class="progress"><div class="progress-fill" style="width:${((visualDrillIndex+1)/NAVI2_VISUAL_DRILLS.length)*100}%;background:#1E40AF"></div></div>
+    <div class="card" style="border-left:3px solid #1E40AF">
+      <div style="font-size:11px;color:#1E40AF;font-weight:800;letter-spacing:1px;margin-bottom:8px">${escapeHTML(drill.title)}</div>
+      <p class="q-text" style="margin-bottom:12px">${escapeHTML(drill.question)}</p>
+      ${renderMaritimeVisual(drill.id)}
+    </div>
+    ${visualDrillRevealed?`<div class="answer-box"><div style="font-size:11px;font-weight:800;color:var(--accent);letter-spacing:1px;margin-bottom:8px">핵심 구술답안</div><p style="font-size:15px;line-height:1.85;margin:0;font-weight:650">${boldAnswer(drill.answer)}</p><div style="font-size:10px;color:var(--textMuted);margin-top:10px">기준: ${escapeHTML(drill.standard)}</div></div>`:''}
+    ${visualDrillRevealed?`<div style="font-size:11px;color:var(--textMuted);text-align:center;margin:10px 0 6px">방금 구술한 답을 평가하면 복습 일정에 반영됩니다.</div><div style="display:flex;gap:8px"><button class="btn" style="flex:1;background:var(--red)" onclick="rateVisualDrill(false,'unsure')">틀림</button><button class="btn" style="flex:1;background:#D97706" onclick="rateVisualDrill(true,'unsure')">애매</button><button class="btn btn-green" style="flex:1" onclick="rateVisualDrill(true,'sure')">맞음</button></div>`:`<button class="btn btn-accent" onclick="revealVisualDrill()">정답 확인</button>`}
+  `;
+  if(announce) speak(drill.question);
+}
+
+// v4.50: 오늘의 집중 (Focus) — 소수 문제를 각 N회 "확실"까지 반복
+let focusProgress={};       // {qid: sure 누적 횟수}
+let focusQueueIds=[];       // 세션 시작 시 선정된 문제 id 목록
+const FOCUS_TARGET=2;       // 각 문제당 필요한 ○(확실) 횟수
+let activeFocusTarget=FOCUS_TARGET;  // v4.68: 진입 모드별 목표(오늘의집중=2, 전체숙달=1)
+const FOCUS_N_KEY='md_focus_n';
+function getFocusN(){try{const r=localStorage.getItem(FOCUS_N_KEY);const n=r?parseInt(r):10;return (isNaN(n)||n<1)?10:n;}catch(e){return 10;}}
+function setFocusN(n){return safeStorageSet(FOCUS_N_KEY,String(n),'집중 학습 설정')}
+function setFocusNPrompt(){
+  const cur=getFocusN();
+  appPrompt({title:'오늘의 집중 설정',label:'한 세션 문제 수 (1~30)',type:'number',value:cur,min:1,max:30},v=>{
+    const n=parseInt(v);
+    if(isNaN(n)||n<1||n>30){alert("1~30 사이의 숫자를 입력하세요.");return;}
+    setFocusN(n);renderHome();
+  });
+}
+
+// v4.84: 집중 세트 크기와 분리된 과목별 하루 신규 목표입니다.
+const DAILY_NEW_TARGET_DEFAULT=10;
+function dailyNewTargetKey(){return 'md_daily_new_target_'+(currentSubject?currentSubject.id:'default')}
+function getDa
+
+-->
+    <div class="home-section">
+      <button type="button" class="toggle-more" aria-expanded="${homeToolsOpen?'true':'false'}" aria-controls="more-tools" onclick="toggleHomeTools()">
+        <span class="tm-text">${homeToolsOpen?'접기':'학습 모드·도구'}</span>
+        <span class="tm-arrow" aria-hidden="true" style="transform:${homeToolsOpen?'rotate(90deg)':'rotate(0deg)'}">${icon('chevronRight',14)}</span>
+      </button>
+      <div id="more-tools" style="display:${homeToolsOpen?'block':'none'};margin-top:12px">
+        <div class="card" style="padding:14px;margin-bottom:12px">
+          <div style="font-size:12px;font-weight:800;color:var(--textDim);margin-bottom:10px">학습 모드</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <button class="btn btn-outline" onclick="startFocus()">집중 반복</button>
+            <button class="btn btn-outline" onclick="startSequential()">전체 1회 점검</button>
+          </div>
+          ${currentSubject&&currentSubject.id==='navi2'?`<button class="btn btn-outline" style="margin-top:8px;border-color:#1E40AF;color:#1E40AF" onclick="startVisualDrills()">도판 훈련 ${NAVI2_VISUAL_DRILLS.length}개</button>`:''}
+        </div>
+        ${reviewSection}
+        ${renderFocusHistorySection()}
+        <div class="card" style="padding:14px;margin-bottom:12px">
+          <div style="font-size:12px;font-weight:800;color:var(--textDim);margin-bottom:8px">직접 고르기</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px" id="filters"></div>
+          <select id="catSelect" style="margin-bottom:10px;font-size:13px" onchange="catFilter=this.value;homeToolsOpen=true;renderHome()">
+            <option value="all">전체 카테고리</option>
+            ${CATEGORIES.map(c=>`<option value="${c}" ${catFilter===c?'selected':''}>${c}</option>`).join('')}
+          </select>
+          <button class="btn btn-accent" onclick="startStudy()">선택 학습 (${poolCount}문제)</button>
+        </div>
+        ${renderBriefing()}
+        <!-- v4.56: 오늘의 미션 — 헤더 D-N 배지로 진입 (점진적 공개) -->
+        ${renderMissionCard()}
+        <div class="mb12">
+          <button class="home-card-btn" onclick="startMock()">
+            <div class="hcb-icon" style="background:linear-gradient(135deg,#1E3A8A,#3B82F6)">${SVG_ICONS.target}</div>
+            <div class="hcb-body">
+              <div class="hcb-title">모의면접</div>
+              <div class="hcb-sub" style="font-size:13px">분야 균형 5문제 · 힌트 없음 · 문항당 60초</div>
+            </div>
+      <div class="hcb-badge">${icon('chevronRight',18)}</div>
+          </button>
+        </div>
+        <div class="mb12">
+          <button class="home-card-btn" onclick="renderWeakness()">
+            <div class="hcb-icon" style="background:linear-gradient(135deg,#2563EB,#60A5FA)">${SVG_ICONS.barChart}</div>
+            <div class="hcb-body">
+              <div class="hcb-title">약점 분석 (전체)</div>
+              <div class="hcb-sub" style="font-size:13px">카테고리별 통계 · 상세 분석</div>
+            </div>
+          </button>
+        </div>
+        <div class="mb12">
+          <button class="home-card-btn" onclick="renderCurriculum()">
+            <div class="hcb-icon" style="background:linear-gradient(135deg,#1D4ED8,#3B82F6)">${SVG_ICONS.list}</div>
+            <div class="hcb-body">
+              <div class="hcb-title">커리큘럼 전체 보기</div>
+              <div class="hcb-sub" style="font-size:13px">학습 로드맵 · 진도 확인</div>
+            </div>
+          </button>
+        </div>
+        <div class="mb12">
+          <button class="home-card-btn" onclick="renderScheduleSettings()">
+            <div class="hcb-icon" style="background:linear-gradient(135deg,#0F172A,#334155)">${SVG_ICONS.settings}</div>
+            <div class="hcb-body">
+              <div class="hcb-title">학습 일정 설정</div>
+              <div class="hcb-sub" style="font-size:13px">일일 목표 · 알림 관리</div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 유틸 + 과목선택 ── -->
+    <div style="display:flex;justify-content:center
+
+x=0;hintLevel=0;showAnswer=false;answerCollapsed=false;sessionResults=[];sessionTypedAttempts=[];currentMode="study";window._sessionKind='importance';renderCard()}
+const MOCK_COUNT=5;
+let mockQuestionStartedAt=0;
+let mockTimerId=null;
+function stopMockTimer(){if(mockTimerId){clearInterval(mockTimerId);mockTimerId=null;}}
+function startMockTimer(){
+  stopMockTimer();
+  if(currentMode!=='mock'||showAnswer)return;
+  if(!mockQuestionStartedAt)mockQuestionStartedAt=Date.now();
+  const tick=()=>{
+    const el=document.getElementById('mockTimer');if(!el){stopMockTimer();return;}
+    const sec=Math.floor((Date.now()-mockQuestionStartedAt)/1000);
+    el.textContent=sec+'초 / 권장 60초';
+    el.style.color=sec>60?'var(--red)':sec>40?'var(--amber)':'#1E40AF';
+  };
+  tick();mockTimerId=setInterval(tick,1000);
+}
+function buildBalancedMockQueue(){
+  const selected=[];const used=new Set();
+  const add=q=>{if(q&&!used.has(q.id)){used.add(q.id);selected.push(q);}};
+  if(currentSubject&&currentSubject.id==='navi2')add(shuffle(QUESTIONS.filter(q=>q.visualId))[0]);
+  const groups={};QUESTIONS.forEach(q=>{(groups[q.category]=groups[q.category]||[]).push(q);});
+  const categories=shuffle(Object.keys(groups));
+  for(const cat of categories){
+    const candidates=shuffle(groups[cat]).sort((a,b)=>getImp(b.id)-getImp(a.id));
+    add(candidates.find(q=>!used.has(q.id)));
+    if(selected.length>=MOCK_COUNT)break;
+  }
+  if(selected.length<MOCK_COUNT){
+    const rest=shuffle(QUESTIONS.filter(q=>!used.has(q.id))).sort((a,b)=>getImp(b.id)-getImp(a.id));
+    rest.forEach(q=>{if(selected.length<MOCK_COUNT)add(q);});
+  }
+  return shuffle(selected.slice(0,Math.min(MOCK_COUNT,QUESTIONS.length)));
+}
+function startMock(){
+  stopMockTimer();
+  queue=buildBalancedMockQueue();if(!queue.length)return;
+  currentIdx=0;hintLevel=0;showAnswer=false;answerCollapsed=false;sessionResults=[];sessionTypedAttempts=[];
+  mockPhase=0;mockQuestionStartedAt=0;currentMode="mock";window._sessionKind='mock';renderCard();
+}
+function startDue(){const due=shuffle(QUESTIONS.filter(q=>isDue(boxes[q.id])&&!boxes[q.id].needsRetry));if(!due.length){if(!window._silentStartDue)alert("오늘 복습할 문제가 없습니다. 같은 날 반복은 숙달 연습으로 기록하며, 다음 복습일은 날짜가 바뀐 독립 회상 결과로 계산합니다.");return}queue=due;currentIdx=0;hintLevel=0;showAnswer=false;answerCollapsed=false;sessionResults=[];sessionTypedAttempts=[];currentMode="study";window._sessionKind='due';renderCard()}
+function startWrongReview(){const today=studyDateKey();const w=QUESTIONS.filter(q=>boxes[q.id].needsRetry&&boxes[q.id].lastRecoveryDate!==today).sort((a,b)=>getImp(b.id)-getImp(a.id));if(!w.length){const unresolved=QUESTIONS.some(q=>boxes[q.id].needsRetry);alert(unresolved?"오늘 오답 재시험은 완료했습니다. 날짜가 바뀐 뒤 다시 확인하면 회복 횟수가 올라갑니다.":"현재 미해결 오답이 없습니다.");return;}queue=w;currentIdx=0;hintLevel=0;showAnswer=false;answerCollapsed=false;sessionResults=[];sessionTypedAttempts=[];currentMode="study";window._sessionKind='wrong';renderCard()}
+
+// v4.50: 오늘의 집중 — N문제를 각 FOCUS_TARGET회 "확실"까지 반복
+// v4.57: rotation 우선 + 동일 tier 내 셔플
+// v4.61: 사이클 기반 분할 — 풀 전체를 N개씩 청크로 잘라 매 세션마다 다음 청크 추출
+//   - 한 사이클 = 풀 전체 1회 노출 (예: 99문제/10 → 10세트, 마지막은 9문제)
+//   - 사이클 끝나면 자동으로 새 사이클(재셔플)
+//   - 같은 묶음이 재현될 가능성 제거 → pushFocusHistory에서 forceNew=true로 항상 새 Day
+//   - 동일 사이클 내에서는 (중요도, 오답수) tier 정렬 + 그룹 내 셔플 유지
+function startFocus(n){
+  n = n || getFocusN();
+  // 선택된 filter / catFilter를 존중. filter가 'all'이면 BOX1 디폴트.
+  let pool=[...QUESTIONS];
+  if(filter==="wrong")pool=pool.filter(q=>boxes[q.id].needsRetry);
+  else if(filter==="unsure")pool=pool.filter(q=>boxes[q.id].confidence==="unsure");
+  else if(filter==="box1")pool=pool.filter(q=>boxes[q.id].box===1);
+  else if(filter==="box2")pool=pool.filter(q=>boxes[q.id].box===2);
+  else if(filter==="box3")pool=pool.filter(q=>boxes[q.id].box===3);
+  else if(filter==="imp5")pool=pool.filter(q=>getImp(q.id)===5);
+  else if(filter==="imp4")pool=pool.filter(q=>getImp(q.id)>=4);
+  else if(filter==="imp3")pool=pool.filter(q=>getImp(q.id)>=3);
+  else pool=pool.filter(q=>boxe
+
+HTML(opts.value==null?'':opts.value)}" ${opts.min!=null?`min="${opts.min}"`:''} ${opts.max!=null?`max="${opts.max}"`:''} style="width:100%;padding:12px;border:1px solid var(--border);border-radius:8px;font:inherit" onkeydown="if(event.key==='Enter'){event.preventDefault();window._mdPromptSubmit()}">`,
+    footer:`<button class="btn btn-outline" style="flex:1;border-color:var(--textDim);color:var(--textDim)" onclick="closeModal()">취소</button><button class="btn btn-accent" style="flex:1" onclick="window._mdPromptSubmit()">적용</button>`
+  });
+  setTimeout(()=>{const input=document.getElementById('_mdPromptInput');if(input){input.focus();input.select();}},0);
+}
+window.alert=appAlert;
+</script>
+
+<script>
+// ── v5.07: 2·3급 항해사 합격 플랜 / 오늘의 숙제 ──
+// 시험일에서 역산하여 최근 5개년 빈출 → 전체 → 시험 직전 복습 순으로 배정하고,
+// 같은 날 정답 암기만으로는 숙달 처리하지 않습니다.
+(function(){
+  const PLAN_KEY='md_nav23_pass_plan_v1';
+  const PROGRESS_KEY='md_nav23_pass_progress_v1';
+  const DAILY_KEY='md_nav23_pass_daily_v1';
+  const PLAN_GRADES=['navi2','navi3'];
+  const GRADE_LABELS={navi2:'2급 항해사',navi3:'3급 항해사'};
+  let planEntrySubject='navi2';
+  let planPools={};
+  let planSessionQueue=[];
+  let planSessionIdx=0;
+  let planSessionAnswers=[];
+  let planSessionConfidence=[];
+  let planSessionStartedAt=0;
+  let planSessionCommitted=new Set();
+
+  const PASS_SESSION_CHECKPOINT_KEY='md_pass_plan_session_checkpoint_v2';
+  function ppSavePassSessionCheckpoint(nextIndex){
+    try{
+      if(!Array.isArray(planSessionQueue)||!planSessionQueue.length)return;
+      const idx=Math.max(0,Number(nextIndex)||0);
+      if(idx>=planSessionQueue.length){localStorage.removeItem(PASS_SESSION_CHECKPOINT_KEY);return}
+      localStorage.setItem(PASS_SESSION_CHECKPOINT_KEY,JSON.stringify({
+        version:2,date:ppDateKey(new Date()),savedAt:new Date().toISOString(),
+        queueKeys:planSessionQueue.map(q=>q._planKey),nextIndex:idx,
+        answers:Array.isArray(planSessionAnswers)?planSessionAnswers.slice():[],
+        confidence:Array.isArray(planSessionConfidence)?planSessionConfidence.slice():[],
+        committed:Array.from(planSessionCommitted||[])
+      }));
+    }catch(e){console.warn('[pass-plan] checkpoint save failed',e)}
+  }
+  function ppLoadPassSessionCheckpoint(){
+    try{
+      const raw=localStorage.getItem(PASS_SESSION_CHECKPOINT_KEY);if(!raw)return null;
+      const cp=JSON.parse(raw);
+      if(!cp||cp.version!==2||cp.date!==ppDateKey(new Date())||!Array.isArray(cp.queueKeys)){
+        localStorage.removeItem(PASS_SESSION_CHECKPOINT_KEY);return null
+      }
+      return cp;
+    }catch(e){localStorage.removeItem(PASS_SESSION_CHECKPOINT_KEY);return null}
+  }
+  function ppClearPassSessionCheckpoint(){try{localStorage.removeItem(PASS_SESSION_CHECKPOINT_KEY)}catch(e){}}
+
+  function ppDateKey(date){
+    const d=date instanceof Date?date:new Date();
+    const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');
+    return `${y}-${m}-${day}`;
+  }
+  function ppParseDate(s){
+    const m=String(s||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if(!m)return null;
+    const d=new Date(Number(m[1]),Number(m[2])-1,Number(m[3]));
+    return Number.isNaN(d.getTime())?null:d;
+  }
+  function ppAddDays(s,n){
+    const d=ppParseDate(s)||new Date();
+    d.setDate(d.getDate()+Number(n||0));
+    return ppDateKey(d);
+  }
+  function ppDiffDays(from,to){
+    const a=ppParseDate(from),b=ppParseDate(to);if(!a||!b)return null;
+    return Math.round((b.getTime()-a.getTime())/86400000);
+  }
+  function ppMinDate(a,b){
+    if(!a)return b;if(!b)return a;return a<b?a:b;
+  }
+  function ppDefaultPlan(){
+    return {
+      dailyCap:120,
+      finalDays:4,
+      revision:0,
+      grades:{
+        navi2:{enabled:true,examDate:'',subjects:null},
+        navi3:{enabled:true,examDate:'',subjects:null}
+      }
+    };
+  }
+  function ppLoadPlan(){
+    const base=ppDefaultPlan();
+    try{
+      const raw=localStorage.getItem(PLAN_KEY);if(!raw)return base;
+      const saved=JSON.parse(raw)||{};
+
+
+l?`max="${opts.max}"`:''} style="width:100%;padding:12px;border:1px solid var(--border);border-radius:8px;font:inherit" onkeydown="if(event.key==='Enter'){event.preventDefault();window._mdPromptSubmit()}">`,
+    footer:`<button class="btn btn-outline" style="flex:1;border-color:var(--textDim);color:var(--textDim)" onclick="closeModal()">취소</button><button class="btn btn-accent" style="flex:1" onclick="window._mdPromptSubmit()">적용</button>`
+  });
+  setTimeout(()=>{const input=document.getElementById('_mdPromptInput');if(input){input.focus();input.select();}},0);
+}
+window.alert=appAlert;
+</script>
+
+<script>
+// ── v5.07: 2·3급 항해사 합격 플랜 / 오늘의 숙제 ──
+// 시험일에서 역산하여 최근 5개년 빈출 → 전체 → 시험 직전 복습 순으로 배정하고,
+// 같은 날 정답 암기만으로는 숙달 처리하지 않습니다.
+(function(){
+  const PLAN_KEY='md_nav23_pass_plan_v1';
+  const PROGRESS_KEY='md_nav23_pass_progress_v1';
+  const DAILY_KEY='md_nav23_pass_daily_v1';
+  const PLAN_GRADES=['navi2','navi3'];
+  const GRADE_LABELS={navi2:'2급 항해사',navi3:'3급 항해사'};
+  let planEntrySubject='navi2';
+  let planPools={};
+  let planSessionQueue=[];
+  let planSessionIdx=0;
+  let planSessionAnswers=[];
+  let planSessionConfidence=[];
+  let planSessionStartedAt=0;
+  let planSessionCommitted=new Set();
+
+  const PASS_SESSION_CHECKPOINT_KEY='md_pass_plan_session_checkpoint_v2';
+  function ppSavePassSessionCheckpoint(nextIndex){
+    try{
+      if(!Array.isArray(planSessionQueue)||!planSessionQueue.length)return;
+      const idx=Math.max(0,Number(nextIndex)||0);
+      if(idx>=planSessionQueue.length){localStorage.removeItem(PASS_SESSION_CHECKPOINT_KEY);return}
+      localStorage.setItem(PASS_SESSION_CHECKPOINT_KEY,JSON.stringify({
+        version:2,date:ppDateKey(new Date()),savedAt:new Date().toISOString(),
+        queueKeys:planSessionQueue.map(q=>q._planKey),nextIndex:idx,
+        answers:Array.isArray(planSessionAnswers)?planSessionAnswers.slice():[],
+        confidence:Array.isArray(planSessionConfidence)?planSessionConfidence.slice():[],
+        committed:Array.from(planSessionCommitted||[])
+      }));
+    }catch(e){console.warn('[pass-plan] checkpoint save failed',e)}
+  }
+  function ppLoadPassSessionCheckpoint(){
+    try{
+      const raw=localStorage.getItem(PASS_SESSION_CHECKPOINT_KEY);if(!raw)return null;
+      const cp=JSON.parse(raw);
+      if(!cp||cp.version!==2||cp.date!==ppDateKey(new Date())||!Array.isArray(cp.queueKeys)){
+        localStorage.removeItem(PASS_SESSION_CHECKPOINT_KEY);return null
+      }
+      return cp;
+    }catch(e){localStorage.removeItem(PASS_SESSION_CHECKPOINT_KEY);return null}
+  }
+  function ppClearPassSessionCheckpoint(){try{localStorage.removeItem(PASS_SESSION_CHECKPOINT_KEY)}catch(e){}}
+
+  function ppDateKey(date){
+    const d=date instanceof Date?date:new Date();
+    const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');
+    return `${y}-${m}-${day}`;
+  }
+  function ppParseDate(s){
+    const m=String(s||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if(!m)return null;
+    const d=new Date(Number(m[1]),Number(m[2])-1,Number(m[3]));
+    return Number.isNaN(d.getTime())?null:d;
+  }
+  function ppAddDays(s,n){
+    const d=ppParseDate(s)||new Date();
+    d.setDate(d.getDate()+Number(n||0));
+    return ppDateKey(d);
+  }
+  function ppDiffDays(from,to){
+    const a=ppParseDate(from),b=ppParseDate(to);if(!a||!b)return null;
+    return Math.round((b.getTime()-a.getTime())/86400000);
+  }
+  function ppMinDate(a,b){
+    if(!a)return b;if(!b)return a;return a<b?a:b;
+  }
+  function ppDefaultPlan(){
+    return {
+      dailyCap:120,
+      finalDays:4,
+      revision:0,
+      grades:{
+        navi2:{enabled:true,examDate:'',subjects:null},
+        navi3:{enabled:true,examDate:'',subjects:null}
+      }
+    };
+  }
+  function ppLoadPlan(){
+    const base=ppDefaultPlan();
+    try{
+      const raw=localStorage.getItem(PLAN_KEY);if(!raw)return base;
+      const saved=JSON.parse(raw)||{};
+      base.dailyCap=Math.max(40,Math.min(250,Number(saved.dailyCap)||120));
+      base.finalDay
+
+gnment(plan,planPools,progress,false);
+    const unresolved=(assignment.keys||[]).filter(k=>!ppTodayCleared(ppProgressFor(progress,k),today));
+    const gradeCounts={navi2:{total:0,new:0,review:0,unresolved:0},navi3:{total:0,new:0,review:0,unresolved:0}};
+    (assignment.keys||[]).forEach(key=>{
+      const item=ppGetItemByKey(key);if(!item)return;
+      const r=ppProgressFor(progress,key),bucket=gradeCounts[item.gradeId];bucket.total++;
+      if(r.firstPassDate)bucket.review++;else bucket.new++;
+      if(!ppTodayCleared(r,today))bucket.unresolved++;
+    });
+    const gradeCards=PLAN_GRADES.map(g=>{
+      const data=n3aData(g),pool=planPools[g]||[],st=ppProgressStats(plan,g,pool,progress,today),cfg=plan.grades[g];
+      const exam=cfg.examDate,dday=ppDiffDays(today,exam);
+      const passPct=st.selected?Math.round(st.passed/st.selected*100):0,masterPct=st.selected?Math.round(st.mastered/st.selected*100):0;
+      return `<div class="card" style="padding:14px;border-left:4px solid ${g==='navi2'?'#2563EB':'#059669'}">
+        <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><div><div style="font-size:16px;font-weight:900">${GRADE_LABELS[g]}</div><div style="font-size:11px;color:var(--textDim);margin-top:3px">${exam?escapeHtml(exam):'시험일 미설정'} · ${ppDdayLabel(dday)}</div></div><span class="tag" style="margin:0;background:${st.phase.phase==='final'?'#FEE2E2':'#E0F2FE'};color:${st.phase.phase==='final'?'#B91C1C':'#075985'}">${escapeHtml(st.phase.label)}</span></div>
+        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px"><div style="background:#F8FAFC;padding:9px;border-radius:8px"><b>${st.freqPassed}/${st.freqTotal}</b><div style="font-size:10px;color:var(--textDim)">빈출 1차 통과</div></div><div style="background:#F8FAFC;padding:9px;border-radius:8px"><b>${st.passed}/${st.selected}</b><div style="font-size:10px;color:var(--textDim)">전체 1차 통과</div></div><div style="background:#F8FAFC;padding:9px;border-radius:8px"><b>${st.mastered}</b><div style="font-size:10px;color:var(--textDim)">숙달</div></div><div style="background:#F8FAFC;padding:9px;border-radius:8px"><b>${st.due}</b><div style="font-size:10px;color:var(--textDim)">복습 예정</div></div></div>
+        <div style="font-size:11px;color:var(--textDim);margin-top:9px">1차 통과 ${passPct}% · 숙달 ${masterPct}% · 오늘 ${gradeCounts[g].total}문제 배정</div>
+        ${st.phase.phase==='final'&&cfg.enabled&&cfg.examDate?`<button class="btn btn-outline" style="width:100%;margin-top:9px;border-color:${g==='navi2'?'#2563EB':'#059669'};color:${g==='navi2'?'#2563EB':'#059669'}" onclick="startNavigatorPassPlanMock('${g}')">2026 최신 회차 실전 모의</button>`:''}
+      </div>`;
+    }).join('');
+    app.innerHTML=`
+      <div style="padding-top:22px;margin-bottom:14px"><button class="text-nav" onclick="pickPrepType('${planEntrySubject}')">${icon('arrowLeft',14)} 학습유형으로</button></div>
+      <section class="card" style="background:linear-gradient(135deg,#4C1D95,#7C3AED);color:#fff;border:none;padding:22px;margin-bottom:14px">
+        <div style="font-size:11px;letter-spacing:2px;font-weight:900;color:#DDD6FE">ADAPTIVE PASS PLAN</div><h1 style="font-size:24px;margin:5px 0 5px">2·3급 항해사 동시 합격 플랜</h1><div style="font-size:12px;color:#EDE9FE;line-height:1.65">시험일을 기준으로 역산하고, 빈출 → 전체 → 시험 직전 복습 순으로 자동 배정합니다.<br>정답을 맞혀도 ‘확실’ 표시가 없으면 완료되지 않으며, 다른 날 다시 맞혀야 숙달됩니다.</div>
+      </section>
+      <section class="card" style="padding:16px;margin-bottom:14px">
+        <div style="font-size:16px;font-weight:900;margin-bottom:12px">시험 설정</div>
+        ${PLAN_GRADES.map(g=>{const data=n3aData(g),cfg=plan.grades[g];return `<div style="padding:12px 0;border-bottom:1px solid #E2E8F0"><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><label style="font-weight:900"><input id="pp-enable-${g}" type="checkbox" ${cfg.enabled?'checked':''}> ${GRADE_LABELS[g]}</label><label style="font-size:12px;font-weight:700">시험일 <input id="pp-date-${g}" type="da
+
+;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px"><div style="background:#F8FAFC;padding:9px;border-radius:8px"><b>${st.freqPassed}/${st.freqTotal}</b><div style="font-size:10px;color:var(--textDim)">빈출 1차 통과</div></div><div style="background:#F8FAFC;padding:9px;border-radius:8px"><b>${st.passed}/${st.selected}</b><div style="font-size:10px;color:var(--textDim)">전체 1차 통과</div></div><div style="background:#F8FAFC;padding:9px;border-radius:8px"><b>${st.mastered}</b><div style="font-size:10px;color:var(--textDim)">숙달</div></div><div style="background:#F8FAFC;padding:9px;border-radius:8px"><b>${st.due}</b><div style="font-size:10px;color:var(--textDim)">복습 예정</div></div></div>
+        <div style="font-size:11px;color:var(--textDim);margin-top:9px">1차 통과 ${passPct}% · 숙달 ${masterPct}% · 오늘 ${gradeCounts[g].total}문제 배정</div>
+        ${st.phase.phase==='final'&&cfg.enabled&&cfg.examDate?`<button class="btn btn-outline" style="width:100%;margin-top:9px;border-color:${g==='navi2'?'#2563EB':'#059669'};color:${g==='navi2'?'#2563EB':'#059669'}" onclick="startNavigatorPassPlanMock('${g}')">2026 최신 회차 실전 모의</button>`:''}
+      </div>`;
+    }).join('');
+    app.innerHTML=`
+      <div style="padding-top:22px;margin-bottom:14px"><button class="text-nav" onclick="pickPrepType('${planEntrySubject}')">${icon('arrowLeft',14)} 학습유형으로</button></div>
+      <section class="card" style="background:linear-gradient(135deg,#4C1D95,#7C3AED);color:#fff;border:none;padding:22px;margin-bottom:14px">
+        <div style="font-size:11px;letter-spacing:2px;font-weight:900;color:#DDD6FE">ADAPTIVE PASS PLAN</div><h1 style="font-size:24px;margin:5px 0 5px">2·3급 항해사 동시 합격 플랜</h1><div style="font-size:12px;color:#EDE9FE;line-height:1.65">시험일을 기준으로 역산하고, 빈출 → 전체 → 시험 직전 복습 순으로 자동 배정합니다.<br>정답을 맞혀도 ‘확실’ 표시가 없으면 완료되지 않으며, 다른 날 다시 맞혀야 숙달됩니다.</div>
+      </section>
+      <section class="card" style="padding:16px;margin-bottom:14px">
+        <div style="font-size:16px;font-weight:900;margin-bottom:12px">시험 설정</div>
+        ${PLAN_GRADES.map(g=>{const data=n3aData(g),cfg=plan.grades[g];return `<div style="padding:12px 0;border-bottom:1px solid #E2E8F0"><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><label style="font-weight:900"><input id="pp-enable-${g}" type="checkbox" ${cfg.enabled?'checked':''}> ${GRADE_LABELS[g]}</label><label style="font-size:12px;font-weight:700">시험일 <input id="pp-date-${g}" type="date" value="${escapeHtml(cfg.examDate)}" style="padding:8px;border:1px solid #CBD5E1;border-radius:8px"></label></div><div style="font-size:11px;color:var(--textDim);margin:8px 0 6px">응시 과목 · 부분합격 과목은 체크 해제</div><div style="display:flex;gap:6px;flex-wrap:wrap">${ppSubjectChecks(g,data,plan)}</div></div>`}).join('')}
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px"><label style="font-size:12px;font-weight:700">하루 최대 <input id="pp-daily-cap" type="number" min="40" max="250" step="5" value="${plan.dailyCap}" style="width:76px;padding:8px;border:1px solid #CBD5E1;border-radius:8px"> 문제</label><label style="font-size:12px;font-weight:700">시험 직전 모드 <input id="pp-final-days" type="number" min="2" max="7" value="${plan.finalDays}" style="width:58px;padding:8px;border:1px solid #CBD5E1;border-radius:8px"> 일</label></div>
+        <button class="btn btn-accent" style="width:100%;margin-top:12px;background:#7C3AED;border-color:#7C3AED" onclick="saveNavigatorPassPlanSettings()">설정 저장 · 오늘 숙제 재계산</button>
+      </section>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px;margin-bottom:14px">${gradeCards}</div>
+      <section class="card" style="padding:17px;border-left:4px solid #7C3AED">
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap"><div><div style="font-size:18px;font-weight:900">오늘의 숙제</div><div style="font-size:12px;color:var(--textDim);margin-top:3px">${today} · ${assignment.keys.length}문제 배정 · 남은 ${unres
+
+1fr));gap:8px;margin-top:12px"><div style="background:#F8FAFC;padding:9px;border-radius:8px"><b>${st.freqPassed}/${st.freqTotal}</b><div style="font-size:10px;color:var(--textDim)">빈출 1차 통과</div></div><div style="background:#F8FAFC;padding:9px;border-radius:8px"><b>${st.passed}/${st.selected}</b><div style="font-size:10px;color:var(--textDim)">전체 1차 통과</div></div><div style="background:#F8FAFC;padding:9px;border-radius:8px"><b>${st.mastered}</b><div style="font-size:10px;color:var(--textDim)">숙달</div></div><div style="background:#F8FAFC;padding:9px;border-radius:8px"><b>${st.due}</b><div style="font-size:10px;color:var(--textDim)">복습 예정</div></div></div>
+        <div style="font-size:11px;color:var(--textDim);margin-top:9px">1차 통과 ${passPct}% · 숙달 ${masterPct}% · 오늘 ${gradeCounts[g].total}문제 배정</div>
+        ${st.phase.phase==='final'&&cfg.enabled&&cfg.examDate?`<button class="btn btn-outline" style="width:100%;margin-top:9px;border-color:${g==='navi2'?'#2563EB':'#059669'};color:${g==='navi2'?'#2563EB':'#059669'}" onclick="startNavigatorPassPlanMock('${g}')">2026 최신 회차 실전 모의</button>`:''}
+      </div>`;
+    }).join('');
+    app.innerHTML=`
+      <div style="padding-top:22px;margin-bottom:14px"><button class="text-nav" onclick="pickPrepType('${planEntrySubject}')">${icon('arrowLeft',14)} 학습유형으로</button></div>
+      <section class="card" style="background:linear-gradient(135deg,#4C1D95,#7C3AED);color:#fff;border:none;padding:22px;margin-bottom:14px">
+        <div style="font-size:11px;letter-spacing:2px;font-weight:900;color:#DDD6FE">ADAPTIVE PASS PLAN</div><h1 style="font-size:24px;margin:5px 0 5px">2·3급 항해사 동시 합격 플랜</h1><div style="font-size:12px;color:#EDE9FE;line-height:1.65">시험일을 기준으로 역산하고, 빈출 → 전체 → 시험 직전 복습 순으로 자동 배정합니다.<br>정답을 맞혀도 ‘확실’ 표시가 없으면 완료되지 않으며, 다른 날 다시 맞혀야 숙달됩니다.</div>
+      </section>
+      <section class="card" style="padding:16px;margin-bottom:14px">
+        <div style="font-size:16px;font-weight:900;margin-bottom:12px">시험 설정</div>
+        ${PLAN_GRADES.map(g=>{const data=n3aData(g),cfg=plan.grades[g];return `<div style="padding:12px 0;border-bottom:1px solid #E2E8F0"><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><label style="font-weight:900"><input id="pp-enable-${g}" type="checkbox" ${cfg.enabled?'checked':''}> ${GRADE_LABELS[g]}</label><label style="font-size:12px;font-weight:700">시험일 <input id="pp-date-${g}" type="date" value="${escapeHtml(cfg.examDate)}" style="padding:8px;border:1px solid #CBD5E1;border-radius:8px"></label></div><div style="font-size:11px;color:var(--textDim);margin:8px 0 6px">응시 과목 · 부분합격 과목은 체크 해제</div><div style="display:flex;gap:6px;flex-wrap:wrap">${ppSubjectChecks(g,data,plan)}</div></div>`}).join('')}
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px"><label style="font-size:12px;font-weight:700">하루 최대 <input id="pp-daily-cap" type="number" min="40" max="250" step="5" value="${plan.dailyCap}" style="width:76px;padding:8px;border:1px solid #CBD5E1;border-radius:8px"> 문제</label><label style="font-size:12px;font-weight:700">시험 직전 모드 <input id="pp-final-days" type="number" min="2" max="7" value="${plan.finalDays}" style="width:58px;padding:8px;border:1px solid #CBD5E1;border-radius:8px"> 일</label></div>
+        <button class="btn btn-accent" style="width:100%;margin-top:12px;background:#7C3AED;border-color:#7C3AED" onclick="saveNavigatorPassPlanSettings()">설정 저장 · 오늘 숙제 재계산</button>
+      </section>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px;margin-bottom:14px">${gradeCards}</div>
+      <section class="card" style="padding:17px;border-left:4px solid #7C3AED">
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap"><div><div style="font-size:18px;font-weight:900">오늘의 숙제</div><div style="font-size:12px;color:var(--textDim);margin-top:3px">${today} · ${assignment.keys.length}문제 배정 · 남은 ${unresolved.length}문제</div></div><span class="t
+
+f(checkpoint)ppClearPassSessionCheckpoint();
+      let startIndex=allKeys.findIndex(k=>!ppTodayCleared(ppProgressFor(progress,k),today));
+      if(startIndex<0)startIndex=0;
+      planSessionQueue=queue;planSessionIdx=startIndex;planSessionAnswers=new Array(queue.length).fill(null);planSessionConfidence=new Array(queue.length).fill(null);planSessionStartedAt=Date.now();planSessionCommitted=new Set();
+      for(let i=0;i<startIndex;i++)if(ppTodayCleared(ppProgressFor(progress,allKeys[i]),today))planSessionCommitted.add(i);
+      currentMode='pass-plan-session';ppSavePassSessionCheckpoint(startIndex);renderNavigatorPassPlanCard();
+    }catch(e){app.innerHTML=`<div class="card" style="margin-top:30px"><b>오늘 숙제를 시작하지 못했습니다.</b><div style="font-size:12px;margin-top:7px">${escapeHtml(e.message||String(e))}</div><button class="btn btn-outline" style="margin-top:12px" onclick="renderNavigatorPassPlan('${planEntrySubject}')">플랜으로 돌아가기</button></div>`}
+  };
+  function ppGradeColor(g){return g==='navi2'?'#2563EB':'#059669'}
+  window.renderNavigatorPassPlanCard=function(){
+    if(currentMode!=='pass-plan-session')return;
+    if(planSessionIdx>=planSessionQueue.length){renderNavigatorPassPlanResult();return}
+    const q=planSessionQueue[planSessionIdx],selected=planSessionAnswers[planSessionIdx],confidence=planSessionConfidence[planSessionIdx],correct=q['정답'],showFeedback=selected!==null;
+    const grade=q._planGrade,color=ppGradeColor(grade),markers=['㉮','㉯','㉰','㉱'];
+    const isCorrect=showFeedback&&selected===correct;
+    const canNext=showFeedback;
+    app.innerHTML=`
+      <div style="padding-top:20px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:8px"><button class="btn btn-outline" style="width:auto" onclick="showConfirm('오늘 숙제를 중단하시겠습니까? 진행 기록은 저장됩니다.',()=>renderNavigatorPassPlan('${planEntrySubject}'))">${icon('arrowLeft',14)} 그만</button><div style="font-size:15px;color:var(--text);font-weight:900">문제 ${planSessionIdx+1}/${planSessionQueue.length}</div></div>
+      <div class="card" style="border-left:4px solid ${color}"><div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px"><span class="tag" style="margin:0;background:${color}18;color:${color}">${GRADE_LABELS[grade]}</span><span class="tag" style="margin:0;background:#F1F5F9;color:#475569">${q['과목']}</span><span class="tag" style="margin:0;background:#FEF3C7;color:#92400E">최근 5년 ${q._planCount}회</span><span class="tag" style="margin:0;background:#F1F5F9;color:#475569">${q._year}년 ${q['회차']}회 Q${q['번호']}</span></div>
+      <div style="font-size:16px;line-height:1.7;margin-bottom:16px;white-space:pre-wrap">${escapeHtml(q['문제'])}</div><div style="display:flex;flex-direction:column;gap:10px">${q['선택지'].map((opt,i)=>{let bg='#fff',border='#E5E7EB',col='var(--text)';if(showFeedback){if(i===correct){bg='#D1FAE5';border='#10B981';col='#065F46'}else if(i===selected){bg='#FEE2E2';border='#DC2626';col='#991B1B'}}return `<button onclick="chooseNavigatorPassPlanAnswer(${i})" ${showFeedback?'disabled':''} style="text-align:left;padding:12px 14px;background:${bg};border:2px solid ${border};border-radius:10px;color:${col};font-size:15px;line-height:1.6;cursor:${showFeedback?'default':'pointer'}"><b style="margin-right:8px">${markers[i]}</b>${escapeHtml(pastChoiceText(opt))}</button>`}).join('')}</div>
+      ${showFeedback?`<div style="margin-top:14px;padding:11px;border-radius:9px;background:${isCorrect?'#ECFDF5':'#FEF2F2'};color:${isCorrect?'#065F46':'#991B1B'};font-weight:800;text-align:center">${isCorrect?'정답':'오답 · 정답 '+markers[correct]}</div>${renderExplainBlock(q)}${isCorrect?`<div style="margin-top:12px"><div style="font-size:12px;font-weight:800;margin-bottom:7px">지금 이 문제를 답을 안 보고도 다시 맞힐 수 있습니까?</div><div style="display:flex;gap:8px"><button class="btn ${confidence==='sure'?'btn-green':'btn-outline'}" style="flex:1" onclick="setNavigatorPassPlanConfidence('sure')">확실히 안다</button><button class="btn ${confidence==='unsure'?'btn-accent':'b

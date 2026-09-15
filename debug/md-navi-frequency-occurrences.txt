@@ -1,0 +1,541 @@
+count=2
+
+===== OCCURRENCE 1 @ 22165312 =====
+aEnsureFilterState(data);
+  const set=new Set((navi3AnalysisState.years||[]).map(Number));
+  checked?set.add(Number(year)):set.delete(Number(year));
+  navi3AnalysisState.years=(data.meta.years||[]).map(Number).filter(item=>set.has(item));
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();renderNavi3Frequency();
+}
+function n3aPresetYears(mode,skipRender){
+  const data=n3aData();if(!data)return;n3aEnsureFilterState(data);
+  const all=(data.meta.years||[]).map(Number).sort((a,b)=>a-b);
+  const partial=new Set((data.meta.partialYears||[]).map(Number));
+  const complete=((data.meta.completeYears||[]).length?(data.meta.completeYears||[]).map(Number):all.filter(year=>!partial.has(year))).sort((a,b)=>a-b);
+  if(mode==='recent5')navi3AnalysisState.years=complete.slice(-5);
+  else if(mode==='excludeLatest'){
+    const latest=Math.max(...all);
+    navi3AnalysisState.years=all.filter(year=>year!==latest);
+  }else navi3AnalysisState.years=all;
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();if(!skipRender)renderNavi3Frequency();
+}
+function n3aSetMinCount(value,skipRender){
+  const n=Number(value);navi3AnalysisState.minCount=[1,2,3,4].includes(n)?n:2;
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();if(!skipRender)renderNavi3Frequency();
+}
+function n3aQuickRecentFive(){
+  const data=n3aData();if(!data)return;n3aEnsureFilterState(data);
+  const all=(data.meta.years||[]).map(Number).sort((a,b)=>a-b);
+  const partial=new Set((data.meta.partialYears||[]).map(Number));
+  const complete=((data.meta.completeYears||[]).length?(data.meta.completeYears||[]).map(Number):all.filter(year=>!partial.has(year))).sort((a,b)=>a-b);
+  navi3AnalysisState.years=complete.slice(-5);
+  navi3AnalysisState.minCount=2;
+  navi3AnalysisState.view='repeats';
+  navi3AnalysisState.sort='count';
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;
+  n3aSaveFilterState();renderNavi3Frequency();
+}
+
+function n3aActivateGrade(subjectId){
+  if(!NAVI_ANALYSIS_GRADES.includes(subjectId))subjectId='navi3';
+  if(naviAnalysisSubjectId!==subjectId)navi3AnalysisDetail=null;
+  naviAnalysisSubjectId=subjectId;
+  if(!naviAnalysisStates[subjectId])naviAnalysisStates[subjectId]={view:'repeats',subject:'all',range:'all',subjects:null,years:null,minCount:2,sort:'score',query:'',limit:NAVI3_ANALYSIS_LIMIT,_filterLoaded:false};
+  navi3AnalysisState=naviAnalysisStates[subjectId];
+}
+function n3aData(subjectId){
+  const gradeId=subjectId||naviAnalysisSubjectId;
+  return window.MD_NAVI_FREQUENCY&&window.MD_NAVI_FREQUENCY[gradeId]||null;
+}
+const n3aOriginIndexes={};
+function n3aOriginKey(year,session,subject,number){return `${year}|${session}|${subject}|${number}`}
+function n3aQuestionOrigin(q){
+  if(!q||Number(q._year)<2026)return null;
+  const gradeId=baseFromShort(q._short||'');
+  if(!NAVI_ANALYSIS_GRADES.includes(gradeId))return null;
+  const data=n3aData(gradeId);
+  if(!data||!Array.isArray(data.classifications))return null;
+  if(!n3aOriginIndexes[gradeId]){
+    n3aOriginIndexes[gradeId]=new Map(data.classifications.map(entry=>[
+      n3aOriginKey(entry.year,entry.session,entry.subject,entry.number),entry
+    ]));
+  }
+  return n3aOriginIndexes[gradeId].get(n3aOriginKey(q._year,q._session||q['회차'],q['과목'],q['번호']))||null;
+}
+function n3aOriginTagHtml(q){
+  const origin=n3aQuestionOrigin(q);if(!origin)return '';
+  const styles={
+    new:{label:'신출',bg:'#F3E8FF',color:'#7E22CE'},
+    past:{label:'기출',bg:'#DBEAFE',color:'#1D4ED8'},
+    frequent:{label:'빈출',bg:'#FEE2E2',color:'#B91C1C'}
+  };
+  const style=styles[origin.status]||styles.new;
+  const history=origin.previousCount
+    ? `2020~2025년 동일 문항 ${origin.previousCount}회 · ${origin.previousYears.join('·')}년`
+    : '2020~2025년 동일 문항 없음';
+  const sameYear=origin.sameYearEarlierCount?` · ${origin.year}년 앞 회차 ${origin.sameYearEarlierCount}회`:'';
+  const count=origin.status==='frequent'?` · 과거 ${origin.previousCount}회`:origin.status==='past'?' · 과거 1회':'';
+  return `<span class="tag" style="background:${style.bg};color:${style.color};margin:0" title="${escapeHtml(history+sameYear)}">${style.label}${count}</span>`;
+}
+async function ensureNavi3FrequencyData(subjectId){
+  const gradeId=subjectId||naviAnalysisSubjectId;
+  const existing=n3aData(gradeId);if(existing)return existing;
+  const loaded=await loadOptionalScript(`past-analysis-${gradeId}.js`);
+  const data=n3aData(gradeId);
+  if(!loaded||!data)throw new Error(`${gradeId.replace('navi','')}급 항해사 분석 데이터를 불러오지 못했습니다.`);
+  return data;
+}
+function n3aRangeYears(data,range){
+  const all=(data.meta.years||[]).map(Number);
+  n3aEnsureFilterState(data);
+  if(Array.isArray(navi3AnalysisState.years))return new Set(navi3AnalysisState.years.map(Number).filter(year=>all.includes(year)));
+  if(range==='complete')return new Set((data.meta.completeYears||[]).map(Number));
+  if(range==='recent')return new Set(all.filter(year=>year>=2023));
+  return new Set(all);
+}
+function n3aRangeLabel(data,range){
+  const years=[...n3aRangeYears(data,range)].sort((a,b)=>a-b);
+  if(!years.length)return '선택 연도 없음';
+  const contiguous=years.every((year,index)=>index===0||year===years[index-1]+1);
+  const label=contiguous&&years.length>1?`${years[0]}~${years[years.length-1]}년`:`${years.join('·')}년`;
+  const partial=(data.meta.partialYears||[]).map(Number).filter(year=>years.includes(year));
+  return `${label}${partial.length?` · ${partial.join('·')} 부분 포함`:''}`;
+}
+function n3aYearSpan(years){
+  const sorted=(years||[]).map(Number).sort((a,b)=>a-b);
+  return sorted.length?`${sorted[0]}~${sorted[sorted.length-1]}`:'자료 없음';
+}
+function n3aFilteredHits(hits,yearSet){return (hits||[]).filter(hit=>yearSet.has(Number(hit.year)))}
+function n3aSessionKey(hit){return `${hit.year}-${hit.session}`}
+function n3aUniqueYears(hits){return [...new Set(hits.map(hit=>Number(hit.year)))].sort((a,b)=>a-b)}
+function n3aTier(score){
+  if(score>=80)return {label:'최우선',cls:'n3a-score-top'};
+  if(score>=65)return {label:'중요',cls:'n3a-score-high'};
+  if(score>=50)return {label:'주목',cls:'n3a-score-watch'};
+  return {label:'보통',cls:'n3a-score-normal'};
+}
+function n3aRecencyScore(latest,maxYear){return Math.max(4,25-Math.max(0,maxYear-latest)*4)}
+function n3aRepeatScore(hits,yearSet){
+  const years=n3aUniqueYears(hits),maxYear=Math.max(...yearSet);
+  return Math.min(100,Math.round(Math.min(60,hits.length/7*60)+n3aRecencyScore(years[years.length-1],maxYear)+Math.min(15,years.length/6*15)));
+}
+function n3aTopicScore(hits,yearSet,totalSessions){
+  const years=n3aUniqueYears(hits),latest=years[years.length-1];
+  const sessions=new Set(hits.map(n3aSessionKey)).size;
+  const coverage=totalSessions?Math.min(1,sessions/totalSessions):0;
+  const density=totalSessions?Math.min(1,hits.length/(totalSessions*4)):0;
+  return Math.min(100,Math.round(coverage*55+density*20+n3aRecencyScore(latest,Math.max(...yearSet))));
+}
+function n3aAllSessionKeys(data,yearSet){
+  const keys=new Set();
+  (data.groups||[]).forEach(group=>n3aFilteredHits(group.hits,yearSet).forEach(hit=>keys.add(n3aSessionKey(hit))));
+  return keys;
+}
+function n3aRangeStats(data,yearSet){
+  let questions=0,repeated=0;
+  const minCount=Number(navi3AnalysisState.minCount)||2;
+  (data.groups||[]).forEach(group=>{
+    if(!n3aSubjectSelected(group.subject))return;
+    const count=n3aFilteredHits(group.hits,yearSet).length;
+    questions+=count;
+    if(count>=minCount)repeated+=1;
+  });
+  return {questions,repeated,sessions:n3aAllSessionKeys(data,yearSet).size};
+}
+function n3aBuildEntries(data){
+  const state=navi3AnalysisState;
+  const yearSet=n3aRangeYears(data,state.range);
+  const query=String(state.query||'').trim().toLowerCase();
+  const totalSessions=n3aAllSessionKeys(data,yearSet).size;
+  let entries=[];
+  if(state.view==='topics'){
+    entries=(data.topics||[]).map(topic=>{
+      const hits=n3aFilteredHits(topic.hits,yearSet);
+      const years=n3aUniqueYears(hits);
+      const sessions=new Set(hits.map(n3aSessionKey));
+      return {...topic,hits,years,latest:years[years.length-1]||0,sessionCount:sessions.size,occurrences:hits.length,distinctQuestions:new Set(hits.map(hit=>hit.groupId)).size,score:hits.length?n3aTopicScore(hits,yearSet,totalSessions):0};
+    }).filter(entry=>entry.hits.length&&
+      n3aSubjectSelected(entry.subject)&&
+      (!query||`${entry.label} ${entry.subject}`.toLowerCase().includes(query)));
+  }else{
+    entries=(data.groups||[]).map(group=>{
+      const hits=n3aFilteredHits(group.hits,yearSet);
+      const years=n3aUniqueYears(hits);
+      return {...group,hits,years,count:hits.length,latest:years[years.length-1]||0,score:hits.length?n3aRepeatScore(hits,yearSet):0};
+    }).filter(entry=>entry.count>=(Number(state.minCount)||2)&&
+      n3aSubjectSelected(entry.subject)&&
+      (!query||`${entry.question} ${entry.subject}`.toLowerCase().includes(query)));
+  }
+  entries.sort((a,b)=>{
+    if(state.sort==='count')return (b.occurrences||b.count)-(a.occurrences||a.count)||b.score-a.score;
+    if(state.sort==='recent')return b.latest-a.latest||b.score-a.score;
+    return b.score-a.score||(b.occurrences||b.count)-(a.occurrences||a.count);
+  });
+  return entries;
+}
+function n3aSetState(key,value){
+  navi3AnalysisState[key]=value;
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;
+  renderNavi3Frequency();
+}
+function n3aApplySearch(){
+  const input=document.getElementById('n3a-search');
+  navi3AnalysisState.query=input?input.value.trim():'';
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;
+  renderNavi3Frequency();
+}
+function n3aMore(){navi3AnalysisState.limit+=NAVI3_ANALYSIS_LIMIT;renderNavi3Frequency()}
+function n3aScoreHtml(score){const tier=n3aTier(score);return `<span class="n3a-score ${tier.cls}">${tier.label} · ${score}</span>`}
+
+// v4.98: 빈출 통계를 실제 문제 풀이 세션으로 연결합니다.
+let navi3PracticeReturn=null;
+let navi3PracticeLabel='빈출 문제';
+function n3aPracticeGroups(data,source,id){
+  const yearSet=n3aRangeYears(data,navi3AnalysisState.range);
+  const groupsById=new Map((data.groups||[]).map(group=>[group.id,group]));
+  const toEntry=group=>{
+    if(!group)return null;
+    const hits=n3aFilteredHits(group.hits,yearSet);
+    const years=n3aUniqueYears(hits);
+    return hits.length?{...group,hits,years,count:hits.length,latest:years[years.length-1]||0,score:n3aRepeatScore(hits,yearSet)}:null;
+  };
+  let entries=[];
+  if(source==='group'){
+    entries=[toEntry(groupsById.get(id))].filter(Boolean);
+  }else if(source==='topic'){
+    const topic=(data.topics||[]).find(item=>item.id===id);
+    const groupIds=new Set(n3aFilteredHits(topic&&topic.hits,yearSet).map(hit=>hit.groupId));
+    entries=[...groupIds].map(groupId=>toEntry(groupsById.get(groupId))).filter(Boolean);
+  }else if(source==='filtered'){
+    const query=String(navi3AnalysisState.query||'').trim().toLowerCase();
+    entries=(data.groups||[]).map(toEntry).filter(entry=>entry&&
+      entry.count>=(Number(navi3AnalysisState.minCount)||2)&&
+      n3aSubjectSelected(entry.subject)&&
+      (!query||`${entry.question} ${entry.subject}`.toLowerCase().includes(query)));
+  }else if(navi3AnalysisState.view==='repeats'){
+    entries=n3aBuildEntries(data);
+  }else{
+    const topicEntries=n3aBuildEntries(data);
+    const groupIds=new Set(topicEntries.flatMap(topic=>topic.hits.map(hit=>hit.groupId)));
+    entries=[...groupIds].map(groupId=>toEntry(groupsById.get(groupId))).filter(Boolean);
+  }
+  entries.sort((a,b)=>{
+    if(navi3AnalysisState.sort==='count')return b.count-a.count||b.score-a.score||b.latest-a.latest;
+    if(navi3AnalysisState.sort==='recent')return b.latest-a.latest||b.score-a.score||b.count-a.count;
+    return b.score-a.score||b.count-a.count||b.latest-a.latest;
+  });
+  return entries;
+}
+function n3aFindQuestion(group,hit){
+  const exam=getPastExam(naviAnalysisSubjectId,hit.year,hit.session);
+  return exam&&exam.questions.find(item=>item['과목']===group.subject&&Number(item['번호'])===Number(hit.number)&&n3aNormalizeQuestion(item['문제'])===group.normalized);
+}
+async function startNavi3FrequencyPractice(source,id,limit,mode,returnKind,returnId){
+  const safeMode=mode==='mock'?'mock':'study';
+  const useAll=limit==='all';
+  const maxQuestions=useAll?Infinity:Math.max(1,Number(limit)||1);
+  const returnTarget={kind:returnKind||'list',id:returnId||null};
+  renderPastLoading(safeMode==='mock'?'빈출 모의시험을 준비하는 중입니다':'빈출 학습 문제를 준비하는 중입니다');
+  try{
+    const data=await ensureNavi3FrequencyData();
+    const allCandidates=n3aPracticeGroups(data,source||'current',id);
+    const candidates=useAll?allCandidates:allCandidates.slice(0,maxQuestions);
+    if(!candidates.length)throw new Error('현재 조건에서 풀 수 있는 문제가 없습니다.');
+    const gradeId=naviAnalysisSubjectId;
+    if(!pastDataSubjectsLoaded.has(gradeId))await ensurePastDataForSubject(gradeId);
+    const selected=candidates;
+    const pool=[];
+    for(const group of selected){
+      const hit=[...group.hits].sort((a,b)=>b.year-a.year||b.session-a.session||b.number-a.number)[0];
+      const question=hit&&n3aFindQuestion(group,hit);
+      if(question)pool.push({...question,_year:hit.year,_session:hit.session,'회차':hit.session,_short:gradeId,_n3aGroupId:group.id});
+    }
+    if(!pool.length)throw new Error('기출 원문과 연결되는 문제를 찾지 못했습니다.');
+    await ensurePastExplainForYears(pool.map(question=>question._year));
+    pastSubjectId=gradeId;pastBaseShort=gradeId;pastYear=null;pastSession=null;pastVariant='상선';pastAllYears=false;
+    pastQueue=pool;pastIdx=0;pastAnswers=new Array(pool.length).fill(null);pastMode=safeMode;pastStartedAt=Date.now();
+    pastReturnView='navi3-practice';navi3PracticeReturn=returnTarget;
+    navi3PracticeLabel=source==='topic'?'빈출 주제':source==='group'?'반복 문항':'현재 조건 빈출';
+    currentMode='past';renderPastCard();
+  }catch(error){
+    const back=returnTarget.kind==='topic'&&returnTarget.id?`renderNavi3FrequencyDetail('topic','${returnTarget.id}')`:'renderNavi3Frequency()';
+    app.innerHTML=`<div class="card" style="margin-top:30px;text-align:center;border-left:4px solid #DC2626"><div style="font-size:15px;font-weight:900;color:#991B1B">빈출 문제를 준비하지 못했습니다</div><div style="font-size:12px;color:var(--textDim);margin:7px 0 15px">${escapeHtml(error.message||String(error))}</div><button class="btn btn-outline" onclick="${back}">분석으로 돌아가기</button></div>`;
+  }
+}
+function restartNavi3FrequencyPractice(){
+  if(!pastQueue.length){renderNavi3Frequency();return}
+  pastIdx=0;pastAnswers=new Array(pastQueue.length).fill(null);pastStartedAt=Date.now();currentMode='past';renderPastCard();
+}
+
+async function renderNavi3Frequency(subjectId){
+  if(subjectId)n3aAct
+
+===== OCCURRENCE 2 @ 22165338 =====
+  const set=new Set((navi3AnalysisState.years||[]).map(Number));
+  checked?set.add(Number(year)):set.delete(Number(year));
+  navi3AnalysisState.years=(data.meta.years||[]).map(Number).filter(item=>set.has(item));
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();renderNavi3Frequency();
+}
+function n3aPresetYears(mode,skipRender){
+  const data=n3aData();if(!data)return;n3aEnsureFilterState(data);
+  const all=(data.meta.years||[]).map(Number).sort((a,b)=>a-b);
+  const partial=new Set((data.meta.partialYears||[]).map(Number));
+  const complete=((data.meta.completeYears||[]).length?(data.meta.completeYears||[]).map(Number):all.filter(year=>!partial.has(year))).sort((a,b)=>a-b);
+  if(mode==='recent5')navi3AnalysisState.years=complete.slice(-5);
+  else if(mode==='excludeLatest'){
+    const latest=Math.max(...all);
+    navi3AnalysisState.years=all.filter(year=>year!==latest);
+  }else navi3AnalysisState.years=all;
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();if(!skipRender)renderNavi3Frequency();
+}
+function n3aSetMinCount(value,skipRender){
+  const n=Number(value);navi3AnalysisState.minCount=[1,2,3,4].includes(n)?n:2;
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;n3aSaveFilterState();if(!skipRender)renderNavi3Frequency();
+}
+function n3aQuickRecentFive(){
+  const data=n3aData();if(!data)return;n3aEnsureFilterState(data);
+  const all=(data.meta.years||[]).map(Number).sort((a,b)=>a-b);
+  const partial=new Set((data.meta.partialYears||[]).map(Number));
+  const complete=((data.meta.completeYears||[]).length?(data.meta.completeYears||[]).map(Number):all.filter(year=>!partial.has(year))).sort((a,b)=>a-b);
+  navi3AnalysisState.years=complete.slice(-5);
+  navi3AnalysisState.minCount=2;
+  navi3AnalysisState.view='repeats';
+  navi3AnalysisState.sort='count';
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;
+  n3aSaveFilterState();renderNavi3Frequency();
+}
+
+function n3aActivateGrade(subjectId){
+  if(!NAVI_ANALYSIS_GRADES.includes(subjectId))subjectId='navi3';
+  if(naviAnalysisSubjectId!==subjectId)navi3AnalysisDetail=null;
+  naviAnalysisSubjectId=subjectId;
+  if(!naviAnalysisStates[subjectId])naviAnalysisStates[subjectId]={view:'repeats',subject:'all',range:'all',subjects:null,years:null,minCount:2,sort:'score',query:'',limit:NAVI3_ANALYSIS_LIMIT,_filterLoaded:false};
+  navi3AnalysisState=naviAnalysisStates[subjectId];
+}
+function n3aData(subjectId){
+  const gradeId=subjectId||naviAnalysisSubjectId;
+  return window.MD_NAVI_FREQUENCY&&window.MD_NAVI_FREQUENCY[gradeId]||null;
+}
+const n3aOriginIndexes={};
+function n3aOriginKey(year,session,subject,number){return `${year}|${session}|${subject}|${number}`}
+function n3aQuestionOrigin(q){
+  if(!q||Number(q._year)<2026)return null;
+  const gradeId=baseFromShort(q._short||'');
+  if(!NAVI_ANALYSIS_GRADES.includes(gradeId))return null;
+  const data=n3aData(gradeId);
+  if(!data||!Array.isArray(data.classifications))return null;
+  if(!n3aOriginIndexes[gradeId]){
+    n3aOriginIndexes[gradeId]=new Map(data.classifications.map(entry=>[
+      n3aOriginKey(entry.year,entry.session,entry.subject,entry.number),entry
+    ]));
+  }
+  return n3aOriginIndexes[gradeId].get(n3aOriginKey(q._year,q._session||q['회차'],q['과목'],q['번호']))||null;
+}
+function n3aOriginTagHtml(q){
+  const origin=n3aQuestionOrigin(q);if(!origin)return '';
+  const styles={
+    new:{label:'신출',bg:'#F3E8FF',color:'#7E22CE'},
+    past:{label:'기출',bg:'#DBEAFE',color:'#1D4ED8'},
+    frequent:{label:'빈출',bg:'#FEE2E2',color:'#B91C1C'}
+  };
+  const style=styles[origin.status]||styles.new;
+  const history=origin.previousCount
+    ? `2020~2025년 동일 문항 ${origin.previousCount}회 · ${origin.previousYears.join('·')}년`
+    : '2020~2025년 동일 문항 없음';
+  const sameYear=origin.sameYearEarlierCount?` · ${origin.year}년 앞 회차 ${origin.sameYearEarlierCount}회`:'';
+  const count=origin.status==='frequent'?` · 과거 ${origin.previousCount}회`:origin.status==='past'?' · 과거 1회':'';
+  return `<span class="tag" style="background:${style.bg};color:${style.color};margin:0" title="${escapeHtml(history+sameYear)}">${style.label}${count}</span>`;
+}
+async function ensureNavi3FrequencyData(subjectId){
+  const gradeId=subjectId||naviAnalysisSubjectId;
+  const existing=n3aData(gradeId);if(existing)return existing;
+  const loaded=await loadOptionalScript(`past-analysis-${gradeId}.js`);
+  const data=n3aData(gradeId);
+  if(!loaded||!data)throw new Error(`${gradeId.replace('navi','')}급 항해사 분석 데이터를 불러오지 못했습니다.`);
+  return data;
+}
+function n3aRangeYears(data,range){
+  const all=(data.meta.years||[]).map(Number);
+  n3aEnsureFilterState(data);
+  if(Array.isArray(navi3AnalysisState.years))return new Set(navi3AnalysisState.years.map(Number).filter(year=>all.includes(year)));
+  if(range==='complete')return new Set((data.meta.completeYears||[]).map(Number));
+  if(range==='recent')return new Set(all.filter(year=>year>=2023));
+  return new Set(all);
+}
+function n3aRangeLabel(data,range){
+  const years=[...n3aRangeYears(data,range)].sort((a,b)=>a-b);
+  if(!years.length)return '선택 연도 없음';
+  const contiguous=years.every((year,index)=>index===0||year===years[index-1]+1);
+  const label=contiguous&&years.length>1?`${years[0]}~${years[years.length-1]}년`:`${years.join('·')}년`;
+  const partial=(data.meta.partialYears||[]).map(Number).filter(year=>years.includes(year));
+  return `${label}${partial.length?` · ${partial.join('·')} 부분 포함`:''}`;
+}
+function n3aYearSpan(years){
+  const sorted=(years||[]).map(Number).sort((a,b)=>a-b);
+  return sorted.length?`${sorted[0]}~${sorted[sorted.length-1]}`:'자료 없음';
+}
+function n3aFilteredHits(hits,yearSet){return (hits||[]).filter(hit=>yearSet.has(Number(hit.year)))}
+function n3aSessionKey(hit){return `${hit.year}-${hit.session}`}
+function n3aUniqueYears(hits){return [...new Set(hits.map(hit=>Number(hit.year)))].sort((a,b)=>a-b)}
+function n3aTier(score){
+  if(score>=80)return {label:'최우선',cls:'n3a-score-top'};
+  if(score>=65)return {label:'중요',cls:'n3a-score-high'};
+  if(score>=50)return {label:'주목',cls:'n3a-score-watch'};
+  return {label:'보통',cls:'n3a-score-normal'};
+}
+function n3aRecencyScore(latest,maxYear){return Math.max(4,25-Math.max(0,maxYear-latest)*4)}
+function n3aRepeatScore(hits,yearSet){
+  const years=n3aUniqueYears(hits),maxYear=Math.max(...yearSet);
+  return Math.min(100,Math.round(Math.min(60,hits.length/7*60)+n3aRecencyScore(years[years.length-1],maxYear)+Math.min(15,years.length/6*15)));
+}
+function n3aTopicScore(hits,yearSet,totalSessions){
+  const years=n3aUniqueYears(hits),latest=years[years.length-1];
+  const sessions=new Set(hits.map(n3aSessionKey)).size;
+  const coverage=totalSessions?Math.min(1,sessions/totalSessions):0;
+  const density=totalSessions?Math.min(1,hits.length/(totalSessions*4)):0;
+  return Math.min(100,Math.round(coverage*55+density*20+n3aRecencyScore(latest,Math.max(...yearSet))));
+}
+function n3aAllSessionKeys(data,yearSet){
+  const keys=new Set();
+  (data.groups||[]).forEach(group=>n3aFilteredHits(group.hits,yearSet).forEach(hit=>keys.add(n3aSessionKey(hit))));
+  return keys;
+}
+function n3aRangeStats(data,yearSet){
+  let questions=0,repeated=0;
+  const minCount=Number(navi3AnalysisState.minCount)||2;
+  (data.groups||[]).forEach(group=>{
+    if(!n3aSubjectSelected(group.subject))return;
+    const count=n3aFilteredHits(group.hits,yearSet).length;
+    questions+=count;
+    if(count>=minCount)repeated+=1;
+  });
+  return {questions,repeated,sessions:n3aAllSessionKeys(data,yearSet).size};
+}
+function n3aBuildEntries(data){
+  const state=navi3AnalysisState;
+  const yearSet=n3aRangeYears(data,state.range);
+  const query=String(state.query||'').trim().toLowerCase();
+  const totalSessions=n3aAllSessionKeys(data,yearSet).size;
+  let entries=[];
+  if(state.view==='topics'){
+    entries=(data.topics||[]).map(topic=>{
+      const hits=n3aFilteredHits(topic.hits,yearSet);
+      const years=n3aUniqueYears(hits);
+      const sessions=new Set(hits.map(n3aSessionKey));
+      return {...topic,hits,years,latest:years[years.length-1]||0,sessionCount:sessions.size,occurrences:hits.length,distinctQuestions:new Set(hits.map(hit=>hit.groupId)).size,score:hits.length?n3aTopicScore(hits,yearSet,totalSessions):0};
+    }).filter(entry=>entry.hits.length&&
+      n3aSubjectSelected(entry.subject)&&
+      (!query||`${entry.label} ${entry.subject}`.toLowerCase().includes(query)));
+  }else{
+    entries=(data.groups||[]).map(group=>{
+      const hits=n3aFilteredHits(group.hits,yearSet);
+      const years=n3aUniqueYears(hits);
+      return {...group,hits,years,count:hits.length,latest:years[years.length-1]||0,score:hits.length?n3aRepeatScore(hits,yearSet):0};
+    }).filter(entry=>entry.count>=(Number(state.minCount)||2)&&
+      n3aSubjectSelected(entry.subject)&&
+      (!query||`${entry.question} ${entry.subject}`.toLowerCase().includes(query)));
+  }
+  entries.sort((a,b)=>{
+    if(state.sort==='count')return (b.occurrences||b.count)-(a.occurrences||a.count)||b.score-a.score;
+    if(state.sort==='recent')return b.latest-a.latest||b.score-a.score;
+    return b.score-a.score||(b.occurrences||b.count)-(a.occurrences||a.count);
+  });
+  return entries;
+}
+function n3aSetState(key,value){
+  navi3AnalysisState[key]=value;
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;
+  renderNavi3Frequency();
+}
+function n3aApplySearch(){
+  const input=document.getElementById('n3a-search');
+  navi3AnalysisState.query=input?input.value.trim():'';
+  navi3AnalysisState.limit=NAVI3_ANALYSIS_LIMIT;
+  renderNavi3Frequency();
+}
+function n3aMore(){navi3AnalysisState.limit+=NAVI3_ANALYSIS_LIMIT;renderNavi3Frequency()}
+function n3aScoreHtml(score){const tier=n3aTier(score);return `<span class="n3a-score ${tier.cls}">${tier.label} · ${score}</span>`}
+
+// v4.98: 빈출 통계를 실제 문제 풀이 세션으로 연결합니다.
+let navi3PracticeReturn=null;
+let navi3PracticeLabel='빈출 문제';
+function n3aPracticeGroups(data,source,id){
+  const yearSet=n3aRangeYears(data,navi3AnalysisState.range);
+  const groupsById=new Map((data.groups||[]).map(group=>[group.id,group]));
+  const toEntry=group=>{
+    if(!group)return null;
+    const hits=n3aFilteredHits(group.hits,yearSet);
+    const years=n3aUniqueYears(hits);
+    return hits.length?{...group,hits,years,count:hits.length,latest:years[years.length-1]||0,score:n3aRepeatScore(hits,yearSet)}:null;
+  };
+  let entries=[];
+  if(source==='group'){
+    entries=[toEntry(groupsById.get(id))].filter(Boolean);
+  }else if(source==='topic'){
+    const topic=(data.topics||[]).find(item=>item.id===id);
+    const groupIds=new Set(n3aFilteredHits(topic&&topic.hits,yearSet).map(hit=>hit.groupId));
+    entries=[...groupIds].map(groupId=>toEntry(groupsById.get(groupId))).filter(Boolean);
+  }else if(source==='filtered'){
+    const query=String(navi3AnalysisState.query||'').trim().toLowerCase();
+    entries=(data.groups||[]).map(toEntry).filter(entry=>entry&&
+      entry.count>=(Number(navi3AnalysisState.minCount)||2)&&
+      n3aSubjectSelected(entry.subject)&&
+      (!query||`${entry.question} ${entry.subject}`.toLowerCase().includes(query)));
+  }else if(navi3AnalysisState.view==='repeats'){
+    entries=n3aBuildEntries(data);
+  }else{
+    const topicEntries=n3aBuildEntries(data);
+    const groupIds=new Set(topicEntries.flatMap(topic=>topic.hits.map(hit=>hit.groupId)));
+    entries=[...groupIds].map(groupId=>toEntry(groupsById.get(groupId))).filter(Boolean);
+  }
+  entries.sort((a,b)=>{
+    if(navi3AnalysisState.sort==='count')return b.count-a.count||b.score-a.score||b.latest-a.latest;
+    if(navi3AnalysisState.sort==='recent')return b.latest-a.latest||b.score-a.score||b.count-a.count;
+    return b.score-a.score||b.count-a.count||b.latest-a.latest;
+  });
+  return entries;
+}
+function n3aFindQuestion(group,hit){
+  const exam=getPastExam(naviAnalysisSubjectId,hit.year,hit.session);
+  return exam&&exam.questions.find(item=>item['과목']===group.subject&&Number(item['번호'])===Number(hit.number)&&n3aNormalizeQuestion(item['문제'])===group.normalized);
+}
+async function startNavi3FrequencyPractice(source,id,limit,mode,returnKind,returnId){
+  const safeMode=mode==='mock'?'mock':'study';
+  const useAll=limit==='all';
+  const maxQuestions=useAll?Infinity:Math.max(1,Number(limit)||1);
+  const returnTarget={kind:returnKind||'list',id:returnId||null};
+  renderPastLoading(safeMode==='mock'?'빈출 모의시험을 준비하는 중입니다':'빈출 학습 문제를 준비하는 중입니다');
+  try{
+    const data=await ensureNavi3FrequencyData();
+    const allCandidates=n3aPracticeGroups(data,source||'current',id);
+    const candidates=useAll?allCandidates:allCandidates.slice(0,maxQuestions);
+    if(!candidates.length)throw new Error('현재 조건에서 풀 수 있는 문제가 없습니다.');
+    const gradeId=naviAnalysisSubjectId;
+    if(!pastDataSubjectsLoaded.has(gradeId))await ensurePastDataForSubject(gradeId);
+    const selected=candidates;
+    const pool=[];
+    for(const group of selected){
+      const hit=[...group.hits].sort((a,b)=>b.year-a.year||b.session-a.session||b.number-a.number)[0];
+      const question=hit&&n3aFindQuestion(group,hit);
+      if(question)pool.push({...question,_year:hit.year,_session:hit.session,'회차':hit.session,_short:gradeId,_n3aGroupId:group.id});
+    }
+    if(!pool.length)throw new Error('기출 원문과 연결되는 문제를 찾지 못했습니다.');
+    await ensurePastExplainForYears(pool.map(question=>question._year));
+    pastSubjectId=gradeId;pastBaseShort=gradeId;pastYear=null;pastSession=null;pastVariant='상선';pastAllYears=false;
+    pastQueue=pool;pastIdx=0;pastAnswers=new Array(pool.length).fill(null);pastMode=safeMode;pastStartedAt=Date.now();
+    pastReturnView='navi3-practice';navi3PracticeReturn=returnTarget;
+    navi3PracticeLabel=source==='topic'?'빈출 주제':source==='group'?'반복 문항':'현재 조건 빈출';
+    currentMode='past';renderPastCard();
+  }catch(error){
+    const back=returnTarget.kind==='topic'&&returnTarget.id?`renderNavi3FrequencyDetail('topic','${returnTarget.id}')`:'renderNavi3Frequency()';
+    app.innerHTML=`<div class="card" style="margin-top:30px;text-align:center;border-left:4px solid #DC2626"><div style="font-size:15px;font-weight:900;color:#991B1B">빈출 문제를 준비하지 못했습니다</div><div style="font-size:12px;color:var(--textDim);margin:7px 0 15px">${escapeHtml(error.message||String(error))}</div><button class="btn btn-outline" onclick="${back}">분석으로 돌아가기</button></div>`;
+  }
+}
+function restartNavi3FrequencyPractice(){
+  if(!pastQueue.length){renderNavi3Frequency();return}
+  pastIdx=0;pastAnswers=new Array(pastQueue.length).fill(null);pastStartedAt=Date.now();currentMode='past';renderPastCard();
+}
+
+async function renderNavi3Frequency(subjectId){
+  if(subjectId)n3aActivateGrade(subjectId);
+  s
