@@ -26,3 +26,18 @@ assert body.find('const dueSelected=') < body.find('const quotas='), 'allocation
 assert body.find('const ordered=') < body.find('return {keys:ordered.map'), 'mixed queue must be returned'
 
 print('deadline coverage rotation tests: PASS')
+
+# Temporary diagnostics: print small source snippets needed to add grade-priority controls safely.
+for label, pattern in [
+    ('DEFAULT_PLAN', r"function ppDefaultPlan\(\)\{.*?\n  \}"),
+    ('LOAD_PLAN', r"function ppLoadPlan\(\)\{.*?\n  \}"),
+    ('SAVE_PLAN', r"function ppSavePlan\(.*?\n  \}"),
+    ('RENDER_PLAN', r"function renderNavigatorPassPlan\(.*?\n  \}(?=\n  (?:window\.|function ))"),
+]:
+    mm=re.search(pattern,text,re.S)
+    print(f'--- {label} ---')
+    if mm:
+        snippet=mm.group(0)
+        print(snippet[:12000])
+    else:
+        print('NOT FOUND')
