@@ -3,7 +3,7 @@ import base64, gzip, json, re, subprocess, tempfile
 
 src=Path('index.html').read_text(encoding='utf-8-sig')
 required=[
-    "const PREDICTIVE_HISTORY_KEY='md_predictive_mock_history_v1'",
+    "const PREDICTIVE_HISTORY_KEY='md_predictive_mock_history_v2'",
     'window.startNavigatorPredictiveMock=async function(gradeId)',
     'window.commitNavigatorPredictiveMockResult=function(queue,answers)',
     '실전예측 모의 · 가중 랜덤',
@@ -14,11 +14,11 @@ required=[
 for needle in required:
     if needle not in src:
         raise SystemExit(f'missing predictive mock marker: {needle}')
-if src.count("const PREDICTIVE_HISTORY_KEY='md_predictive_mock_history_v1'")!=1:
+if src.count("const PREDICTIVE_HISTORY_KEY='md_predictive_mock_history_v2'")!=1:
     raise SystemExit('predictive mock patch is not idempotent')
 
 # Syntax-check the newly injected JavaScript block independently.
-start=src.index("const PREDICTIVE_HISTORY_KEY='md_predictive_mock_history_v1'")
+start=src.index("const PREDICTIVE_HISTORY_KEY='md_predictive_mock_history_v2'")
 end=src.index('window.startNavigatorPassPlanMock=async function(gradeId)',start)
 block=src[start:end]
 with tempfile.NamedTemporaryFile('w',suffix='.js',encoding='utf-8',delete=False) as f:
