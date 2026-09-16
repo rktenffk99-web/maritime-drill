@@ -15,6 +15,20 @@
       return cp;
     }catch(e){return null}
   }
+  function questionChoiceButtons(root){
+    const card=root&&root.querySelector('.card');
+    if(!card)return [];
+    return [...card.querySelectorAll('button')].filter(btn=>{
+      const onclick=btn.getAttribute('onclick')||'';
+      const text=(btn.textContent||'').trim();
+      if(onclick&&/(?:answer|choose|select)/i.test(onclick)&&!/(?:next|prev|back|home|report|bookmark|restart)/i.test(onclick))return true;
+      return /^(?:[가나다라]|[㉠㉡㉢㉣]|[①②③④])(?:\s|\.|\)|:|$)/.test(text);
+    });
+  }
+  function inQuestionSession(){
+    const root=appRoot();
+    return !!root&&questionChoiceButtons(root).length>=2;
+  }
   function inPassSession(){
     const root=appRoot();
     if(!root)return false;
@@ -36,7 +50,7 @@
   }
 
   function addResumeBanner(){
-    const root=appRoot();if(!root||inPassSession())return;
+    const root=appRoot();if(!root||inQuestionSession())return;
     const cp=currentCheckpoint();
     const old=document.getElementById('md-resume-banner');
     if(!cp){if(old)old.remove();return}
@@ -91,17 +105,34 @@
     }
   }
 
+  function findQuestionCounter(root){
+    if(!root)return null;
+    const exact=/^(?:실전예측|모의|문제)\s*\d+\s*\/\s*\d+$/;
+    const loose=/(?:실전예측|모의|문제)\s*\d+\s*\/\s*\d+/;
+    const nodes=[...root.querySelectorAll('div,span')];
+    return nodes.find(el=>el.children.length===0&&exact.test((el.textContent||'').trim()))
+      ||nodes.find(el=>(el.textContent||'').trim().length<80&&loose.test((el.textContent||'').trim()))
+      ||null;
+  }
   function collectQuestionSnapshot(){
     const root=appRoot();
-    const counter=((root.textContent||'').match(/문제\s+\d+\s*\/\s*\d+/)||[''])[0];
+    const counterEl=findQuestionCounter(root);
+    const counter=counterEl?(counterEl.textContent||'').trim():(((root.textContent||'').match(/(?:실전예측|모의|문제)\s*\d+\s*\/\s*\d+/)||[''])[0]);
     const card=root.querySelector('.card');
     const tags=card?[...card.querySelectorAll('.tag')].map(x=>x.textContent.trim()).filter(Boolean):[];
     let question='';
     if(card){
-      const choice=card.querySelector('button[onclick^="chooseNavigatorPassPlanAnswer"]');
+      const choice=questionChoiceButtons(root)[0];
       if(choice){
         let n=choice.parentElement?.previousElementSibling;
-        if(n)question=n.textContent.trim();
+        if(n)question=(n.textContent||'').trim();
+        if(!question){
+          const children=[...card.children],holder=children.find(el=>el===choice||el.contains(choice)),idx=children.indexOf(holder);
+          for(let i=idx-1;i>=0;i--){
+            const candidate=children[i],text=(candidate.textContent||'').trim();
+            if(text&&!candidate.querySelector('button')&&!candidate.classList.contains('tag')){question=text;break}
+          }
+        }
       }
     }
     return {counter,tags,question};
@@ -156,22 +187,28 @@
     overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove()});
   }
   function addReportButton(){
-    const root=appRoot();if(!root||!inPassSession()||document.getElementById('md-report-btn'))return;
-    const counter=[...root.querySelectorAll('div')].find(el=>/문제\s+\d+\s*\/\s*\d+/.test(el.textContent.trim())&&el.children.length===0);
-    if(!counter)return;
+    const root=appRoot();if(!root||!inQuestionSession()||document.getElementById('md-report-btn'))return;
+    const counter=findQuestionCounter(root);
     const b=document.createElement('button');b.id='md-report-btn';b.className='btn btn-outline';
     b.style.cssText='width:auto;padding:8px 10px;font-size:12px;margin-left:6px';b.textContent='문제 신고';b.onclick=openReportModal;
-    counter.parentElement.appendChild(b);
     const count=readReports().length;
-    if(count){const list=document.createElement('button');list.id='md-report-list-btn';list.className='btn btn-outline';list.style.cssText='width:auto;padding:8px 10px;font-size:12px;margin-left:4px';list.textContent=`신고 ${count}`;list.onclick=openReportListModal;counter.parentElement.appendChild(list)}
+    const list=count?document.createElement('button'):null;
+    if(list){list.id='md-report-list-btn';list.className='btn btn-outline';list.style.cssText='width:auto;padding:8px 10px;font-size:12px;margin-left:4px';list.textContent=`신고 ${count}`;list.onclick=openReportListModal}
+    if(counter&&counter.parentElement){
+      counter.parentElement.appendChild(b);if(list)counter.parentElement.appendChild(list);
+    }else{
+      const card=root.querySelector('.card');if(!card)return;
+      const row=document.createElement('div');row.id='md-report-row';row.style.cssText='display:flex;justify-content:flex-end;align-items:center;margin:0 0 8px';
+      row.appendChild(b);if(list)row.appendChild(list);card.parentNode.insertBefore(row,card);
+    }
   }
 
   async function requestWakeLock(){
-    if(!inPassSession()||document.visibilityState!=='visible'||!('wakeLock' in navigator)||wakeLock)return;
+    if(!inQuestionSession()||document.visibilityState!=='visible'||!('wakeLock' in navigator)||wakeLock)return;
     try{wakeLock=await navigator.wakeLock.request('screen');wakeLock.addEventListener('release',()=>{wakeLock=null})}catch(e){}
   }
   async function syncWakeLock(){
-    if(inPassSession())await requestWakeLock();
+    if(inQuestionSession())await requestWakeLock();
     else if(wakeLock){try{await wakeLock.release()}catch(e){}wakeLock=null}
   }
 
