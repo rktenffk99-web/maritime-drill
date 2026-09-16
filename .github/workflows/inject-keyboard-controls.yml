@@ -22,6 +22,7 @@ on:
       - 'tools/patch_grade_priority.py'
       - 'tools/test_predictive_mock.py'
       - 'tools/test_predictive_mock_personalization.py'
+      - 'tools/test_problem_report_modes.py'
       - 'tools/test_2026_session3_explanations.py'
       - 'tools/test_weak_drills.py'
       - 'tools/test_recovery_recheck.py'
@@ -55,6 +56,7 @@ jobs:
           python tools/patch_grade_priority.py
           python tools/test_predictive_mock.py
           python tools/test_predictive_mock_personalization.py
+          python tools/test_problem_report_modes.py
           python tools/test_2026_session3_explanations.py
           python tools/test_weak_drills.py
           python tools/test_recovery_recheck.py
