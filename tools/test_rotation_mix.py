@@ -26,16 +26,3 @@ assert body.find('const dueSelected=') < body.find('const quotas='), 'allocation
 assert body.find('const ordered=') < body.find('return {keys:ordered.map'), 'mixed queue must be returned'
 
 print('deadline coverage rotation tests: PASS')
-
-# Temporary diagnostic for pass-plan render/settings UI.
-needle='renderNavigatorPassPlan'
-positions=[]
-pos=0
-while True:
-    i=text.find(needle,pos)
-    if i<0: break
-    positions.append(i);pos=i+1
-print('renderNavigatorPassPlan occurrences:',len(positions),positions[:20])
-for n,i in enumerate(positions[:8]):
-    print(f'--- RENDER OCCURRENCE {n} ---')
-    print(text[max(0,i-3000):min(len(text),i+12000)])
