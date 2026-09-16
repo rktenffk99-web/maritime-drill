@@ -27,17 +27,15 @@ assert body.find('const ordered=') < body.find('return {keys:ordered.map'), 'mix
 
 print('deadline coverage rotation tests: PASS')
 
-# Temporary diagnostics: print small source snippets needed to add grade-priority controls safely.
-for label, pattern in [
-    ('DEFAULT_PLAN', r"function ppDefaultPlan\(\)\{.*?\n  \}"),
-    ('LOAD_PLAN', r"function ppLoadPlan\(\)\{.*?\n  \}"),
-    ('SAVE_PLAN', r"function ppSavePlan\(.*?\n  \}"),
-    ('RENDER_PLAN', r"function renderNavigatorPassPlan\(.*?\n  \}(?=\n  (?:window\.|function ))"),
-]:
-    mm=re.search(pattern,text,re.S)
-    print(f'--- {label} ---')
-    if mm:
-        snippet=mm.group(0)
-        print(snippet[:12000])
-    else:
-        print('NOT FOUND')
+# Temporary diagnostic for pass-plan render/settings UI.
+needle='renderNavigatorPassPlan'
+positions=[]
+pos=0
+while True:
+    i=text.find(needle,pos)
+    if i<0: break
+    positions.append(i);pos=i+1
+print('renderNavigatorPassPlan occurrences:',len(positions),positions[:20])
+for n,i in enumerate(positions[:8]):
+    print(f'--- RENDER OCCURRENCE {n} ---')
+    print(text[max(0,i-3000):min(len(text),i+12000)])
