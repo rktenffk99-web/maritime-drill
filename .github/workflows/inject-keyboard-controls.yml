@@ -13,6 +13,7 @@ on:
       - 'tools/patch_same_day_confirmation.py'
       - 'tools/patch_predictive_mock.py'
       - 'tools/patch_predictive_mock_followup.py'
+      - 'tools/patch_predictive_mock_personalization.py'
       - 'tools/patch_2026_session3_explanations.py'
       - 'tools/patch_weak_drills.py'
       - 'tools/patch_recovery_recheck.py'
@@ -20,6 +21,7 @@ on:
       - 'tools/patch_rotation_mix.py'
       - 'tools/patch_grade_priority.py'
       - 'tools/test_predictive_mock.py'
+      - 'tools/test_predictive_mock_personalization.py'
       - 'tools/test_2026_session3_explanations.py'
       - 'tools/test_weak_drills.py'
       - 'tools/test_recovery_recheck.py'
@@ -44,6 +46,7 @@ jobs:
           python tools/patch_same_day_confirmation.py
           python tools/patch_predictive_mock.py
           python tools/patch_predictive_mock_followup.py
+          python tools/patch_predictive_mock_personalization.py
           python tools/patch_2026_session3_explanations.py
           python tools/patch_weak_drills.py
           python tools/patch_recovery_recheck.py
@@ -51,6 +54,7 @@ jobs:
           python tools/patch_rotation_mix.py
           python tools/patch_grade_priority.py
           python tools/test_predictive_mock.py
+          python tools/test_predictive_mock_personalization.py
           python tools/test_2026_session3_explanations.py
           python tools/test_weak_drills.py
           python tools/test_recovery_recheck.py
