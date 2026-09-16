@@ -18,6 +18,7 @@ on:
       - 'tools/patch_recovery_recheck.py'
       - 'tools/patch_stable_session_counter.py'
       - 'tools/patch_rotation_mix.py'
+      - 'tools/audit_question_pool.py'
       - 'tools/test_predictive_mock.py'
       - 'tools/test_2026_session3_explanations.py'
       - 'tools/test_weak_drills.py'
@@ -52,6 +53,7 @@ jobs:
           python tools/test_weak_drills.py
           python tools/test_recovery_recheck.py
           python tools/test_rotation_mix.py
+          python tools/audit_question_pool.py
       - name: Commit index update
         run: |
           if git diff --quiet -- index.html; then
