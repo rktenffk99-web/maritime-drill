@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 
 p=Path('index.html')
 text=p.read_text(encoding='utf-8-sig')
@@ -138,41 +139,27 @@ if MARKER not in text:
         raise SystemExit('predictive premature history save anchor not found')
     text=text.replace(old,new,1)
 
-    old="""  window.commitNavigatorPredictiveMockResult=function(queue,answers){
-    const progress=ppLoadProgress(),today=ppDateKey(new Date());
-    (queue||[]).forEach((q,i)=>{
-      if(!q||!q._predictiveMock||!q._planKey)return;
-      if(answers&&answers[i]===q['정답'])return;
-      const r=ppProgressFor(progress,q._planKey);
-      r.attempts=(r.attempts||0)+1;r.wrong=(r.wrong||0)+1;r.lastDate=today;r.lastOutcome='wrong';
-      r.status='weak';r.mastered=false;r.recoveryStartDate=today;r.sameDayFirstCorrectDate=null;r.sameDayConfirmedDate=null;r.dueDate=today;
-    });
-    ppSaveProgress(progress);
-    const daily=ppLoadDaily();delete daily[today];ppSaveDaily(daily);
-  };
-"""
-    new="""  window.commitNavigatorPredictiveMockResult=function(queue,answers){
-    const progress=ppLoadProgress(),today=ppDateKey(new Date()),rows=Array.isArray(queue)?queue:[];
-    rows.forEach((q,i)=>{
-      if(!q||!q._predictiveMock||!q._planKey)return;
-      if(answers&&answers[i]===q['정답'])return;
-      const r=ppProgressFor(progress,q._planKey);
-      r.attempts=(r.attempts||0)+1;r.wrong=(r.wrong||0)+1;r.lastDate=today;r.lastOutcome='wrong';
-      r.status='weak';r.mastered=false;r.recoveryStartDate=today;r.sameDayFirstCorrectDate=null;r.sameDayConfirmedDate=null;r.dueDate=today;
-    });
-    const complete=rows.length>0&&Array.isArray(answers)&&answers.length>=rows.length&&rows.every((q,i)=>answers[i]!==null&&answers[i]!==undefined);
+    # Preserve any prior result-processing changes and only inject completion-scoped history saving.
+    result_pattern=r"(  window\.commitNavigatorPredictiveMockResult=function\(queue,answers\)\{)(.*?)(\n  \};)"
+    m=re.search(result_pattern,text,re.S)
+    if not m:
+        raise SystemExit('predictive result function not found')
+    body=m.group(2)
+    if 'const complete=rows.length>0' not in body:
+        body='\n    const rows=Array.isArray(queue)?queue:[];'+body
+        body=body.replace('(queue||[]).forEach((q,i)=>{','rows.forEach((q,i)=>{',1)
+        save_anchor='    ppSaveProgress(progress);'
+        if save_anchor not in body:
+            raise SystemExit('predictive result progress-save anchor not found')
+        completion="""    const complete=rows.length>0&&Array.isArray(answers)&&answers.length>=rows.length&&rows.every((q,i)=>answers[i]!==null&&answers[i]!==undefined);
     if(complete){
       const first=rows.find(q=>q&&q._planKey),gradeId=first?String(first._planKey).split('|')[0]:'';
       const keys=rows.filter(q=>q&&q._predictiveMock&&q._planKey).map(q=>String(q._planKey));
       ppSavePredictiveHistory(gradeId,keys);
     }
-    ppSaveProgress(progress);
-    const daily=ppLoadDaily();delete daily[today];ppSaveDaily(daily);
-  };
 """
-    if old not in text:
-        raise SystemExit('predictive result completion anchor not found')
-    text=text.replace(old,new,1)
+        body=body.replace(save_anchor,completion+save_anchor,1)
+        text=text[:m.start()]+m.group(1)+body+m.group(3)+text[m.end():]
 
     old='최근 5개년 빈출·최근성·2026 교차빈출 가중 · 최근 모의 중복 억제'
     new='최근 5개년 출제경향 중심 · 개인 취약도 보조 · 급수별 최근 완료 모의 중복 억제'
