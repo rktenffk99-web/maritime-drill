@@ -20,8 +20,11 @@ assert m, 'predictive mock start function missing'
 body=m.group(1)
 assert 'selected.push(...draw)' not in body, 'raw draw append can reintroduce duplicate question stems'
 assert body.index('selectedFingerprints=new Set()') < body.index('for(const subject of subjects)')
-assert body.index('ppUniquePredictiveCandidates') < body.index('ppPredictiveSample')
+assert body.index('ppUniquePredictiveCandidates') < body.index('ppPredictivePrioritySample')
 assert body.index('if(selectedFingerprints.has(fp))continue;') < body.index('selectedFingerprints.add(fp);selected.push(item);')
+
+# The priority-core sampler itself must still consume already de-duplicated candidates.
+assert "const unique=typeof ppUniquePredictiveCandidates==='function'?ppUniquePredictiveCandidates(items||[]):[...(items||[])];" in text
 
 # The fingerprint must collapse harmless presentation differences that would otherwise
 # let the same stem appear twice under different source keys/years.
