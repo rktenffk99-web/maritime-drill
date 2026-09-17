@@ -9,6 +9,7 @@ on:
       - 'reported-content-fixes.js'
       - 'predictive-analytics.js'
       - 'explain-2026-navi3-3.js'
+      - 'tools/audit_english_explanations.py'
       - 'tools/patch_pass_plan.py'
       - 'tools/patch_convenience.py'
       - 'tools/patch_2026_navigation.py'
@@ -72,6 +73,7 @@ jobs:
           python tools/test_recovery_recheck.py
           python tools/test_rotation_mix.py
           python tools/test_grade_priority.py
+          python tools/audit_english_explanations.py
       - name: Commit index update
         run: |
           if git diff --quiet -- index.html; then
