@@ -23,7 +23,7 @@ if changed:
     enc=base64.b64encode(gzip.compress(raw.encode('utf-8'),compresslevel=9,mtime=0)).decode('ascii')
     text=text[:m.start(2)]+enc+text[m.end(2):]
 
-# Let the normal explanation renderer use the supplemental explanations only when no embedded explanation exists.
+# Let the normal explanation renderer use supplemental explanations only when no embedded explanation exists.
 old="""  const e = baseId && window.MD_EXPLAIN[baseId];
   if(!e) return null;"""
 new="""  const e = baseId && window.MD_EXPLAIN[baseId];
@@ -35,15 +35,20 @@ new="""  const e = baseId && window.MD_EXPLAIN[baseId];
 if old in text:text=text.replace(old,new,1)
 elif "get2026Navi3Session3Explain(q)" not in text:raise SystemExit('getExplain fallback anchor not found')
 
-# Load the supplemental explanation map as a normal static asset.
+# Load the generic session-3 map, then the richer English override.
 tag='<script src="explain-2026-navi3-3.js"></script>'
+eng_tag='<script src="explain-2026-navi3-3-english.js"></script>'
 if tag not in text:
     marker='<script src="convenience-controls.js"></script>'
     if marker in text:text=text.replace(marker,tag+'\n'+marker,1)
-    elif '</body>' in text:text=text.replace('</body>',tag+'\n</body>',1)
+    elif '</body>' in text:text.replace('</body>',tag+'\n</body>',1)
     else:text += '\n'+tag+'\n'
+if eng_tag not in text:
+    if tag in text:text=text.replace(tag,tag+'\n'+eng_tag,1)
+    elif '</body>' in text:text=text.replace('</body>',eng_tag+'\n</body>',1)
+    else:text += '\n'+eng_tag+'\n'
 
 if text!=original:
     p.write_text(text,encoding='utf-8')
-    print('patched 2026 navi3 session3 explanations and verified answers')
+    print('patched 2026 navi3 session3 explanations, detailed English, and verified answers')
 else:print('2026 session3 explanation patch already applied')
