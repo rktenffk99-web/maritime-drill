@@ -41,7 +41,7 @@ eng_tag='<script src="explain-2026-navi3-3-english.js"></script>'
 if tag not in text:
     marker='<script src="convenience-controls.js"></script>'
     if marker in text:text=text.replace(marker,tag+'\n'+marker,1)
-    elif '</body>' in text:text.replace('</body>',tag+'\n</body>',1)
+    elif '</body>' in text:text=text.replace('</body>',tag+'\n</body>',1)
     else:text += '\n'+tag+'\n'
 if eng_tag not in text:
     if tag in text:text=text.replace(tag,tag+'\n'+eng_tag,1)
