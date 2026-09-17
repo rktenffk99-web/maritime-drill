@@ -5,6 +5,7 @@ text=p.read_text(encoding='utf-8-sig')
 original=text
 MARKER='weak-topic-adaptive-v1'
 
+# Base weak-topic helpers + predictive weighting are inserted once.
 if MARKER not in text:
     anchor="""  function ppPredictivePersonalMultiplier(item,progress){
     const rec=progress&&progress[item&&item.key];
@@ -71,19 +72,25 @@ if MARKER not in text:
         raise SystemExit('predictive personal multiplier return anchor not found')
     text=text.replace(old,new,1)
 
-    old="""      const candidates=(phase.allRemaining||[]).filter(item=>!ppProgressFor(progress,item.key).firstPassDate&&!selectedKeys.has(item.key));
-      candidates.sort((a,b)=>(preferred.has(b.key)?1:0)-(preferred.has(a.key)?1:0)||(pp2026NeedsPriority(b,progress)?1:0)-(pp2026NeedsPriority(a,progress)?1:0)||b.count-a.count||b.latest-a.latest);
-"""
-    new="""      const candidates=(phase.allRemaining||[]).filter(item=>!ppProgressFor(progress,item.key).firstPassDate&&!selectedKeys.has(item.key));
+# The daily assignment builder is rewritten by later patches on every workflow run.
+# Therefore restore the weak-topic sort every time it is missing, even if the
+# helper marker already exists from a previous deployment.
+weak_sort="""      const candidates=(phase.allRemaining||[]).filter(item=>!ppProgressFor(progress,item.key).firstPassDate&&!selectedKeys.has(item.key));
       const weakProfile=ppLoadWeakTopicProfile();
       candidates.sort((a,b)=>ppWeakTopicBoost(b,weakProfile)-ppWeakTopicBoost(a,weakProfile)||(preferred.has(b.key)?1:0)-(preferred.has(a.key)?1:0)||(pp2026NeedsPriority(b,progress)?1:0)-(pp2026NeedsPriority(a,progress)?1:0)||b.count-a.count||b.latest-a.latest);
 """
-    if old not in text:
+if 'ppWeakTopicBoost(b,weakProfile)-ppWeakTopicBoost(a,weakProfile)' not in text:
+    plain_sort="""      const candidates=(phase.allRemaining||[]).filter(item=>!ppProgressFor(progress,item.key).firstPassDate&&!selectedKeys.has(item.key));
+      candidates.sort((a,b)=>(preferred.has(b.key)?1:0)-(preferred.has(a.key)?1:0)||(pp2026NeedsPriority(b,progress)?1:0)-(pp2026NeedsPriority(a,progress)?1:0)||b.count-a.count||b.latest-a.latest);
+"""
+    if plain_sort not in text:
         raise SystemExit('daily new candidate sort anchor not found')
-    text=text.replace(old,new,1)
+    text=text.replace(plain_sort,weak_sort,1)
 
 if MARKER not in text:
     raise SystemExit('weak topic adaptive marker missing')
+if 'ppWeakTopicBoost(b,weakProfile)-ppWeakTopicBoost(a,weakProfile)' not in text:
+    raise SystemExit('weak topic daily sort missing')
 
 if text!=original:
     p.write_text(text,encoding='utf-8')
