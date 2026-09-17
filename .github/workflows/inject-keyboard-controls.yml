@@ -28,6 +28,7 @@ on:
       - 'tools/patch_weak_topic_adaptive.py'
       - 'tools/patch_learning_priority.py'
       - 'tools/patch_learning_priority_weak_drill_compat.py'
+      - 'tools/patch_review_spacing_v2.py'
       - 'tools/test_predictive_mock.py'
       - 'tools/test_predictive_mock_personalization.py'
       - 'tools/test_problem_report_modes.py'
@@ -38,6 +39,7 @@ on:
       - 'tools/test_recovery_recheck.py'
       - 'tools/test_rotation_mix.py'
       - 'tools/test_grade_priority.py'
+      - 'tools/test_review_spacing_v2.py'
       - '.github/workflows/inject-keyboard-controls.yml'
   workflow_dispatch:
 
@@ -68,6 +70,7 @@ jobs:
           python tools/patch_weak_topic_adaptive.py
           python tools/patch_learning_priority.py
           python tools/patch_learning_priority_weak_drill_compat.py
+          python tools/patch_review_spacing_v2.py
           python tools/test_predictive_mock.py
           python tools/test_predictive_mock_personalization.py
           python tools/test_problem_report_modes.py
@@ -78,6 +81,7 @@ jobs:
           python tools/test_recovery_recheck.py
           python tools/test_rotation_mix.py
           python tools/test_grade_priority.py
+          python tools/test_review_spacing_v2.py
           python tools/audit_english_explanations.py
       - name: Commit index update
         run: |
