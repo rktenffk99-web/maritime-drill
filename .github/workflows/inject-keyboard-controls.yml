@@ -6,6 +6,7 @@ on:
     paths:
       - 'keyboard-controls.js'
       - 'convenience-controls.js'
+      - 'reported-content-fixes.js'
       - 'explain-2026-navi3-3.js'
       - 'tools/patch_pass_plan.py'
       - 'tools/patch_convenience.py'
@@ -24,6 +25,7 @@ on:
       - 'tools/test_predictive_mock.py'
       - 'tools/test_predictive_mock_personalization.py'
       - 'tools/test_problem_report_modes.py'
+      - 'tools/test_reported_content_fixes.js'
       - 'tools/test_2026_session3_explanations.py'
       - 'tools/test_weak_drills.py'
       - 'tools/test_recovery_recheck.py'
@@ -59,6 +61,7 @@ jobs:
           python tools/test_predictive_mock.py
           python tools/test_predictive_mock_personalization.py
           python tools/test_problem_report_modes.py
+          node tools/test_reported_content_fixes.js
           python tools/test_2026_session3_explanations.py
           python tools/test_weak_drills.py
           python tools/test_recovery_recheck.py
