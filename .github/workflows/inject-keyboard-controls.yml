@@ -6,6 +6,7 @@ on:
     paths:
       - 'keyboard-controls.js'
       - 'convenience-controls.js'
+      - 'adaptive-analytics.js'
       - 'reported-content-fixes.js'
       - 'explain-2026-navi3-3.js'
       - 'tools/patch_pass_plan.py'
@@ -22,6 +23,7 @@ on:
       - 'tools/patch_rotation_mix.py'
       - 'tools/patch_grade_priority.py'
       - 'tools/patch_grade_priority_ratio_v2.py'
+      - 'tools/patch_adaptive_analytics.py'
       - 'tools/test_predictive_mock.py'
       - 'tools/test_predictive_mock_personalization.py'
       - 'tools/test_problem_report_modes.py'
@@ -31,6 +33,7 @@ on:
       - 'tools/test_recovery_recheck.py'
       - 'tools/test_rotation_mix.py'
       - 'tools/test_grade_priority.py'
+      - 'tools/test_adaptive_analytics.py'
       - '.github/workflows/inject-keyboard-controls.yml'
   workflow_dispatch:
 
@@ -58,6 +61,7 @@ jobs:
           python tools/patch_rotation_mix.py
           python tools/patch_grade_priority.py
           python tools/patch_grade_priority_ratio_v2.py
+          python tools/patch_adaptive_analytics.py
           python tools/test_predictive_mock.py
           python tools/test_predictive_mock_personalization.py
           python tools/test_problem_report_modes.py
@@ -67,6 +71,7 @@ jobs:
           python tools/test_recovery_recheck.py
           python tools/test_rotation_mix.py
           python tools/test_grade_priority.py
+          python tools/test_adaptive_analytics.py
       - name: Commit index update
         run: |
           if git diff --quiet -- index.html; then
