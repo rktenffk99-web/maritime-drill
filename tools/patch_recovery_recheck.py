@@ -48,6 +48,8 @@ if 'function ppScheduleSameDayRecheck(q)' not in text:
     text=text.replace(anchor,anchor+helper,1)
 
 # Resume must accept checkpoint queues containing delayed repeat keys.
+# If an older cached assignment contains stale keys, skip only those keys instead
+# of blocking the entire daily session.
 start_fn="""  window.startNavigatorPassPlanToday=async function(){
     planSessionKind='today'; // recovery-recheck-v1
     const plan=ppLoadPlan();await ppBuildPools(plan);const progress=ppLoadProgress(),today=ppDateKey(new Date());
@@ -58,9 +60,22 @@ start_fn="""  window.startNavigatorPassPlanToday=async function(){
     try{
       const checkpoint=ppLoadPassSessionCheckpoint();
       const baseSet=new Set(allKeys);
-      const checkpointMatches=!!(checkpoint&&Array.isArray(checkpoint.queueKeys)&&checkpoint.queueKeys.length>=allKeys.length&&checkpoint.queueKeys.every(k=>baseSet.has(k))&&allKeys.every(k=>checkpoint.queueKeys.includes(k)));
-      const sourceKeys=checkpointMatches?checkpoint.queueKeys:allKeys;
-      let queue=await ppHydrateKeys(sourceKeys);if(!queue.length||queue.length!==sourceKeys.length)throw new Error('문제 원문을 찾지 못했습니다.');
+      let checkpointMatches=!!(checkpoint&&Array.isArray(checkpoint.queueKeys)&&checkpoint.queueKeys.length>=allKeys.length&&checkpoint.queueKeys.every(k=>baseSet.has(k))&&allKeys.every(k=>checkpoint.queueKeys.includes(k)));
+      let sourceKeys=checkpointMatches?checkpoint.queueKeys:allKeys;
+      let activeKeys=allKeys.slice();
+      let queue=await ppHydrateKeys(sourceKeys); // stale-assignment-recovery-v2
+      if(!queue.length)throw new Error('현재 불러올 수 있는 문제 원문이 없습니다.');
+      if(queue.length!==sourceKeys.length){
+        const hydratedKeys=new Set(queue.map(q=>q&&q._planKey).filter(Boolean));
+        const missing=allKeys.filter(k=>!hydratedKeys.has(k));
+        console.warn('[pass-plan] stale daily assignment keys skipped',missing);
+        activeKeys=allKeys.filter(k=>hydratedKeys.has(k));
+        checkpointMatches=false;
+        sourceKeys=activeKeys;
+        ppClearPassSessionCheckpoint();
+        queue=await ppHydrateKeys(activeKeys);
+      }
+      if(!queue.length)throw new Error('현재 불러올 수 있는 문제 원문이 없습니다.');
       if(checkpointMatches){
         const seen=new Set();
         queue=queue.map(q=>{if(seen.has(q._planKey))return {...q,_sameDayRecheck:true};seen.add(q._planKey);return q});
@@ -76,11 +91,11 @@ start_fn="""  window.startNavigatorPassPlanToday=async function(){
         }
       }
       if(checkpoint)ppClearPassSessionCheckpoint();
-      let startIndex=allKeys.findIndex(k=>!ppTodayCleared(ppProgressFor(progress,k),today));
+      let startIndex=activeKeys.findIndex(k=>!ppTodayCleared(ppProgressFor(progress,k),today));
       if(startIndex<0)startIndex=0;
       queue=queue.map(q=>({...q,_sameDayRecheck:false}));
       planSessionQueue=queue;planSessionIdx=startIndex;planSessionAnswers=new Array(queue.length).fill(null);planSessionConfidence=new Array(queue.length).fill(null);planSessionStartedAt=Date.now();planSessionCommitted=new Set();
-      for(let i=0;i<startIndex;i++)if(ppTodayCleared(ppProgressFor(progress,allKeys[i]),today))planSessionCommitted.add(i);
+      for(let i=0;i<startIndex;i++)if(ppTodayCleared(ppProgressFor(progress,activeKeys[i]),today))planSessionCommitted.add(i);
       currentMode='pass-plan-session';ppSavePassSessionCheckpoint(startIndex);renderNavigatorPassPlanCard();
     }catch(e){app.innerHTML=`<div class=\"card\" style=\"margin-top:30px\"><b>오늘 숙제를 시작하지 못했습니다.</b><div style=\"font-size:12px;margin-top:7px\">${escapeHtml(e.message||String(e))}</div><button class=\"btn btn-outline\" style=\"margin-top:12px\" onclick=\"renderNavigatorPassPlan('${planEntrySubject}')\">플랜으로 돌아가기</button></div>`}
   };"""
@@ -118,9 +133,10 @@ text=text.replace(
     '자주 틀리는 문제는 누적 오답 횟수가 많은 순으로 출제되며 숙달되면 목록에서 빠집니다.',1)
 
 if MARKER not in text: raise SystemExit('recovery-recheck marker missing after patch')
+if 'stale-assignment-recovery-v2' not in text: raise SystemExit('stale assignment recovery marker missing after patch')
 
 if text!=original:
     p.write_text(text,encoding='utf-8')
-    print('patched weakness retirement and delayed same-day recheck')
+    print('patched weakness retirement, delayed same-day recheck, and stale assignment recovery')
 else:
     print('recovery/recheck already patched')
