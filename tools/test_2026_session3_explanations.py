@@ -26,7 +26,8 @@ assert eng.count("grammar:")==25, 'not every English question has grammar/struct
 assert eng.count("why:")==25, 'not every English question has answer rationale'
 assert eng.count("memory:")==25, 'not every English question has memory point'
 assert "String(q['과목']||'')==='영어'" in eng
-assert len(eng)>30000, f'detailed English asset unexpectedly short: {len(eng)}'
+# About 900 source characters per question on average; the old fallback averaged only ~74.
+assert len(eng)>20000, f'detailed English asset unexpectedly short: {len(eng)}'
 subprocess.run(['node','--check','explain-2026-navi3-3-english.js'],check=True)
 
 def bundle(script_id):
