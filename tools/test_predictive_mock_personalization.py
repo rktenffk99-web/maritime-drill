@@ -19,7 +19,7 @@ required=[
     'Math.max(0.85,Math.min(1.45,mult))',
     'const complete=rows.length>0&&Array.isArray(answers)&&answers.length>=rows.length&&rows.every',
     'ppSavePredictiveHistory(gradeId,keys);',
-    '최근 5개년 출제경향 중심 · 개인 취약도 보조 · 급수별 최근 완료 모의 중복 억제',
+    '최근 5개년 출제경향 + 파트별 취약도 자동가중 · 급수별 최근 완료 모의 중복 억제',
 ]
 for needle in required:
     if needle not in src:
