@@ -19,6 +19,7 @@ on:
       - 'tools/patch_predictive_mock_followup.py'
       - 'tools/patch_predictive_mock_personalization.py'
       - 'tools/patch_predictive_mock_no_duplicates.py'
+      - 'tools/patch_predictive_mock_priority_core.py'
       - 'tools/patch_2026_session3_explanations.py'
       - 'tools/patch_weak_drills.py'
       - 'tools/patch_recovery_recheck.py'
@@ -33,6 +34,7 @@ on:
       - 'tools/test_predictive_mock.py'
       - 'tools/test_predictive_mock_personalization.py'
       - 'tools/test_predictive_mock_no_duplicates.py'
+      - 'tools/test_predictive_mock_priority_core.py'
       - 'tools/test_problem_report_modes.py'
       - 'tools/test_reported_content_fixes.js'
       - 'tools/test_weak_topic_analytics.py'
@@ -63,6 +65,7 @@ jobs:
           python tools/patch_predictive_mock_followup.py
           python tools/patch_predictive_mock_personalization.py
           python tools/patch_predictive_mock_no_duplicates.py
+          python tools/patch_predictive_mock_priority_core.py
           python tools/patch_2026_session3_explanations.py
           python tools/patch_weak_drills.py
           python tools/patch_recovery_recheck.py
@@ -77,6 +80,7 @@ jobs:
           python tools/test_predictive_mock.py
           python tools/test_predictive_mock_personalization.py
           python tools/test_predictive_mock_no_duplicates.py
+          python tools/test_predictive_mock_priority_core.py
           python tools/test_problem_report_modes.py
           node tools/test_reported_content_fixes.js
           python tools/test_weak_topic_analytics.py
