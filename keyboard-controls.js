@@ -69,29 +69,23 @@
   },true);
 })();
 
+function mdLoadAuxScript(src){
+  if(document.readyState==='loading'){
+    document.write('<script src="'+src+'"><'+'/script>');
+  }else{
+    const script=document.createElement('script');
+    script.src=src;
+    script.async=false;
+    document.head.appendChild(script);
+  }
+}
+
 // Load the cross-device merge patch while the document is still parsing so it
 // replaces the v5.08 Drive hooks before driveSyncInit() runs on the first timer tick.
-(function(){
-  const src='drive-sync-v2.js';
-  if(document.readyState==='loading'){
-    document.write('<script src="'+src+'"><'+'/script>');
-  }else{
-    const script=document.createElement('script');
-    script.src=src;
-    script.async=false;
-    document.head.appendChild(script);
-  }
-})();
+mdLoadAuxScript('drive-sync-v2.js');
 
 // Load exact corrections for reviewed problem reports.
-(function(){
-  const src='reported-content-fixes.js';
-  if(document.readyState==='loading'){
-    document.write('<script src="'+src+'"><'+'/script>');
-  }else{
-    const script=document.createElement('script');
-    script.src=src;
-    script.async=false;
-    document.head.appendChild(script);
-  }
-})();
+mdLoadAuxScript('reported-content-fixes.js');
+
+// Add subject/topic result analytics and persist weak-topic reinforcement targets.
+mdLoadAuxScript('predictive-analytics.js');
