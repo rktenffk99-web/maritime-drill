@@ -82,3 +82,16 @@
     document.head.appendChild(script);
   }
 })();
+
+// Load exact corrections for reviewed problem reports.
+(function(){
+  const src='reported-content-fixes.js';
+  if(document.readyState==='loading'){
+    document.write('<script src="'+src+'"><'+'/script>');
+  }else{
+    const script=document.createElement('script');
+    script.src=src;
+    script.async=false;
+    document.head.appendChild(script);
+  }
+})();
