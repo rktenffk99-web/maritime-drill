@@ -5,6 +5,7 @@ src=Path('index.html').read_text(encoding='utf-8-sig')
 
 required=[
     "recovery-recheck-v1",
+    "stale-assignment-recovery-v2",
     "return (Number(r.wrong)||0)>=2&&!r.mastered;",
     "function ppScheduleSameDayRecheck(q)",
     "const delay=30+Math.floor(Math.random()*21);",
@@ -12,8 +13,12 @@ required=[
     "planSessionAnswers.splice(insertAt,0,null);",
     "planSessionConfidence.splice(insertAt,0,null);",
     "if(confidence==='sure')ppScheduleSameDayRecheck(q);",
-    "const sourceKeys=checkpointMatches?checkpoint.queueKeys:allKeys;",
+    "let sourceKeys=checkpointMatches?checkpoint.queueKeys:allKeys;",
     "checkpoint.queueKeys.length>=allKeys.length",
+    "queue.length!==sourceKeys.length",
+    "stale daily assignment keys skipped",
+    "activeKeys=allKeys.filter(k=>hydratedKeys.has(k));",
+    "let startIndex=activeKeys.findIndex",
     "_sameDayRecheck:true",
     "숙달되면 목록에서 빠집니다.",
     "30~50문제 뒤 자동 재확인",
@@ -25,6 +30,7 @@ for needle in required:
 assert "filter(item=>(Number(ppProgressFor(progress,item.key).wrong)||0)>=2)" not in src, 'lifetime wrong-only selector still present'
 assert src.count('function ppScheduleSameDayRecheck(q)')==1
 assert src.count('recovery-recheck-v1')==1
+assert src.count('stale-assignment-recovery-v2')==1
 
 # Static ordering checks: commit must happen before scheduling, and scheduling before checkpoint save.
 choose=re.search(r"window\.chooseNavigatorPassPlanAnswer=function\(i\)\{(.*?)\n  \};",src,re.S)
@@ -32,12 +38,15 @@ assert choose, 'choose function missing'
 body=choose.group(1)
 assert body.index('ppCommitOutcome') < body.index('ppScheduleSameDayRecheck') < body.index('ppSavePassSessionCheckpoint'), 'recheck scheduling order is unsafe'
 
-# Resume validation must only accept keys from today's base assignment, while permitting duplicates.
+# Resume validation accepts only keys from today's base assignment, while permitting duplicates.
+# A stale cached key must downgrade to a fresh active-key queue rather than abort the session.
 start=re.search(r"window\.startNavigatorPassPlanToday=async function\(\)\{(.*?)\n  \};",src,re.S)
 assert start, 'today-start function missing'
 sbody=start.group(1)
 assert 'checkpoint.queueKeys.every(k=>baseSet.has(k))' in sbody
 assert 'allKeys.every(k=>checkpoint.queueKeys.includes(k))' in sbody
+assert sbody.index('queue.length!==sourceKeys.length') < sbody.index('activeKeys=allKeys.filter') < sbody.index('let startIndex=activeKeys.findIndex')
+assert "throw new Error('문제 원문을 찾지 못했습니다.')" not in sbody, 'single stale key still aborts whole daily session'
 
 # Syntax-check the pass-plan block after all patches.
 m=re.search(r'<script>\s*// ── v5\.07: 2·3급 항해사 합격 플랜 / 오늘의 숙제 ──(.*?)</script>',src,re.S)
@@ -46,4 +55,4 @@ with tempfile.NamedTemporaryFile('w',suffix='.js',encoding='utf-8',delete=False)
     f.write('// extracted for syntax check\n'+m.group(1)); name=f.name
 subprocess.run(['node','--check',name],check=True)
 
-print('recovery/recheck checks passed: frequent-wrong retires on mastery; first sure-correct schedules delayed confirmation')
+print('recovery/recheck checks passed: stale daily keys no longer block the whole session')
