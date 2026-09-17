@@ -10,7 +10,6 @@ on:
       - 'predictive-analytics.js'
       - 'explain-2026-navi3-3.js'
       - 'tools/patch_pass_plan.py'
-      - 'tools/patch_daily_assignment_hydration.py'
       - 'tools/patch_convenience.py'
       - 'tools/patch_2026_navigation.py'
       - 'tools/patch_same_day_confirmation.py'
@@ -49,7 +48,6 @@ jobs:
       - name: Patch index
         run: |
           python tools/patch_pass_plan.py
-          python tools/patch_daily_assignment_hydration.py
           python tools/patch_convenience.py
           python tools/patch_2026_navigation.py
           python tools/patch_same_day_confirmation.py
