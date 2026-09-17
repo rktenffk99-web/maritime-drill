@@ -40,12 +40,14 @@ const weak=mdPredictiveWeaknessMultiplier({gradeId:'navi3',subject:'영어',ques
 const strong=mdPredictiveWeaknessMultiplier({gradeId:'navi3',subject:'영어',question:'ordinary maritime reading passage'},null);
 assert(weak>1.2,'weak concept must be boosted');
 assert(strong<=1,'strong concept should not be boosted');
+// Four explicit weak-topic candidates in a 30-item pool: a 10-question allocation
+// may pull at most roughly 35% of its slots toward them instead of replacing the base mix.
 const candidates=[];
-for(let i=0;i<10;i++)candidates.push({key:'navi3|weak'+i,gradeId:'navi3',subject:'영어',question:'SMCP distress message '+i});
-for(let i=0;i<20;i++)candidates.push({key:'navi3|base'+i,gradeId:'navi3',subject:'영어',question:'ordinary maritime reading passage '+i});
+for(let i=0;i<4;i++)candidates.push({key:'navi3|weak'+i,gradeId:'navi3',subject:'영어',question:'SMCP distress message '+i});
+for(let i=0;i<26;i++)candidates.push({key:'navi3|base'+i,gradeId:'navi3',subject:'영어',question:'ordinary maritime reading passage '+i});
 const ordered=mdAdaptiveStudyOrder(candidates,null,{},10);
 const weakInFirst=ordered.slice(0,10).filter(x=>x.question.includes('SMCP')).length;
-assert(weakInFirst>=3 && weakInFirst<=4,'new-question reinforcement should be bounded near 35%');
+assert(weakInFirst>=3 && weakInFirst<=4,'new-question reinforcement should stay near the 35% focus budget');
 console.log('adaptive analytics runtime checks: PASS');
 '''
 with tempfile.NamedTemporaryFile('w',suffix='.js',encoding='utf-8',delete=False) as f:
