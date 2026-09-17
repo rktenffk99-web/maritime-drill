@@ -2,7 +2,7 @@ name: Patch pass-plan app
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, fix/adaptive-result-analytics ]
     paths:
       - 'keyboard-controls.js'
       - 'convenience-controls.js'
