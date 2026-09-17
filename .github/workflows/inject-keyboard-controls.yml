@@ -10,6 +10,7 @@ on:
       - 'predictive-analytics.js'
       - 'explain-2026-navi3-3.js'
       - 'tools/patch_pass_plan.py'
+      - 'tools/patch_daily_assignment_hydration.py'
       - 'tools/patch_convenience.py'
       - 'tools/patch_2026_navigation.py'
       - 'tools/patch_same_day_confirmation.py'
@@ -24,7 +25,6 @@ on:
       - 'tools/patch_grade_priority.py'
       - 'tools/patch_grade_priority_ratio_v2.py'
       - 'tools/patch_weak_topic_adaptive.py'
-      - 'tools/patch_daily_assignment_hydration.py'
       - 'tools/test_predictive_mock.py'
       - 'tools/test_predictive_mock_personalization.py'
       - 'tools/test_problem_report_modes.py'
@@ -49,6 +49,7 @@ jobs:
       - name: Patch index
         run: |
           python tools/patch_pass_plan.py
+          python tools/patch_daily_assignment_hydration.py
           python tools/patch_convenience.py
           python tools/patch_2026_navigation.py
           python tools/patch_same_day_confirmation.py
@@ -63,7 +64,6 @@ jobs:
           python tools/patch_grade_priority.py
           python tools/patch_grade_priority_ratio_v2.py
           python tools/patch_weak_topic_adaptive.py
-          python tools/patch_daily_assignment_hydration.py
           python tools/test_predictive_mock.py
           python tools/test_predictive_mock_personalization.py
           python tools/test_problem_report_modes.py
