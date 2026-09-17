@@ -20,6 +20,7 @@ on:
       - 'tools/patch_stable_session_counter.py'
       - 'tools/patch_rotation_mix.py'
       - 'tools/patch_grade_priority.py'
+      - 'tools/patch_grade_priority_ratio_v2.py'
       - 'tools/test_predictive_mock.py'
       - 'tools/test_predictive_mock_personalization.py'
       - 'tools/test_problem_report_modes.py'
@@ -54,6 +55,7 @@ jobs:
           python tools/patch_stable_session_counter.py
           python tools/patch_rotation_mix.py
           python tools/patch_grade_priority.py
+          python tools/patch_grade_priority_ratio_v2.py
           python tools/test_predictive_mock.py
           python tools/test_predictive_mock_personalization.py
           python tools/test_problem_report_modes.py
