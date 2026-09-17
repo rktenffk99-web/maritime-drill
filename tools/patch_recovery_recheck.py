@@ -47,55 +47,86 @@ if 'function ppScheduleSameDayRecheck(q)' not in text:
 """
     text=text.replace(anchor,anchor+helper,1)
 
-# Resume must accept checkpoint queues containing delayed repeat keys.
-# If an older cached assignment contains stale keys, skip only those keys instead
-# of blocking the entire daily session.
+# Resume policy v3:
+# - A same-day checkpoint is the authoritative queue for an unfinished session.
+# - Do NOT rebuild today's adaptive assignment first and compare it with the checkpoint;
+#   progress changes while studying can legitimately change a freshly rebuilt assignment.
+# - Preserve delayed same-day recheck duplicates in the saved queue.
+# - If an old build already discarded the checkpoint, recover from the contiguous prefix
+#   of questions actually attempted today rather than from "today-cleared" status.
 start_fn="""  window.startNavigatorPassPlanToday=async function(){
-    planSessionKind='today'; // recovery-recheck-v1
+    planSessionKind='today'; // recovery-recheck-v1 checkpoint-authoritative-resume-v3
     const plan=ppLoadPlan();await ppBuildPools(plan);const progress=ppLoadProgress(),today=ppDateKey(new Date());
-    const assignment=await ppGetDailyAssignment(plan,planPools,progress,false);
-    const allKeys=(assignment.keys||[]).slice();
-    const unresolvedKeys=allKeys.filter(k=>!ppTodayCleared(ppProgressFor(progress,k),today));
-    if(!unresolvedKeys.length){showToast('오늘 숙제를 모두 완료했습니다.');ppClearPassSessionCheckpoint();renderNavigatorPassPlan(planEntrySubject);return}
     try{
       const checkpoint=ppLoadPassSessionCheckpoint();
-      const baseSet=new Set(allKeys);
-      let checkpointMatches=!!(checkpoint&&Array.isArray(checkpoint.queueKeys)&&checkpoint.queueKeys.length>=allKeys.length&&checkpoint.queueKeys.every(k=>baseSet.has(k))&&allKeys.every(k=>checkpoint.queueKeys.includes(k)));
-      let sourceKeys=checkpointMatches?checkpoint.queueKeys:allKeys;
-      let activeKeys=allKeys.slice();
-      let queue=await ppHydrateKeys(sourceKeys); // stale-assignment-recovery-v2
-      if(!queue.length)throw new Error('현재 불러올 수 있는 문제 원문이 없습니다.');
-      if(queue.length!==sourceKeys.length){
-        const hydratedKeys=new Set(queue.map(q=>q&&q._planKey).filter(Boolean));
-        const missing=allKeys.filter(k=>!hydratedKeys.has(k));
-        console.warn('[pass-plan] stale daily assignment keys skipped',missing);
-        activeKeys=allKeys.filter(k=>hydratedKeys.has(k));
-        checkpointMatches=false;
-        sourceKeys=activeKeys;
-        ppClearPassSessionCheckpoint();
-        queue=await ppHydrateKeys(activeKeys);
-      }
-      if(!queue.length)throw new Error('현재 불러올 수 있는 문제 원문이 없습니다.');
-      if(checkpointMatches){
-        const seen=new Set();
-        queue=queue.map(q=>{if(seen.has(q._planKey))return {...q,_sameDayRecheck:true};seen.add(q._planKey);return q});
-        const nextIndex=Number(checkpoint.nextIndex);
-        if(Number.isInteger(nextIndex)&&nextIndex>=0&&nextIndex<queue.length){
-          planSessionQueue=queue;planSessionIdx=nextIndex;
-          planSessionAnswers=new Array(queue.length).fill(null);planSessionConfidence=new Array(queue.length).fill(null);
-          if(Array.isArray(checkpoint.answers))checkpoint.answers.slice(0,queue.length).forEach((v,i)=>{if(v===null||Number.isInteger(v))planSessionAnswers[i]=v});
-          if(Array.isArray(checkpoint.confidence))checkpoint.confidence.slice(0,queue.length).forEach((v,i)=>{if(v===null||['sure','unsure','wrong'].includes(v))planSessionConfidence[i]=v});
-          planSessionCommitted=new Set(Array.isArray(checkpoint.committed)?checkpoint.committed.filter(i=>Number.isInteger(i)&&i>=0&&i<queue.length):[]);
-          for(let i=0;i<nextIndex;i++)if(planSessionAnswers[i]!==null)planSessionCommitted.add(i);
-          planSessionStartedAt=Date.now();currentMode='pass-plan-session';renderNavigatorPassPlanCard();return;
+      if(checkpoint&&Array.isArray(checkpoint.queueKeys)&&checkpoint.queueKeys.length){
+        const checkpointKeys=checkpoint.queueKeys.slice();
+        const uniqueKeys=[...new Set(checkpointKeys)];
+        const hydratedUnique=await ppHydrateKeys(uniqueKeys);
+        const byKey=new Map((hydratedUnique||[]).filter(q=>q&&q._planKey).map(q=>[q._planKey,q]));
+        const keptOldIndices=[];
+        checkpointKeys.forEach((k,i)=>{if(byKey.has(k))keptOldIndices.push(i)});
+        if(keptOldIndices.length){
+          if(keptOldIndices.length!==checkpointKeys.length)console.warn('[pass-plan] stale checkpoint keys skipped',checkpointKeys.filter(k=>!byKey.has(k)));
+          const seen=new Set();
+          const queue=keptOldIndices.map(oldIdx=>{
+            const key=checkpointKeys[oldIdx],repeat=seen.has(key);seen.add(key);
+            return {...byKey.get(key),_sameDayRecheck:repeat};
+          });
+          const oldNext=Math.max(0,Math.min(checkpointKeys.length,Number(checkpoint.nextIndex)||0));
+          const nextIndex=keptOldIndices.filter(i=>i<oldNext).length;
+          if(nextIndex<queue.length){
+            planSessionQueue=queue;planSessionIdx=nextIndex;
+            planSessionAnswers=new Array(queue.length).fill(null);planSessionConfidence=new Array(queue.length).fill(null);planSessionCommitted=new Set();
+            keptOldIndices.forEach((oldIdx,newIdx)=>{
+              const av=Array.isArray(checkpoint.answers)?checkpoint.answers[oldIdx]:null;
+              const cv=Array.isArray(checkpoint.confidence)?checkpoint.confidence[oldIdx]:null;
+              if(av===null||Number.isInteger(av))planSessionAnswers[newIdx]=av;
+              if(cv===null||['sure','unsure','wrong'].includes(cv))planSessionConfidence[newIdx]=cv;
+              if(Array.isArray(checkpoint.committed)&&checkpoint.committed.includes(oldIdx))planSessionCommitted.add(newIdx);
+            });
+            for(let i=0;i<nextIndex;i++)if(planSessionAnswers[i]!==null)planSessionCommitted.add(i);
+            planSessionStartedAt=Date.now();currentMode='pass-plan-session';
+            ppSavePassSessionCheckpoint(nextIndex); // normalize after skipping stale keys, if any
+            renderNavigatorPassPlanCard();return;
+          }
         }
+        console.warn('[pass-plan] saved checkpoint could not be restored; using progress recovery');
+        ppClearPassSessionCheckpoint();
       }
-      if(checkpoint)ppClearPassSessionCheckpoint();
-      let startIndex=activeKeys.findIndex(k=>!ppTodayCleared(ppProgressFor(progress,k),today));
-      if(startIndex<0)startIndex=0;
-      queue=queue.map(q=>({...q,_sameDayRecheck:false}));
+
+      const assignment=await ppGetDailyAssignment(plan,planPools,progress,false);
+      const allKeys=(assignment.keys||[]).slice();
+      if(!allKeys.length){showToast('오늘 숙제가 없습니다.');renderNavigatorPassPlan(planEntrySubject);return}
+      const hydrated=await ppHydrateKeys([...new Set(allKeys)]); // stale-assignment-recovery-v3
+      const byKey=new Map((hydrated||[]).filter(q=>q&&q._planKey).map(q=>[q._planKey,q]));
+      const activeKeys=allKeys.filter(k=>byKey.has(k));
+      if(activeKeys.length!==allKeys.length)console.warn('[pass-plan] stale daily assignment keys skipped',allKeys.filter(k=>!byKey.has(k)));
+      if(!activeKeys.length)throw new Error('현재 불러올 수 있는 문제 원문이 없습니다.');
+      const queue=activeKeys.map(k=>({...byKey.get(k),_sameDayRecheck:false}));
+
+      const unresolvedKeys=activeKeys.filter(k=>!ppTodayCleared(ppProgressFor(progress,k),today));
+      if(!unresolvedKeys.length){showToast('오늘 숙제를 모두 완료했습니다.');ppClearPassSessionCheckpoint();renderNavigatorPassPlan(planEntrySubject);return}
+
+      // Emergency recovery for sessions whose checkpoint was already lost by an older build.
+      // lastDate===today means the item was actually answered today; this is distinct from
+      // sameDayConfirmedDate, which may still be null after the first correct answer.
+      let startIndex=0;
+      while(startIndex<activeKeys.length){
+        const rec=ppProgressFor(progress,activeKeys[startIndex]);
+        if(!(rec&&rec.lastDate===today&&Number(rec.attempts||0)>0))break;
+        startIndex++;
+      }
+      if(startIndex>=activeKeys.length){
+        startIndex=activeKeys.findIndex(k=>!ppTodayCleared(ppProgressFor(progress,k),today));
+        if(startIndex<0){showToast('오늘 숙제를 모두 완료했습니다.');ppClearPassSessionCheckpoint();renderNavigatorPassPlan(planEntrySubject);return}
+      }
+
       planSessionQueue=queue;planSessionIdx=startIndex;planSessionAnswers=new Array(queue.length).fill(null);planSessionConfidence=new Array(queue.length).fill(null);planSessionStartedAt=Date.now();planSessionCommitted=new Set();
-      for(let i=0;i<startIndex;i++)if(ppTodayCleared(ppProgressFor(progress,activeKeys[i]),today))planSessionCommitted.add(i);
+      for(let i=0;i<startIndex;i++){
+        const rec=ppProgressFor(progress,activeKeys[i]);
+        if(rec&&rec.lastDate===today)planSessionCommitted.add(i);
+      }
       currentMode='pass-plan-session';ppSavePassSessionCheckpoint(startIndex);renderNavigatorPassPlanCard();
     }catch(e){app.innerHTML=`<div class=\"card\" style=\"margin-top:30px\"><b>오늘 숙제를 시작하지 못했습니다.</b><div style=\"font-size:12px;margin-top:7px\">${escapeHtml(e.message||String(e))}</div><button class=\"btn btn-outline\" style=\"margin-top:12px\" onclick=\"renderNavigatorPassPlan('${planEntrySubject}')\">플랜으로 돌아가기</button></div>`}
   };"""
@@ -133,10 +164,11 @@ text=text.replace(
     '자주 틀리는 문제는 누적 오답 횟수가 많은 순으로 출제되며 숙달되면 목록에서 빠집니다.',1)
 
 if MARKER not in text: raise SystemExit('recovery-recheck marker missing after patch')
-if 'stale-assignment-recovery-v2' not in text: raise SystemExit('stale assignment recovery marker missing after patch')
+if 'checkpoint-authoritative-resume-v3' not in text: raise SystemExit('checkpoint resume v3 marker missing after patch')
+if 'stale-assignment-recovery-v3' not in text: raise SystemExit('stale assignment recovery v3 marker missing after patch')
 
 if text!=original:
     p.write_text(text,encoding='utf-8')
-    print('patched weakness retirement, delayed same-day recheck, and stale assignment recovery')
+    print('patched weakness retirement, delayed same-day recheck, and checkpoint-stable resume')
 else:
     print('recovery/recheck already patched')
