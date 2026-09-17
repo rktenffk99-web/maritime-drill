@@ -9,6 +9,7 @@ on:
       - 'reported-content-fixes.js'
       - 'predictive-analytics.js'
       - 'explain-2026-navi3-3.js'
+      - 'explain-2026-navi3-3-english.js'
       - 'tools/audit_english_explanations.py'
       - 'tools/patch_pass_plan.py'
       - 'tools/patch_convenience.py'
