@@ -154,7 +154,10 @@
     }catch(e){return []}
   }
   function formatReports(reports){
-    return reports.map((r,i)=>`#${i+1} ${r.reason||'신고'}\n시각: ${r.createdAt||''}\n표시: ${(r.tags||[]).join(' · ')} ${r.counter||''}\n문제: ${r.question||''}`).join('\n\n');
+    return reports.map((r,i)=>{
+      const detail=String(r.detail||'').trim();
+      return `#${i+1} ${r.reason||'신고'}\n시각: ${r.createdAt||''}\n표시: ${(r.tags||[]).join(' · ')} ${r.counter||''}\n문제: ${r.question||''}${detail?`\n신고내용: ${detail}`:''}`;
+    }).join('\n\n');
   }
   async function copyReports(){
     const reports=readReports();if(!reports.length){toast('저장된 문제 신고가 없습니다.');return}
@@ -176,7 +179,10 @@
     const reports=readReports();
     const overlay=document.createElement('div');overlay.id='md-report-list-modal';
     overlay.style.cssText='position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:10000;display:flex;align-items:center;justify-content:center;padding:18px';
-    const rows=reports.length?reports.slice().reverse().map((r,ri)=>`<div style="padding:10px;border:1px solid #E2E8F0;border-radius:9px;background:#F8FAFC"><div style="font-size:12px;font-weight:900">${escapeText(r.reason||'신고')} · #${reports.length-ri}</div><div style="font-size:10px;color:#64748B;margin-top:3px">${escapeText((r.tags||[]).join(' · '))} ${escapeText(r.counter||'')}</div><div style="font-size:12px;line-height:1.55;margin-top:6px">${escapeText(r.question||'문제 문구 없음')}</div></div>`).join(''):'<div style="padding:18px;text-align:center;color:#64748B">저장된 문제 신고가 없습니다.</div>';
+    const rows=reports.length?reports.slice().reverse().map((r,ri)=>{
+      const detail=String(r.detail||'').trim();
+      return `<div style="padding:10px;border:1px solid #E2E8F0;border-radius:9px;background:#F8FAFC"><div style="font-size:12px;font-weight:900">${escapeText(r.reason||'신고')} · #${reports.length-ri}</div><div style="font-size:10px;color:#64748B;margin-top:3px">${escapeText((r.tags||[]).join(' · '))} ${escapeText(r.counter||'')}</div><div style="font-size:12px;line-height:1.55;margin-top:6px">${escapeText(r.question||'문제 문구 없음')}</div>${detail?`<div style="font-size:12px;line-height:1.55;margin-top:7px;padding:8px;border-radius:7px;background:#FFF;border:1px solid #E2E8F0"><b>신고 내용</b><br>${escapeText(detail)}</div>`:''}</div>`;
+    }).join(''):'<div style="padding:18px;text-align:center;color:#64748B">저장된 문제 신고가 없습니다.</div>';
     overlay.innerHTML=`<div class="card" style="width:min(640px,100%);max-height:85vh;overflow:auto;margin:0;background:#fff"><div style="font-size:17px;font-weight:900">저장된 문제 신고 · ${reports.length}건</div><div style="font-size:11px;color:#64748B;margin:5px 0 12px">신고는 이 브라우저의 localStorage에만 저장됩니다. 2026-09-17 검수 완료 이전 신고는 자동 정리되며, 이후 신고만 여기에 남습니다.</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button class="btn btn-accent" style="flex:1;min-width:120px" id="md-report-copy" ${reports.length?'':'disabled'}>전체 복사</button><button class="btn btn-outline" style="flex:1;min-width:120px" id="md-report-clear" ${reports.length?'':'disabled'}>전체 삭제</button><button class="btn btn-outline" style="flex:1;min-width:120px" id="md-report-list-close">닫기</button></div><div style="display:flex;flex-direction:column;gap:8px">${rows}</div></div>`;
     document.body.appendChild(overlay);
     overlay.querySelector('#md-report-copy').onclick=copyReports;
@@ -188,23 +194,32 @@
   window.copyMaritimeProblemReports=copyReports;
   window.clearMaritimeProblemReports=clearReports;
 
-  function saveReport(reason){
+  function saveReport(reason,detail=''){
+    const note=String(detail||'').trim();
+    if(reason==='직접 입력'&&!note){toast('신고 내용을 입력해 주세요.');return false}
     const snap=collectQuestionSnapshot();
     const reports=readReports();
-    reports.push({createdAt:new Date().toISOString(),reason,...snap});
+    reports.push({createdAt:new Date().toISOString(),reason,detail:note,...snap});
     try{localStorage.setItem(REPORTS_KEY,JSON.stringify(reports.slice(-500)))}catch(e){}
     toast(`문제 신고 저장됨 · ${reason}`);
     document.getElementById('md-report-modal')?.remove();
+    return true;
   }
   function openReportModal(){
     document.getElementById('md-report-modal')?.remove();
     const count=readReports().length;
     const overlay=document.createElement('div');overlay.id='md-report-modal';
     overlay.style.cssText='position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
-    overlay.innerHTML=`<div class="card" style="width:min(420px,100%);margin:0;background:#fff"><div style="font-weight:900;font-size:17px;margin-bottom:12px">문제 신고</div><div style="font-size:12px;color:var(--textDim);margin-bottom:12px">현재 문제를 이 브라우저에 저장합니다. 저장된 신고는 아래에서 확인·복사할 수 있습니다.</div><div id="md-report-actions" style="display:flex;flex-direction:column;gap:8px"></div><button class="btn btn-outline" style="width:100%;margin-top:10px" id="md-report-list">저장된 신고 ${count}건 보기</button><button class="btn btn-outline" style="width:100%;margin-top:8px" id="md-report-cancel">취소</button></div>`;
+    overlay.innerHTML=`<div class="card" style="width:min(420px,100%);margin:0;background:#fff"><div style="font-weight:900;font-size:17px;margin-bottom:12px">문제 신고</div><div style="font-size:12px;color:var(--textDim);margin-bottom:12px">현재 문제를 이 브라우저에 저장합니다. 유형을 바로 선택하거나 직접 내용을 입력할 수 있습니다.</div><div id="md-report-actions" style="display:flex;flex-direction:column;gap:8px"></div><div id="md-report-custom" style="display:none;margin-top:10px"><textarea id="md-report-detail" maxlength="500" rows="4" placeholder="어떤 점이 이상한지 직접 입력해 주세요. 예: 보기 3번 문장이 잘린 것 같음" style="width:100%;box-sizing:border-box;resize:vertical;padding:10px;border:1px solid #CBD5E1;border-radius:9px;font:inherit;line-height:1.5"></textarea><div style="display:flex;justify-content:space-between;gap:8px;align-items:center;margin-top:5px"><span id="md-report-detail-count" style="font-size:10px;color:#64748B">0/500</span><button class="btn btn-accent" id="md-report-custom-save" style="min-width:110px">내용 저장</button></div></div><button class="btn btn-outline" style="width:100%;margin-top:10px" id="md-report-list">저장된 신고 ${count}건 보기</button><button class="btn btn-outline" style="width:100%;margin-top:8px" id="md-report-cancel">취소</button></div>`;
     document.body.appendChild(overlay);
     const actions=overlay.querySelector('#md-report-actions');
     ['정답 이상','해설 이상','오타/깨짐'].forEach(reason=>{const b=document.createElement('button');b.className='btn btn-outline';b.style.width='100%';b.textContent=reason;b.onclick=()=>saveReport(reason);actions.appendChild(b)});
+    const customBtn=document.createElement('button');customBtn.className='btn btn-outline';customBtn.style.width='100%';customBtn.textContent='직접 입력(주관식)';actions.appendChild(customBtn);
+    const custom=overlay.querySelector('#md-report-custom'),detail=overlay.querySelector('#md-report-detail'),countEl=overlay.querySelector('#md-report-detail-count'),save=overlay.querySelector('#md-report-custom-save');
+    customBtn.onclick=()=>{custom.style.display='block';customBtn.style.display='none';setTimeout(()=>detail.focus(),0)};
+    detail.addEventListener('input',()=>{countEl.textContent=`${detail.value.length}/500`});
+    detail.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();save.click()}});
+    save.onclick=()=>saveReport('직접 입력',detail.value);
     overlay.querySelector('#md-report-list').onclick=()=>{overlay.remove();openReportListModal()};
     overlay.querySelector('#md-report-cancel').onclick=()=>overlay.remove();
     overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove()});
