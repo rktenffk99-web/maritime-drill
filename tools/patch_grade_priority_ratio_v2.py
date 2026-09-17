@@ -110,7 +110,7 @@ build_fn="""  function ppBuildTodayAssignment(plan,pools,progress,today){ // gra
         }
       });
 
-      // 한 급수의 문제 풀이 풀이감이 부족해 비율을 채우지 못할 때만 다른 급수로 남는 슬롯을 넘긴다.
+      // 한 급수에서 배정 가능한 문제가 부족해 비율을 채우지 못할 때만 다른 급수로 남는 슬롯을 넘긴다.
       let fill=Math.max(0,cap-selectedKeys.size);
       if(fill>0){
         for(const item of due){
