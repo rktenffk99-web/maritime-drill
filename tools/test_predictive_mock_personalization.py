@@ -12,7 +12,7 @@ required=[
     'function ppPredictiveWeight(item,history,progress)',
     'function ppPredictiveSample(items,data,count,history,progress)',
     'history=ppLoadPredictiveHistory(gradeId),progress=ppLoadProgress()',
-    'ppPredictiveSample(candidates,data,Math.min(PAST_MOCK_PER_SUBJECT,candidates.length),history,progress)',
+    'ppPredictivePrioritySample(candidates,data,Math.min(PAST_MOCK_PER_SUBJECT,candidates.length),history,progress)',
     "if(rec.status==='weak'||rec.lastOutcome==='wrong')mult*=1.20;",
     'Math.min(0.15,wrong*0.03)',
     'if(rec.mastered)mult*=0.90;',
@@ -20,7 +20,7 @@ required=[
     'Math.max(0.85,Math.min(1.85,mult))',
     'const complete=rows.length>0&&Array.isArray(answers)&&answers.length>=rows.length&&rows.every',
     'ppSavePredictiveHistory(gradeId,keys);',
-    '최근 5개년 출제경향 중심 · 개인 취약도 보조 · 급수별 최근 완료 모의 중복 억제',
+    '핵심 중요도 상위군 40% 우선 · 나머지는 출제빈도·최근성·개인 취약도 가중 랜덤 · 동일 문항 중복 금지',
 ]
 for needle in required:
     if needle not in src:
