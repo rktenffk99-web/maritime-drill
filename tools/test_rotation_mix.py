@@ -25,8 +25,9 @@ assert body.find('const phases=') < body.find('const due='), 'coverage demand sh
 assert body.find("if(priority.mode==='auto')") < body.find('const totalQuotas=ppPriorityFlexQuotas(plan,today,cap);'), 'auto and manual branches are ordered incorrectly'
 manual_start=body.find('const totalQuotas=ppPriorityFlexQuotas(plan,today,cap);')
 manual_review=body.find('for(const item of due){',manual_start)
-manual_new=body.find('for(const item of sortedNewCandidates(g))',manual_start)
-assert manual_start>=0 and manual_review>manual_start and manual_new>manual_review, 'manual quota must take due reviews before new questions'
+manual_new_candidates=body.find('const newCandidates=sortedNewCandidates(g),remainingNewSlots=',manual_start)
+manual_new=body.find('for(const item of adaptiveCandidates){',manual_new_candidates)
+assert manual_start>=0 and manual_review>manual_start and manual_new_candidates>manual_review and manual_new>manual_new_candidates, 'manual quota must take due reviews before adaptive new questions'
 assert body.find('const ordered=') < body.find('return {keys:ordered.map'), 'mixed queue must be returned'
 
 print('deadline coverage + full-day grade ratio rotation tests: PASS')
