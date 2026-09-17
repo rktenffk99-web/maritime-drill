@@ -5,7 +5,8 @@ src=Path('index.html').read_text(encoding='utf-8-sig')
 
 required=[
     "recovery-recheck-v1",
-    "stale-assignment-recovery-v2",
+    "checkpoint-authoritative-resume-v3",
+    "stale-assignment-recovery-v3",
     "return (Number(r.wrong)||0)>=2&&!r.mastered;",
     "function ppScheduleSameDayRecheck(q)",
     "const delay=30+Math.floor(Math.random()*21);",
@@ -13,12 +14,15 @@ required=[
     "planSessionAnswers.splice(insertAt,0,null);",
     "planSessionConfidence.splice(insertAt,0,null);",
     "if(confidence==='sure')ppScheduleSameDayRecheck(q);",
-    "let sourceKeys=checkpointMatches?checkpoint.queueKeys:allKeys;",
-    "checkpoint.queueKeys.length>=allKeys.length",
-    "queue.length!==sourceKeys.length",
+    "const checkpoint=ppLoadPassSessionCheckpoint();",
+    "const checkpointKeys=checkpoint.queueKeys.slice();",
+    "const uniqueKeys=[...new Set(checkpointKeys)];",
+    "const keptOldIndices=[];",
+    "ppSavePassSessionCheckpoint(nextIndex); // normalize after skipping stale keys, if any",
+    "const assignment=await ppGetDailyAssignment(plan,planPools,progress,false);",
     "stale daily assignment keys skipped",
-    "activeKeys=allKeys.filter(k=>hydratedKeys.has(k));",
-    "let startIndex=activeKeys.findIndex",
+    "let startIndex=0;",
+    "rec.lastDate===today",
     "_sameDayRecheck:true",
     "숙달되면 목록에서 빠집니다.",
     "30~50문제 뒤 자동 재확인",
@@ -29,8 +33,8 @@ for needle in required:
 
 assert "filter(item=>(Number(ppProgressFor(progress,item.key).wrong)||0)>=2)" not in src, 'lifetime wrong-only selector still present'
 assert src.count('function ppScheduleSameDayRecheck(q)')==1
-assert src.count('recovery-recheck-v1')==1
-assert src.count('stale-assignment-recovery-v2')==1
+assert src.count('checkpoint-authoritative-resume-v3')==1
+assert src.count('stale-assignment-recovery-v3')==1
 
 # Static ordering checks: commit must happen before scheduling, and scheduling before checkpoint save.
 choose=re.search(r"window\.chooseNavigatorPassPlanAnswer=function\(i\)\{(.*?)\n  \};",src,re.S)
@@ -38,14 +42,17 @@ assert choose, 'choose function missing'
 body=choose.group(1)
 assert body.index('ppCommitOutcome') < body.index('ppScheduleSameDayRecheck') < body.index('ppSavePassSessionCheckpoint'), 'recheck scheduling order is unsafe'
 
-# Resume validation accepts only keys from today's base assignment, while permitting duplicates.
-# A stale cached key must downgrade to a fresh active-key queue rather than abort the session.
+# The saved queue must be restored BEFORE today's adaptive assignment is rebuilt.
+# This is the regression that previously sent a user from roughly 36/110 back to 3/110.
 start=re.search(r"window\.startNavigatorPassPlanToday=async function\(\)\{(.*?)\n  \};",src,re.S)
 assert start, 'today-start function missing'
 sbody=start.group(1)
-assert 'checkpoint.queueKeys.every(k=>baseSet.has(k))' in sbody
-assert 'allKeys.every(k=>checkpoint.queueKeys.includes(k))' in sbody
-assert sbody.index('queue.length!==sourceKeys.length') < sbody.index('activeKeys=allKeys.filter') < sbody.index('let startIndex=activeKeys.findIndex')
+assert sbody.index('const checkpoint=ppLoadPassSessionCheckpoint();') < sbody.index('const assignment=await ppGetDailyAssignment'), 'daily assignment is rebuilt before checkpoint restore'
+assert 'checkpointMatches' not in sbody, 'resume still depends on strict equality with a rebuilt daily assignment'
+assert 'checkpoint.queueKeys.every(k=>baseSet.has(k))' not in sbody, 'old strict base-assignment checkpoint validation remains'
+assert 'keptOldIndices.filter(i=>i<oldNext).length' in sbody, 'checkpoint index is not remapped when stale source keys are skipped'
+assert "rec.lastDate===today&&Number(rec.attempts||0)>0" in sbody, 'lost-checkpoint recovery does not use actually attempted-today prefix'
+assert sbody.index('const checkpoint=ppLoadPassSessionCheckpoint();') < sbody.index('const checkpointKeys=checkpoint.queueKeys.slice();') < sbody.index('const assignment=await ppGetDailyAssignment')
 assert "throw new Error('문제 원문을 찾지 못했습니다.')" not in sbody, 'single stale key still aborts whole daily session'
 
 # Syntax-check the pass-plan block after all patches.
@@ -55,4 +62,4 @@ with tempfile.NamedTemporaryFile('w',suffix='.js',encoding='utf-8',delete=False)
     f.write('// extracted for syntax check\n'+m.group(1)); name=f.name
 subprocess.run(['node','--check',name],check=True)
 
-print('recovery/recheck checks passed: stale daily keys no longer block the whole session')
+print('recovery/recheck checks passed: checkpoint queue is authoritative and lost checkpoints recover from attempted-today progress')
