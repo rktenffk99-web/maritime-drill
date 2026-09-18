@@ -250,10 +250,109 @@
     else if(wakeLock){try{await wakeLock.release()}catch(e){}wakeLock=null}
   }
 
+
+  // today-result-subject-breakdown-v1
+  function mdResultSubjectName(q){
+    let item=null;
+    try{if(q&&q._planKey&&typeof ppGetItemByKey==='function')item=ppGetItemByKey(q._planKey)}catch(e){}
+    let subject=String((item&&item.subject)||(q&&q.subject)||(q&&q['과목'])||'기타').trim();
+    const compact=subject.replace(/\s+/g,'');
+    if(/^영어/.test(compact))return '영어';
+    if(/^항해/.test(compact))return '항해';
+    if(/^법규/.test(compact))return '법규';
+    if(/^(운용|선박운용)/.test(compact))return '운용';
+    if(/^상선전문/.test(compact))return '상선전문';
+    return subject||'기타';
+  }
+  function mdPercent(n,d){
+    if(!d)return '0%';
+    const v=Math.round((n/d)*1000)/10;
+    return (Number.isInteger(v)?String(v):v.toFixed(1))+'%';
+  }
+  function mdTodayResultStats(){
+    if(typeof planSessionQueue==='undefined'||!Array.isArray(planSessionQueue)||!planSessionQueue.length)return null;
+    const answers=(typeof planSessionAnswers!=='undefined'&&Array.isArray(planSessionAnswers))?planSessionAnswers:[];
+    let progress=null,today=null,canReadCleared=false;
+    try{
+      if(typeof ppLoadProgress==='function'&&typeof ppDateKey==='function'&&typeof ppProgressFor==='function'&&typeof ppTodayCleared==='function'){
+        progress=ppLoadProgress();today=ppDateKey(new Date());canReadCleared=true;
+      }
+    }catch(e){}
+    const unique=new Map();
+    planSessionQueue.forEach((q,i)=>{
+      if(!q)return;
+      const key=q._planKey?String(q._planKey):'idx:'+i;
+      if(unique.has(key))return;
+      const answer=answers[i];
+      const firstCorrect=Number.isInteger(answer)&&answer===q['정답'];
+      let cleared=firstCorrect;
+      if(canReadCleared&&q._planKey){
+        try{cleared=!!ppTodayCleared(ppProgressFor(progress,q._planKey),today)}catch(e){}
+      }
+      unique.set(key,{key,subject:mdResultSubjectName(q),firstCorrect,cleared});
+    });
+    if(!unique.size)return null;
+    const bySubject=new Map();
+    for(const row of unique.values()){
+      const subject=row.subject||'기타';
+      if(!bySubject.has(subject))bySubject.set(subject,{subject,total:0,firstCorrect:0,cleared:0});
+      const s=bySubject.get(subject);s.total++;if(row.firstCorrect)s.firstCorrect++;if(row.cleared)s.cleared++;
+    }
+    const preferred=['영어','항해','법규','운용','상선전문','기타'];
+    const order=new Map(preferred.map((s,i)=>[s,i]));
+    const subjects=[...bySubject.values()].sort((a,b)=>{
+      const ao=order.has(a.subject)?order.get(a.subject):preferred.length;
+      const bo=order.has(b.subject)?order.get(b.subject):preferred.length;
+      return ao-bo||a.subject.localeCompare(b.subject,'ko');
+    });
+    const total=unique.size;
+    const firstCorrect=[...unique.values()].filter(x=>x.firstCorrect).length;
+    const cleared=[...unique.values()].filter(x=>x.cleared).length;
+    return {subjects,total,firstCorrect,cleared,unresolved:total-cleared};
+  }
+  function enhanceTodayResult(){
+    const root=appRoot();if(!root||document.getElementById('md-today-subject-result'))return;
+    const title=[...root.querySelectorAll('h1')].find(el=>(el.textContent||'').trim()==='오늘의 숙제 결과');
+    if(!title)return;
+    const stats=mdTodayResultStats();if(!stats||!stats.subjects.length)return;
+    const firstCard=root.querySelector('.card');if(!firstCard)return;
+    const rows=stats.subjects.map(s=>{
+      const firstRate=mdPercent(s.firstCorrect,s.total),clearedRate=mdPercent(s.cleared,s.total),unresolved=s.total-s.cleared;
+      return '<div style="display:grid;grid-template-columns:minmax(90px,1.15fr) minmax(150px,1.8fr) minmax(135px,1.6fr) minmax(80px,.8fr);gap:12px;align-items:center;padding:11px 14px;border-top:1px solid #E2E8F0">'
+        +'<div style="font-size:13px;font-weight:900;color:#0F172A">'+escapeText(s.subject)+'</div>'
+        +'<div><div style="display:flex;justify-content:space-between;gap:8px;font-size:11px"><span>'+s.firstCorrect+' / '+s.total+'</span><b>'+firstRate+'</b></div><div style="height:6px;background:#E2E8F0;border-radius:999px;overflow:hidden;margin-top:5px"><div style="height:100%;width:'+firstRate+';background:#7C3AED;border-radius:999px"></div></div></div>'
+        +'<div style="font-size:11px"><b style="font-size:12px;color:#334155">'+s.cleared+' / '+s.total+'</b><span style="color:#64748B"> · '+clearedRate+'</span></div>'
+        +'<div style="font-size:12px;font-weight:900;color:'+(unresolved?'#B45309':'#047857')+'">'+unresolved+'문제</div>'
+        +'</div>';
+    }).join('');
+    let weakestHtml='';
+    if(stats.subjects.length>=2){
+      const ranked=stats.subjects.slice().sort((a,b)=>(a.firstCorrect/Math.max(1,a.total))-(b.firstCorrect/Math.max(1,b.total))||(b.total-b.cleared)-(a.total-a.cleared));
+      const w=ranked[0];
+      weakestHtml='<div style="padding:10px 14px;background:#F8FAFC;border-top:1px solid #E2E8F0;font-size:11px;color:#475569">첫 시도 정답률 최저: <b style="color:#B91C1C">'+escapeText(w.subject)+' '+mdPercent(w.firstCorrect,w.total)+'</b> · 현재 미해결 '+(w.total-w.cleared)+'문제</div>';
+    }
+    const section=document.createElement('div');
+    section.id='md-today-subject-result';section.className='card';section.style.cssText='padding:0;overflow:hidden';
+    section.innerHTML=
+      '<div style="padding:15px 14px 12px">'
+      +'<div style="font-size:16px;font-weight:900;color:#0F172A">과목별 결과</div>'
+      +'<div style="font-size:10px;color:#64748B;margin-top:4px">첫 시도 정답률과 현재 숙제 통과 상태를 분리해 표시합니다. 재확인 문제는 중복 집계하지 않습니다.</div>'
+      +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;font-size:11px">'
+      +'<span style="padding:6px 9px;border-radius:999px;background:#F1F5F9;color:#334155">고유 문항 <b>'+stats.total+'</b></span>'
+      +'<span style="padding:6px 9px;border-radius:999px;background:#F5F3FF;color:#6D28D9">첫 시도 정답 <b>'+stats.firstCorrect+' ('+mdPercent(stats.firstCorrect,stats.total)+')</b></span>'
+      +'<span style="padding:6px 9px;border-radius:999px;background:#ECFDF5;color:#047857">현재 통과 <b>'+stats.cleared+'</b></span>'
+      +'<span style="padding:6px 9px;border-radius:999px;background:#FFF7ED;color:#B45309">미해결 <b>'+stats.unresolved+'</b></span>'
+      +'</div></div>'
+      +'<div style="overflow-x:auto"><div style="min-width:620px">'
+      +'<div style="display:grid;grid-template-columns:minmax(90px,1.15fr) minmax(150px,1.8fr) minmax(135px,1.6fr) minmax(80px,.8fr);gap:12px;padding:8px 14px;background:#F8FAFC;font-size:10px;font-weight:900;color:#64748B"><div>과목</div><div>첫 시도 정답</div><div>현재 통과</div><div>미해결</div></div>'
+      +rows+weakestHtml+'</div></div>';
+    firstCard.insertAdjacentElement('afterend',section);
+  }
+
   let queued=false;
   function enhance(){
     if(queued)return;queued=true;
-    requestAnimationFrame(()=>{queued=false;cleanLegacyConfidenceUi();addResumeBanner();applyExplanationMode();addReportButton();syncWakeLock()});
+    requestAnimationFrame(()=>{queued=false;cleanLegacyConfidenceUi();addResumeBanner();applyExplanationMode();addReportButton();enhanceTodayResult();syncWakeLock()});
   }
   new MutationObserver(enhance).observe(document.documentElement,{childList:true,subtree:true});
   document.addEventListener('visibilitychange',enhance);
