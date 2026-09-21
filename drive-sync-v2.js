@@ -193,6 +193,7 @@
           out[key]=remoteValue[key];
         }
       }
+      if(window.__mdLearningIntegrity)window.__mdLearningIntegrity.mergeCounters(localValue,remoteValue,out);
       return out;
     }
     return mdSyncChoose(localValue,remoteValue,path,localMeta,remoteMeta,localFallback,remoteFallback,pathParts);
@@ -224,6 +225,9 @@
       const mergedMeta=mdSyncMergeKeyMeta(lm,rm,localFallback,remoteFallback);
       itemMeta[key]=mergedMeta;
       if(localHas&&remoteHas){
+        if(['md_pass_plan_session_checkpoint_v2','md_past_progress_v1','md_past_progress_meta_v1'].includes(key)){
+          items[key]=mdSyncChoose(localItems[key],remoteItems[key],'',lm,rm,localFallback,remoteFallback,[]);continue;
+        }
         if(localItems[key]===remoteItems[key]){items[key]=localItems[key];continue}
         const lp=mdSyncParse(localItems[key]),rp=mdSyncParse(remoteItems[key]);
         if(lp.json&&rp.json&&mdSyncIsPlainObject(lp.value)&&mdSyncIsPlainObject(rp.value)){

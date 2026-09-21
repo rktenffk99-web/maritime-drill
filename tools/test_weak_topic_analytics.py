@@ -17,7 +17,7 @@ for needle in [
 for needle in [
     "weak-topic-adaptive-v1",
     "function ppWeakTopicId(item)",
-    "function ppLoadWeakTopicProfile()",
+    "function ppLoadWeakTopicProfile(gradeId)",
     "function ppWeakTopicBoost(item,profile)",
     "ppWeakTopicBoost(b,weakProfile)-ppWeakTopicBoost(a,weakProfile)",
     "mult*=ppWeakTopicBoost(item)",

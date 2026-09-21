@@ -4,7 +4,7 @@ p = Path('index.html')
 text = p.read_text(encoding='utf-8-sig')
 original = text
 start = text.index('  function ppWeakTopicId(item){')
-end = text.index('  function ppLoadWeakTopicProfile()', start)
+end = text.index('  function ppLoadWeakTopicProfile(', start)
 text = text[:start] + """  function ppWeakTopicId(item){
     // audit-topic-classifier-v1: one shared rule set for homework and results.
     const subject=String(item&&item.subject||'기타');

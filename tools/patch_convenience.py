@@ -5,7 +5,7 @@ text=p.read_text(encoding='utf-8-sig')
 original=text
 
 tag='<script src="convenience-controls.js"></script>'
-if tag not in text:
+if 'src="convenience-controls.js' not in text:
     marker='</body>'
     text=text.replace(marker,tag+'\n'+marker,1) if marker in text else text+'\n'+tag+'\n'
 
