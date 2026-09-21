@@ -18,7 +18,7 @@ required=[
     'if(rec.mastered)mult*=0.90;',
     'mult*=ppWeakTopicBoost(item);',
     'Math.max(0.85,Math.min(1.85,mult))',
-    'const complete=rows.length>0&&Array.isArray(answers)&&answers.length>=rows.length&&rows.every',
+    'const complete=rows.length>0&&!rows.some(q=>q&&q._predictiveReview)&&Array.isArray(answers)&&answers.length>=rows.length&&rows.every',
     'ppSavePredictiveHistory(gradeId,keys);',
     '핵심 중요도 상위군 40% 우선 · 나머지는 출제빈도·최근성·개인 취약도 가중 랜덤 · 동일 문항 중복 금지',
 ]

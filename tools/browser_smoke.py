@@ -4,6 +4,7 @@ from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 import json
+import os
 import threading
 from playwright.sync_api import sync_playwright
 
@@ -18,7 +19,7 @@ threading.Thread(target=server.serve_forever, daemon=True).start()
 report = {'cases': [], 'page_errors': [], 'google_login_tested': False}
 try:
     with sync_playwright() as pw:
-        browser = pw.chromium.launch(headless=True)
+        browser = pw.chromium.launch(headless=True, executable_path=os.environ.get('MD_BROWSER_EXECUTABLE') or None, args=['--no-sandbox','--disable-dev-shm-usage'])
         context = browser.new_context(viewport={'width': 1440, 'height': 1000})
         # Keep app tests local; never send progress, reports, or authentication requests.
         context.route('**/*', lambda route: route.continue_() if route.request.url.startswith(f'http://127.0.0.1:{server.server_port}/') else route.abort())
@@ -30,9 +31,9 @@ try:
         agree.wait_for(state='visible')
         agree.click()
         page.wait_for_function("hasAgreedTerms() && !document.getElementById('md-modal-wrap')")
-        assert page.evaluate('APP_VERSION') == '5.10'
-        assert 'v5.10' in page.title()
-        report['cases'].append('v5.10 startup and auxiliary scripts loaded')
+        assert page.evaluate('APP_VERSION') == '5.11'
+        assert 'v5.11' in page.title()
+        report['cases'].append('v5.11 startup and auxiliary scripts loaded')
         page.evaluate("renderNavigatorPassPlan('navi3')")
         page.wait_for_selector('#pp-date-navi3')
         target = (date.today() + timedelta(days=30)).isoformat()

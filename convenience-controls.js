@@ -40,15 +40,7 @@
   }
   function escapeText(s){return String(s==null?'':s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
 
-  function cleanLegacyConfidenceUi(){
-    const root=appRoot();if(!root)return;
-    const prompt='지금 이 문제를 답을 안 보고도 다시 맞힐 수 있습니까?';
-    for(const el of root.querySelectorAll('div')){
-      if(el.children.length===0&&el.textContent.trim()===prompt){
-        const wrapper=el.parentElement;if(wrapper)wrapper.remove();break;
-      }
-    }
-  }
+  function cleanLegacyConfidenceUi(){ /* v5.11: explicit confidence is part of learning. */ }
 
   function addResumeBanner(){
     const root=appRoot();if(!root||inQuestionSession())return;

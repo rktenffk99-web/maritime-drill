@@ -12,7 +12,7 @@ Object.assign(sandbox,{
   createAutomaticRestorePoint:()=>{},applyBackupSnapshot:()=>{},driveSyncClearSessionToken:()=>{},
   BACKUP_SCHEMA_VERSION:1,APP_VERSION:'test'
 });
-vm.createContext(sandbox);vm.runInContext(patch,sandbox);
+vm.createContext(sandbox);vm.runInContext(fs.readFileSync(path.join(__dirname,'..','learning-integrity.js'),'utf8'),sandbox);vm.runInContext(patch,sandbox);
 const merge=sandbox.__mdDriveSyncV2.mergeSnapshots;
 function raw(o){return JSON.stringify(o)}
 
@@ -53,4 +53,23 @@ function raw(o){return JSON.stringify(o)}
  const m=merge({md_x:raw({a:{v:1}})},{md_x:raw({b:{v:2}})},{},{},'2026-09-16T01:00:00Z','2026-09-16T02:00:00Z');
  assert.deepEqual(JSON.parse(m.items.md_x),{a:{v:1},b:{v:2}});
 }
-console.log('drive-sync-v2 tests: PASS');
+// 6) Concurrent work on the same question is added once per device.
+{
+ const key='md_nav23_pass_progress_v1';
+ const base={attempts:10,correct:5,wrong:5,unsure:0,masteryReviews:0};
+ const rec=(id,outcome)=>({_counterVersion:1,_counterBase:base,_counterComponents:{[id]:{correct:outcome==='correct'?1:0,wrong:outcome==='wrong'?1:0,unsure:0,masteryReviews:0}}});
+ const local={[key]:raw({a:rec('device-a','correct')})},remote={[key]:raw({a:rec('device-b','wrong')})};
+ const m=merge(local,remote,{},{} ,'2026-09-16T03:00:00Z','2026-09-16T04:00:00Z');
+ const v=JSON.parse(m.items[key]).a;
+ assert.equal(v.attempts,12);assert.equal(v.correct,6);assert.equal(v.wrong,6);
+ const again=merge(m.items,remote,{},{} ,'2026-09-16T05:00:00Z','2026-09-16T04:00:00Z');
+ assert.equal(JSON.parse(again.items[key]).a.attempts,12);
+}
+// 7) A checkpoint's answers and queue must come from the same session.
+{
+ const key='md_pass_plan_session_checkpoint_v2';
+ const a={queueKeys:['a','b'],answers:[1,null],nextIndex:1},b={queueKeys:['x'],answers:[2],nextIndex:0};
+ const m=merge({[key]:raw(a)},{[key]:raw(b)},{},{},'2026-09-16T03:00:00Z','2026-09-16T04:00:00Z');
+ assert.deepEqual(JSON.parse(m.items[key]),b);
+}
+console.log('drive-sync-v2 tests: PASS (7 cases)');

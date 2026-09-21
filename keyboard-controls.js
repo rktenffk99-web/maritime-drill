@@ -25,18 +25,7 @@
     return event.key==='Enter' || event.code==='Enter' || event.code==='NumpadEnter' || event.code==='Space' || event.code==='ArrowRight';
   }
 
-  function cleanLegacyConfidenceUi(){
-    const root=document.getElementById('app');
-    if(!root) return;
-    const prompt='지금 이 문제를 답을 안 보고도 다시 맞힐 수 있습니까?';
-    for(const el of root.querySelectorAll('div')){
-      if(el.children.length===0 && el.textContent.trim()===prompt){
-        const wrapper=el.parentElement;
-        if(wrapper) wrapper.remove();
-        break;
-      }
-    }
-  }
+  function cleanLegacyConfidenceUi(){ /* v5.11: explicit confidence is part of learning. */ }
 
   const observer=new MutationObserver(cleanLegacyConfidenceUi);
   observer.observe(document.documentElement,{childList:true,subtree:true});
@@ -49,7 +38,8 @@
       const idx=choiceIndex(event);
       if(idx>=0 && typeof window.chooseNavigatorPassPlanAnswer==='function'){
         event.preventDefault();
-        window.chooseNavigatorPassPlanAnswer(idx);
+        const choices=document.querySelectorAll('button[onclick^="chooseNavigatorPassPlanAnswer("]');
+        if(choices[idx]&&!choices[idx].disabled)choices[idx].click();
         return;
       }
       if(event.code==='ArrowLeft' && typeof window.prevNavigatorPassPlanQuestion==='function'){
@@ -70,6 +60,7 @@
 })();
 
 function mdLoadAuxScript(src){
+  src+='?v='+encodeURIComponent(APP_VERSION);
   if(document.readyState==='loading'){
     document.write('<script src="'+src+'"><'+'/script>');
   }else{
@@ -82,6 +73,7 @@ function mdLoadAuxScript(src){
 
 // Load the cross-device merge patch while the document is still parsing so it
 // replaces the v5.08 Drive hooks before driveSyncInit() runs on the first timer tick.
+mdLoadAuxScript('learning-integrity.js');
 mdLoadAuxScript('drive-sync-v2.js');
 
 // Load exact corrections for reviewed problem reports.

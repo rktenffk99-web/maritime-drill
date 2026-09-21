@@ -176,7 +176,7 @@ new="""    const isCorrect=showFeedback&&selected===correct;
     const canNext=showFeedback;
     const sessionLabel=ppSessionLabel(),rec=ppProgressFor(ppLoadProgress(),q._planKey),wrongTag=planSessionKind==='frequent-wrong'?`<span class=\"tag\" style=\"margin:0;background:#FEE2E2;color:#B91C1C\">누적 오답 ${Number(rec.wrong)||0}회</span>`:'';
     app.innerHTML=`"""
-if new not in text:
+if new not in text and 'const sessionLabel=ppSessionLabel(),rec=' not in text:
     if old not in text: raise SystemExit('card variable marker not found')
     text=text.replace(old,new,1)
 

@@ -4,7 +4,7 @@ import re
 text=Path('index.html').read_text(encoding='utf-8-sig')
 
 assert "reviewSpacingPolicy:'review-spacing-v2'" in text, 'review spacing policy marker missing'
-assert "rotationPolicy:'knowledge-gap-priority-v3'" in text, 'knowledge-gap priority missing'
+assert "rotationPolicy:'knowledge-gap-priority-v4-dedupe'" in text, 'knowledge-gap priority missing'
 
 m=re.search(r"function ppCommitOutcome\(q,answer,confidence\)\{(.*?)\n  \}",text,re.S)
 assert m, 'ppCommitOutcome missing'

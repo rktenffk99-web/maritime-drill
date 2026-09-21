@@ -37,7 +37,7 @@ assert src.count('checkpoint-authoritative-resume-v3')==1
 assert src.count('stale-assignment-recovery-v3')==1
 
 # Static ordering checks: commit must happen before scheduling, and scheduling before checkpoint save.
-choose=re.search(r"window\.chooseNavigatorPassPlanAnswer=function\(i\)\{(.*?)\n  \};",src,re.S)
+choose=re.search(r"window\.nextNavigatorPassPlanQuestion=function\(\)\{(.*?)\n  \};",src,re.S)
 assert choose, 'choose function missing'
 body=choose.group(1)
 assert body.index('ppCommitOutcome') < body.index('ppScheduleSameDayRecheck') < body.index('ppSavePassSessionCheckpoint'), 'recheck scheduling order is unsafe'

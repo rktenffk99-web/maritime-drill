@@ -23,7 +23,7 @@ assert '틀렸거나 불확실한 문제 → 아직 안 본 신규 문제 → �
 m=re.search(r"function ppBuildTodayAssignment\(plan,pools,progress,today\)\{.*?\n  \}(?=\n  function ppGetItemByKey)",text,re.S)
 assert m, 'assignment builder missing'
 body=m.group(0)
-assert 'knowledge-gap-priority-v3' in body
+assert 'knowledge-gap-priority-v4-dedupe' in body
 assert 'const priority=ppPriorityProfile(plan,today);' in body
 assert 'requests[g]=remaining.length?Math.ceil(remaining.length/daysLeft):0;' in body
 assert 'const requiredNew=Math.min(cap,requestedNew);' in body
@@ -37,10 +37,12 @@ assert 'takeReviewList(weakDue,g,target,used);' in body
 assert 'for(const item of sortedNewCandidates(g))' in body
 assert 'takeReviewList(normalDue,g,target,used);' in body
 assert 'takeReviewList(strongDue,g,target,used);' in body
-assert body.index('takeReviewList(weakDue,g,target,used);') < body.index('for(const item of sortedNewCandidates(g))') < body.index('takeReviewList(normalDue,g,target,used);') < body.index('takeReviewList(strongDue,g,target,used);')
-assert 'deferredStrongReviewCount:' in body
-assert "rotationPolicy:'knowledge-gap-priority-v3'" in body
-assert "assignmentPolicy:'knowledge-gap-priority-v3'" in text
+manual_start=body.index('const totalQuotas=ppPriorityFlexQuotas(plan,today,cap);')
+assert body.index('takeReviewList(weakDue,g,target,used);',manual_start) < body.index('for(const item of sortedNewCandidates(g))',manual_start) < body.index('takeReviewList(normalDue,g,target,used);',manual_start) < body.index('takeReviewList(strongDue,g,target,used);',manual_start)
+assert 'const deferredStrongReviewCount=' in body
+assert 'deferredStrongReviewCount,rotationPolicy:' in body
+assert "rotationPolicy:'knowledge-gap-priority-v4-dedupe'" in body
+assert "assignmentPolicy:'knowledge-gap-priority-v4-dedupe'" in text
 
 # High-accuracy mastered questions get longer intervals.
 commit=re.search(r"function ppCommitOutcome\(q,answer,confidence\)\{.*?\n  \}",text,re.S)

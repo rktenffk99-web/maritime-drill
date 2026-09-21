@@ -2,7 +2,7 @@ name: Patch pass-plan app
 
 on:
   push:
-    branches: [main, 'fix/audit-sync-analytics-20260921']
+    branches: [main, 'fix/audit-sync-analytics-20260921', 'fix/learning-integrity-v511']
     paths:
       - 'index.html'
       - '*.js'
