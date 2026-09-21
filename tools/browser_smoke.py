@@ -26,8 +26,10 @@ try:
         page.on('pageerror', lambda error: report['page_errors'].append(str(error)))
         page.goto(f'http://127.0.0.1:{server.server_port}/', wait_until='load')
         agree = page.get_by_role('button', name='동의합니다', exact=True)
-        if agree.is_visible():
-            agree.click()
+        # First-run agreement is opened by a timer after load; await it explicitly.
+        agree.wait_for(state='visible')
+        agree.click()
+        page.wait_for_function("hasAgreedTerms() && !document.getElementById('md-modal-wrap')")
         assert page.evaluate('APP_VERSION') == '5.10'
         assert 'v5.10' in page.title()
         report['cases'].append('v5.10 startup and auxiliary scripts loaded')
