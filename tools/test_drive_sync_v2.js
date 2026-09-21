@@ -12,7 +12,7 @@ Object.assign(sandbox,{
   createAutomaticRestorePoint:()=>{},applyBackupSnapshot:()=>{},driveSyncClearSessionToken:()=>{},
   BACKUP_SCHEMA_VERSION:1,APP_VERSION:'test'
 });
-vm.createContext(sandbox);vm.runInContext(fs.readFileSync(path.join(__dirname,'..','learning-integrity.js'),'utf8'),sandbox);vm.runInContext(patch,sandbox);
+vm.createContext(sandbox);vm.runInContext(fs.readFileSync(path.join(__dirname,'..','daily-storage.js'),'utf8'),sandbox);vm.runInContext(fs.readFileSync(path.join(__dirname,'..','learning-integrity.js'),'utf8'),sandbox);vm.runInContext(patch,sandbox);
 const merge=sandbox.__mdDriveSyncV2.mergeSnapshots;
 function raw(o){return JSON.stringify(o)}
 
@@ -72,4 +72,16 @@ function raw(o){return JSON.stringify(o)}
  const m=merge({[key]:raw(a)},{[key]:raw(b)},{},{},'2026-09-16T03:00:00Z','2026-09-16T04:00:00Z');
  assert.deepEqual(JSON.parse(m.items[key]),b);
 }
-console.log('drive-sync-v2 tests: PASS (7 cases)');
+// 8) An older device cannot reintroduce duplicated question pools on sync.
+{
+ const key='md_nav23_pass_daily_v1',old={'2026-09-21':{keys:['navi3|a'],signature:'same',phases:{navi3:{candidates:[{question:'large '.repeat(10000)}]}}}};
+ const remote={[key]:raw(old),md_nav23_pass_progress_v1:raw({a:{attempts:5,correct:3,wrong:2}})};
+ const m=merge({},remote,{},{},'2026-09-16T03:00:00Z','2026-09-16T04:00:00Z');
+ assert.deepEqual(JSON.parse(m.items[key]),{'2026-09-21':{keys:['navi3|a'],signature:'same'}});assert.equal(m.items.md_nav23_pass_progress_v1,remote.md_nav23_pass_progress_v1);
+}
+// 9) Unioning separate cache histories must still obey the 30-day bound.
+{
+ const key='md_nav23_pass_daily_v1',a={},b={};for(let i=1;i<=31;i++)(i<16?a:b)['2025-01-'+String(i).padStart(2,'0')]={keys:['q'+i]};
+ const m=merge({[key]:raw(a)},{[key]:raw(b)},{},{},'2026-09-16T03:00:00Z','2026-09-16T04:00:00Z');assert.equal(Object.keys(JSON.parse(m.items[key])).length,30);
+}
+console.log('drive-sync-v2 tests: PASS (9 cases)');

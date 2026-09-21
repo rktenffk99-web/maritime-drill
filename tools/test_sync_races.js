@@ -44,7 +44,7 @@ function harness(options={}){
     createAutomaticRestorePoint(){calls.backup++;h.restorePoint=copy(collect());return options.backupFails!==true},
     applyBackupSnapshot(entries){calls.apply++;for(const k of Object.keys(collect()))storage.removeItem(k);for(const [k,v] of entries){if(options.applyFails&&calls.apply===1)continue;storage.setItem(k,v)}return {restored:entries.length,removed:0}},
   };
-  sandbox.window=sandbox;vm.createContext(sandbox);vm.runInContext(fs.readFileSync(path.join(__dirname,'..','learning-integrity.js'),'utf8'),sandbox);vm.runInContext(source,sandbox);sandbox.driveSyncInstallStorageHooks();
+  sandbox.window=sandbox;vm.createContext(sandbox);vm.runInContext(fs.readFileSync(path.join(__dirname,'..','daily-storage.js'),'utf8'),sandbox);vm.runInContext(fs.readFileSync(path.join(__dirname,'..','learning-integrity.js'),'utf8'),sandbox);vm.runInContext(source,sandbox);sandbox.driveSyncInstallStorageHooks();
   h.sandbox=sandbox;h.sync=()=>sandbox.driveSyncOnce({showNotice:true});
   return h;
 }

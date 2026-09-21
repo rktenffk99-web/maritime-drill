@@ -74,6 +74,7 @@ function mdLoadAuxScript(src){
 // Load the cross-device merge patch while the document is still parsing so it
 // replaces the v5.08 Drive hooks before driveSyncInit() runs on the first timer tick.
 mdLoadAuxScript('learning-integrity.js');
+mdLoadAuxScript('daily-storage.js');
 mdLoadAuxScript('drive-sync-v2.js');
 
 // Load exact corrections for reviewed problem reports.

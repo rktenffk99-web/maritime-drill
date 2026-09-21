@@ -211,6 +211,10 @@
     return out;
   }
   function mdSyncMergeSnapshots(localItems,remoteItems,localMetaMap,remoteMetaMap,localFallback,remoteFallback){
+    if(window.__mdDailyStorage){
+      localItems=window.__mdDailyStorage.compactItems(localItems);
+      remoteItems=window.__mdDailyStorage.compactItems(remoteItems);
+    }
     const items={},itemMeta={};
     const keys=new Set([
       ...Object.keys(localItems||{}),...Object.keys(remoteItems||{}),
@@ -254,7 +258,8 @@
       const meta=itemMeta[key];
       if(!Object.prototype.hasOwnProperty.call(items,key) && !meta.deleted && !Object.keys(meta.fields||{}).some(p=>meta.fields[p]?.deleted)) delete itemMeta[key];
     }
-    return {items,itemMeta};
+    // Unioning two cache histories may exceed the per-device retention bound.
+    return {items:window.__mdDailyStorage?window.__mdDailyStorage.compactItems(items):items,itemMeta};
   }
   function mdSyncContentSignature(items,itemMeta){
     return mdSyncStable({items:items||{},itemMeta:itemMeta||{}});
