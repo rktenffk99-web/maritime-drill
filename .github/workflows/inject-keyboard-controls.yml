@@ -2,103 +2,28 @@ name: Patch pass-plan app
 
 on:
   push:
-    branches: [ main ]
+    branches: [main, 'fix/audit-sync-analytics-20260921']
     paths:
-      - 'keyboard-controls.js'
-      - 'convenience-controls.js'
-      - 'reported-content-fixes.js'
-      - 'predictive-analytics.js'
-      - 'explain-2026-navi3-3.js'
-      - 'explain-2026-navi3-3-english.js'
-      - 'tools/audit_english_explanations.py'
-      - 'tools/patch_pass_plan.py'
-      - 'tools/patch_convenience.py'
-      - 'tools/patch_2026_navigation.py'
-      - 'tools/patch_same_day_confirmation.py'
-      - 'tools/patch_predictive_mock.py'
-      - 'tools/patch_predictive_mock_followup.py'
-      - 'tools/patch_predictive_mock_personalization.py'
-      - 'tools/patch_predictive_mock_no_duplicates.py'
-      - 'tools/patch_predictive_mock_history_fingerprint.py'
-      - 'tools/patch_predictive_mock_priority_core.py'
-      - 'tools/patch_2026_session3_explanations.py'
-      - 'tools/patch_weak_drills.py'
-      - 'tools/patch_recovery_recheck.py'
-      - 'tools/patch_stable_session_counter.py'
-      - 'tools/patch_rotation_mix.py'
-      - 'tools/patch_grade_priority.py'
-      - 'tools/patch_grade_priority_ratio_v2.py'
-      - 'tools/patch_weak_topic_adaptive.py'
-      - 'tools/patch_learning_priority.py'
-      - 'tools/patch_learning_priority_weak_drill_compat.py'
-      - 'tools/patch_review_spacing_v2.py'
-      - 'tools/patch_homework_duplicate_guard.py'
-      - 'tools/test_predictive_mock.py'
-      - 'tools/test_predictive_mock_personalization.py'
-      - 'tools/test_predictive_mock_no_duplicates.py'
-      - 'tools/test_predictive_mock_history_fingerprint.py'
-      - 'tools/test_predictive_mock_priority_core.py'
-      - 'tools/test_problem_report_modes.py'
-      - 'tools/test_reported_content_fixes.js'
-      - 'tools/test_weak_topic_analytics.py'
-      - 'tools/test_2026_session3_explanations.py'
-      - 'tools/test_weak_drills.py'
-      - 'tools/test_recovery_recheck.py'
-      - 'tools/test_rotation_mix.py'
-      - 'tools/test_grade_priority.py'
-      - 'tools/test_review_spacing_v2.py'
-      - 'tools/test_homework_duplicate_guard.py'
-      - '.github/workflows/inject-keyboard-controls.yml'
+      - 'index.html'
+      - '*.js'
+      - 'tools/**'
+      - '.github/workflows/**'
   workflow_dispatch:
 
 permissions:
   contents: write
+
+concurrency:
+  group: patch-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   patch:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Patch index
-        run: |
-          python tools/patch_pass_plan.py
-          python tools/patch_convenience.py
-          python tools/patch_2026_navigation.py
-          python tools/patch_same_day_confirmation.py
-          python tools/patch_predictive_mock.py
-          python tools/patch_predictive_mock_followup.py
-          python tools/patch_predictive_mock_personalization.py
-          python tools/patch_predictive_mock_no_duplicates.py
-          python tools/patch_predictive_mock_history_fingerprint.py
-          python tools/patch_predictive_mock_priority_core.py
-          python tools/patch_2026_session3_explanations.py
-          python tools/patch_weak_drills.py
-          python tools/patch_recovery_recheck.py
-          python tools/patch_stable_session_counter.py
-          python tools/patch_rotation_mix.py
-          python tools/patch_grade_priority.py
-          python tools/patch_grade_priority_ratio_v2.py
-          python tools/patch_weak_topic_adaptive.py
-          python tools/patch_learning_priority.py
-          python tools/patch_learning_priority_weak_drill_compat.py
-          python tools/patch_review_spacing_v2.py
-          python tools/test_predictive_mock.py
-          python tools/test_predictive_mock_personalization.py
-          python tools/test_predictive_mock_no_duplicates.py
-          python tools/test_predictive_mock_history_fingerprint.py
-          python tools/test_predictive_mock_priority_core.py
-          python tools/test_problem_report_modes.py
-          node tools/test_reported_content_fixes.js
-          python tools/test_weak_topic_analytics.py
-          python tools/test_2026_session3_explanations.py
-          python tools/test_weak_drills.py
-          python tools/test_recovery_recheck.py
-          python tools/test_rotation_mix.py
-          python tools/test_grade_priority.py
-          python tools/test_review_spacing_v2.py
-          python tools/audit_english_explanations.py
-          python tools/patch_homework_duplicate_guard.py
-          python tools/test_homework_duplicate_guard.py
+      - name: Rebuild and test final app
+        run: bash tools/check_app.sh
       - name: Commit index update
         run: |
           if git diff --quiet -- index.html; then
@@ -108,5 +33,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
-          git commit -m 'Apply pass-plan patches'
+          git commit -m 'Apply tested app patches'
           git push

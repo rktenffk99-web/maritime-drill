@@ -1,10 +1,9 @@
 name: App regression checks
 
 on:
-  push:
-    branches: ['fix/audit-sync-analytics-20260921']
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -14,22 +13,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Collect public source for isolated regression tests
+      - name: Rebuild and test final app without writing to the repository
+        run: bash tools/check_app.sh
+      - name: Install isolated browser test dependencies
         run: |
-          python - <<'PY'
-          from pathlib import Path
-          import zipfile
-          with zipfile.ZipFile('audit-source.zip', 'w', zipfile.ZIP_DEFLATED) as out:
-              for path in [Path('index.html'), *Path('.').glob('*.js'), *Path('tools').glob('*'), *Path('.github/workflows').glob('*.yml')]:
-                  if path.is_file():
-                      out.write(path, str(path))
-          html = Path('index.html').read_text(encoding='utf-8-sig')
-          for name in ['applyBackupSnapshot', 'driveSyncUploadRemote', 'driveSyncInit', 'ppWeakTopicId', 'driveSyncSaveState']:
-              start = html.find('function ' + name + '(')
-              print('\n=== ' + name + ' ===\n' + html[start:start+3000] if start >= 0 else name + ': not found')
-          PY
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Exercise real browser study and result flows
+        run: python tools/browser_smoke.py
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: audit-source
-          path: audit-source.zip
-          retention-days: 1
+          name: browser-smoke
+          path: browser-test-results/
+          retention-days: 7

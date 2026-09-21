@@ -256,11 +256,59 @@
     return mdSyncStable({items:items||{},itemMeta:itemMeta||{}});
   }
   function mdSyncApplyMerged(merged,state){
-    createAutomaticRestorePoint('before-drive-merge-sync');
+    const before=collectBackupItems();
+    if(!createAutomaticRestorePoint('before-drive-merge-sync')){
+      throw new Error('현재 학습 기록의 복구 지점을 저장하지 못해 병합을 중단했습니다.');
+    }
     driveSyncApplyingRemote=true;
-    try{applyBackupSnapshot(Object.entries(merged.items),'Drive 병합 동기화')}
-    finally{driveSyncApplyingRemote=false}
+    try{
+      applyBackupSnapshot(Object.entries(merged.items),'Drive 병합 동기화');
+      if(mdSyncStable(collectBackupItems())!==mdSyncStable(merged.items)){
+        applyBackupSnapshot(Object.entries(before),'Drive 병합 실패 복구');
+        throw new Error('병합 저장에 실패했습니다. 자동 복구 지점을 확인하세요.');
+      }
+    }finally{driveSyncApplyingRemote=false}
     state.itemMeta=merged.itemMeta;
+  }
+
+  // v5.10: capture only AFTER downloads, and never apply a stale snapshot
+  // after upload/create awaits. Incoming data is deferred during active study
+  // so a reload cannot interrupt an unsaved answer or stale in-memory session.
+  function mdSyncReadLocal(){
+    const state=driveSyncLoadState(),items=collectBackupItems();
+    const itemMeta=mdSyncIsPlainObject(state.itemMeta)?state.itemMeta:{};
+    return {state,items,itemMeta,signature:mdSyncContentSignature(items,itemMeta)};
+  }
+  function mdSyncStudyActive(){
+    return typeof currentMode==='string' &&
+      ['study','mock','focus','past','review','pass-plan-session'].includes(currentMode);
+  }
+  function mdSyncFinish(local,merged,fileId,remoteUpdatedAt,revision,showNotice,message){
+    const latest=mdSyncReadLocal(),current=latest.state;
+    // A disconnect during a network request must not be undone by this result.
+    if(!current.enabled)return;
+    const changedDuringRequest=latest.signature!==local.signature ||
+      Number(current.revision)!==Number(local.state.revision);
+    const itemsChanged=mdSyncStable(latest.items)!==mdSyncStable(merged.items);
+    const pending=changedDuringRequest || (itemsChanged&&mdSyncStudyActive());
+    if(!pending){
+      if(itemsChanged)mdSyncApplyMerged(merged,current);
+      current.itemMeta=merged.itemMeta;
+      current.lastSyncedAt=driveSyncNowIso();
+      current.localUpdatedAt=remoteUpdatedAt||current.localUpdatedAt;
+    }
+    // When pending, keep the LIVE local timestamps, field metadata and values.
+    // The existing polling loop will merge them on the next sync.
+    current.remoteFileId=fileId;
+    current.remoteUpdatedAt=remoteUpdatedAt||current.remoteUpdatedAt;
+    current.revision=Math.max(Number(current.revision)||0,Number(revision)||0);
+    if(!driveSyncSaveState(current))throw new Error('동기화 상태를 저장하지 못했습니다.');
+    if(showNotice)backupNotice(pending
+      ?'새 학습 기록 또는 진행 중인 학습을 유지했습니다. 다음 동기화에서 병합을 다시 확인합니다.'
+      :message);
+    // No delayed reload: no 250 ms window in which a new answer can be lost.
+    // Metadata-only merges do not need to reload the application.
+    if(itemsChanged&&!pending)location.reload();
   }
   function mdSyncBuildV2Payload(state,items,itemMeta,updatedAt,revision){
     return {
@@ -291,60 +339,56 @@
         if(!interactive) throw new Error('Google Drive 연결 갱신이 필요합니다.');
         await driveSyncRequestToken(true);
       }
-      let file=await driveSyncFindRemoteFile();
-      let current=driveSyncLoadState();
-      const localItems=collectBackupItems();
-      const localMeta=mdSyncIsPlainObject(current.itemMeta)?current.itemMeta:{};
+      if(interactive&&!state.enabled){
+        const connected=driveSyncLoadState();connected.enabled=true;
+        if(!driveSyncSaveState(connected))throw new Error('동기화 상태를 저장하지 못했습니다.');
+      }
+      const file=await driveSyncFindRemoteFile();
+      if(!driveSyncLoadState().enabled)return;
       if(!file){
-        const now=driveSyncNowIso();
-        const revision=Math.max(1,(Number(current.revision)||0)+1);
-        const payload=mdSyncBuildV2Payload(current,localItems,localMeta,now,revision);
+        const local=mdSyncReadLocal(),now=driveSyncNowIso();
+        const revision=Math.max(1,(Number(local.state.revision)||0)+1);
+        const payload=mdSyncBuildV2Payload(local.state,local.items,local.itemMeta,now,revision);
         const fileId=await driveSyncCreateRemote(payload);
-        current.remoteFileId=fileId;current.lastSyncedAt=now;current.remoteUpdatedAt=now;
-        current.localUpdatedAt=now;current.revision=revision;current.enabled=true;current.itemMeta=localMeta;
-        driveSyncSaveState(current);
-        if(showNotice) backupNotice('현재 학습 진도를 Google Drive에 처음 저장했습니다.');
+        mdSyncFinish(local,{items:local.items,itemMeta:local.itemMeta},fileId,now,revision,showNotice,
+          '현재 학습 진도를 Google Drive에 처음 저장했습니다.');
         return;
       }
 
       const remote=await driveSyncDownloadPayload(file.id);
+      // Do not use a snapshot taken before this await: the learner may have
+      // answered more questions while the download was in flight.
+      const local=mdSyncReadLocal();
+      if(!local.state.enabled)return;
       const remoteItems=remote.items||{};
       const remoteMeta=mdSyncIsPlainObject(remote.itemMeta)?remote.itemMeta:{};
-      const localFallback=current.localUpdatedAt||current.lastSyncedAt||null;
+      const localFallback=local.state.localUpdatedAt||local.state.lastSyncedAt||null;
       const remoteFallback=remote.updatedAt||file.modifiedTime||null;
-      const merged=mdSyncMergeSnapshots(localItems,remoteItems,localMeta,remoteMeta,localFallback,remoteFallback);
-      const localChanged=mdSyncContentSignature(localItems,localMeta)!==mdSyncContentSignature(merged.items,merged.itemMeta);
+      const merged=mdSyncMergeSnapshots(local.items,remoteItems,local.itemMeta,remoteMeta,localFallback,remoteFallback);
+      const localChanged=local.signature!==mdSyncContentSignature(merged.items,merged.itemMeta);
       const remoteChanged=mdSyncContentSignature(remoteItems,remoteMeta)!==mdSyncContentSignature(merged.items,merged.itemMeta);
-
-      if(localChanged) mdSyncApplyMerged(merged,current);
-      else current.itemMeta=merged.itemMeta;
-
+      let revision=Math.max(Number(local.state.revision)||0,Number(remote.revision)||0);
+      let remoteUpdatedAt=remote.updatedAt||file.modifiedTime||local.state.remoteUpdatedAt||null;
       if(remoteChanged){
-        const now=driveSyncNowIso();
-        const revision=Math.max(Number(current.revision)||0,Number(remote.revision)||0)+1;
-        const payload=mdSyncBuildV2Payload(current,merged.items,merged.itemMeta,now,revision);
+        const now=driveSyncNowIso();revision++;
+        const payload=mdSyncBuildV2Payload(local.state,merged.items,merged.itemMeta,now,revision);
         const meta=await driveSyncUploadRemote(file.id,payload);
-        current.localUpdatedAt=now;current.revision=revision;
-        current.remoteUpdatedAt=(meta&&meta.modifiedTime)||now;
-      }else{
-        current.localUpdatedAt=remote.updatedAt||current.localUpdatedAt||file.modifiedTime||driveSyncNowIso();
-        current.revision=Math.max(Number(current.revision)||0,Number(remote.revision)||0);
-        current.remoteUpdatedAt=file.modifiedTime||remote.updatedAt||current.remoteUpdatedAt||null;
+        remoteUpdatedAt=(meta&&meta.modifiedTime)||now;
       }
-      current.remoteFileId=file.id;current.lastSyncedAt=driveSyncNowIso();current.enabled=true;current.itemMeta=merged.itemMeta;
-      driveSyncSaveState(current);
-      if(showNotice){
-        if(localChanged&&remoteChanged) backupNotice('노트북·휴대폰의 변경 내용을 병합해 Google Drive에 저장했습니다.');
-        else if(localChanged) backupNotice('다른 기기의 변경 내용을 이 기기에 병합했습니다.');
-        else if(remoteChanged) backupNotice('이 기기의 변경 내용을 Google Drive에 병합했습니다.');
-        else backupNotice('Google Drive와 진도가 이미 같습니다.');
-      }
-      if(localChanged) setTimeout(()=>location.reload(),250);
+      // Applying incoming data BEFORE uploading would leave the running UI
+      // holding stale objects while the user continues studying. Apply last,
+      // only if both local content and modification metadata still match.
+      const message=localChanged&&remoteChanged
+        ?'노트북·휴대폰의 변경 내용을 병합해 Google Drive에 저장했습니다.'
+        :localChanged?'다른 기기의 변경 내용을 이 기기에 병합했습니다.'
+        :remoteChanged?'이 기기의 변경 내용을 Google Drive에 병합했습니다.'
+        :'Google Drive와 진도가 이미 같습니다.';
+      mdSyncFinish(local,merged,file.id,remoteUpdatedAt,revision,showNotice,message);
     }catch(error){
       const msg=(error&&error.message)||String(error);
       driveSyncLastError=msg;
       if(/연결.*필요|401|invalid_token/i.test(msg)) driveSyncClearSessionToken();
-      console.warn('[v5.09] Drive 병합 동기화 실패',error);
+      console.warn('[v5.10] Drive 병합 동기화 실패',error);
       if(showNotice) alert('Google Drive 동기화 실패: '+msg);
     }finally{
       driveSyncBusy=false;driveSyncRefreshPanel();
