@@ -13,7 +13,7 @@ function harness(id='device-a'){
     document:{documentElement:{},addEventListener(){},getElementById:k=>k==='app'?app:null,createElement:()=>({style:{}})},
     removePastWrong(){},addPastWrong(){},pqid:()=>'',showConfirm:(m,f)=>f(),showToast(){},getPastProgress:()=>null,clearPastProgress(){},mdQuestionUsable:()=>true};
   s.window=s;vm.createContext(s);
-  for(const name of ['learning-integrity.js','weak-topic-classifier.js','predictive-analytics.js'])vm.runInContext(fs.readFileSync(path.join(root,name),'utf8'),s,{filename:name});
+  for(const name of ['daily-storage.js','learning-integrity.js','weak-topic-classifier.js','predictive-analytics.js'])vm.runInContext(fs.readFileSync(path.join(root,name),'utf8'),s,{filename:name});
   const start=html.indexOf('// ── v5.07: 2·3급 항해사 합격 플랜 / 오늘의 숙제'),end=html.indexOf('</script>',start);
   let src=html.slice(start,end),pos=src.lastIndexOf('})();');
   src=src.slice(0,pos)+`window.__test={setup(q,prior){planSessionQueue=[q,{...q,_planKey:'navi3|other'}];planSessionIdx=0;planSessionStartedAt=12345;planSessionAnswers=[null,null];planSessionConfidence=[null,null];planSessionCommitted=new Set();planSessionKind='today';if(prior)ppSaveProgress({[q._planKey]:prior});},snapshot(){return {progress:ppLoadProgress(),checkpoint:ppLoadPassSessionCheckpoint(),confidence:planSessionConfidence.slice(),idx:planSessionIdx}},find:ppFindQuestion,profile:ppLoadWeakTopicProfile,boost:ppWeakTopicBoost,order:ppChoiceOrder};`+src.slice(pos);
