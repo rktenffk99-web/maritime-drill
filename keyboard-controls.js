@@ -87,5 +87,8 @@ mdLoadAuxScript('drive-sync-v2.js');
 // Load exact corrections for reviewed problem reports.
 mdLoadAuxScript('reported-content-fixes.js');
 
+// Use one classifier for analytics and homework selection.
+mdLoadAuxScript('weak-topic-classifier.js');
+
 // Add subject/topic result analytics and persist weak-topic reinforcement targets.
 mdLoadAuxScript('predictive-analytics.js');

@@ -1,0 +1,29 @@
+name: App regression checks
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Rebuild and test final app without writing to the repository
+        run: bash tools/check_app.sh
+      - name: Install isolated browser test dependencies
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Exercise real browser study and result flows
+        run: python tools/browser_smoke.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-smoke
+          path: browser-test-results/
+          retention-days: 7

@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# Rebuild in the legacy order, then run regressions against the FINAL artifact.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+python tools/patch_pass_plan.py
+python tools/patch_convenience.py
+python tools/patch_2026_navigation.py
+python tools/patch_same_day_confirmation.py
+python tools/patch_predictive_mock.py
+python tools/patch_predictive_mock_followup.py
+python tools/patch_predictive_mock_personalization.py
+python tools/patch_predictive_mock_no_duplicates.py
+python tools/patch_predictive_mock_history_fingerprint.py
+python tools/patch_predictive_mock_priority_core.py
+python tools/patch_2026_session3_explanations.py
+python tools/patch_weak_drills.py
+python tools/patch_recovery_recheck.py
+python tools/patch_stable_session_counter.py
+python tools/patch_rotation_mix.py
+python tools/patch_grade_priority.py
+python tools/patch_grade_priority_ratio_v2.py
+python tools/patch_weak_topic_adaptive.py
+python tools/patch_learning_priority.py
+python tools/patch_learning_priority_weak_drill_compat.py
+python tools/patch_review_spacing_v2.py
+python tools/test_predictive_mock.py
+python tools/test_predictive_mock_personalization.py
+python tools/test_predictive_mock_no_duplicates.py
+python tools/test_predictive_mock_history_fingerprint.py
+python tools/test_predictive_mock_priority_core.py
+python tools/test_problem_report_modes.py
+node tools/test_reported_content_fixes.js
+python tools/test_weak_topic_analytics.py
+python tools/test_2026_session3_explanations.py
+python tools/test_weak_drills.py
+python tools/test_recovery_recheck.py
+python tools/test_rotation_mix.py
+python tools/test_grade_priority.py
+python tools/test_review_spacing_v2.py
+python tools/audit_english_explanations.py
+python tools/patch_homework_duplicate_guard.py
+python tools/test_homework_duplicate_guard.py
+python tools/patch_audit_safety.py
+node tools/test_drive_sync_v2.js
+node tools/test_sync_races.js
+node tools/test_analytics_regressions.js
+python tools/check_final_syntax.py
