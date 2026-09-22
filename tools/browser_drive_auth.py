@@ -66,7 +66,8 @@ try:
         page = new_page()
         page.get_by_role('button', name='동의합니다', exact=True).click()
         page.wait_for_function("hasAgreedTerms() && !document.getElementById('md-modal-wrap')")
-        page.evaluate("localStorage.setItem('md_auth_test_progress', JSON.stringify({q1:'keep'}));renderDataTools()")
+        page.evaluate("localStorage.setItem('md_auth_test_progress', JSON.stringify({q1:'keep'}))")
+        page.locator('#md-settings-button').click()
         page.locator('#md-drive-connect-btn').click()
         page.wait_for_function("driveSyncLoadState().enabled && !!driveSyncLoadState().lastSyncedAt && !driveSyncBusy")
         assert page.evaluate('__oauthRequests[0].prompt') == ''

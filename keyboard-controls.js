@@ -25,12 +25,6 @@
     return event.key==='Enter' || event.code==='Enter' || event.code==='NumpadEnter' || event.code==='Space' || event.code==='ArrowRight';
   }
 
-  function cleanLegacyConfidenceUi(){ /* v5.11: explicit confidence is part of learning. */ }
-
-  const observer=new MutationObserver(cleanLegacyConfidenceUi);
-  observer.observe(document.documentElement,{childList:true,subtree:true});
-  cleanLegacyConfidenceUi();
-
   document.addEventListener('keydown',function(event){
     if(event.defaultPrevented || event.ctrlKey || event.metaKey || event.altKey || isEditableTarget(event.target)) return;
     try{
@@ -86,3 +80,4 @@ mdLoadAuxScript('weak-topic-classifier.js');
 
 // Add subject/topic result analytics and persist weak-topic reinforcement targets.
 mdLoadAuxScript('predictive-analytics.js');
+mdLoadAuxScript('app-navigation.js');

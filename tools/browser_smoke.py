@@ -7,6 +7,7 @@ import json
 import os
 import threading
 from playwright.sync_api import sync_playwright
+from browser_navigation_helpers import wait_plan
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / 'browser-test-results'
@@ -31,11 +32,11 @@ try:
         agree.wait_for(state='visible')
         agree.click()
         page.wait_for_function("hasAgreedTerms() && !document.getElementById('md-modal-wrap')")
-        assert page.evaluate('APP_VERSION') == '5.13'
-        assert 'v5.13' in page.title()
-        report['cases'].append('v5.13 startup and auxiliary scripts loaded')
+        assert page.evaluate('APP_VERSION') == '5.14'
+        assert 'v5.14' in page.title()
+        report['cases'].append('v5.14 startup and auxiliary scripts loaded')
         page.evaluate("renderNavigatorPassPlan('navi3')")
-        page.wait_for_selector('#pp-date-navi3')
+        wait_plan(page, configure=True)
         target = (date.today() + timedelta(days=30)).isoformat()
         for grade in ('navi2', 'navi3'):
             page.locator(f'#pp-enable-{grade}').check()
@@ -44,8 +45,9 @@ try:
                 field.set_checked(field.input_value() == '영어')
         page.locator('#pp-daily-cap').fill('40')
         page.locator('[onclick="saveNavigatorPassPlanSettings()"]').click()
-        page.wait_for_selector('#pp-date-navi3')
+        wait_plan(page)
         for grade in ('navi2', 'navi3'):
+            wait_plan(page, tab='mock')
             page.locator(f'''[onclick="startNavigatorPredictiveMock('{grade}')"]''').click()
             page.wait_for_function("currentMode==='past' && pastQueue.length>0")
             assert page.evaluate('pastQueue.length') == 25
@@ -60,7 +62,7 @@ try:
             report['cases'].append(f'{grade}: actual 25-question mock, 1 correct + 24 unanswered renders 4 points / 100% answered accuracy')
             page.screenshot(path=str(OUT / f'{grade}-results.png'), full_page=True)
             page.evaluate(f"renderNavigatorPassPlan('{grade}')")
-            page.wait_for_selector('#pp-date-navi3')
+            wait_plan(page)
         page.locator('[onclick="startNavigatorPassPlanToday()"]').click()
         page.wait_for_function("currentMode==='pass-plan-session'")
         page.locator('[onclick="chooseNavigatorPassPlanAnswer(0)"]').click()
@@ -73,7 +75,7 @@ try:
         page.reload(wait_until='load')
         assert page.evaluate("localStorage.getItem('md_nav23_pass_progress_v1')") == before
         page.evaluate("renderNavigatorPassPlan('navi3')")
-        page.wait_for_selector('#pp-date-navi3')
+        wait_plan(page)
         page.locator('[onclick="startNavigatorPassPlanToday()"]').click()
         page.wait_for_function("currentMode==='pass-plan-session'")
         report['cases'].append('homework answer/next, refresh persistence and resume')
