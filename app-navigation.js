@@ -12,6 +12,13 @@
     #md-sync-summary strong{display:block;font-size:12px;overflow-wrap:anywhere}
     #md-sync-summary small{display:block;font-size:10px;color:#64748B;margin-top:3px}
     #md-settings-button{width:auto;flex:none;min-height:42px;padding:8px 13px}
+    body.md-question-screen #md-app-toolbar{padding-top:6px;padding-bottom:0}
+    body.md-question-screen #md-sync-summary{padding:0;line-height:1.25}
+    body.md-question-screen #md-sync-summary small{display:none}
+    body.md-question-screen #md-settings-button{min-height:36px;padding:5px 10px}
+    body.md-question-screen #app{padding-top:4px}
+    body.md-question-screen #app>div:first-child{padding-top:0!important;margin-bottom:8px!important}
+    body.md-question-screen #app>div:first-child>.btn{min-height:40px;padding:7px 10px;font-size:13px}
     .md-menu-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
     .md-menu-grid .btn{width:100%;min-width:0;white-space:normal}
     .md-settings-section{padding:13px 0;border-bottom:1px solid #E2E8F0}
@@ -156,5 +163,12 @@
     document.getElementById('md-resume-banner')?.remove();
     mdSelectPlanTab(selectedPlanTab);
   };
+  function syncQuestionScreenLayout(){
+    const compact=typeof currentMode!=='undefined'&&['pass-plan-session','past'].includes(currentMode);
+    document.body.classList.toggle('md-question-screen',compact);
+  }
+  const appRoot=document.getElementById('app');
+  if(appRoot)new MutationObserver(syncQuestionScreenLayout).observe(appRoot,{childList:true});
+  syncQuestionScreenLayout();
   mountToolbar();
 })();
