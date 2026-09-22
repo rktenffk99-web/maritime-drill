@@ -292,10 +292,13 @@
     return typeof currentMode==='string' &&
       ['study','mock','focus','past','review','pass-plan-session'].includes(currentMode);
   }
-  function mdSyncFinish(local,merged,fileId,remoteUpdatedAt,revision,showNotice,message){
+  function mdSyncConnectionVersion(){
+    return typeof window.__mdDriveAuthGeneration==='function'?window.__mdDriveAuthGeneration():0;
+  }
+  function mdSyncFinish(local,merged,fileId,remoteUpdatedAt,revision,showNotice,message,connectionVersion){
     const latest=mdSyncReadLocal(),current=latest.state;
     // A disconnect during a network request must not be undone by this result.
-    if(!current.enabled)return;
+    if(!current.enabled||connectionVersion!==mdSyncConnectionVersion())return;
     const changedDuringRequest=latest.signature!==local.signature ||
       Number(current.revision)!==Number(local.state.revision);
     const itemsChanged=mdSyncStable(latest.items)!==mdSyncStable(merged.items);
@@ -352,15 +355,16 @@
         const connected=driveSyncLoadState();connected.enabled=true;
         if(!driveSyncSaveState(connected))throw new Error('동기화 상태를 저장하지 못했습니다.');
       }
+      const connectionVersion=mdSyncConnectionVersion();
       const file=await driveSyncFindRemoteFile();
-      if(!driveSyncLoadState().enabled)return;
+      if(!driveSyncLoadState().enabled||connectionVersion!==mdSyncConnectionVersion())return;
       if(!file){
         const local=mdSyncReadLocal(),now=driveSyncNowIso();
         const revision=Math.max(1,(Number(local.state.revision)||0)+1);
         const payload=mdSyncBuildV2Payload(local.state,local.items,local.itemMeta,now,revision);
         const fileId=await driveSyncCreateRemote(payload);
         mdSyncFinish(local,{items:local.items,itemMeta:local.itemMeta},fileId,now,revision,showNotice,
-          '현재 학습 진도를 Google Drive에 처음 저장했습니다.');
+          '현재 학습 진도를 Google Drive에 처음 저장했습니다.',connectionVersion);
         return;
       }
 
@@ -368,7 +372,7 @@
       // Do not use a snapshot taken before this await: the learner may have
       // answered more questions while the download was in flight.
       const local=mdSyncReadLocal();
-      if(!local.state.enabled)return;
+      if(!local.state.enabled||connectionVersion!==mdSyncConnectionVersion())return;
       const remoteItems=remote.items||{};
       const remoteMeta=mdSyncIsPlainObject(remote.itemMeta)?remote.itemMeta:{};
       const localFallback=local.state.localUpdatedAt||local.state.lastSyncedAt||null;
@@ -392,11 +396,12 @@
         :localChanged?'다른 기기의 변경 내용을 이 기기에 병합했습니다.'
         :remoteChanged?'이 기기의 변경 내용을 Google Drive에 병합했습니다.'
         :'Google Drive와 진도가 이미 같습니다.';
-      mdSyncFinish(local,merged,file.id,remoteUpdatedAt,revision,showNotice,message);
+      mdSyncFinish(local,merged,file.id,remoteUpdatedAt,revision,showNotice,message,connectionVersion);
     }catch(error){
       const msg=(error&&error.message)||String(error);
       driveSyncLastError=msg;
-      if(/연결.*필요|401|invalid_token/i.test(msg)) driveSyncClearSessionToken();
+      // driveSyncFetch invalidates only the credential that actually failed.
+      // Clearing here could erase a newer token obtained by another tab.
       console.warn('[v5.10] Drive 병합 동기화 실패',error);
       if(showNotice) alert('Google Drive 동기화 실패: '+msg);
     }finally{

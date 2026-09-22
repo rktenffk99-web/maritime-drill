@@ -27,6 +27,7 @@ python tools/patch_homework_duplicate_guard.py
 python tools/patch_audit_safety.py
 python tools/patch_learning_integrity.py
 python tools/patch_daily_storage.py
+python tools/patch_drive_auth.py
 python tools/test_predictive_mock.py
 python tools/test_predictive_mock_personalization.py
 python tools/test_predictive_mock_no_duplicates.py
@@ -47,5 +48,6 @@ node tools/test_learning_integrity.js
 node tools/test_daily_storage.js
 node tools/test_drive_sync_v2.js
 node tools/test_sync_races.js
+node tools/test_drive_auth.js
 node tools/test_analytics_regressions.js
 python tools/check_final_syntax.py
