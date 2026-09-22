@@ -21,16 +21,20 @@ function harness(id='device-a'){
   return {s,data,render:timers[0],api:s.__mdLearningIntegrity};
 }
 const q={_planKey:'navi3|test',_planGrade:'navi3','정답':0,'선택지':['a','b','c','d']};
-test('correct answer waits for confidence and stays on the saved question',()=>{
-  const {s}=harness();s.__test.setup(q);s.chooseNavigatorPassPlanAnswer(0);s.nextNavigatorPassPlanQuestion();
-  const x=s.__test.snapshot();assert.equal(x.idx,0);assert.equal(x.checkpoint.nextIndex,0);assert.equal(x.confidence[0],null);assert.equal(Object.keys(x.progress).length,0);
+test('answer is saved for review and advances without a self-rating',()=>{
+  const {s}=harness();s.__test.setup(q);s.nextNavigatorPassPlanQuestion();
+  assert.equal(s.__test.snapshot().idx,0);
+  s.chooseNavigatorPassPlanAnswer(0);
+  const x=s.__test.snapshot();assert.equal(x.idx,0);assert.equal(x.checkpoint.nextIndex,0);assert.equal(Object.keys(x.progress).length,0);
+  s.nextNavigatorPassPlanQuestion();
+  const after=s.__test.snapshot();assert.equal(after.idx,1);assert.equal(after.progress[q._planKey].correct,1);assert.equal(after.progress[q._planKey].mastered,false);
 });
-test('unsure answer is counted once and cannot become mastery',()=>{
+test('wrong answers are counted once even after revisiting a question',()=>{
   const {s}=harness();s.__test.setup(q,{attempts:2,correct:2,wrong:0,unsure:0,sameDayConfirmedDate:'2020-01-01'});
-  s.chooseNavigatorPassPlanAnswer(0);s.setNavigatorPassPlanConfidence('unsure');s.nextNavigatorPassPlanQuestion();
-  let r=s.__test.snapshot().progress[q._planKey];assert.equal(r.lastOutcome,'unsure');assert.equal(r.unsure,1);assert.equal(r.mastered,false);assert.equal(r.attempts,3);
-  s.prevNavigatorPassPlanQuestion();s.setNavigatorPassPlanConfidence('sure');s.nextNavigatorPassPlanQuestion();
-  r=s.__test.snapshot().progress[q._planKey];assert.equal(r.attempts,3);assert.equal(r.unsure,1);
+  s.chooseNavigatorPassPlanAnswer(1);s.nextNavigatorPassPlanQuestion();
+  let r=s.__test.snapshot().progress[q._planKey];assert.equal(r.lastOutcome,'wrong');assert.equal(r.wrong,1);assert.equal(r.mastered,false);assert.equal(r.attempts,3);
+  s.prevNavigatorPassPlanQuestion();s.chooseNavigatorPassPlanAnswer(0);s.nextNavigatorPassPlanQuestion();
+  r=s.__test.snapshot().progress[q._planKey];assert.equal(r.attempts,3);assert.equal(r.wrong,1);
 });
 test('reset clears checkpoint and in-memory queue as well as progress',()=>{
   const {s,data}=harness();s.__test.setup(q);s.chooseNavigatorPassPlanAnswer(1);s.nextNavigatorPassPlanQuestion();s.resetNavigatorPassPlanProgress();

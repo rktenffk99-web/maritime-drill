@@ -22,14 +22,26 @@
   }
 
   function isNextKey(event){
-    return event.key==='Enter' || event.code==='Enter' || event.code==='NumpadEnter' || event.code==='Space' || event.code==='ArrowRight';
+    return event.key==='Enter' || event.code==='Enter' || event.code==='NumpadEnter' || event.code==='Space' || event.key===' ' || event.code==='ArrowRight';
   }
 
   document.addEventListener('keydown',function(event){
-    if(event.defaultPrevented || event.ctrlKey || event.metaKey || event.altKey || isEditableTarget(event.target)) return;
+    if(event.defaultPrevented || event.isComposing || event.ctrlKey || event.metaKey || event.altKey || isEditableTarget(event.target)) return;
+    if(document.getElementById('md-modal-wrap') || document.getElementById('_confirmDialog')) return;
     try{
-      if(typeof currentMode==='undefined' || currentMode!=='pass-plan-session') return;
+      if(typeof currentMode==='undefined') return;
+      // Ordinary past-paper sessions retain their existing keys; Space also advances.
+      if(currentMode==='past' && (event.code==='Space'||event.key===' ')){
+        event.preventDefault();event.stopImmediatePropagation();
+        if(!event.repeat && typeof pastNext==='function')pastNext();
+        return;
+      }
+      if(currentMode!=='pass-plan-session') return;
       const idx=choiceIndex(event);
+      if(idx<0 && event.code!=='ArrowLeft' && !isNextKey(event))return;
+      // Suppress native button activation, page scrolling and held-key repeats.
+      event.preventDefault();event.stopImmediatePropagation();
+      if(event.repeat)return;
       if(idx>=0 && typeof window.chooseNavigatorPassPlanAnswer==='function'){
         event.preventDefault();
         const choices=document.querySelectorAll('button[onclick^="chooseNavigatorPassPlanAnswer("]');

@@ -32,7 +32,7 @@ try:
         agree.wait_for(state='visible')
         agree.click()
         page.wait_for_function("hasAgreedTerms() && !document.getElementById('md-modal-wrap')")
-        assert page.evaluate('APP_VERSION') == '5.14'
+        assert page.evaluate('APP_VERSION') == '5.16'
         assert 'v5.14' in page.title()
         report['cases'].append('v5.14 startup and auxiliary scripts loaded')
         page.evaluate("renderNavigatorPassPlan('navi3')")
@@ -66,9 +66,6 @@ try:
         page.locator('[onclick="startNavigatorPassPlanToday()"]').click()
         page.wait_for_function("currentMode==='pass-plan-session'")
         page.locator('[onclick="chooseNavigatorPassPlanAnswer(0)"]').click()
-        sure = page.locator('''[onclick="setNavigatorPassPlanConfidence('sure')"]''')
-        if sure.is_visible():
-            sure.click()
         page.locator('[onclick="nextNavigatorPassPlanQuestion()"]').click()
         before = page.evaluate("localStorage.getItem('md_nav23_pass_progress_v1')")
         assert before and before != '{}'
