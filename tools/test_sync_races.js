@@ -51,6 +51,12 @@ function harness(options={}){
 let count=0;
 async function test(name,fn){await fn();count++;console.log('PASS '+name)}
 (async()=>{
+  await test('disconnect and reconnect during upload cannot apply the old connection result',async()=>{
+    let version=0;
+    const h=harness({onUpload(){version++}});
+    h.sandbox.__mdDriveAuthGeneration=()=>version;h.remote.items.md_remote_only='"remote"';
+    await h.sync();assert.equal(h.calls.apply,0);assert.equal(h.calls.reload,0);
+  });
   await test('download-time answers are present in uploaded and local snapshots',async()=>{
     const h=harness({onDownload(h){h.addQuestion('duringDownload')}});h.remote.items.md_remote_only='"other device"';
     await h.sync();assert.ok(JSON.parse(h.remote.items[KEY]).duringDownload);assert.ok(h.progress().duringDownload);assert.equal(h.storage.getItem('md_remote_only'),'"other device"');assert.equal(h.sandbox.driveSyncBusy,false);

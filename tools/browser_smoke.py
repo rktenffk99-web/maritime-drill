@@ -31,9 +31,9 @@ try:
         agree.wait_for(state='visible')
         agree.click()
         page.wait_for_function("hasAgreedTerms() && !document.getElementById('md-modal-wrap')")
-        assert page.evaluate('APP_VERSION') == '5.12'
-        assert 'v5.12' in page.title()
-        report['cases'].append('v5.12 startup and auxiliary scripts loaded')
+        assert page.evaluate('APP_VERSION') == '5.13'
+        assert 'v5.13' in page.title()
+        report['cases'].append('v5.13 startup and auxiliary scripts loaded')
         page.evaluate("renderNavigatorPassPlan('navi3')")
         page.wait_for_selector('#pp-date-navi3')
         target = (date.today() + timedelta(days=30)).isoformat()

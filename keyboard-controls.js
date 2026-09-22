@@ -76,6 +76,7 @@ function mdLoadAuxScript(src){
 mdLoadAuxScript('learning-integrity.js');
 mdLoadAuxScript('daily-storage.js');
 mdLoadAuxScript('drive-sync-v2.js');
+mdLoadAuxScript('drive-auth.js');
 
 // Load exact corrections for reviewed problem reports.
 mdLoadAuxScript('reported-content-fixes.js');
