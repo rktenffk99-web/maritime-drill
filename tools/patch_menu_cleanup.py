@@ -4,10 +4,15 @@ import re
 
 p = Path('index.html')
 text = p.read_text(encoding='utf-8-sig')
-text = re.sub(r"const APP_VERSION = '[^']+';", "const APP_VERSION = '5.14';", text, count=1)
-text = re.sub(r'<title>Maritime Drill v[\d.]+ · Android</title>', '<title>Maritime Drill v5.14 · Android</title>', text, count=1)
-text = re.sub(r'<script src="(keyboard-controls|convenience-controls)\.js(?:\?v=[^"]*)?"></script>', lambda m: f'<script src="{m[1]}.js?v=5.14"></script>', text)
+text = re.sub(r"const APP_VERSION = '[^']+';", "const APP_VERSION = '5.15';", text, count=1)
+text = re.sub(r'<title>Maritime Drill v[\d.]+ · Android</title>', '<title>Maritime Drill v5.15 · Android</title>', text, count=1)
+text = re.sub(r'<script src="(app-navigation|keyboard-controls|convenience-controls)\.js(?:\?v=[^"]*)?"></script>', lambda m: f'<script src="{m[1]}.js?v=5.15"></script>', text)
 text = re.sub(r'(Google Drive 진도 동기화 <span[^>]*>)v[\d.]+', r'\1v${APP_VERSION}', text)
+if 'src="app-navigation.js' not in text:
+    marker = re.search(r'<script src="keyboard-controls\.js[^"]*"></script>', text)
+    if not marker:
+        raise RuntimeError('Missing keyboard controls script anchor')
+    text = text[:marker.start()] + '<script src="app-navigation.js?v=5.15"></script>\n' + text[marker.start():]
 text = text.replace('시험일을 기준으로 역산하고, 빈출 → 전체 → 시험 직전 복습 순으로 자동 배정합니다.<br>정답을 맞혀도 ‘확실’ 표시가 없으면 완료되지 않으며, 다른 날 다시 맞혀야 숙달됩니다.<br>그림·밑줄 원문 확인이 필요한 문항은 자동 출제에서 제외합니다.', '시험일까지 필요한 문제를 배정합니다. 오늘 공부를 시작하거나 남은 문제를 이어서 풀어보세요.')
 
 # Removed controls have no callers. Keep the supported all-learning-data backup path.
