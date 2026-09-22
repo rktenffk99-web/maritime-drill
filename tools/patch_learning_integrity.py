@@ -139,9 +139,12 @@ replace("const grade=q._planGrade,color=ppGradeColor(grade),markers=['㉮','㉯'
 replace("${q['선택지'].map((opt,i)=>{let bg=", "${order.map((i,displayIdx)=>{const opt=q['선택지'][i];let bg=")
 replace('${markers[i]}</b>${escapeHtml(pastChoiceText(opt))}', '${markers[displayIdx]}</b>${escapeHtml(pastChoiceText(opt))}')
 replace("'오답 · 정답 '+markers[correct]", "'오답 · 정답 '+markers[order.indexOf(correct)]")
-replace('${renderExplainBlock(q)}${isCorrect?', '${window.__mdLearningIntegrity.remapExplanation(renderExplainBlock(q),order)}${isCorrect?')
-replace("${confidence==='sure'?'btn-green':'btn-outline'}\"", "${confidence==='sure'?'btn-green':'btn-outline'}\" ${planSessionCommitted.has(planSessionIdx)?'disabled':''}")
-replace("${confidence==='unsure'?'btn-accent':'btn-outline'}\"", "${confidence==='unsure'?'btn-accent':'btn-outline'}\" ${planSessionCommitted.has(planSessionIdx)?'disabled':''}")
+if '${window.__mdLearningIntegrity.remapExplanation(renderExplainBlock(q),order)}' not in text:
+    replace('${renderExplainBlock(q)}${isCorrect?', '${window.__mdLearningIntegrity.remapExplanation(renderExplainBlock(q),order)}${isCorrect?')
+# v5.16 removes the self-rating controls in the final UI pass.
+if 'onclick="setNavigatorPassPlanConfidence(' in text:
+    replace("${confidence==='sure'?'btn-green':'btn-outline'}\"", "${confidence==='sure'?'btn-green':'btn-outline'}\" ${planSessionCommitted.has(planSessionIdx)?'disabled':''}")
+    replace("${confidence==='unsure'?'btn-accent':'btn-outline'}\"", "${confidence==='unsure'?'btn-accent':'btn-outline'}\" ${planSessionCommitted.has(planSessionIdx)?'disabled':''}")
 
 # v5.14 places learning guidance in the records/help panel instead of the hero.
 # This is only the legacy explanatory text; question eligibility above is always patched.

@@ -35,7 +35,9 @@ try:
         page.locator('''[onclick="startNavigatorPredictiveMock('navi3')"]''').click()
         page.wait_for_function("currentMode==='past'||document.getElementById('app').textContent.includes('모의를 시작하지 못했습니다')");assert page.evaluate("currentMode")=='past',page.locator('#app').inner_text();assert page.evaluate("pastQueue.length")==25,page.evaluate("({mode:currentMode,count:pastQueue.length,subjects:pastQueue.map(q=>q['과목'])})")
         first=page.evaluate("pastQueue[0]['정답']")
-        page.locator(f'[onclick="choosePastAnswer({first})"]').click();page.locator('[onclick="pastNext()"]').click()
+        page.locator(f'[onclick="choosePastAnswer({first})"]').click()
+        page.keyboard.down('Space');page.keyboard.down('Space');page.keyboard.up('Space')
+        assert page.evaluate('pastIdx')==1
         wrong=page.evaluate("(pastQueue[1]['정답']+1)%4")
         page.locator(f'[onclick="choosePastAnswer({wrong})"]').click();page.locator('[onclick="pastNext()"]').click()
         before=page.evaluate("({ids:pastQueue.map(pqid),answers:pastAnswers.slice(),idx:pastIdx})")
@@ -65,21 +67,35 @@ try:
         key=page.evaluate("(()=>{const cp=JSON.parse(localStorage.getItem('md_pass_plan_session_checkpoint_v2'));return cp.queueKeys[cp.nextIndex]})()")
         answer=page.evaluate(r"""(key)=>{const card=document.querySelector('#app .card'),m=card.textContent.match(/(\d+)년 (\d+)회 Q(\d+)/),subject=card.querySelectorAll('.tag')[1].textContent;const q=getPastExam(key.split('|')[0],Number(m[1]),Number(m[2])).questions.find(q=>q['과목']===subject&&Number(q['번호'])===Number(m[3]));if(!q)throw Error('visible source question not found');return q['정답']}""",key)
         page.locator(f'[onclick="chooseNavigatorPassPlanAnswer({answer})"]').click()
-        page.locator('''[onclick="setNavigatorPassPlanConfidence('unsure')"]''').wait_for(state='visible')
-        assert page.locator('[onclick="nextNavigatorPassPlanQuestion()"]').is_disabled()
+        assert not page.locator('button[onclick^="setNavigatorPassPlanConfidence("]').count()
+        assert page.locator('[onclick="nextNavigatorPassPlanQuestion()"]').is_enabled()
+        # A real pre-update checkpoint may have a correct answer and null confidence.
+        page.evaluate("""()=>{const k='md_pass_plan_session_checkpoint_v2',cp=JSON.parse(localStorage.getItem(k));cp.confidence[cp.nextIndex]=null;localStorage.setItem(k,JSON.stringify(cp))}""")
         order=page.locator('button[onclick^="chooseNavigatorPassPlanAnswer("]').evaluate_all('(els)=>els.map(e=>e.textContent)')
         page.reload(wait_until='load');page.evaluate("renderNavigatorPassPlan('navi3')");wait_plan(page)
         page.locator('[onclick="startNavigatorPassPlanToday()"]').click();page.wait_for_function("currentMode==='pass-plan-session'")
         assert page.locator('button[onclick^="chooseNavigatorPassPlanAnswer("]').evaluate_all('(els)=>els.map(e=>e.textContent)')==order
         page.set_viewport_size({'width':390,'height':844})
-        page.screenshot(path=str(OUT/'v511-mobile-confidence.png'),full_page=True)
+        page.screenshot(path=str(OUT/'v516-mobile-answer.png'),full_page=True)
         assert page.evaluate('Math.max(0,document.documentElement.scrollWidth-innerWidth)')==0
         assert page.locator('button[onclick^="chooseNavigatorPassPlanAnswer("]').first.evaluate('(el)=>getComputedStyle(el).fontFamily')==page.locator('body').evaluate('(el)=>getComputedStyle(el).fontFamily')
         page.set_viewport_size({'width':1365,'height':950})
-        page.locator('''[onclick="setNavigatorPassPlanConfidence('unsure')"]''').click();page.locator('[onclick="nextNavigatorPassPlanQuestion()"]').click()
+        checkpoint=page.evaluate("localStorage.getItem('md_pass_plan_session_checkpoint_v2')")
+        page.locator('#md-settings-button').click()
+        page.keyboard.press('ArrowRight')
+        assert page.evaluate("localStorage.getItem('md_pass_plan_session_checkpoint_v2')")==checkpoint
+        page.locator('#md-modal-wrap .md-modal-close').click()
+        page.locator('#md-settings-button').focus()
+        page.keyboard.press('Space')
+        assert not page.locator('#md-modal-wrap').count()
+        assert page.evaluate("JSON.parse(localStorage.getItem('md_pass_plan_session_checkpoint_v2')).nextIndex")==1
         record=page.evaluate('(key)=>JSON.parse(localStorage.getItem("md_nav23_pass_progress_v1"))[key]',key)
-        assert record['lastOutcome']=='unsure' and record['unsure']>=1 and not record['mastered'],record
-        report['cases'].append('confidence remains visible, unfinished choice survives refresh, and unsure cannot grant mastery')
+        assert record['lastOutcome']=='sure' and record['correct']>=1 and not record['mastered'],record
+        page.keyboard.press('Space')
+        assert page.evaluate("JSON.parse(localStorage.getItem('md_pass_plan_session_checkpoint_v2')).nextIndex")==1
+        page.keyboard.press('ArrowLeft');page.keyboard.press('Space')
+        assert page.evaluate('(key)=>JSON.parse(localStorage.getItem("md_nav23_pass_progress_v1"))[key]',key)==record
+        report['cases'].append('no self-rating; Space advances a legacy checkpoint exactly once, cannot skip unanswered homework or activate a focused settings button; modal keys preserve progress')
         page.evaluate('resetNavigatorPassPlanProgress()');page.get_by_role('button',name='확인',exact=True).click()
         wait_plan(page)
         assert page.evaluate("localStorage.getItem('md_pass_plan_session_checkpoint_v2')")==None

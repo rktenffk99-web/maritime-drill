@@ -36,7 +36,7 @@ try:
         page.route(origin,lambda r:r.fulfill(status=200,content_type='text/html',body=html))
         page.goto(origin,wait_until='load');page.get_by_role('button',name='동의합니다',exact=True).click()
         page.wait_for_function("hasAgreedTerms() && !document.getElementById('md-modal-wrap')")
-        assert page.evaluate('APP_VERSION')=='5.14'
+        assert page.evaluate('APP_VERSION')=='5.16'
         page.evaluate("renderNavigatorPassPlan('navi3')")
         wait_plan(page, configure=True)
         for g in ('navi2','navi3'):
@@ -52,8 +52,6 @@ try:
         report['cases'].append('both grades, all subjects and maximum daily quota save without a storage warning')
         page.locator('[onclick="startNavigatorPassPlanToday()"]').click();page.wait_for_function("currentMode==='pass-plan-session'")
         page.locator('[onclick="chooseNavigatorPassPlanAnswer(0)"]').click()
-        unsure=page.locator('''[onclick="setNavigatorPassPlanConfidence('unsure')"]''')
-        if unsure.is_visible():unsure.click()
         page.locator('[onclick="nextNavigatorPassPlanQuestion()"]').click()
         saved=page.evaluate("({progress:localStorage.getItem('md_nav23_pass_progress_v1'),checkpoint:localStorage.getItem('md_pass_plan_session_checkpoint_v2')})")
         page.evaluate("renderNavigatorPassPlan('navi3')")

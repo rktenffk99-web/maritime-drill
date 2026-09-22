@@ -24,7 +24,7 @@ try:
         page.on('dialog',lambda d:d.accept())
         page.goto(origin,wait_until='load');page.get_by_role('button',name='동의합니다',exact=True).click()
         page.wait_for_function("hasAgreedTerms() && !document.getElementById('md-modal-wrap')")
-        assert page.evaluate('APP_VERSION')=='5.14'
+        assert page.evaluate('APP_VERSION')=='5.16'
         assert page.locator('#md-settings-button').count()==1
         assert not page.get_by_role('button',name='전체 백업 저장',exact=True).count()
         assert not page.get_by_role('button',name='제작자의 말',exact=True).count()
