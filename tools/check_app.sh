@@ -28,6 +28,7 @@ python tools/patch_audit_safety.py
 python tools/patch_learning_integrity.py
 python tools/patch_daily_storage.py
 python tools/patch_drive_auth.py
+python tools/patch_menu_cleanup.py
 python tools/test_predictive_mock.py
 python tools/test_predictive_mock_personalization.py
 python tools/test_predictive_mock_no_duplicates.py

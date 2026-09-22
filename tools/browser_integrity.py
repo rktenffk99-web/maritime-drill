@@ -5,6 +5,7 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 import json, os, threading
 from playwright.sync_api import sync_playwright
+from browser_navigation_helpers import wait_plan
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'browser-test-results';OUT.mkdir(exist_ok=True)
@@ -22,14 +23,15 @@ try:
         page=context.new_page();page.on('pageerror',lambda e:report['page_errors'].append(str(e)))
         page.goto(origin,wait_until='load');page.get_by_role('button',name='동의합니다',exact=True).click()
         page.wait_for_function("hasAgreedTerms() && !document.getElementById('md-modal-wrap')")
-        page.evaluate("renderNavigatorPassPlan('navi3')");page.wait_for_selector('#pp-date-navi3')
+        page.evaluate("renderNavigatorPassPlan('navi3')");wait_plan(page, configure=True)
         for grade in ('navi2','navi3'):
             page.locator(f'#pp-enable-{grade}').check()
             page.locator(f'#pp-date-{grade}').fill((date.today()+timedelta(days=30)).isoformat())
             for field in page.locator(f'input[data-pp-subject="{grade}"]').all():
                 field.set_checked(field.input_value()==('영어' if grade=='navi3' else '항해'))
         page.locator('#pp-daily-cap').fill('40');page.locator('[onclick="saveNavigatorPassPlanSettings()"]').click()
-        page.wait_for_selector('#pp-date-navi3')
+        wait_plan(page)
+        wait_plan(page, tab='mock')
         page.locator('''[onclick="startNavigatorPredictiveMock('navi3')"]''').click()
         page.wait_for_function("currentMode==='past'||document.getElementById('app').textContent.includes('모의를 시작하지 못했습니다')");assert page.evaluate("currentMode")=='past',page.locator('#app').inner_text();assert page.evaluate("pastQueue.length")==25,page.evaluate("({mode:currentMode,count:pastQueue.length,subjects:pastQueue.map(q=>q['과목'])})")
         first=page.evaluate("pastQueue[0]['정답']")
@@ -49,7 +51,8 @@ try:
         assert '4점' in page.locator('#md-predictive-analysis').inner_text()
         profile=page.evaluate("JSON.parse(localStorage.getItem('md_weak_topic_profile_v1')).grades.navi3")
         assert profile['topics']
-        page.evaluate("renderNavigatorPassPlan('navi2')");page.wait_for_selector('#pp-date-navi2')
+        page.evaluate("renderNavigatorPassPlan('navi2')");wait_plan(page)
+        wait_plan(page, tab='mock')
         page.locator('''[onclick="startNavigatorPredictiveMock('navi2')"]''').click();page.wait_for_function("currentMode==='past'||document.getElementById('app').textContent.includes('모의를 시작하지 못했습니다')");assert page.evaluate("currentMode")=='past',page.locator('#app').inner_text();assert page.evaluate("pastQueue.length")==25,page.evaluate("({mode:currentMode,count:pastQueue.length,subjects:pastQueue.map(q=>q['과목'])})")
         for _ in range(25):
             answer=page.evaluate("pastQueue[pastIdx]['정답']")
@@ -57,7 +60,7 @@ try:
         page.wait_for_selector('#md-predictive-analysis')
         assert page.evaluate("JSON.parse(localStorage.getItem('md_weak_topic_profile_v1')).grades.navi3")==profile
         report['cases'].append('a perfect navigation mock in grade 2 preserves grade 3 English weaknesses')
-        page.evaluate("renderNavigatorPassPlan('navi3')");page.wait_for_selector('#pp-date-navi3')
+        page.evaluate("renderNavigatorPassPlan('navi3')");wait_plan(page)
         page.locator('[onclick="startNavigatorPassPlanToday()"]').click();page.wait_for_function("currentMode==='pass-plan-session'")
         key=page.evaluate("(()=>{const cp=JSON.parse(localStorage.getItem('md_pass_plan_session_checkpoint_v2'));return cp.queueKeys[cp.nextIndex]})()")
         answer=page.evaluate(r"""(key)=>{const card=document.querySelector('#app .card'),m=card.textContent.match(/(\d+)년 (\d+)회 Q(\d+)/),subject=card.querySelectorAll('.tag')[1].textContent;const q=getPastExam(key.split('|')[0],Number(m[1]),Number(m[2])).questions.find(q=>q['과목']===subject&&Number(q['번호'])===Number(m[3]));if(!q)throw Error('visible source question not found');return q['정답']}""",key)
@@ -65,7 +68,7 @@ try:
         page.locator('''[onclick="setNavigatorPassPlanConfidence('unsure')"]''').wait_for(state='visible')
         assert page.locator('[onclick="nextNavigatorPassPlanQuestion()"]').is_disabled()
         order=page.locator('button[onclick^="chooseNavigatorPassPlanAnswer("]').evaluate_all('(els)=>els.map(e=>e.textContent)')
-        page.reload(wait_until='load');page.evaluate("renderNavigatorPassPlan('navi3')");page.wait_for_selector('#pp-date-navi3')
+        page.reload(wait_until='load');page.evaluate("renderNavigatorPassPlan('navi3')");wait_plan(page)
         page.locator('[onclick="startNavigatorPassPlanToday()"]').click();page.wait_for_function("currentMode==='pass-plan-session'")
         assert page.locator('button[onclick^="chooseNavigatorPassPlanAnswer("]').evaluate_all('(els)=>els.map(e=>e.textContent)')==order
         page.set_viewport_size({'width':390,'height':844})
@@ -78,7 +81,7 @@ try:
         assert record['lastOutcome']=='unsure' and record['unsure']>=1 and not record['mastered'],record
         report['cases'].append('confidence remains visible, unfinished choice survives refresh, and unsure cannot grant mastery')
         page.evaluate('resetNavigatorPassPlanProgress()');page.get_by_role('button',name='확인',exact=True).click()
-        page.wait_for_selector('#pp-date-navi3')
+        wait_plan(page)
         assert page.evaluate("localStorage.getItem('md_pass_plan_session_checkpoint_v2')")==None
         assert page.evaluate("localStorage.getItem('md_nav23_pass_progress_v1')")=='{}'
         report['cases'].append('confirmed progress reset removes the saved homework session')

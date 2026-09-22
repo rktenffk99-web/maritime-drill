@@ -5,6 +5,7 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 import json, os, threading
 from playwright.sync_api import sync_playwright
+from browser_navigation_helpers import wait_plan
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'browser-test-results';OUT.mkdir(exist_ok=True)
@@ -35,8 +36,9 @@ try:
         page.route(origin,lambda r:r.fulfill(status=200,content_type='text/html',body=html))
         page.goto(origin,wait_until='load');page.get_by_role('button',name='동의합니다',exact=True).click()
         page.wait_for_function("hasAgreedTerms() && !document.getElementById('md-modal-wrap')")
-        assert page.evaluate('APP_VERSION')=='5.13'
+        assert page.evaluate('APP_VERSION')=='5.14'
         page.evaluate("renderNavigatorPassPlan('navi3')")
+        wait_plan(page, configure=True)
         for g in ('navi2','navi3'):
             page.locator(f'#pp-enable-{g}').check()
             page.locator(f'#pp-date-{g}').fill((date.today()+timedelta(days=10)).isoformat())

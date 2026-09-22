@@ -40,10 +40,8 @@
   }
   function escapeText(s){return String(s==null?'':s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
 
-  function cleanLegacyConfidenceUi(){ /* v5.11: explicit confidence is part of learning. */ }
-
   function addResumeBanner(){
-    const root=appRoot();if(!root||inQuestionSession())return;
+    const root=appRoot();if(!root||inQuestionSession()||document.getElementById('md-plan-navigation'))return;
     const cp=currentCheckpoint();
     const old=document.getElementById('md-resume-banner');
     if(!cp){if(old)old.remove();return}
@@ -344,7 +342,7 @@
   let queued=false;
   function enhance(){
     if(queued)return;queued=true;
-    requestAnimationFrame(()=>{queued=false;cleanLegacyConfidenceUi();addResumeBanner();applyExplanationMode();addReportButton();enhanceTodayResult();syncWakeLock()});
+    requestAnimationFrame(()=>{queued=false;addResumeBanner();applyExplanationMode();addReportButton();enhanceTodayResult();syncWakeLock()});
   }
   new MutationObserver(enhance).observe(document.documentElement,{childList:true,subtree:true});
   document.addEventListener('visibilitychange',enhance);
