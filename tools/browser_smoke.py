@@ -33,8 +33,8 @@ try:
         agree.click()
         page.wait_for_function("hasAgreedTerms() && !document.getElementById('md-modal-wrap')")
         assert page.evaluate('APP_VERSION') == '5.16'
-        assert 'v5.14' in page.title()
-        report['cases'].append('v5.14 startup and auxiliary scripts loaded')
+        assert 'v5.16' in page.title()
+        report['cases'].append('v5.16 startup and auxiliary scripts loaded')
         page.evaluate("renderNavigatorPassPlan('navi3')")
         wait_plan(page, configure=True)
         target = (date.today() + timedelta(days=30)).isoformat()
