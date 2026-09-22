@@ -101,7 +101,7 @@ try:
         page.locator('#md-display-settings > summary').click()
         page.locator('#md-reading-toggle').click()
         page.locator('#md-reading-toggle').click()
-        page.get_by_role('button',name='닫기',exact=True).click()
+        page.locator('#md-modal-wrap .md-modal-close').click()
         assert page.evaluate('currentMode')=='pass-plan-session'
         assert page.evaluate("localStorage.getItem('md_pass_plan_session_checkpoint_v2')")==checkpoint
         report['cases'].append('opening display settings and toggling reading during a question preserves the current session')
@@ -113,7 +113,7 @@ try:
         page.locator('#md-backup-settings > summary').click()
         page.screenshot(path=str(OUT/'v514-mobile-settings.png'),full_page=True)
         assert page.evaluate('Math.max(0,document.documentElement.scrollWidth-innerWidth)')==0
-        page.get_by_role('button',name='닫기',exact=True).click()
+        page.locator('#md-modal-wrap .md-modal-close').click()
         page.set_viewport_size({'width':1440,'height':1000})
         page.screenshot(path=str(OUT/'v514-desktop-today.png'),full_page=True)
         report['cases'].append('the homework page has one resume control and settings fit the mobile viewport')
