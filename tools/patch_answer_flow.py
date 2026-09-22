@@ -8,9 +8,11 @@ prefix, text = text[:start], text[start:]
 
 def replace(old, new):
     global text
-    if new in text:
+    if old in new and new in text:
         return
     if old not in text:
+        if new in text:
+            return
         raise RuntimeError('Missing answer-flow anchor: ' + old[:90])
     text = text.replace(old, new)
 
@@ -48,7 +50,7 @@ replace('같은 날 다시 맞혀 ‘확실’까지 만들 수 있지만, 숙�
 replace('onclick="nextNavigatorPassPlanQuestion()">',
         'title="다음 문제 (Space / Enter / →)" aria-keyshortcuts="Space Enter ArrowRight" onclick="nextNavigatorPassPlanQuestion()">')
 
-if 'setNavigatorPassPlanConfidence' in text or '확실히 안다' in text:
+if any(label in text for label in ['setNavigatorPassPlanConfidence', '확실히 안다', '정답 + 확실 통과', '애매 ${unsure}']):
     raise RuntimeError('Self-rating control remains in homework')
 p.write_text(prefix + text, encoding='utf-8')
 print('answer-only homework flow applied')
