@@ -143,7 +143,10 @@ replace('${renderExplainBlock(q)}${isCorrect?', '${window.__mdLearningIntegrity.
 replace("${confidence==='sure'?'btn-green':'btn-outline'}\"", "${confidence==='sure'?'btn-green':'btn-outline'}\" ${planSessionCommitted.has(planSessionIdx)?'disabled':''}")
 replace("${confidence==='unsure'?'btn-accent':'btn-outline'}\"", "${confidence==='unsure'?'btn-accent':'btn-outline'}\" ${planSessionCommitted.has(planSessionIdx)?'disabled':''}")
 
-replace('다른 날 다시 맞혀야 숙달됩니다.</div>', '다른 날 다시 맞혀야 숙달됩니다.<br>그림·밑줄 원문 확인이 필요한 문항은 자동 출제에서 제외합니다.</div>')
+# v5.14 places learning guidance in the records/help panel instead of the hero.
+# This is only the legacy explanatory text; question eligibility above is always patched.
+if '시험일까지 필요한 문제를 배정합니다. 오늘 공부를 시작하거나 남은 문제를 이어서 풀어보세요.' not in text:
+    replace('다른 날 다시 맞혀야 숙달됩니다.</div>', '다른 날 다시 맞혀야 숙달됩니다.<br>그림·밑줄 원문 확인이 필요한 문항은 자동 출제에서 제외합니다.</div>')
 
 # Cache versions prevent an older UI script from removing the required confidence buttons.
 text=re.sub(r'<script src="(keyboard-controls|convenience-controls)\.js(?:\?v=[^"]*)?"></script>',lambda m:f'<script src="{m[1]}.js?v=5.11"></script>',text)

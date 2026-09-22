@@ -143,7 +143,10 @@
     if(rules){
       const details=document.createElement('details');details.id='md-plan-rules';details.className='card';
       details.innerHTML='<summary>학습·숙달 규칙</summary>';rules.classList.remove('card');rules.style.cssText='margin:0;padding:0';
-      details.append(rules);panels.records.append(details);
+      details.append(rules);
+      const note=document.createElement('p');note.className='md-menu-note';
+      note.textContent='그림·밑줄 원문 확인이 필요한 문항은 자동 출제에서 제외합니다.';
+      details.append(note);panels.records.append(details);
     }
     try{
       const cp=JSON.parse(localStorage.getItem('md_pass_plan_session_checkpoint_v2')||'null');
