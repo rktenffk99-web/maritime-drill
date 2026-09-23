@@ -30,6 +30,7 @@ python tools/patch_daily_storage.py
 python tools/patch_drive_auth.py
 python tools/patch_menu_cleanup.py
 python tools/patch_answer_flow.py
+python tools/patch_mock_subject_order.py
 python tools/test_predictive_mock.py
 python tools/test_predictive_mock_personalization.py
 python tools/test_predictive_mock_no_duplicates.py
