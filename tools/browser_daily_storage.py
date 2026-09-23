@@ -36,7 +36,7 @@ try:
         page.route(origin,lambda r:r.fulfill(status=200,content_type='text/html',body=html))
         page.goto(origin,wait_until='load');page.get_by_role('button',name='동의합니다',exact=True).click()
         page.wait_for_function("hasAgreedTerms() && !document.getElementById('md-modal-wrap')")
-        assert page.evaluate('APP_VERSION')=='5.16'
+        assert page.evaluate('APP_VERSION')=='5.17'
         page.evaluate("renderNavigatorPassPlan('navi3')")
         wait_plan(page, configure=True)
         for g in ('navi2','navi3'):
