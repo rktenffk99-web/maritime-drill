@@ -85,7 +85,7 @@
   function pctBar(value){return `<div style="height:7px;background:#E2E8F0;border-radius:999px;overflow:hidden"><div style="height:100%;width:${Math.max(0,Math.min(100,value))}%;background:#7C3AED"></div></div>`}
   function render(){
     const app=document.getElementById('app');
-    if(!app||!/(실전예측 모의 결과)/.test(app.textContent||''))return;
+    if(!app||!/(실전예측 모의 결과|실전 모의고사 결과)/.test(app.textContent||''))return;
     if(document.getElementById('md-predictive-analysis'))return;
     if(typeof pastQueue==='undefined'||typeof pastAnswers==='undefined')return;
     const s=stats(pastQueue,pastAnswers);if(!s.subjects.length)return;

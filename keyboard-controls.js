@@ -89,6 +89,7 @@ mdLoadAuxScript('reported-content-fixes.js');
 
 // Use one classifier for analytics and homework selection.
 mdLoadAuxScript('weak-topic-classifier.js');
+mdLoadAuxScript('balanced-mock.js');
 
 // Add subject/topic result analytics and persist weak-topic reinforcement targets.
 mdLoadAuxScript('predictive-analytics.js');
