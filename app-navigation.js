@@ -139,7 +139,7 @@
       for(const action of actions){
         const note=action.nextElementSibling;
         card.append(action);
-        if(note&&note.tagName==='DIV'&&note.textContent.includes('가중 랜덤'))card.append(note);
+        if(note&&note.tagName==='DIV'&&(note.classList.contains('md-mock-note')||note.textContent.includes('가중 랜덤')))card.append(note);
       }
       panels.mock.append(card);
     }

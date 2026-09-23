@@ -71,11 +71,9 @@ try:
                     assert page.evaluate('({ids:pastQueue.map(pqid),answers:pastAnswers.slice(),idx:pastIdx})') == before
                     report['cases'].append(f'{grade}: reload preserves order, answers and subject boundary')
             page.evaluate('(grade)=>startNavigatorPassPlanMock(grade)', grade)
-            # A fixed historical paper can contain fewer usable questions (e.g.
-            # missing underlines). Keep those established exclusions and source.
-            counts = page.evaluate("""()=>Object.fromEntries(['항해','법규','영어'].map(subject=>[subject,Math.min(25,getPastExamsForSession(pastBaseShort,pastYear,pastSession,pastVariant).flatMap(exam=>exam.questions).filter(q=>q['과목']===subject&&mdQuestionUsable(q)).length)]))""")
-            check_paper(page, SELECTED, f'{grade}: latest-paper mock groups valid source questions', counts)
+            check_paper(page, SELECTED, f'{grade}: balanced mock groups 25 questions per selected subject')
             # A single selected subject always starts at question 1.
+            page.evaluate("grade=>{const exams=getPastExamsByBase(grade,'상선').filter(exam=>exam.meta.year===2026).sort((a,b)=>b.meta.session-a.meta.session);pastYear=2026;pastSession=exams[0].meta.session;pastReturnView=null}", grade)
             page.evaluate("startPastSession('mock','법규')")
             check_paper(page, ['법규'], f'{grade}: single-subject mock has 25 questions')
             page.evaluate("grade=>{pastYearPickVariant='상선';pastVariant='상선';renderPastYearPick(grade,grade)}", grade)

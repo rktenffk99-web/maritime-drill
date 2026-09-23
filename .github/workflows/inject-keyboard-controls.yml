@@ -2,7 +2,7 @@ name: Patch pass-plan app
 
 on:
   push:
-    branches: [main, 'fix/audit-sync-analytics-20260921', 'fix/learning-integrity-v511', 'fix/daily-storage-v512', 'fix/drive-auth-v513', 'fix/menu-cleanup-v514', 'codex/compact-question-header-v5-15', 'fix/answer-flow-v516', 'codex/mock-subject-order']
+    branches: [main, 'fix/audit-sync-analytics-20260921', 'fix/learning-integrity-v511', 'fix/daily-storage-v512', 'fix/drive-auth-v513', 'fix/menu-cleanup-v514', 'codex/compact-question-header-v5-15', 'fix/answer-flow-v516', 'codex/mock-subject-order', 'codex/balanced-mock-v517']
     paths:
       - 'index.html'
       - '*.js'
