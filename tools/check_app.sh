@@ -32,6 +32,7 @@ python tools/patch_menu_cleanup.py
 python tools/patch_answer_flow.py
 python tools/patch_mock_subject_order.py
 python tools/patch_balanced_mock.py
+python tools/patch_navi2_recall.py
 node tools/test_balanced_mock.js
 python tools/test_predictive_mock.py
 python tools/test_predictive_mock_personalization.py
