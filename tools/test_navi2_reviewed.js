@@ -27,9 +27,21 @@ const before = load(false), after = load(true);
 const data = after.window.MD_DATA, concepts = after.window.MD_CONCEPTS;
 const questions = data.navi2.QUESTIONS;
 const byId = new Map(questions.map(q => [q.id,q]));
-assert.equal(questions.length, 111, 'keep all existing question IDs and learner progress');
-assert.equal(byId.size, 111);
-assert.deepEqual(questions.map(q => q.id).join(','), Array.from({length:111},(_,i)=>i+1).join(','));
+const survivingIds = Array.from({length:111},(_,i)=>i+1).filter(id=>id<31 || id>45);
+assert.equal(questions.length, 96, 'remove exactly the 15 fishing questions');
+assert.equal(byId.size, 96);
+assert.equal(questions.map(q => q.id).join(','), survivingIds.join(','), 'surviving IDs must not be renumbered');
+assert.equal(before.window.MD_DATA.navi2.QUESTIONS.length, 96, 'remove from the stored data, not just a UI filter');
+assert(questions.every(q=>q.category !== '어선전문'));
+for(let id=31;id<=45;id++) {
+  assert.equal(byId.get(id), undefined);
+  assert.equal(concepts.navi2[id], undefined, 'removed question has an orphan concept');
+  assert.equal(data.navi2.IMP[id], undefined, 'removed question has an orphan priority');
+}
+assert.match(data.navi2.meta.description, /^96문제/);
+assert.equal(data.navi2.AUDIT_INFO.matchedQuestions, 96);
+assert.equal(data.navi2.AUDIT_INFO.expectedQuestions, 96);
+assert.equal(data.navi2.AUDIT_INFO.removedCount, 15);
 
 for(const key of Object.keys(before.window.MD_DATA)) {
   if(key !== 'navi2') assert.deepEqual(snapshot(data[key]), snapshot(before.window.MD_DATA[key]), key+' data changed');
@@ -39,8 +51,8 @@ for(const key of Object.keys(before.window.MD_CONCEPTS)) {
 }
 const normal = new Set([5,22,26,28,46,49,51,53,54,60,76,77,83,84,85]);
 for(const q of before.window.MD_DATA.navi2.QUESTIONS) {
-  if((q.id >= 31 && q.id <= 45) || normal.has(q.id)) {
-    assert.deepEqual(snapshot(byId.get(q.id)), snapshot(q), 'excluded/normal question changed: '+q.id);
+  if(normal.has(q.id)) {
+    assert.deepEqual(snapshot(byId.get(q.id)), snapshot(q), 'normal question changed: '+q.id);
     assert.deepEqual(snapshot(concepts.navi2[q.id]), snapshot(before.window.MD_CONCEPTS.navi2[q.id]));
   }
 }
@@ -74,4 +86,4 @@ for(const id of pending) {
 const once = JSON.stringify(after.window);
 vm.runInContext(reviewSource, after);
 assert.equal(JSON.stringify(after.window), once, 'review must be idempotent');
-console.log('navi2 reviewed content: PASS (stable IDs, exclusions, 9 pending, 13 concepts, provenance, repeat-safe)');
+console.log('navi2 reviewed content: PASS (96 stable IDs, 15 fishing removed, 9 pending, 13 concepts, provenance, repeat-safe)');

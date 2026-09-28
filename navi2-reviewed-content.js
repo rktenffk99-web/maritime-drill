@@ -1182,9 +1182,15 @@
     concepts[id] = Object.assign({}, concepts[id] || {}, fields);
   }
   if(data.meta) {
-    data.meta.version = '2.3-oral-reviewed-20260928';
+    data.meta.version = '2.4-oral-merchant-20260928';
+    data.meta.description = data.QUESTIONS.length + '문제 · 면접 기출·최근 복기';
     data.meta.auditDate = '2026-09-28';
-    data.meta.auditScope = '75 official + 21 recall reviewed; fishing IDs 31–45 excluded; 9 questions pending';
+    data.meta.auditScope = '75 official + 21 recall reviewed; fishing IDs 31–45 removed; 9 questions pending';
     data.meta.auditBasis = '2023 KIMFT PDFs + applicable Korean laws and primary maritime sources; recall originals unavailable';
+  }
+  if(data.AUDIT_INFO) {
+    data.AUDIT_INFO.expectedQuestions = data.QUESTIONS.length;
+    data.AUDIT_INFO.removedCount = 15;
+    data.AUDIT_INFO.addedCount = 21;
   }
 })(window);
