@@ -16,8 +16,8 @@ start=re.search(r"window\.startNavigatorPassPlanToday=async function\(\)\{.*?\n 
 assert start, 'today-session starter missing'
 start_body=start.group(0)
 assert "const currentDailyCap=Math.max(40,Math.min(250,Number(plan.dailyCap)||120));" in start_body
-assert 'new Set(checkpoint.queueKeys).size>currentDailyCap' in start_body, 'stale checkpoint must be compared with the current daily cap'
-assert "ppClearPassSessionCheckpoint();" in start_body and 'checkpoint=null;' in start_body, 'oversized stale checkpoint must be discarded before restore'
+assert 'new Set(checkpoint.queueKeys).size>currentDailyCap' in start_body, 'stale checkpoint must be compared with the current daily cap'\nassert 'checkpointExceedsDailyCap' in start_body, 'stale checkpoint guard missing'
+assert "ppClearPassSessionCheckpoint();" in start_body and 'if(!checkpointExceedsDailyCap&&checkpoint' in start_body, 'oversized stale checkpoint must be discarded before restore'
 
 def stale(keys, cap):
     return len(set(keys)) > cap
