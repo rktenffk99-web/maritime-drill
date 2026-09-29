@@ -12,9 +12,10 @@ if MARKER not in text:
     new_save = """    if(!ppSavePlan(plan))return;const daily=ppLoadDaily();delete daily[today];if(!ppSaveDaily(daily))return;
     ppClearPassSessionCheckpoint();
     await renderNavigatorPassPlan(planEntrySubject);"""
-    if old_save not in text:
-        raise SystemExit('pass-plan settings save anchor not found')
-    text=text.replace(old_save,new_save,1)
+    if new_save not in text:
+        if old_save not in text:
+            raise SystemExit('pass-plan settings save anchor not found')
+        text=text.replace(old_save,new_save,1)
 
     old_checkpoint = """      const checkpoint=ppLoadPassSessionCheckpoint();
       if(checkpoint&&Array.isArray(checkpoint.queueKeys)&&checkpoint.queueKeys.length){"""
