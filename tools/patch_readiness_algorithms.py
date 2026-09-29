@@ -167,7 +167,7 @@ balance_fn = r"""  function ppBalanceSingleGradeSubjects(plan,pools,progress,tod
       rotationPolicy:'knowledge-gap-priority-v6-coverage-balanced'};
   }
 """
-pattern = r"  function ppBalanceSingleGradeSubjects\(plan,pools,progress,today,assignment\)\{.*?\n  \}(?=\n  const ppBuildTodayAssignmentBeforeSubjectBalance)"
+pattern = r"  function ppBalanceSingleGradeSubjects\(plan,pools,progress,today,assignment\)\{.*?\n  \}(?=\n+\s*const ppBuildTodayAssignmentBeforeSubjectBalance)"
 text, n = re.subn(pattern, balance_fn, text, count=1, flags=re.S)
 if n != 1:
     raise SystemExit("subject balance function not found")
