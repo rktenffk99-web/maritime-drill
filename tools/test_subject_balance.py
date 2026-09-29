@@ -47,4 +47,6 @@ assert "if(!ppHomeworkClusterSeen(item,progress))return 1;" in text
 assert "if(due&&(!r.mastered||attempts<3||accuracy<0.85))return 2;" in text
 assert "if(due)return 3;" in text
 
-assert 'coverageProtected:balancedNewCount>=requiredNew' in text\nassert 'requiredNewReserved:' in text\nprint('single-grade coverage-preserving subject balance checks: PASS')
+assert 'coverageProtected:balancedNewCount>=requiredNew' in text 
+assert 'requiredNewReserved:' in text 
+print('single-grade coverage-preserving subject balance checks: PASS')
