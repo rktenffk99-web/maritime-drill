@@ -93,4 +93,7 @@ mdLoadAuxScript('balanced-mock.js');
 
 // Add subject/topic result analytics and persist weak-topic reinforcement targets.
 mdLoadAuxScript('predictive-analytics.js');
+
+// Final study-policy corrections and neutral evaluation mock mode.
+mdLoadAuxScript('study-algorithm-fixes.js');
 mdLoadAuxScript('app-navigation.js');
