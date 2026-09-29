@@ -195,8 +195,16 @@
     if(!old)ctx.explanation.appendChild(card);
   }
 
-  let queued=false;
-  function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;render()})}
+  let queued=false,dirty=false;
+  function schedule(){
+    if(queued){dirty=true;return}
+    queued=true;
+    requestAnimationFrame(()=>{
+      queued=false;
+      render();
+      if(dirty){dirty=false;schedule()}
+    });
+  }
   new MutationObserver(schedule).observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['style','class']});
   document.addEventListener('click',schedule,true);
   schedule();
