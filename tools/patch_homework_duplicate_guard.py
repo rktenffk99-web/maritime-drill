@@ -319,7 +319,7 @@ build_fn="""  function ppBuildTodayAssignment(plan,pools,progress,today){ // kno
     const deferredStrongReviewCount=new Set(strongDue.filter(item=>!selectedClusters.has(ppHomeworkClusterId(item))).map(item=>ppHomeworkClusterId(item))).size;
     return {keys:ordered.map(i=>i.key),createdAt:Date.now(),phases,requests,requiredNew,dueOverflow:Math.max(0,dueClusterCount-dueSelected.length),dueCount:dueSelected.length,newCount:newItems.length,newShortfall:Math.max(0,requiredNew-newItems.length),coverageAtRisk,priorityMode:priority.mode,priorityLabel:priority.label,priorityProfile:{navi2:priority.navi2,navi3:priority.navi3},quotaTarget:totalQuotas,gradeCounts:{navi2:{review:reviewByGrade.navi2,new:newByGrade.navi2},navi3:{review:reviewByGrade.navi3,new:newByGrade.navi3}},deferredStrongReviewCount,rotationPolicy:'knowledge-gap-priority-v4-dedupe',reviewSpacingPolicy:'review-spacing-v2',duplicatePolicy:PP_HOMEWORK_DEDUPE_POLICY};
   }"""
-pattern=r"  function ppBuildTodayAssignment\(plan,pools,progress,today\)\{.*?\n  \}(?=\n  (?:const ppBuildTodayAssignmentBeforeSubjectBalance|function ppGetItemByKey))"
+pattern=r"  function ppBuildTodayAssignment\(plan,pools,progress,today\)\{.*?\n  \}(?=\n  (?:// subject-balanced-homework-v1|function ppGetItemByKey))"
 text,n=re.subn(pattern,build_fn,text,count=1,flags=re.S)
 if n!=1: raise SystemExit('ppBuildTodayAssignment replacement failed')
 
