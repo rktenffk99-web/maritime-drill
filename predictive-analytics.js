@@ -39,12 +39,14 @@
     return {subjects:finish(subjects),topics:finish(topics)};
   }
   function reinforcement(rows){
-    const weak=rows.filter(r=>r.wrong+(r.unanswered||0)>0).map(r=>{
-      const total=r.total===undefined?r.attempts:r.total;
-      return {...r,weight:(r.wrong+(r.unanswered||0)+0.5)/(total+1)*Math.sqrt(total)};
+    // Unanswered questions affect mock score only. Adaptive weakness is learned
+    // only from questions the user actually answered incorrectly.
+    const weak=rows.filter(r=>(Number(r.wrong)||0)>0).map(r=>{
+      const attempts=Math.max(1,Number(r.attempts)||0);
+      return {...r,weight:(Number(r.wrong)+0.5)/(attempts+1)*Math.sqrt(attempts)};
     });
     const total=weak.reduce((s,r)=>s+r.weight,0)||1;
-    return weak.map(r=>({...r,targetShare:Math.round(r.weight/total*100)})).sort((a,b)=>b.targetShare-a.targetShare||b.reviewRate-a.reviewRate);
+    return weak.map(r=>({...r,targetShare:Math.round(r.weight/total*100)})).sort((a,b)=>b.targetShare-a.targetShare||b.errorRate-a.errorRate);
   }
   function aggregateProfile(group){
     const totals=new Map();
@@ -93,7 +95,7 @@
     const host=document.createElement('section');host.id='md-predictive-analysis';host.className='card';host.style.cssText='margin-top:14px;border-left:4px solid #7C3AED';
     const subjects=s.subjects.sort((a,b)=>a.score-b.score).map(r=>`<div style="padding:11px;border:1px solid #E2E8F0;border-radius:10px"><div style="display:flex;justify-content:space-between;gap:8px"><b>${r.label}</b><b>${r.score}점</b></div><div style="font-size:11px;color:#64748B;margin:4px 0 7px">${r.total}문제 · 정답 ${r.correct} · 오답 ${r.wrong} · 무응답 ${r.unanswered}<br>푼 문제 중 정답률 ${r.accuracy===null?'—':r.accuracy+'%'} (응답 ${r.attempts}문제)</div>${pctBar(r.score)}</div>`).join('');
     const weak=boost.slice(0,6).map((r,i)=>`<div style="padding:10px 0;border-bottom:1px solid #E2E8F0"><div style="display:flex;justify-content:space-between;gap:10px"><div><b>${i+1}. ${r.label}</b><span style="font-size:10px;color:#64748B;margin-left:5px">${r.subject}</span></div><b>보강 ${r.targetShare}%</b></div><div style="font-size:11px;color:#64748B;margin:4px 0 6px">${r.total}문제 · 오답 ${r.wrong} · 무응답 ${r.unanswered} · 미해결 ${r.reviewRate}%</div>${pctBar(r.targetShare)}</div>`).join('');
-    host.innerHTML=`<div style="font-size:18px;font-weight:900">취약 파트 분석</div><div style="font-size:11px;color:#64748B;margin-top:4px;line-height:1.55">과목별 점수는 무응답을 포함한 전체 문항 기준(100점 만점)입니다. 푼 문제 중 정답률은 별도로 표시합니다. 보강 %는 오답·무응답과 문항 수를 반영한 상대 비중입니다.</div><div style="font-size:13px;font-weight:900;margin:14px 0 8px">과목별 성적 · 전체 문항 기준</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px">${subjects}</div><div style="font-size:13px;font-weight:900;margin:16px 0 5px">다음 학습 보강 비율 · 누적 결과</div>${weak||'<div style="font-size:12px;color:#64748B">누적 결과에서 뚜렷한 취약 파트가 없습니다.</div>'}<div style="font-size:10px;color:#64748B;margin-top:10px;line-height:1.5">저장: 급수·과목별 최근 10회 결과를 누적합니다. 적용: 이후 실전예측 모의 + 오늘 숙제의 신규문제 우선순위. 오답 복습 일정은 기존 회복 로직을 그대로 유지합니다.</div>`;
+    host.innerHTML=`<div style="font-size:18px;font-weight:900">취약 파트 분석</div><div style="font-size:11px;color:#64748B;margin-top:4px;line-height:1.55">과목별 점수는 무응답을 포함한 전체 문항 기준(100점 만점)입니다. 푼 문제 중 정답률은 별도로 표시합니다. 보강 %는 실제로 답한 문항의 오답과 문항 수를 반영한 상대 비중입니다. 무응답은 점수에만 반영됩니다.</div><div style="font-size:13px;font-weight:900;margin:14px 0 8px">과목별 성적 · 전체 문항 기준</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px">${subjects}</div><div style="font-size:13px;font-weight:900;margin:16px 0 5px">다음 학습 보강 비율 · 누적 결과</div>${weak||'<div style="font-size:12px;color:#64748B">누적 결과에서 뚜렷한 취약 파트가 없습니다.</div>'}<div style="font-size:10px;color:#64748B;margin-top:10px;line-height:1.5">저장: 급수·과목별 최근 10회 결과를 누적합니다. 적용: 이후 실전예측 모의 + 오늘 숙제의 신규문제 우선순위. 오답 복습 일정은 기존 회복 로직을 그대로 유지합니다.</div>`;
     const firstCard=app.querySelector('.card');
     if(firstCard&&firstCard.parentNode)firstCard.parentNode.insertBefore(host,firstCard.nextSibling);else app.appendChild(host);
   }
