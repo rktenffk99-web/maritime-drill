@@ -20,7 +20,7 @@ assert body.index("if(answer===null||answer===undefined)return;") < body.index("
 assert "if(!q._evaluationMock&&pastAnswers[i] === q['정답']) removePastWrong" in html
 
 # 2) Subject equalization cannot erase deadline-required unseen work.
-b=re.search(r"function ppBalanceSingleGradeSubjects\(plan,pools,progress,today,assignment\)\{(.*?)\n  \}(?=\n  const ppBuildTodayAssignmentBeforeSubjectBalance)",html,re.S)
+b=re.search(r"function ppBalanceSingleGradeSubjects\(plan,pools,progress,today,assignment\)\{(.*?)\n  \}(?=\n+\s*const ppBuildTodayAssignmentBeforeSubjectBalance)",html,re.S)
 assert b,'coverage-balanced subject function missing'
 bb=b.group(1)
 for needle in [
