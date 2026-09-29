@@ -13,6 +13,40 @@ def replace(old, new):
         raise RuntimeError('Missing balanced-mock anchor: ' + old[:100])
     text = text.replace(old, new)
 
+# A checked-in v5.18 artifact may already include evaluation-mode wrappers.
+# Normalize only those wrappers back to the v5.17 shape; the readiness patch runs later
+# in check_app.sh and restores the evaluation additions.
+text = text.replace(
+    "const meta={version:1,id:pastProgressId,balanced:pastQueue.every(q=>q._balancedMock===true),evaluation:pastQueue.every(q=>q._evaluationMock===true),refs,subjectId:",
+    "const meta={version:1,id:pastProgressId,balanced:pastQueue.every(q=>q._balancedMock===true),refs,subjectId:",
+    1,
+)
+text = text.replace(
+    "\n    if(meta.evaluation)restored.forEach(q=>{q._evaluationMock=true;q._predictiveMock=true});",
+    "",
+    1,
+)
+text = text.replace(
+    "${q._evaluationMock?'평가 ':q._balancedMock?'실전 ':q._predictiveMock?'실전예측 ':pastMode==='mock'?'모의 ':''}",
+    "${q._balancedMock?'실전 ':q._predictiveMock?'실전예측 ':pastMode==='mock'?'모의 ':''}",
+    1,
+)
+text = text.replace(
+    "\n  const isEvaluationMock = pastQueue.some(q=>q&&q._evaluationMock);",
+    "",
+    1,
+)
+text = text.replace(
+    "${isEvaluationMock?'평가용 모의고사 결과':isBalancedMock?'실전 모의고사 결과':isPredictiveMock?'실전예측 모의 결과':",
+    "${isBalancedMock?'실전 모의고사 결과':isPredictiveMock?'실전예측 모의 결과':",
+    1,
+)
+text = text.replace(
+    """onclick="${isEvaluationMock?'startNavigatorEvaluationMock':isBalancedMock?'startNavigatorPassPlanMock':'startNavigatorPredictiveMock'}('${predictiveGrade}')">${isEvaluationMock?'새 평가 모의':isBalancedMock?'새 실전 모의':'새 예측 모의'}</button>""",
+    """onclick="${isBalancedMock?'startNavigatorPassPlanMock':'startNavigatorPredictiveMock'}('${predictiveGrade}')">${isBalancedMock?'새 실전 모의':'새 예측 모의'}</button>""",
+    1,
+)
+
 start = text.index('  window.startNavigatorPassPlanMock=async function(gradeId){')
 end = text.index('  function ppChoiceOrder(q){', start)
 text = text[:start] + '''  window.startNavigatorPassPlanMock=async function(gradeId){

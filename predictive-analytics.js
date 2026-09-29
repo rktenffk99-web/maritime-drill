@@ -2,6 +2,7 @@
 (function(global){
   'use strict';
   const PROFILE_KEY='md_weak_topic_profile_v1';
+  const EVALUATION_SCORE_KEY='md_evaluation_score_history_v1';
 
   function safeText(v){return String(v==null?'':v)}
   function subjectOf(q){
@@ -39,12 +40,15 @@
     return {subjects:finish(subjects),topics:finish(topics)};
   }
   function reinforcement(rows){
-    const weak=rows.filter(r=>r.wrong+(r.unanswered||0)>0).map(r=>{
-      const total=r.total===undefined?r.attempts:r.total;
-      return {...r,weight:(r.wrong+(r.unanswered||0)+0.5)/(total+1)*Math.sqrt(total)};
+    // Unanswered questions affect the mock score, but they are not evidence of a weak topic.
+    // Adaptive reinforcement uses only questions that were actually answered incorrectly.
+    const weak=rows.filter(r=>(Number(r.wrong)||0)>0).map(r=>{
+      const attempts=Math.max(1,Number(r.attempts)||0);
+      return {...r,weight:(Number(r.wrong)+0.5)/(attempts+1)*Math.sqrt(attempts)};
     });
     const total=weak.reduce((s,r)=>s+r.weight,0)||1;
-    return weak.map(r=>({...r,targetShare:Math.round(r.weight/total*100)})).sort((a,b)=>b.targetShare-a.targetShare||b.reviewRate-a.reviewRate);
+    return weak.map(r=>({...r,reviewRate:r.errorRate,targetShare:Math.round(r.weight/total*100)}))
+      .sort((a,b)=>b.targetShare-a.targetShare||b.errorRate-a.errorRate);
   }
   function aggregateProfile(group){
     const totals=new Map();
@@ -82,6 +86,39 @@
     }catch(e){console.warn('취약 분석 저장 실패',e)}
     return group.topics;
   }
+  function loadEvaluationScores(){
+    try{
+      const v=JSON.parse(localStorage.getItem(EVALUATION_SCORE_KEY)||'{}');
+      return v&&typeof v==='object'&&!Array.isArray(v)?v:{};
+    }catch(e){return {}}
+  }
+  function saveEvaluationScore(grade,row){
+    const store=loadEvaluationScores(),list=Array.isArray(store[grade])?store[grade]:[];
+    const id=String(row&&row.id||'');
+    if(id&&list.some(x=>String(x&&x.id||'')===id))return list;
+    store[grade]=[row,...list].slice(0,10);
+    try{
+      const value=JSON.stringify(store);
+      if(typeof safeStorageSet==='function')safeStorageSet(EVALUATION_SCORE_KEY,value,'평가용 모의 점수');
+      else localStorage.setItem(EVALUATION_SCORE_KEY,value);
+    }catch(e){console.warn('평가용 모의 점수 저장 실패',e)}
+    return store[grade];
+  }
+  function evaluationSummary(queue,answers){
+    const rows=Array.isArray(queue)?queue:[],total=rows.length;
+    const answered=rows.reduce((n,q,i)=>n+((answers&&answers[i]!==null&&answers[i]!==undefined)?1:0),0);
+    const correct=rows.reduce((n,q,i)=>n+((answers&&answers[i]===q['정답'])?1:0),0);
+    const score=total?Math.round(correct/total*100):0;
+    const first=rows.find(q=>q&&q._planKey),grade=String(first&&first._planGrade||first&&first._planKey||'navi2').split('|')[0];
+    const complete=total>0&&answered===total;
+    let history=loadEvaluationScores()[grade]||[];
+    if(complete){
+      const id=String((typeof pastResultId!=='undefined'&&pastResultId)||((typeof pastStartedAt!=='undefined'&&pastStartedAt)||Date.now()));
+      history=saveEvaluationScore(grade,{id,at:new Date().toISOString(),score,correct,total});
+    }
+    const recent=history.slice(0,3),avg=recent.length?Math.round(recent.reduce((s,r)=>s+(Number(r.score)||0),0)/recent.length*10)/10:null;
+    return {grade,total,answered,correct,score,complete,recentCount:recent.length,recentAverage:avg};
+  }
   function pctBar(value){return `<div style="height:7px;background:#E2E8F0;border-radius:999px;overflow:hidden"><div style="height:100%;width:${Math.max(0,Math.min(100,value))}%;background:#7C3AED"></div></div>`}
   function render(){
     const app=document.getElementById('app');
@@ -89,15 +126,18 @@
     if(document.getElementById('md-predictive-analysis'))return;
     if(typeof pastQueue==='undefined'||typeof pastAnswers==='undefined')return;
     const s=stats(pastQueue,pastAnswers);if(!s.subjects.length)return;
+    const isEvaluation=(pastQueue||[]).some(q=>q&&q._evaluationMock);
     const boost=Object.values(saveProfile(s.topics)||{}).sort((a,b)=>b.targetShare-a.targetShare);
+    const evaluation=isEvaluation?evaluationSummary(pastQueue,pastAnswers):null;
     const host=document.createElement('section');host.id='md-predictive-analysis';host.className='card';host.style.cssText='margin-top:14px;border-left:4px solid #7C3AED';
     const subjects=s.subjects.sort((a,b)=>a.score-b.score).map(r=>`<div style="padding:11px;border:1px solid #E2E8F0;border-radius:10px"><div style="display:flex;justify-content:space-between;gap:8px"><b>${r.label}</b><b>${r.score}점</b></div><div style="font-size:11px;color:#64748B;margin:4px 0 7px">${r.total}문제 · 정답 ${r.correct} · 오답 ${r.wrong} · 무응답 ${r.unanswered}<br>푼 문제 중 정답률 ${r.accuracy===null?'—':r.accuracy+'%'} (응답 ${r.attempts}문제)</div>${pctBar(r.score)}</div>`).join('');
-    const weak=boost.slice(0,6).map((r,i)=>`<div style="padding:10px 0;border-bottom:1px solid #E2E8F0"><div style="display:flex;justify-content:space-between;gap:10px"><div><b>${i+1}. ${r.label}</b><span style="font-size:10px;color:#64748B;margin-left:5px">${r.subject}</span></div><b>보강 ${r.targetShare}%</b></div><div style="font-size:11px;color:#64748B;margin:4px 0 6px">${r.total}문제 · 오답 ${r.wrong} · 무응답 ${r.unanswered} · 미해결 ${r.reviewRate}%</div>${pctBar(r.targetShare)}</div>`).join('');
-    host.innerHTML=`<div style="font-size:18px;font-weight:900">취약 파트 분석</div><div style="font-size:11px;color:#64748B;margin-top:4px;line-height:1.55">과목별 점수는 무응답을 포함한 전체 문항 기준(100점 만점)입니다. 푼 문제 중 정답률은 별도로 표시합니다. 보강 %는 오답·무응답과 문항 수를 반영한 상대 비중입니다.</div><div style="font-size:13px;font-weight:900;margin:14px 0 8px">과목별 성적 · 전체 문항 기준</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px">${subjects}</div><div style="font-size:13px;font-weight:900;margin:16px 0 5px">다음 학습 보강 비율 · 누적 결과</div>${weak||'<div style="font-size:12px;color:#64748B">누적 결과에서 뚜렷한 취약 파트가 없습니다.</div>'}<div style="font-size:10px;color:#64748B;margin-top:10px;line-height:1.5">저장: 급수·과목별 최근 10회 결과를 누적합니다. 적용: 이후 실전예측 모의 + 오늘 숙제의 신규문제 우선순위. 오답 복습 일정은 기존 회복 로직을 그대로 유지합니다.</div>`;
+    const weak=boost.slice(0,6).map((r,i)=>`<div style="padding:10px 0;border-bottom:1px solid #E2E8F0"><div style="display:flex;justify-content:space-between;gap:10px"><div><b>${i+1}. ${r.label}</b><span style="font-size:10px;color:#64748B;margin-left:5px">${r.subject}</span></div><b>보강 ${r.targetShare}%</b></div><div style="font-size:11px;color:#64748B;margin:4px 0 6px">${r.attempts}문제 응답 · 오답 ${r.wrong} · 오답률 ${r.errorRate}%</div>${pctBar(r.targetShare)}</div>`).join('');
+    const evaluationBlock=evaluation?`<div style="font-size:18px;font-weight:900">평가용 모의고사 분석</div><div style="font-size:11px;color:#64748B;margin-top:4px;line-height:1.55">개인 취약도·학습 진도에 영향을 주지 않는 점수 측정용 결과입니다. 미응답은 현재 점수에는 0점으로 반영되지만 완료한 모의만 최근 평균에 저장합니다.</div><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px"><div style="padding:11px;border-radius:9px;background:#F8FAFC"><b>이번 점수 ${evaluation.score}%</b><div style="font-size:10px;color:#64748B">${evaluation.correct}/${evaluation.total} · 응답 ${evaluation.answered}/${evaluation.total}</div></div><div style="padding:11px;border-radius:9px;background:#F8FAFC"><b>최근 ${evaluation.recentCount}회 평균 ${evaluation.recentAverage===null?'—':evaluation.recentAverage+'%'}</b><div style="font-size:10px;color:#64748B">${evaluation.complete?'이번 기록 포함':'미완료라 이번 기록 제외'}</div></div></div>`:'';
+    host.innerHTML=isEvaluation?`${evaluationBlock}<div style="font-size:13px;font-weight:900;margin:14px 0 8px">과목별 성적 · 전체 문항 기준</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px">${subjects}</div>`:`<div style="font-size:18px;font-weight:900">취약 파트 분석</div><div style="font-size:11px;color:#64748B;margin-top:4px;line-height:1.55">과목별 점수는 무응답을 포함한 전체 문항 기준(100점 만점)입니다. 푼 문제 중 정답률은 별도로 표시합니다. 보강 %는 실제로 답한 문항의 오답만 반영합니다. 무응답은 점수에는 반영되지만 취약도에는 반영하지 않습니다.</div><div style="font-size:13px;font-weight:900;margin:14px 0 8px">과목별 성적 · 전체 문항 기준</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px">${subjects}</div><div style="font-size:13px;font-weight:900;margin:16px 0 5px">다음 학습 보강 비율 · 누적 결과</div>${weak||'<div style="font-size:12px;color:#64748B">누적 결과에서 뚜렷한 취약 파트가 없습니다.</div>'}<div style="font-size:10px;color:#64748B;margin-top:10px;line-height:1.5">저장: 급수·과목별 최근 10회 결과를 누적합니다. 적용: 이후 실전예측 모의 + 오늘 숙제의 신규문제 우선순위. 오답 복습 일정은 기존 회복 로직을 그대로 유지합니다.</div>`;
     const firstCard=app.querySelector('.card');
     if(firstCard&&firstCard.parentNode)firstCard.parentNode.insertBefore(host,firstCard.nextSibling);else app.appendChild(host);
   }
-  global.__mdWeakTopicAnalytics={subjectOf,topicOf,stats,reinforcement,aggregateProfile};
+  global.__mdWeakTopicAnalytics={subjectOf,topicOf,stats,reinforcement,aggregateProfile,evaluationSummary,loadEvaluationScores};
   new MutationObserver(()=>requestAnimationFrame(render)).observe(document.documentElement,{childList:true,subtree:true});
   document.addEventListener('DOMContentLoaded',render,{once:true});
   setTimeout(render,0);
