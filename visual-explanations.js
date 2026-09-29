@@ -147,18 +147,34 @@
 
   function detect(question,answer){
     const a=String(answer||''),q=String(question||'');
-    const source=a||q;
-    if(/조종불능|not\s*under\s*command/i.test(source))return diagrams.nuc();
-    if(/운전제한|조종능력.*제한|restricted.*ability.*manoeuv|restricted.*ability.*maneuv/i.test(source))return diagrams.ram();
-    if(/흘수제약|constrained.*draught|constrained.*draft/i.test(source))return diagrams.cbd();
-    if(/좌초|aground/i.test(source))return diagrams.aground();
-    if(/정박선|정박 중|at\s*anchor/i.test(source))return diagrams.anchor();
-    if(/트롤|trawl|그물을\s*끌/i.test(source))return diagrams.trawling();
-    if(/어로|어선|fishing/i.test(source))return diagrams.fishing();
-    if(/200\s*미터.*초과|200\s*m.*초과|tow.*200/i.test(source))return diagrams.tow200();
-    if(/범선.*기관|기관.*범선|sailing.*power|sailing.*engine/i.test(source))return diagrams.sailMotor();
-    if(/기뢰.*제거|mine\s*clear/i.test(source))return diagrams.mine();
-    if(/준설|수중작업|dredg/i.test(source))return diagrams.dredging();
+
+    // Prefer an explicit concept named in the correct answer. This avoids a stem
+    // mentioning several vessel types from overriding the actual correct choice.
+    if(/조종불능|not\s*under\s*command/i.test(a))return diagrams.nuc();
+    if(/운전제한|조종능력.*제한|restricted.*ability.*manoeuv|restricted.*ability.*maneuv/i.test(a))return diagrams.ram();
+    if(/흘수제약|constrained.*draught|constrained.*draft/i.test(a))return diagrams.cbd();
+    if(/좌초|aground/i.test(a))return diagrams.aground();
+    if(/정박선|정박 중|at\s*anchor/i.test(a))return diagrams.anchor();
+    if(/트롤|trawl|그물을\s*끌/i.test(a))return diagrams.trawling();
+    if(/어로|어선|fishing/i.test(a))return diagrams.fishing();
+    if(/200\s*미터.*초과|200\s*m.*초과|tow.*200/i.test(a))return diagrams.tow200();
+    if(/범선.*기관|기관.*범선|sailing.*power|sailing.*engine/i.test(a))return diagrams.sailMotor();
+    if(/기뢰.*제거|mine\s*clear/i.test(a))return diagrams.mine();
+    if(/준설|수중작업|dredg/i.test(a))return diagrams.dredging();
+
+    // If the answer is a shape/action rather than a vessel name, infer the visual
+    // from the question stem. This covers "200 m 초과 → 마름모" style questions.
+    if(/조종불능|not\s*under\s*command/i.test(q))return diagrams.nuc();
+    if(/운전제한|조종능력.*제한|restricted.*ability.*manoeuv|restricted.*ability.*maneuv/i.test(q))return diagrams.ram();
+    if(/흘수제약|constrained.*draught|constrained.*draft/i.test(q))return diagrams.cbd();
+    if(/좌초|aground/i.test(q))return diagrams.aground();
+    if(/정박선|정박 중|at\s*anchor/i.test(q))return diagrams.anchor();
+    if(/트롤|trawl|그물을\s*끌/i.test(q))return diagrams.trawling();
+    if(/어로|어선|fishing/i.test(q))return diagrams.fishing();
+    if(/200\s*미터.*초과|200\s*m.*초과|tow.*200/i.test(q))return diagrams.tow200();
+    if(/범선.*기관|기관.*범선|sailing.*power|sailing.*engine/i.test(q))return diagrams.sailMotor();
+    if(/기뢰.*제거|mine\s*clear/i.test(q))return diagrams.mine();
+    if(/준설|수중작업|dredg/i.test(q))return diagrams.dredging();
     if(/정면.*마주|마주치는\s*상태|head[- ]?on/i.test(q))return diagrams.headOn();
     if(/횡단\s*상태|crossing\s*situation/i.test(q))return diagrams.crossing();
     if(/추월\s*상태|overtak/i.test(q))return diagrams.overtaking();
