@@ -5,7 +5,7 @@ text=Path('index.html').read_text(encoding='utf-8-sig')
 for needle in [
     '// homework-near-duplicate-v1:start',
     "const PP_HOMEWORK_DEDUPE_POLICY=\"near-duplicate-v1\"",
-    "assignmentPolicy:'knowledge-gap-priority-v5-subject-balanced'",
+    "assignmentPolicy:'knowledge-gap-priority-v6-coverage-balanced'",
     "rotationPolicy:'knowledge-gap-priority-v4-dedupe'",
     'function ppHomeworkUniqueUnseen(pool,progress)',
     'ppHomeworkClusterSeen(item,progress)',
