@@ -126,18 +126,26 @@ if n!=1:
     raise SystemExit('assignment policy anchor missing')
 
 if "subjectBalancePolicy:'even-subject-v1',date:ppDateKey(new Date())" not in text:
-    old="version:2,dedupePolicy:PP_HOMEWORK_DEDUPE_POLICY,date:ppDateKey(new Date()),savedAt:new Date().toISOString(),"
-    new="version:2,dedupePolicy:PP_HOMEWORK_DEDUPE_POLICY,subjectBalancePolicy:'even-subject-v1',date:ppDateKey(new Date()),savedAt:new Date().toISOString(),"
-    if old not in text:
-        raise SystemExit('checkpoint save policy anchor missing')
-    text=text.replace(old,new,1)
+    upgraded="subjectBalancePolicy:'coverage-even-v2',date:ppDateKey(new Date())"
+    if upgraded in text:
+        text=text.replace(upgraded,"subjectBalancePolicy:'even-subject-v1',date:ppDateKey(new Date())",1)
+    else:
+        old="version:2,dedupePolicy:PP_HOMEWORK_DEDUPE_POLICY,date:ppDateKey(new Date()),savedAt:new Date().toISOString(),"
+        new="version:2,dedupePolicy:PP_HOMEWORK_DEDUPE_POLICY,subjectBalancePolicy:'even-subject-v1',date:ppDateKey(new Date()),savedAt:new Date().toISOString(),"
+        if old not in text:
+            raise SystemExit('checkpoint save policy anchor missing')
+        text=text.replace(old,new,1)
 
 if "cp.subjectBalancePolicy!=='even-subject-v1'" not in text:
-    old="cp.dedupePolicy!==PP_HOMEWORK_DEDUPE_POLICY||cp.date!==ppDateKey(new Date())"
-    new="cp.dedupePolicy!==PP_HOMEWORK_DEDUPE_POLICY||cp.subjectBalancePolicy!=='even-subject-v1'||cp.date!==ppDateKey(new Date())"
-    if old not in text:
-        raise SystemExit('checkpoint load policy anchor missing')
-    text=text.replace(old,new,1)
+    upgraded="cp.subjectBalancePolicy!=='coverage-even-v2'"
+    if upgraded in text:
+        text=text.replace(upgraded,"cp.subjectBalancePolicy!=='even-subject-v1'",1)
+    else:
+        old="cp.dedupePolicy!==PP_HOMEWORK_DEDUPE_POLICY||cp.date!==ppDateKey(new Date())"
+        new="cp.dedupePolicy!==PP_HOMEWORK_DEDUPE_POLICY||cp.subjectBalancePolicy!=='even-subject-v1'||cp.date!==ppDateKey(new Date())"
+        if old not in text:
+            raise SystemExit('checkpoint load policy anchor missing')
+        text=text.replace(old,new,1)
 
 old_copy="배분 기준: ${escapeHtml(assignment.priorityLabel||'자동 추천 · 시험일 역산')} · ${assignment.priorityMode==='auto'?'필수 신규량 우선':'설정 비율 우선'}"
 new_copy=old_copy+" · ${assignment.subjectBalancePolicy?'단일 급수 과목 균등':''}"
