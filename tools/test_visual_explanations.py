@@ -28,8 +28,8 @@ for token in [
 ]:
     assert token in visual, f'missing visual rule: {token}'
 
-assert "visual_tag='<script src="visual-explanations.js"></script>'" in patch
-assert "convenience_tag='<script src="convenience-controls.js"></script>'" in patch
+assert 'visual_tag=\'<script src="visual-explanations.js"></script>\'' in patch
+assert 'convenience_tag=\'<script src="convenience-controls.js"></script>\'' in patch
 assert "visual_tag+'\\n'+convenience_tag" in patch
 
 print('visual explanations regression: PASS')
