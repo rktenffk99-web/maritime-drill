@@ -121,8 +121,12 @@ replace("r.attempts=(r.attempts||0)+1;r.lastDate=today;r.lastOutcome=correct?con
 replace("if(!(rec&&rec.lastDate===today&&Number(rec.attempts||0)>0))break;", "if(!(rec&&rec.lastPracticeMode!=='predictive-mock'&&rec.lastDate===today&&Number(rec.attempts||0)>0))break;")
 
 # Correct mock responses count as practice but do not imply mastery.
-replace("      if(!q||!q._predictiveMock||!q._planKey)return;\n      if(answers&&answers[i]===q['정답'])return;\n      const r=ppProgressFor(progress,q._planKey);",
-"      if(!q||!q._predictiveMock||q._predictiveReview||!q._planKey)return;\n      const r=ppProgressFor(progress,q._planKey);window.__mdLearningIntegrity.initializeCounters(r);r.lastPracticeMode='predictive-mock';\n      if(answers&&answers[i]===q['정답']){window.__mdLearningIntegrity.appendOutcome(r,'correct',false);return;}")
+_predictive_old="      if(!q||!q._predictiveMock||!q._planKey)return;\n      if(answers&&answers[i]===q['정답'])return;\n      const r=ppProgressFor(progress,q._planKey);"
+_predictive_new="      if(!q||!q._predictiveMock||q._predictiveReview||!q._planKey)return;\n      const r=ppProgressFor(progress,q._planKey);window.__mdLearningIntegrity.initializeCounters(r);r.lastPracticeMode='predictive-mock';\n      if(answers&&answers[i]===q['정답']){window.__mdLearningIntegrity.appendOutcome(r,'correct',false);return;}"
+if _predictive_old in text:
+    text=text.replace(_predictive_old,_predictive_new,1)
+elif "mock-unanswered-neutral-v1" not in text and _predictive_new not in text:
+    raise RuntimeError('missing integrity predictive-mock anchor')
 replace("r.todayWrongReviewDate=null;r.dueDate=today;\n    });", "r.todayWrongReviewDate=null;r.dueDate=today;\n      window.__mdLearningIntegrity.appendOutcome(r,'wrong',false);\n    });")
 replace("const complete=rows.length>0&&Array.isArray(answers)","const complete=rows.length>0&&!rows.some(q=>q&&q._predictiveReview)&&Array.isArray(answers)")
 
