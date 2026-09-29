@@ -22,6 +22,7 @@ jobs:
       - name: Exercise real browser study and result flows
         run: |
           python tools/browser_smoke.py
+          python tools/browser_visual_explanations.py
           python tools/browser_integrity.py
           python tools/browser_daily_storage.py
           python tools/browser_drive_auth.py
