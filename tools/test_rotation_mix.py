@@ -3,7 +3,7 @@ import re
 
 text=Path('index.html').read_text(encoding='utf-8-sig')
 
-assert "assignmentPolicy:'knowledge-gap-priority-v4-dedupe'" in text, 'knowledge-gap assignment policy missing'
+assert "assignmentPolicy:'knowledge-gap-priority-v5-subject-balanced'" in text, 'knowledge-gap assignment policy missing'
 assert 'knowledge-gap-priority-v4-dedupe' in text, 'knowledge-gap marker missing'
 assert 'const current2026Unseen=' in text
 assert "label:'2단계 · 전범위 1회독 보장 + 최근 5개년 전체 + 취약 복습'" in text
@@ -18,7 +18,7 @@ assert "PLAN_GRADES.some(g=>(requests[g]||0)>(newByGrade[g]||0))" in text
 assert 'const ordered=[];let ri=0,ni=0;' in text
 assert "rotationPolicy:'knowledge-gap-priority-v4-dedupe'" in text
 
-m=re.search(r"function ppBuildTodayAssignment\(plan,pools,progress,today\)\{.*?\n  \}(?=\n  function ppGetItemByKey)",text,re.S)
+m=re.search(r"function ppBuildTodayAssignment\(plan,pools,progress,today\)\{.*?\n  \}(?=\n  // subject-balanced-homework-v1|\n  function ppGetItemByKey)",text,re.S)
 assert m, 'assignment builder missing'
 body=m.group(0)
 assert body.find('const phases=') < body.find('const due=')

@@ -1,0 +1,50 @@
+from pathlib import Path
+import re
+
+text=Path('index.html').read_text(encoding='utf-8-sig')
+POLICY='knowledge-gap-priority-v5-subject-balanced'
+
+for needle in [
+    '// subject-balanced-homework-v1',
+    "const PP_SUBJECT_BALANCE_POLICY='even-subject-v1'",
+    'function ppEvenSubjectQuotas(subjects,total,today)',
+    'function ppBalanceSingleGradeSubjects(plan,pools,progress,today,assignment)',
+    'activeGrades.length!==1',
+    'const target=Math.min(cap,originalKeys.length)',
+    'const quotas=ppEvenSubjectQuotas(subjects,target,today)',
+    'subjectQuotaTarget:quotas',
+    'subjectCounts',
+    'const balancedNewCount=',
+    'const balancedReviewCount=',
+    'gradeCounts[grade]={review:balancedReviewCount,new:balancedNewCount}',
+    'subjectBalancePolicy:PP_SUBJECT_BALANCE_POLICY',
+    "assignmentPolicy:'knowledge-gap-priority-v5-subject-balanced'",
+    "subjectBalancePolicy:'even-subject-v1'",
+    "cp.subjectBalancePolicy!=='even-subject-v1'",
+]:
+    assert needle in text, f'missing subject-balance marker: {needle}'
+
+def quota(subjects,total,today='2026-09-29'):
+    subjects=list(dict.fromkeys(subjects))
+    base=total//len(subjects);rest=total%len(subjects)
+    out={s:base for s in subjects}
+    seed=sum(ord(c) for c in today)%len(subjects)
+    for i in range(rest):
+        out[subjects[(seed+i)%len(subjects)]]+=1
+    return out
+
+subjects=['영어','항해','법규','운용','상선전문']
+q70=quota(subjects,70)
+assert list(q70.values())==[14,14,14,14,14], q70
+for total in [40,41,69,71,73,120,121,250]:
+    q=quota(subjects,total)
+    assert sum(q.values())==total
+    assert max(q.values())-min(q.values())<=1, (total,q)
+
+assert 'for(const subject of order)' in text, 'subjects are not interleaved in final queue'
+assert "if(due&&weak)return 0;" in text
+assert "if(!ppHomeworkClusterSeen(item,progress))return 1;" in text
+assert "if(due&&(!r.mastered||attempts<3||accuracy<0.85))return 2;" in text
+assert "if(due)return 3;" in text
+
+print('single-grade subject balance checks: PASS')

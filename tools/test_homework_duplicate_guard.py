@@ -5,7 +5,7 @@ text=Path('index.html').read_text(encoding='utf-8-sig')
 for needle in [
     '// homework-near-duplicate-v1:start',
     "const PP_HOMEWORK_DEDUPE_POLICY=\"near-duplicate-v1\"",
-    "assignmentPolicy:'knowledge-gap-priority-v4-dedupe'",
+    "assignmentPolicy:'knowledge-gap-priority-v5-subject-balanced'",
     "rotationPolicy:'knowledge-gap-priority-v4-dedupe'",
     'function ppHomeworkUniqueUnseen(pool,progress)',
     'ppHomeworkClusterSeen(item,progress)',
@@ -31,7 +31,7 @@ for a,b in [
 ]:
     assert cluster.get(a) and cluster.get(a)==cluster.get(b), f'known duplicate pair not clustered: {a} / {b}'
 
-body=re.search(r'function ppBuildTodayAssignment\(plan,pools,progress,today\)\{(.*?)\n  \}(?=\n  function ppGetItemByKey)',text,re.S)
+body=re.search(r'function ppBuildTodayAssignment\(plan,pools,progress,today\)\{(.*?)\n  \}(?=\n  // subject-balanced-homework-v1|\n  function ppGetItemByKey)',text,re.S)
 assert body,'assignment builder missing'
 b=body.group(1)
 assert 'let picked=0;' in b and 'if(picked>=quotas[g])break' in b

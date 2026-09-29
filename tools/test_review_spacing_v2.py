@@ -15,7 +15,7 @@ assert "if(attempts>=4&&accuracy>=0.90" in body and "interval=14" in body, 'high
 assert "else if(attempts>=3&&accuracy>=0.80)interval=7;" in body, 'medium mastered spacing missing'
 
 # Selection order must keep strong mastered reviews at the back of the queue policy.
-b=re.search(r"function ppBuildTodayAssignment\(plan,pools,progress,today\)\{(.*?)\n  \}(?=\n  function ppGetItemByKey)",text,re.S)
+b=re.search(r"function ppBuildTodayAssignment\(plan,pools,progress,today\)\{(.*?)\n  \}(?=\n  // subject-balanced-homework-v1|\n  function ppGetItemByKey)",text,re.S)
 assert b, 'assignment builder missing'
 bb=b.group(1)
 assert 'const strongDue=due.filter(item=>reviewTier(item)===0);' in bb

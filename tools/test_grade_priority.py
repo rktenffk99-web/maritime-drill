@@ -20,7 +20,7 @@ assert 'delete daily[today];ppSaveDaily(daily)' in text
 assert '하루 전체 숙제를 선택 비율로 배분' in text
 assert '틀렸거나 불확실한 문제 → 아직 안 본 신규 문제 → 일반 복습 → 정답률 높은 숙달 문제' in text
 
-m=re.search(r"function ppBuildTodayAssignment\(plan,pools,progress,today\)\{.*?\n  \}(?=\n  function ppGetItemByKey)",text,re.S)
+m=re.search(r"function ppBuildTodayAssignment\(plan,pools,progress,today\)\{.*?\n  \}(?=\n  // subject-balanced-homework-v1|\n  function ppGetItemByKey)",text,re.S)
 assert m, 'assignment builder missing'
 body=m.group(0)
 assert 'knowledge-gap-priority-v4-dedupe' in body
@@ -42,7 +42,7 @@ assert body.index('takeReviewList(weakDue,g,target,used);',manual_start) < body.
 assert 'const deferredStrongReviewCount=' in body
 assert 'deferredStrongReviewCount,rotationPolicy:' in body
 assert "rotationPolicy:'knowledge-gap-priority-v4-dedupe'" in body
-assert "assignmentPolicy:'knowledge-gap-priority-v4-dedupe'" in text
+assert "assignmentPolicy:'knowledge-gap-priority-v5-subject-balanced'" in text
 
 # High-accuracy mastered questions get longer intervals.
 commit=re.search(r"function ppCommitOutcome\(q,answer,confidence\)\{.*?\n  \}",text,re.S)

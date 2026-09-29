@@ -24,6 +24,7 @@ python tools/patch_learning_priority.py
 python tools/patch_learning_priority_weak_drill_compat.py
 python tools/patch_review_spacing_v2.py
 python tools/patch_homework_duplicate_guard.py
+python tools/patch_subject_balance.py
 python tools/patch_audit_safety.py
 python tools/patch_learning_integrity.py
 python tools/patch_daily_storage.py
@@ -53,6 +54,7 @@ python tools/test_grade_priority.py
 python tools/test_review_spacing_v2.py
 python tools/audit_english_explanations.py
 python tools/test_homework_duplicate_guard.py
+python tools/test_subject_balance.py
 node tools/test_learning_integrity.js
 node tools/test_daily_storage.js
 python tools/test_daily_cap_checkpoint.py
