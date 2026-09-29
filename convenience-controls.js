@@ -370,3 +370,22 @@
   readReports();
   enhance();
 })();
+
+
+;/* md-visual-explanations-loader-v1 */
+(function(){
+  'use strict';
+  if(window.__mdVisualExplanationsV1||window.__mdVisualExplanationsLoaderV1)return;
+  window.__mdVisualExplanationsLoaderV1=true;
+  try{
+    if(document.getElementById('md-visual-explanations-script'))return;
+    const current=document.currentScript;
+    const base=current&&current.src?current.src:window.location.href;
+    const script=document.createElement('script');
+    script.id='md-visual-explanations-script';
+    script.src=new URL('visual-explanations.js',base).href;
+    script.async=false;
+    script.onerror=()=>{window.__mdVisualExplanationsLoaderV1=false};
+    document.head.appendChild(script);
+  }catch(e){window.__mdVisualExplanationsLoaderV1=false}
+})();
