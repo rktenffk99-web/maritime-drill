@@ -71,20 +71,18 @@ try:
 
         set_case(
             page,
-            '예인의 길이가 200미터를 초과하는 경우 표시해야 하는 형상물은?',
-            ['㉠ 둥근꼴','㉡ 마름모꼴','㉢ 원통형','㉣ 원뿔형'],
+            '주간에 공-마름모-공을 수직으로 표시하는 선박은?',
+            ['㉠ 조종불능선','㉡ 운전제한선','㉢ 흘수제약선','㉣ 정박선'],
             '오답 · 정답 ㉡',
-            '200미터를 초과하면 마름모꼴을 표시한다.'
+            '운전제한선은 공-마름모-공을 수직으로 표시한다.'
         )
-        # Real question changes are initiated by a click/keyboard action; trigger the
-        # same document-level refresh hook after replacing the synthetic fixture.
         page.evaluate("document.dispatchEvent(new MouseEvent('click',{bubbles:true}))")
         page.wait_for_function("""()=>{
           const el=document.getElementById('md-visual-explanation');
-          return el && el.textContent.includes('예인 길이 200m 초과');
+          return el && el.textContent.includes('운전제한선 (RAM)');
         }""")
-        assert '마름모' in page.locator('#md-visual-explanation').inner_text()
-        report['cases'].append('200m towing example maps to diamond SVG')
+        assert '공-마름모-공' in page.locator('#md-visual-explanation').inner_text()
+        report['cases'].append('RAM example renders a second vessel-state SVG')
 
         assert not report['page_errors'],report['page_errors']
         report['status']='PASS'
