@@ -19,8 +19,8 @@ for needle in [
     'gradeCounts[grade]={review:balancedReviewCount,new:balancedNewCount}',
     'subjectBalancePolicy:PP_SUBJECT_BALANCE_POLICY',
     "assignmentPolicy:'knowledge-gap-priority-v5-subject-balanced'",
-    'subjectBalancePolicy:PP_SUBJECT_BALANCE_POLICY',
-    'cp.subjectBalancePolicy!==PP_SUBJECT_BALANCE_POLICY',
+    "subjectBalancePolicy:'even-subject-v1'",
+    "cp.subjectBalancePolicy!=='even-subject-v1'",
 ]:
     assert needle in text, f'missing subject-balance marker: {needle}'
 
