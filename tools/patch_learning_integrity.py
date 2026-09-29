@@ -74,9 +74,9 @@ section('  function ppLoadWeakTopicProfile(', '  function ppPredictivePersonalMu
   function ppWeakTopicBoost(item,profile){
     const grade=item&&(item.gradeId||item._planGrade||String(item.key||item._planKey||'').split('|')[0]);
     const p=profile||ppLoadWeakTopicProfile(grade),key=`${item&&item.subject||'기타'}|${ppWeakTopicId(item)}`,row=p[key];
-    if(!row||!(Number(row.wrong)+(Number(row.unanswered)||0)>0))return 1;
+    if(!row||!(Number(row.wrong)>0))return 1;
     const share=Math.max(0,Math.min(100,Number(row.targetShare)||0));
-    const err=Math.max(0,Math.min(100,Number(row.reviewRate===undefined?row.errorRate:row.reviewRate)||0));
+    const err=Math.max(0,Math.min(100,Number(row.errorRate)||0));
     return Math.min(1.75,1+share/180+err/500);
   }
 ''')
