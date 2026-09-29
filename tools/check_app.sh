@@ -27,6 +27,7 @@ python tools/patch_homework_duplicate_guard.py
 python tools/patch_audit_safety.py
 python tools/patch_learning_integrity.py
 python tools/patch_daily_storage.py
+python tools/patch_daily_cap_checkpoint.py
 python tools/patch_drive_auth.py
 python tools/patch_menu_cleanup.py
 python tools/patch_answer_flow.py
@@ -54,6 +55,7 @@ python tools/audit_english_explanations.py
 python tools/test_homework_duplicate_guard.py
 node tools/test_learning_integrity.js
 node tools/test_daily_storage.js
+python tools/test_daily_cap_checkpoint.py
 node tools/test_drive_sync_v2.js
 node tools/test_sync_races.js
 node tools/test_drive_auth.js
