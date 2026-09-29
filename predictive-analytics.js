@@ -56,7 +56,7 @@
     return Object.fromEntries(reinforcement(aggregated).map(r=>[r.key,{...r,topic:r.label}]));
   }
   function saveProfile(rows){
-    if((pastQueue||[]).some(q=>q&&q._predictiveReview))return;
+    if((pastQueue||[]).some(q=>q&&(q._predictiveReview||q._evaluationMock)))return {}; // evaluation papers must not train the adaptive profile
     let current={};try{current=JSON.parse(localStorage.getItem(PROFILE_KEY)||'{}')||{}}catch(e){}
     if(!current.grades||typeof current.grades!=='object')current.grades={};
     const grade=String((pastQueue.find(q=>q&&q._planGrade)||{})._planGrade||
