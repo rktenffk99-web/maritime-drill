@@ -38,14 +38,16 @@ try:
     assert page.locator('button[onclick^="startNavigatorPassPlanMock("]:visible').count()==2
     assert page.locator('button[onclick^="startNavigatorEvaluationMock("]:visible').count()==2
     # Evaluation mock is score measurement only: no adaptive progress mutation, even on submission.
-    eval_before=page.evaluate("localStorage.getItem('md_nav23_pass_progress_v1')")
+    eval_before=page.evaluate("""()=>{const p=JSON.parse(localStorage.getItem('md_nav23_pass_progress_v1')||'{}');const keep=v=>v&&(Number(v.attempts)||Number(v.correct)||Number(v.wrong)||Number(v.unsure)||Number(v.masteryReviews)||v.firstPassDate||v.lastDate||v.lastOutcome||v.mastered);const fields=['attempts','correct','wrong','unsure','masteryReviews','firstPassDate','lastDate','lastOutcome','status','mastered','dueDate','lastPracticeMode'];return Object.fromEntries(Object.entries(p).filter(([,v])=>keep(v)).map(([k,v])=>[k,Object.fromEntries(fields.map(f=>[f,v?.[f]??null]))]))}""")
     page.evaluate("(grade)=>startNavigatorEvaluationMock(grade)",'navi2')
     assert page.evaluate("pastQueue.length===125&&pastQueue.every(q=>q._evaluationMock&&q._predictiveMock)")
     assert page.evaluate("pastQueue.map(q=>q['과목'])")==[subject for subject in all_subjects for _ in range(25)]
     page.evaluate("choosePastAnswer(pastQueue[0]['정답']);pastIdx=pastQueue.length-1;choosePastAnswer((pastQueue[pastIdx]['정답']+1)%4);pastNext()")
     page.wait_for_selector('#md-predictive-analysis')
     assert '평가용 모의고사 결과' in page.locator('#app').inner_text()
-    assert page.evaluate("localStorage.getItem('md_nav23_pass_progress_v1')")==eval_before
+    eval_after=page.evaluate("""()=>{const p=JSON.parse(localStorage.getItem('md_nav23_pass_progress_v1')||'{}');const keep=v=>v&&(Number(v.attempts)||Number(v.correct)||Number(v.wrong)||Number(v.unsure)||Number(v.masteryReviews)||v.firstPassDate||v.lastDate||v.lastOutcome||v.mastered);const fields=['attempts','correct','wrong','unsure','masteryReviews','firstPassDate','lastDate','lastOutcome','status','mastered','dueDate','lastPracticeMode'];return Object.fromEntries(Object.entries(p).filter(([,v])=>keep(v)).map(([k,v])=>[k,Object.fromEntries(fields.map(f=>[f,v?.[f]??null]))]))}""")
+    assert eval_after==eval_before,(eval_before,eval_after)
+    assert page.evaluate("""()=>!Object.values(JSON.parse(localStorage.getItem('md_nav23_pass_progress_v1')||'{}')).some(v=>v&&v.lastPracticeMode==='predictive-mock')""")
     report['cases'].append('evaluation mock has 125 ordered questions and never trains adaptive progress')
     configure(page,all_subjects)
     assert '2026 최신 회차' not in page.locator('#app').inner_text()
