@@ -36,6 +36,7 @@ python tools/patch_mock_subject_order.py
 python tools/patch_balanced_mock.py
 python tools/patch_navi2_recall.py
 python tools/patch_navi2_reviewed.py
+python tools/patch_readiness_algorithms.py
 node tools/test_navi2_reviewed.js
 node tools/test_balanced_mock.js
 python tools/test_predictive_mock.py
@@ -55,6 +56,7 @@ python tools/test_review_spacing_v2.py
 python tools/audit_english_explanations.py
 python tools/test_homework_duplicate_guard.py
 python tools/test_subject_balance.py
+python tools/test_readiness_algorithms.py
 node tools/test_learning_integrity.js
 node tools/test_daily_storage.js
 python tools/test_daily_cap_checkpoint.py
