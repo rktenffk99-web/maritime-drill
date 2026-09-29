@@ -11,6 +11,12 @@ for needle in [
     "function topicOf(q)",
     "function reinforcement(rows)",
     "실전예측 모의 결과",
+    "md_evaluation_score_history_v1",
+    "function evaluationSummary(queue,answers)",
+    "최근 ${evaluation.recentCount}회 평균",
+    "미완료라 이번 기록 제외",
+    "const weak=rows.filter(r=>(Number(r.wrong)||0)>0)",
+    "무응답은 점수에는 반영되지만 취약도에는 반영하지 않습니다.",
 ]:
     assert needle in js, f'missing analytics marker: {needle}'
 
@@ -31,4 +37,4 @@ proc=subprocess.run(['node','--check','predictive-analytics.js'],capture_output=
 if proc.returncode:
     raise SystemExit('predictive-analytics.js syntax failed:\n'+proc.stderr)
 
-print('weak topic analytics + adaptive weighting checks: PASS')
+print('weak topic analytics + answered-only weighting + evaluation score tracking checks: PASS')
