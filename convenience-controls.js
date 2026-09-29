@@ -24,7 +24,7 @@
 
   const CHECKPOINT_KEY='md_pass_plan_session_checkpoint_v2';
   const REPORTS_KEY='md_problem_reports_v1';
-  const RESOLVED_REPORTS_CUTOFF='2026-09-17T03:17:00.000Z';
+  const RESOLVED_REPORTS_CUTOFF='2026-09-18T00:41:10.000Z';
   let wakeLock=null;
 
   function appRoot(){return document.getElementById('app');}
@@ -192,7 +192,7 @@
       const detail=String(r.detail||'').trim();
       return `<div style="padding:10px;border:1px solid #E2E8F0;border-radius:9px;background:#F8FAFC"><div style="font-size:12px;font-weight:900">${escapeText(r.reason||'신고')} · #${reports.length-ri}</div><div style="font-size:10px;color:#64748B;margin-top:3px">${escapeText((r.tags||[]).join(' · '))} ${escapeText(r.counter||'')}</div><div style="font-size:12px;line-height:1.55;margin-top:6px">${escapeText(r.question||'문제 문구 없음')}</div>${detail?`<div style="font-size:12px;line-height:1.55;margin-top:7px;padding:8px;border-radius:7px;background:#FFF;border:1px solid #E2E8F0"><b>신고 내용</b><br>${escapeText(detail)}</div>`:''}</div>`;
     }).join(''):'<div style="padding:18px;text-align:center;color:#64748B">저장된 문제 신고가 없습니다.</div>';
-    overlay.innerHTML=`<div class="card" style="width:min(640px,100%);max-height:85vh;overflow:auto;margin:0;background:#fff"><div style="font-size:17px;font-weight:900">저장된 문제 신고 · ${reports.length}건</div><div style="font-size:11px;color:#64748B;margin:5px 0 12px">신고는 이 브라우저의 localStorage에만 저장됩니다. 2026-09-17 검수 완료 이전 신고는 자동 정리되며, 이후 신고만 여기에 남습니다.</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button class="btn btn-accent" style="flex:1;min-width:120px" id="md-report-copy" ${reports.length?'':'disabled'}>전체 복사</button><button class="btn btn-outline" style="flex:1;min-width:120px" id="md-report-clear" ${reports.length?'':'disabled'}>전체 삭제</button><button class="btn btn-outline" style="flex:1;min-width:120px" id="md-report-list-close">닫기</button></div><div style="display:flex;flex-direction:column;gap:8px">${rows}</div></div>`;
+    overlay.innerHTML=`<div class="card" style="width:min(640px,100%);max-height:85vh;overflow:auto;margin:0;background:#fff"><div style="font-size:17px;font-weight:900">저장된 문제 신고 · ${reports.length}건</div><div style="font-size:11px;color:#64748B;margin:5px 0 12px">신고는 이 브라우저의 localStorage에만 저장됩니다. 2026-09-18 검수 완료 이전 신고는 자동 정리되며, 이후 신고만 여기에 남습니다.</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button class="btn btn-accent" style="flex:1;min-width:120px" id="md-report-copy" ${reports.length?'':'disabled'}>전체 복사</button><button class="btn btn-outline" style="flex:1;min-width:120px" id="md-report-clear" ${reports.length?'':'disabled'}>전체 삭제</button><button class="btn btn-outline" style="flex:1;min-width:120px" id="md-report-list-close">닫기</button></div><div style="display:flex;flex-direction:column;gap:8px">${rows}</div></div>`;
     document.body.appendChild(overlay);
     overlay.querySelector('#md-report-copy').onclick=copyReports;
     overlay.querySelector('#md-report-clear').onclick=clearReports;

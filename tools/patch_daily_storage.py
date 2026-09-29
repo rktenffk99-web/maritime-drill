@@ -39,7 +39,11 @@ new="""  let planDailySaveSucceeded=true;
   }"""
 replace(old,new)
 replace("    safeStorageSet(PLAN_KEY,JSON.stringify(plan),'2·3급 합격 플랜');", "    return safeStorageSet(PLAN_KEY,JSON.stringify(plan),'2·3급 합격 플랜');")
-replace("    ppSavePlan(plan);const daily=ppLoadDaily();delete daily[today];ppSaveDaily(daily);showToast('합격 플랜 설정을 저장했습니다.');renderNavigatorPassPlan(planEntrySubject);", "    if(!ppSavePlan(plan))return;const daily=ppLoadDaily();delete daily[today];if(!ppSaveDaily(daily))return;\n    await renderNavigatorPassPlan(planEntrySubject);\n    if(planDailySaveSucceeded)showToast('합격 플랜 설정을 저장했습니다.');")
+old_plan_save="    ppSavePlan(plan);const daily=ppLoadDaily();delete daily[today];ppSaveDaily(daily);showToast('합격 플랜 설정을 저장했습니다.');renderNavigatorPassPlan(planEntrySubject);"
+new_plan_save="    if(!ppSavePlan(plan))return;const daily=ppLoadDaily();delete daily[today];if(!ppSaveDaily(daily))return;\n    await renderNavigatorPassPlan(planEntrySubject);\n    if(planDailySaveSucceeded)showToast('합격 플랜 설정을 저장했습니다.');"
+daily_cap_plan_save="    if(!ppSavePlan(plan))return;const daily=ppLoadDaily();delete daily[today];if(!ppSaveDaily(daily))return;\n    ppClearPassSessionCheckpoint();\n    await renderNavigatorPassPlan(planEntrySubject);\n    if(planDailySaveSucceeded)showToast('합격 플랜 설정을 저장했습니다.');"
+if new_plan_save not in text and daily_cap_plan_save not in text:
+    replace(old_plan_save,new_plan_save)
 
 # Give actionable error detail without recommending removal of learning data.
 replace("  if(detail) detail.textContent=`${label||'학습 데이터'} 저장에 실패했습니다. 브라우저 저장공간과 개인정보 보호 설정을 확인한 뒤 다시 시도하세요.`;", """  const quota=error&&(error.name==='QuotaExceededError'||error.name==='NS_ERROR_DOM_QUOTA_REACHED');
