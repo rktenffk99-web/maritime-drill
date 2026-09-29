@@ -106,7 +106,12 @@ if MARKER not in text:
       if(!added)break;
     }
     const subjectCounts=Object.fromEntries(subjects.map(s=>[s,(pickedBySubject.get(s)||[]).length]));
-    return {...assignment,keys:ordered.map(item=>item.key),subjectQuotaTarget:quotas,subjectCounts,subjectBalancePolicy:PP_SUBJECT_BALANCE_POLICY,rotationPolicy:POLICY};
+    const balancedNewCount=ordered.filter(item=>!ppHomeworkClusterSeen(item,progress)).length;
+    const balancedReviewCount=Math.max(0,ordered.length-balancedNewCount);
+    const balancedDueCount=ordered.filter(item=>ppHomeworkClusterSeen(item,progress)&&ppIsDue(ppProgressFor(progress,item.key),today)).length;
+    const gradeCounts={...(assignment.gradeCounts||{})};
+    gradeCounts[grade]={review:balancedReviewCount,new:balancedNewCount};
+    return {...assignment,keys:ordered.map(item=>item.key),newCount:balancedNewCount,dueCount:balancedDueCount,newShortfall:Math.max(0,Number(assignment.requiredNew||0)-balancedNewCount),gradeCounts,subjectQuotaTarget:quotas,subjectCounts,subjectBalancePolicy:PP_SUBJECT_BALANCE_POLICY,rotationPolicy:POLICY};
   }
   const ppBuildTodayAssignmentBeforeSubjectBalance=ppBuildTodayAssignment;
   ppBuildTodayAssignment=function(plan,pools,progress,today){
