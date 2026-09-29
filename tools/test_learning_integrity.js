@@ -57,10 +57,10 @@ test('legacy inconsistent counters retain history and normalize the denominator'
 test('counter metadata stays bounded as attempts increase on one device',()=>{
   const {api}=harness();const r={};for(let i=0;i<2000;i++)api.appendOutcome(r,i%2?'wrong':'sure',false);assert.equal(r.attempts,2000);assert.equal(Object.keys(r._counterComponents).length,1);assert.ok(JSON.stringify(r).length<600);
 });
-test('mock practice counts both outcomes without granting mastery or homework completion',()=>{
+test('mock practice counts answered outcomes and ignores unanswered items',()=>{
   const {s}=harness();s.commitNavigatorPredictiveMockResult([{...q,_predictiveMock:true},{...q,_planKey:'navi3|unanswered',_predictiveMock:true}],[0,null]);
   const p=s.__test.snapshot().progress;assert.equal(p[q._planKey].correct,1);assert.equal(p[q._planKey].attempts,1);assert.equal(p[q._planKey].mastered,false);assert.equal(p[q._planKey].firstPassDate,null);
-  assert.equal(p['navi3|unanswered'].wrong,1);assert.equal(p['navi3|unanswered'].lastPracticeMode,'predictive-mock');
+  assert.equal(p['navi3|unanswered'],undefined);
   assert.ok(html.includes("rec.lastPracticeMode!=='predictive-mock'&&rec.lastDate===today"));
 });
 test('different subject and grade results retain earlier weak evidence',()=>{

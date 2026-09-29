@@ -36,6 +36,20 @@ try:
     all_subjects=['항해','운용','법규','영어','상선전문']
     configure(page,all_subjects)
     assert page.locator('button[onclick^="startNavigatorPassPlanMock("]:visible').count()==2
+    assert page.locator('button[onclick^="startNavigatorEvaluationMock("]:visible').count()==2
+    # Evaluation mock is score measurement only: no adaptive progress mutation, even on submission.
+    eval_before=page.evaluate("""()=>{const p=JSON.parse(localStorage.getItem('md_nav23_pass_progress_v1')||'{}');const keep=v=>v&&(Number(v.attempts)||Number(v.correct)||Number(v.wrong)||Number(v.unsure)||Number(v.masteryReviews)||v.firstPassDate||v.lastDate||v.lastOutcome||v.mastered);const fields=['attempts','correct','wrong','unsure','masteryReviews','firstPassDate','lastDate','lastOutcome','status','mastered','dueDate','lastPracticeMode'];return Object.fromEntries(Object.entries(p).filter(([,v])=>keep(v)).map(([k,v])=>[k,Object.fromEntries(fields.map(f=>[f,v?.[f]??null]))]))}""")
+    page.evaluate("(grade)=>startNavigatorEvaluationMock(grade)",'navi2')
+    assert page.evaluate("pastQueue.length===125&&pastQueue.every(q=>q._evaluationMock&&q._predictiveMock)")
+    assert page.evaluate("pastQueue.map(q=>q['과목'])")==[subject for subject in all_subjects for _ in range(25)]
+    page.evaluate("choosePastAnswer(pastQueue[0]['정답']);pastIdx=pastQueue.length-1;choosePastAnswer((pastQueue[pastIdx]['정답']+1)%4);pastNext()")
+    page.wait_for_selector('#md-predictive-analysis')
+    assert '평가용 모의고사 결과' in page.locator('#app').inner_text()
+    eval_after=page.evaluate("""()=>{const p=JSON.parse(localStorage.getItem('md_nav23_pass_progress_v1')||'{}');const keep=v=>v&&(Number(v.attempts)||Number(v.correct)||Number(v.wrong)||Number(v.unsure)||Number(v.masteryReviews)||v.firstPassDate||v.lastDate||v.lastOutcome||v.mastered);const fields=['attempts','correct','wrong','unsure','masteryReviews','firstPassDate','lastDate','lastOutcome','status','mastered','dueDate','lastPracticeMode'];return Object.fromEntries(Object.entries(p).filter(([,v])=>keep(v)).map(([k,v])=>[k,Object.fromEntries(fields.map(f=>[f,v?.[f]??null]))]))}""")
+    assert eval_after==eval_before,(eval_before,eval_after)
+    assert page.evaluate("""()=>!Object.values(JSON.parse(localStorage.getItem('md_nav23_pass_progress_v1')||'{}')).some(v=>v&&v.lastPracticeMode==='predictive-mock')""")
+    report['cases'].append('evaluation mock has 125 ordered questions and never trains adaptive progress')
+    configure(page,all_subjects)
     assert '2026 최신 회차' not in page.locator('#app').inner_text()
     assert page.locator('#md-plan-panel-mock .md-mock-note').count()==2
     page.set_viewport_size({'width':390,'height':844})
@@ -90,9 +104,12 @@ try:
         report['cases'].append(f'{grade}: 20 papers without completing them, no overlap with the last three, grade-scoped exposure and exact resume')
     # Submit with 74 unanswered questions: scoring and paper history are separate.
     saved_exposure=page.evaluate("localStorage.getItem('md_mock_exposure_v1')")
+    submitted_key=page.evaluate("pastQueue[0]._planKey")
     page.evaluate("pastIdx=0;choosePastAnswer(pastQueue[0]['정답']);pastIdx=pastQueue.length-1;pastNext()")
     page.wait_for_selector('#md-predictive-analysis')
     assert '실전 모의고사 결과' in page.locator('#app').inner_text()
+    touched=page.evaluate("""()=>Object.entries(JSON.parse(localStorage.getItem('md_nav23_pass_progress_v1')||'{}')).filter(([k,v])=>v&&v.lastPracticeMode==='predictive-mock').map(([k])=>k)""")
+    assert touched==[submitted_key],touched
     assert '4점' in page.locator('#md-predictive-analysis').inner_text()
     assert page.evaluate("localStorage.getItem('md_mock_exposure_v1')")==saved_exposure
     next_button=page.get_by_role('button',name='새 실전 모의',exact=True)

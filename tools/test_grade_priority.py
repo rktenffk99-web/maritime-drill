@@ -42,7 +42,7 @@ assert body.index('takeReviewList(weakDue,g,target,used);',manual_start) < body.
 assert 'const deferredStrongReviewCount=' in body
 assert 'deferredStrongReviewCount,rotationPolicy:' in body
 assert "rotationPolicy:'knowledge-gap-priority-v4-dedupe'" in body
-assert "assignmentPolicy:'knowledge-gap-priority-v5-subject-balanced'" in text
+assert "assignmentPolicy:'knowledge-gap-priority-v6-coverage-balanced'" in text
 
 # High-accuracy mastered questions get longer intervals.
 commit=re.search(r"function ppCommitOutcome\(q,answer,confidence\)\{.*?\n  \}",text,re.S)

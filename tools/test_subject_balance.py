@@ -2,11 +2,11 @@ from pathlib import Path
 import re
 
 text=Path('index.html').read_text(encoding='utf-8-sig')
-POLICY='knowledge-gap-priority-v5-subject-balanced'
+POLICY='knowledge-gap-priority-v6-coverage-balanced'
 
 for needle in [
     '// subject-balanced-homework-v1',
-    "const PP_SUBJECT_BALANCE_POLICY='even-subject-v1'",
+    "const PP_SUBJECT_BALANCE_POLICY='coverage-even-v2'",
     'function ppEvenSubjectQuotas(subjects,total,today)',
     'function ppBalanceSingleGradeSubjects(plan,pools,progress,today,assignment)',
     'activeGrades.length!==1',
@@ -18,9 +18,9 @@ for needle in [
     'const balancedReviewCount=',
     'gradeCounts[grade]={review:balancedReviewCount,new:balancedNewCount}',
     'subjectBalancePolicy:PP_SUBJECT_BALANCE_POLICY',
-    "assignmentPolicy:'knowledge-gap-priority-v5-subject-balanced'",
-    "subjectBalancePolicy:'even-subject-v1'",
-    "cp.subjectBalancePolicy!=='even-subject-v1'",
+    "assignmentPolicy:'knowledge-gap-priority-v6-coverage-balanced'",
+    "subjectBalancePolicy:'coverage-even-v2'",
+    "cp.subjectBalancePolicy!=='coverage-even-v2'",
 ]:
     assert needle in text, f'missing subject-balance marker: {needle}'
 
@@ -47,4 +47,6 @@ assert "if(!ppHomeworkClusterSeen(item,progress))return 1;" in text
 assert "if(due&&(!r.mastered||attempts<3||accuracy<0.85))return 2;" in text
 assert "if(due)return 3;" in text
 
-print('single-grade subject balance checks: PASS')
+assert 'coverageProtected:balancedNewCount>=requiredNew' in text 
+assert 'requiredNewReserved:' in text 
+print('single-grade coverage-preserving subject balance checks: PASS')

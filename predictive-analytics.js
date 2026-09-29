@@ -56,7 +56,7 @@
     return Object.fromEntries(reinforcement(aggregated).map(r=>[r.key,{...r,topic:r.label}]));
   }
   function saveProfile(rows){
-    if((pastQueue||[]).some(q=>q&&q._predictiveReview))return;
+    if((pastQueue||[]).some(q=>q&&(q._predictiveReview||q._evaluationMock)))return {}; // evaluation papers must not train the adaptive profile
     let current={};try{current=JSON.parse(localStorage.getItem(PROFILE_KEY)||'{}')||{}}catch(e){}
     if(!current.grades||typeof current.grades!=='object')current.grades={};
     const grade=String((pastQueue.find(q=>q&&q._planGrade)||{})._planGrade||
@@ -85,7 +85,7 @@
   function pctBar(value){return `<div style="height:7px;background:#E2E8F0;border-radius:999px;overflow:hidden"><div style="height:100%;width:${Math.max(0,Math.min(100,value))}%;background:#7C3AED"></div></div>`}
   function render(){
     const app=document.getElementById('app');
-    if(!app||!/(실전예측 모의 결과|실전 모의고사 결과)/.test(app.textContent||''))return;
+    if(!app||!/(실전예측 모의 결과|실전 모의고사 결과|평가용 모의고사 결과)/.test(app.textContent||''))return;
     if(document.getElementById('md-predictive-analysis'))return;
     if(typeof pastQueue==='undefined'||typeof pastAnswers==='undefined')return;
     const s=stats(pastQueue,pastAnswers);if(!s.subjects.length)return;
