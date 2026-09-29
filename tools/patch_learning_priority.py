@@ -158,7 +158,7 @@ build_fn="""  function ppBuildTodayAssignment(plan,pools,progress,today){ // kno
     const totalQuotas=priority.mode==='auto'?null:ppPriorityFlexQuotas(plan,today,cap);
     return {keys:ordered.map(i=>i.key),createdAt:Date.now(),phases,requests,requiredNew,dueOverflow:Math.max(0,due.length-dueSelected.length),dueCount:dueSelected.length,newCount:newItems.length,newShortfall:Math.max(0,requiredNew-newItems.length),coverageAtRisk,priorityMode:priority.mode,priorityLabel:priority.label,priorityProfile:{navi2:priority.navi2,navi3:priority.navi3},quotaTarget:totalQuotas,gradeCounts:{navi2:{review:reviewByGrade.navi2,new:newByGrade.navi2},navi3:{review:reviewByGrade.navi3,new:newByGrade.navi3}},deferredStrongReviewCount:Math.max(0,strongDue.filter(item=>!selectedKeys.has(item.key)).length),rotationPolicy:'knowledge-gap-priority-v3'};
   }"""
-pattern=r"  function ppBuildTodayAssignment\(plan,pools,progress,today\)\{.*?\n  \}(?=\n  function ppGetItemByKey)"
+pattern=r"  function ppBuildTodayAssignment\(plan,pools,progress,today\)\{.*?\n  \}(?=\n  (?:// subject-balanced-homework-v1|function ppGetItemByKey))"
 text,n=re.subn(pattern,build_fn,text,count=1,flags=re.S)
 if n!=1: raise SystemExit('ppBuildTodayAssignment not found')
 

@@ -181,7 +181,7 @@ build_fn="""  function ppBuildTodayAssignment(plan,pools,progress,today){ // dea
 
     return {keys:ordered.map(i=>i.key),createdAt:Date.now(),phases,requests,requiredNew,dueOverflow:Math.max(0,due.length-dueSelected.length),dueCount:dueSelected.length,newCount:newItems.length,newShortfall:Math.max(0,requiredNew-newItems.length),coverageAtRisk:requestedNew>cap,priorityMode:priority.mode,priorityLabel:priority.label,priorityProfile:{navi2:priority.navi2,navi3:priority.navi3},rotationPolicy:'deadline-coverage-priority-v1'};
   }"""
-pattern=r"  function ppBuildTodayAssignment\(plan,pools,progress,today\)\{.*?\n  \}(?=\n  function ppGetItemByKey)"
+pattern=r"  function ppBuildTodayAssignment\(plan,pools,progress,today\)\{.*?\n  \}(?=\n  (?:// subject-balanced-homework-v1|function ppGetItemByKey))"
 text,n=re.subn(pattern,build_fn,text,count=1,flags=re.S)
 if n!=1:
     raise SystemExit('ppBuildTodayAssignment not found')

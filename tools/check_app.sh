@@ -55,6 +55,8 @@ python tools/test_review_spacing_v2.py
 python tools/audit_english_explanations.py
 python tools/test_homework_duplicate_guard.py
 python tools/test_subject_balance.py
+node --check visual-explanations.js
+python tools/test_visual_explanations.py
 node tools/test_learning_integrity.js
 node tools/test_daily_storage.js
 python tools/test_daily_cap_checkpoint.py
