@@ -8,6 +8,10 @@ original=text
 MARKER='subject-balanced-homework-v1'
 POLICY='knowledge-gap-priority-v5-subject-balanced'
 
+# A previously generated v5.18 artifact may already carry the upgraded readiness policy.
+# Downgrade only the policy markers here; patch_readiness_algorithms.py reapplies v2 later.
+text=text.replace("const PP_SUBJECT_BALANCE_POLICY='coverage-even-v2'","const PP_SUBJECT_BALANCE_POLICY='even-subject-v1'",1)
+
 if MARKER not in text:
     anchor='  function ppGetItemByKey'
     i=text.find(anchor)
