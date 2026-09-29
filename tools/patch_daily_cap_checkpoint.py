@@ -18,14 +18,14 @@ if MARKER not in text:
 
     old_checkpoint = """      const checkpoint=ppLoadPassSessionCheckpoint();
       if(checkpoint&&Array.isArray(checkpoint.queueKeys)&&checkpoint.queueKeys.length){"""
-    new_checkpoint = """      let checkpoint=ppLoadPassSessionCheckpoint(); // daily-cap-session-reset-v1
+    new_checkpoint = """      const checkpoint=ppLoadPassSessionCheckpoint();
       const currentDailyCap=Math.max(40,Math.min(250,Number(plan.dailyCap)||120));
-      if(checkpoint&&Array.isArray(checkpoint.queueKeys)&&new Set(checkpoint.queueKeys).size>currentDailyCap){
+      const checkpointExceedsDailyCap=!!(checkpoint&&Array.isArray(checkpoint.queueKeys)&&new Set(checkpoint.queueKeys).size>currentDailyCap); // daily-cap-session-reset-v1
+      if(checkpointExceedsDailyCap){
         console.info('[pass-plan] saved checkpoint exceeds current daily cap; rebuilding today assignment');
         ppClearPassSessionCheckpoint();
-        checkpoint=null;
       }
-      if(checkpoint&&Array.isArray(checkpoint.queueKeys)&&checkpoint.queueKeys.length){"""
+      if(!checkpointExceedsDailyCap&&checkpoint&&Array.isArray(checkpoint.queueKeys)&&checkpoint.queueKeys.length){"""
     if old_checkpoint not in text:
         raise SystemExit('pass-plan checkpoint restore anchor not found')
     text=text.replace(old_checkpoint,new_checkpoint,1)
