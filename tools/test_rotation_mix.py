@@ -18,7 +18,7 @@ assert "PLAN_GRADES.some(g=>(requests[g]||0)>(newByGrade[g]||0))" in text
 assert 'const ordered=[];let ri=0,ni=0;' in text
 assert "rotationPolicy:'knowledge-gap-priority-v4-dedupe'" in text
 
-m=re.search(r"function ppBuildTodayAssignment\(plan,pools,progress,today\)\{.*?\n  \}(?=\n  function ppGetItemByKey)",text,re.S)
+m=re.search(r"function ppBuildTodayAssignment\(plan,pools,progress,today\)\{.*?\n  \}(?=\n  // subject-balanced-homework-v1|\n  function ppGetItemByKey)",text,re.S)
 assert m, 'assignment builder missing'
 body=m.group(0)
 assert body.find('const phases=') < body.find('const due=')
