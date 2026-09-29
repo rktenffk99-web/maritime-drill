@@ -125,14 +125,14 @@ text,n=re.subn(r"assignmentPolicy:'[^']+'",f"assignmentPolicy:'{POLICY}'",text,c
 if n!=1:
     raise SystemExit('assignment policy anchor missing')
 
-if 'subjectBalancePolicy:PP_SUBJECT_BALANCE_POLICY' not in text:
+if "subjectBalancePolicy:'even-subject-v1',date:ppDateKey(new Date())" not in text:
     old="version:2,dedupePolicy:PP_HOMEWORK_DEDUPE_POLICY,date:ppDateKey(new Date()),savedAt:new Date().toISOString(),"
     new="version:2,dedupePolicy:PP_HOMEWORK_DEDUPE_POLICY,subjectBalancePolicy:'even-subject-v1',date:ppDateKey(new Date()),savedAt:new Date().toISOString(),"
     if old not in text:
         raise SystemExit('checkpoint save policy anchor missing')
     text=text.replace(old,new,1)
 
-if 'cp.subjectBalancePolicy!==PP_SUBJECT_BALANCE_POLICY' not in text:
+if "cp.subjectBalancePolicy!=='even-subject-v1'" not in text:
     old="cp.dedupePolicy!==PP_HOMEWORK_DEDUPE_POLICY||cp.date!==ppDateKey(new Date())"
     new="cp.dedupePolicy!==PP_HOMEWORK_DEDUPE_POLICY||cp.subjectBalancePolicy!=='even-subject-v1'||cp.date!==ppDateKey(new Date())"
     if old not in text:
