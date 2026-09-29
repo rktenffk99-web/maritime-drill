@@ -76,6 +76,9 @@ try:
             '오답 · 정답 ㉡',
             '200미터를 초과하면 마름모꼴을 표시한다.'
         )
+        # Real question changes are initiated by a click/keyboard action; trigger the
+        # same document-level refresh hook after replacing the synthetic fixture.
+        page.evaluate("document.dispatchEvent(new MouseEvent('click',{bubbles:true}))")
         page.wait_for_function("""()=>{
           const el=document.getElementById('md-visual-explanation');
           return el && el.textContent.includes('예인 길이 200m 초과');
