@@ -30,6 +30,7 @@ def check_paper(page, subjects, label, counts=None):
     actual = page.evaluate("pastQueue.map(q=>q['과목'])")
     assert actual == [s for s in subjects for _ in range(counts[s] if counts else 25)], (label, actual)
     assert page.evaluate('new Set(pastQueue.map(pqid)).size===pastQueue.length')
+    assert page.evaluate('pastQueue.every(mdQuestionUsable)')
     assert page.evaluate("pastQueue.every(q=>getPastExam(q._short,q._year,q['회차']).questions.some(source=>source['과목']===q['과목']&&source['번호']===q['번호']&&source['정답']===q['정답']))")
     for idx in (0, 24, 25, len(actual) - 1):
         if idx >= len(actual):
@@ -75,10 +76,28 @@ try:
             # A single selected subject always starts at question 1.
             page.evaluate("grade=>{const exams=getPastExamsByBase(grade,'상선').filter(exam=>exam.meta.year===2026).sort((a,b)=>b.meta.session-a.meta.session);pastYear=2026;pastSession=exams[0].meta.session;pastReturnView=null}", grade)
             page.evaluate("startPastSession('mock','법규')")
-            check_paper(page, ['법규'], f'{grade}: single-subject mock has 25 questions')
+            # 2026 3급 법규 20번 has no source figure and must not be graded.
+            count = 24 if grade == 'navi3' else 25
+            check_paper(page, ['법규'], f'{grade}: single-subject mock uses {count} complete source questions', counts={'법규': count})
+            if grade == 'navi3':
+                assert page.evaluate("!pastQueue.some(q=>q._year===2026&&q['회차']===3&&q['과목']==='법규'&&q['번호']===20)")
             page.evaluate("grade=>{pastYearPickVariant='상선';pastVariant='상선';renderPastYearPick(grade,grade)}", grade)
             for field in page.locator('.past-allyears-subj-check').all():
                 field.set_checked(field.input_value() in SELECTED)
+            if grade == 'navi2':
+                assert page.evaluate("getPastExam('navi2',2023,1).questions.filter(q=>q['과목']==='법규'&&q['번호']===4).length===2")
+                # Force the known ambiguous source tuple into the draw if it was
+                # incorrectly allowed into the candidate pool before the quota.
+                page.evaluate("""()=>{
+                  window.__auditOriginalShuffle=shuffle;
+                  const bad=q=>q._short==='navi2'&&q._year===2023&&q['회차']===1&&q['과목']==='법규'&&q['번호']===4;
+                  shuffle=rows=>rows.slice().sort((a,b)=>Number(bad(b))-Number(bad(a)));
+                }""")
+                try:
+                    page.evaluate("startPastAllYearsSession('mock')")
+                    check_paper(page, SELECTED, 'navi2: all-years mock filters ambiguous source tuples before drawing 25 per subject')
+                finally:
+                    page.evaluate('shuffle=window.__auditOriginalShuffle;delete window.__auditOriginalShuffle')
             page.evaluate("startPastAllYearsSession('mock')")
             check_paper(page, SELECTED, f'{grade}: all-years mock uses the same subject order')
             page.evaluate('(grade)=>renderPastYearPick(grade,grade)', grade)

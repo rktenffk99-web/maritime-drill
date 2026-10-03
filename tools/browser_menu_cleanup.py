@@ -24,7 +24,7 @@ try:
         page.on('dialog',lambda d:d.accept())
         page.goto(origin,wait_until='load');page.get_by_role('button',name='동의합니다',exact=True).click()
         page.wait_for_function("hasAgreedTerms() && !document.getElementById('md-modal-wrap')")
-        assert page.evaluate('APP_VERSION')=='5.18'
+        assert page.evaluate('APP_VERSION')=='5.19'
         assert page.locator('#md-settings-button').count()==1
         assert not page.get_by_role('button',name='전체 백업 저장',exact=True).count()
         assert not page.get_by_role('button',name='제작자의 말',exact=True).count()
@@ -38,19 +38,20 @@ try:
         assert json.loads(backup['items']['md_ui_test_record'])['keep']=='before-backup'
         assert 'maritime-drill:drive-auth:v1' not in backup['items']
         assert 'md_drive_sync_state_v1' not in backup['items']
+        backup['items']['md_ui_backup_only']=json.dumps({'keep':'from-backup'})
         page.evaluate("localStorage.setItem('md_ui_test_record',JSON.stringify({answer:3,keep:'before-import'}))")
         with page.expect_file_chooser() as chooser:
             page.get_by_role('button',name='백업 불러오기',exact=True).click()
         chooser.value.set_files({'name':'menu-backup.json','mimeType':'application/json','buffer':json.dumps(backup).encode()})
         page.get_by_role('button',name='확인',exact=True).click()
-        page.wait_for_function("JSON.parse(localStorage.getItem('md_ui_test_record')).keep==='before-backup' && !!document.getElementById('md-settings-button')")
+        page.wait_for_function("JSON.parse(localStorage.getItem('md_ui_test_record')).keep==='before-import' && JSON.parse(localStorage.getItem('md_ui_backup_only')).keep==='from-backup' && !!document.getElementById('md-settings-button')")
         page.locator('#md-settings-button').click()
         page.locator('#md-backup-settings > summary').click()
         page.locator('#md-backup-settings details > summary').click()
         page.get_by_role('button',name='이전 상태로 되돌리기',exact=True).click()
         page.get_by_role('button',name='확인',exact=True).click()
-        page.wait_for_function("JSON.parse(localStorage.getItem('md_ui_test_record')).keep==='before-import' && !!document.getElementById('md-settings-button')")
-        report['cases'].append('settings exports a real backup, imports it, and restores the pre-import state without leaking credentials')
+        page.wait_for_function("JSON.parse(localStorage.getItem('md_ui_test_record')).keep==='before-import' && localStorage.getItem('md_ui_backup_only')===null && !!document.getElementById('md-settings-button')")
+        report['cases'].append('settings exports a real backup, merges missing data while preserving newer local changes, and restores the exact pre-import state without leaking credentials')
 
         page.evaluate("renderNavigatorPassPlan('navi3')")
         wait_plan(page,configure=True)

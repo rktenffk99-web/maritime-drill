@@ -44,6 +44,11 @@
   }
   function mergeCounters(local,remote,merged){
     if(!local||!remote||!merged)return merged;
+    if(Array.isArray(local.homeworkCommitIds)||Array.isArray(remote.homeworkCommitIds)){
+      const ids=new Set([...(Array.isArray(local.homeworkCommitIds)?local.homeworkCommitIds:[]),...(Array.isArray(remote.homeworkCommitIds)?remote.homeworkCommitIds:[])].filter(id=>typeof id==='string'));
+      const time=id=>Number(id.split('|')[1])||0;
+      merged.homeworkCommitIds=[...ids].sort((a,b)=>time(a)-time(b)||(a===b?0:a>b?1:-1)).slice(-64);
+    }
     if(local._counterVersion===1||remote._counterVersion===1){
       const base={};
       const lb=local._counterVersion===1?normalizedCounts(local._counterBase):normalizedCounts(local);
@@ -73,7 +78,7 @@
   function contentIssue(q){
     const text=String(q&&(q['문제']||q.question)||'');
     if(/\bunderlined\b|밑줄\s*(?:친|부분)/i.test(text)&&!q._underlineText&&!/\[(?:밑줄|대상)\s*:/.test(text))return '밑줄 위치 확인 필요';
-    if(/(?:다음|아래)의?\s*그림|그림과\s*같|그림에서|그림의\s*(?:등화|선박|항로표지)/.test(text)&&!q._figureText&&!/\[그림\s*:[^\]]+\]/.test(text))return '그림 원문 확인 필요';
+    if(/(?:다음|아래)의?\s*그림|그림과\s*같|그림에서|그림의\s*(?:등화|선박|항로표지)|\[\s*그림\s*문제\s*\]/.test(text)&&!q._figureText&&!/\[그림\s*:[^\]]+\]/.test(text))return '그림 원문 확인 필요';
     return '';
   }
   function optionOrder(key,seed,index){
@@ -85,5 +90,5 @@
     if(!Array.isArray(order)||order.length!==4)return html;
     const labels='㉮㉯㉰㉱';return String(html).replace(/[㉮㉯㉰㉱㉴㉵]/g,c=>labels[order.indexOf(c==='㉴'?2:c==='㉵'?3:labels.indexOf(c))]);
   }
-  global.__mdLearningIntegrity={initializeCounters,appendOutcome,recount,mergeCounters,contentIssue,optionOrder,remapExplanation};
+  global.__mdLearningIntegrity={initializeCounters,appendOutcome,recount,mergeCounters,getDeviceId:deviceId,contentIssue,optionOrder,remapExplanation};
 })(window);

@@ -58,8 +58,9 @@ replace("return {...q,_source:r.source,_n3aGroupId:r.group};","return {...q,_sou
 replace("  pastQueue=shuffle(weak);pastAnswers=", "  pastQueue=shuffle(weak.map(q=>q._predictiveMock?{...q,_predictiveReview:true}:q));pastAnswers=")
 
 # Reset must invalidate both the persistent and live session state.
-replace("safeStorageSet(PROGRESS_KEY,'{}','합격 플랜 진도');safeStorageSet(DAILY_KEY,'{}','합격 플랜 오늘 숙제');renderNavigatorPassPlan(planEntrySubject);",
-"safeStorageSet(PROGRESS_KEY,'{}','합격 플랜 진도');safeStorageSet(DAILY_KEY,'{}','합격 플랜 오늘 숙제');ppClearPassSessionCheckpoint();planSessionQueue=[];planSessionAnswers=[];planSessionConfidence=[];planSessionCommitted=new Set();planSessionIdx=0;const saved=getPastProgress();if(saved&&saved.meta.returnView==='pass-plan-predictive-mock')clearPastProgress();renderNavigatorPassPlan(planEntrySubject);")
+if "resetKey(PROGRESS_KEY" not in text:
+    replace("safeStorageSet(PROGRESS_KEY,'{}','합격 플랜 진도');safeStorageSet(DAILY_KEY,'{}','합격 플랜 오늘 숙제');renderNavigatorPassPlan(planEntrySubject);",
+    "safeStorageSet(PROGRESS_KEY,'{}','합격 플랜 진도');safeStorageSet(DAILY_KEY,'{}','합격 플랜 오늘 숙제');ppClearPassSessionCheckpoint();planSessionQueue=[];planSessionAnswers=[];planSessionConfidence=[];planSessionCommitted=new Set();planSessionIdx=0;const saved=getPastProgress();if(saved&&saved.meta.returnView==='pass-plan-predictive-mock')clearPastProgress();renderNavigatorPassPlan(planEntrySubject);")
 
 # Grade-scoped rolling profiles preserve other grades and subjects.
 replace('const weakProfile=ppLoadWeakTopicProfile();','const weakProfile=ppLoadWeakTopicProfile(g);')

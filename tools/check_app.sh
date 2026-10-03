@@ -37,6 +37,9 @@ python tools/patch_balanced_mock.py
 python tools/patch_navi2_recall.py
 python tools/patch_navi2_reviewed.py
 python tools/patch_readiness_algorithms.py
+python tools/patch_record_safety.py
+python tools/patch_learning_audit.py
+python tools/patch_safe_learning_render.py
 node tools/test_navi2_reviewed.js
 node tools/test_balanced_mock.js
 python tools/test_predictive_mock.py
@@ -64,4 +67,9 @@ node tools/test_drive_sync_v2.js
 node tools/test_sync_races.js
 node tools/test_drive_auth.js
 node tools/test_analytics_regressions.js
+node tools/test_predictive_render_safety.js
+node tools/test_sync_audit_fixes.js
+node tools/test_record_safety.js
+node tools/test_learning_audit.js --final
+node tools/test_safe_learning_render.js --final
 python tools/check_final_syntax.py
