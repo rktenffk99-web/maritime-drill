@@ -39,7 +39,70 @@
   function mdSyncNormalizeKeyMeta(meta){
     const result=mdSyncIsPlainObject(meta)?Object.assign({},meta):{};
     result.fields=mdSyncIsPlainObject(result.fields)?Object.assign({},result.fields):{};
+    result.history=mdSyncIsPlainObject(result.history)?Object.assign({},result.history):{};
     return result;
+  }
+  function mdSyncGeneration(meta){
+    const generation=meta&&meta.generation;
+    return mdSyncIsPlainObject(generation)&&typeof generation.id==='string'&&mdSyncRecordTime(generation)>0?generation:null;
+  }
+  function mdSyncCompareGenerations(localMeta,remoteMeta){
+    const local=mdSyncGeneration(localMeta),remote=mdSyncGeneration(remoteMeta);
+    if(!local&&!remote)return 0;
+    if(!local)return -1;
+    if(!remote)return 1;
+    const delta=mdSyncRecordTime(local)-mdSyncRecordTime(remote);
+    if(delta)return delta>0?1:-1;
+    const left=mdSyncStable(local),right=mdSyncStable(remote);
+    return left===right?0:left>right?1:-1;
+  }
+  function mdSyncNewGeneration(now,previousMeta){
+    const id=typeof driveSyncNewDeviceId==='function'?driveSyncNewDeviceId():
+      Date.now().toString(36)+'-'+Math.random().toString(36).slice(2);
+    const previous=mdSyncRecordTime(mdSyncGeneration(previousMeta));
+    return {updatedAt:new Date(Math.max(Date.parse(now)||0,previous+1)).toISOString(),id};
+  }
+  function mdSyncIsFocusHistoryKey(key){return /^md_focus_history_/.test(key)}
+  function mdSyncHistorySessionId(entry){
+    if(!mdSyncIsPlainObject(entry))return 'legacy:'+mdSyncStable(entry);
+    if(typeof entry.sessionId==='string'&&entry.sessionId)return entry.sessionId;
+    // Old records have no immutable ID. Timestamp, subject and question IDs
+    // distinguish independent sets without relying on conflicting Day numbers.
+    const ids=Array.isArray(entry.ids)?entry.ids.map(String).sort():[];
+    return 'legacy:'+mdSyncStable([entry.ts,entry.subjectId||'',ids]);
+  }
+  function mdSyncHistoryId(entry){return 'session:'+mdSyncHistorySessionId(entry)}
+  function mdSyncNormalizeHistoryWrite(key,oldRaw,newRaw){
+    if(!mdSyncIsFocusHistoryKey(key)||driveSyncApplyingRemote)return newRaw;
+    const oldParsed=mdSyncParse(oldRaw),nextParsed=mdSyncParse(newRaw);
+    if(!nextParsed.json||!Array.isArray(nextParsed.value))return newRaw;
+    const previous=Array.isArray(oldParsed.value)?oldParsed.value:[];
+    let changed=false;
+    const entries=nextParsed.value.map(entry=>{
+      if(!mdSyncIsPlainObject(entry)||typeof entry.sessionId==='string'&&entry.sessionId)return entry;
+      const ids=mdSyncStable(Array.isArray(entry.ids)?entry.ids.map(String).sort():[]);
+      // A legacy replay updates ts but retains Day and the original question
+      // set. Promote that existing identity instead of creating a second set.
+      const candidates=previous.filter(candidate=>mdSyncIsPlainObject(candidate)&&
+        (candidate.subjectId||'')===(entry.subjectId||'')&&
+        mdSyncStable(Array.isArray(candidate.ids)?candidate.ids.map(String).sort():[])===ids);
+      const exact=candidates.find(candidate=>candidate.ts===entry.ts);
+      const replay=entry.dayNum===undefined?[]:candidates.filter(candidate=>candidate.dayNum===entry.dayNum);
+      // Different devices can independently use the same Day number and
+      // question set. Preserve unchanged timestamps first, and only infer a
+      // replay identity when the old session is unambiguous.
+      const prior=exact||(replay.length===1?replay[0]:null);
+      changed=true;return Object.assign({},entry,{sessionId:mdSyncHistorySessionId(prior||entry)});
+    });
+    return changed?JSON.stringify(entries):newRaw;
+  }
+  function mdSyncTouchHistory(oldValue,newValue,meta,now){
+    if(!Array.isArray(newValue))return;
+    const previous=new Map((Array.isArray(oldValue)?oldValue:[]).map(entry=>[mdSyncHistoryId(entry),entry]));
+    const next=new Map(newValue.map(entry=>[mdSyncHistoryId(entry),entry]));
+    for(const id of previous.keys())if(!next.has(id))meta.history[id]=mdSyncNewRecord(now,true);
+    for(const [id,entry] of next)if(!previous.has(id)||!mdSyncSame(previous.get(id),entry))meta.history[id]=mdSyncNewRecord(now,false);
+    meta.history=mdSyncTrimFields(meta.history);
   }
   function mdSyncTrimFields(fields){
     const keys=Object.keys(fields||{});
@@ -82,6 +145,7 @@
       keyMeta.fields={};
     }else{
       const oldParsed=mdSyncParse(oldRaw),newParsed=mdSyncParse(newRaw);
+      if(mdSyncIsFocusHistoryKey(key)&&newParsed.json)mdSyncTouchHistory(oldParsed.value,newParsed.value,keyMeta,now);
       if(oldParsed.json&&newParsed.json){
         mdSyncDiff(oldParsed.value,newParsed.value,[],keyMeta.fields,now);
       }else if(oldRaw!==newRaw){
@@ -96,6 +160,29 @@
     driveSyncSaveState(state);
     driveSyncRefreshPanel();
   }
+  function mdSyncResetKey(key,value,label){
+    const k=String(key),raw=String(value);
+    if(!isManagedStorageKey(k))return false;
+    const before=driveSyncLoadState(),state=Object.assign({},before),now=driveSyncNowIso();
+    state.itemMeta=Object.assign({},before.itemMeta||{});
+    state.itemMeta[k]={updatedAt:now,deleted:false,generation:mdSyncNewGeneration(now,state.itemMeta[k]),fields:{'':mdSyncNewRecord(now,false)},history:{}};
+    state.localUpdatedAt=now;state.revision=(Number(state.revision)||0)+1;
+    // Save the reset generation first. A failed metadata write must leave the
+    // old learning records intact. Neither write yields to this tab's sync loop.
+    if(!driveSyncSaveState(state)){
+      if(typeof showStorageWarning==='function')showStorageWarning(label||'학습 진도 초기화',new Error('초기화 상태를 저장하지 못했습니다.'));
+      return false;
+    }
+    try{
+      const set=driveSyncOriginalSetItem||Storage.prototype.setItem;
+      set.call(localStorage,k,raw);
+    }catch(error){
+      driveSyncSaveState(before);
+      if(typeof showStorageWarning==='function')showStorageWarning(label||'학습 진도 초기화',error);
+      return false;
+    }
+    driveSyncRefreshPanel();return true;
+  }
 
   // Replace the v5.08 hooks before driveSyncInit() runs.
   driveSyncInstallStorageHooks=function(){
@@ -106,10 +193,11 @@
       const k=String(key);
       let oldValue=null;
       try{if(this===localStorage) oldValue=this.getItem(k);}catch(e){}
-      const result=driveSyncOriginalSetItem.call(this,key,value);
+      const nextValue=this===localStorage?mdSyncNormalizeHistoryWrite(k,oldValue,String(value)):value;
+      const result=driveSyncOriginalSetItem.call(this,key,nextValue);
       try{
-        if(this===localStorage && k!==DRIVE_SYNC_STATE_KEY && isManagedStorageKey(k) && oldValue!==String(value)){
-          mdSyncTouchKey(k,oldValue,String(value),false);
+        if(this===localStorage && k!==DRIVE_SYNC_STATE_KEY && isManagedStorageKey(k) && oldValue!==String(nextValue)){
+          mdSyncTouchKey(k,oldValue,String(nextValue),false);
         }
       }catch(e){console.warn('[sync-v2] change metadata failed',e)}
       return result;
@@ -144,6 +232,25 @@
     if(record) return mdSyncRecordTime(record,fallback);
     return mdSyncRecordTime(meta,fallback);
   }
+  function mdSyncBranchTime(meta,path,value,fallback){
+    let latest=0;
+    for(const [field,record] of Object.entries(meta&&meta.fields||{})){
+      // A branch clock includes its own changes, never a later edit to a
+      // different question stored under the same localStorage key.
+      if(field===path||field.startsWith(path+'/'))latest=Math.max(latest,mdSyncRecordTime(record));
+    }
+    if(latest)return latest;
+    const ancestors=path.split('/');
+    while(ancestors.length){
+      ancestors.pop();const record=mdSyncPathRecord(meta,ancestors.join('/'));
+      if(record&&!record.deleted)return mdSyncRecordTime(record,fallback);
+    }
+    const valueTime=mdSyncValueTimestamp(value,null);
+    if(valueTime)return valueTime;
+    // Once individual fields are tracked, an unrelated field's clock cannot
+    // supply a timestamp for this unmodified legacy branch.
+    return Object.keys(meta&&meta.fields||{}).length?0:mdSyncValueTimestamp(value,fallback);
+  }
   function mdSyncValueTimestamp(value,fallback){
     let best=0,found=false;
     if(mdSyncIsPlainObject(value)){
@@ -162,9 +269,17 @@
     return Number.isFinite(fallbackTime)?fallbackTime:0;
   }
   const MD_SYNC_MONOTONIC_NUMBERS=new Set(['attempts','correct','wrong','unsure','masteryReviews','tries']);
+  function mdSyncCounterNumber(value){
+    if(typeof value!=='number'&&typeof value!=='string')return null;
+    if(typeof value==='string'&&(!value.trim()||!/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/i.test(value.trim())))return null;
+    const n=Number(value);return Number.isSafeInteger(n)&&n>=0?n:null;
+  }
   function mdSyncChoose(localValue,remoteValue,path,localMeta,remoteMeta,localFallback,remoteFallback,pathParts){
     const leaf=pathParts&&pathParts.length?String(pathParts[pathParts.length-1]):'';
-    if(MD_SYNC_MONOTONIC_NUMBERS.has(leaf) && typeof localValue==='number' && typeof remoteValue==='number') return Math.max(localValue,remoteValue);
+    if(MD_SYNC_MONOTONIC_NUMBERS.has(leaf)){
+      const local=mdSyncCounterNumber(localValue),remote=mdSyncCounterNumber(remoteValue);
+      if(local!==null||remote!==null)return Math.max(local===null?0:local,remote===null?0:remote);
+    }
     const lt=mdSyncPathTime(localMeta,path,localFallback),rt=mdSyncPathTime(remoteMeta,path,remoteFallback);
     if(lt>rt) return localValue;
     if(rt>lt) return remoteValue;
@@ -173,6 +288,11 @@
   function mdSyncMergeNode(localValue,remoteValue,pathParts,localMeta,remoteMeta,localFallback,remoteFallback){
     if(mdSyncSame(localValue,remoteValue)) return localValue;
     const path=mdSyncPath(pathParts);
+    const localDeletion=mdSyncPathRecord(localMeta,path),remoteDeletion=mdSyncPathRecord(remoteMeta,path);
+    // An object deleted and then recreated has a new subtree. Do not union
+    // fields or lifetime counters from a snapshot preceding that deletion.
+    if(localDeletion&&localDeletion.deleted&&mdSyncRecordTime(localDeletion)>mdSyncBranchTime(remoteMeta,path,remoteValue,remoteFallback))return localValue;
+    if(remoteDeletion&&remoteDeletion.deleted&&mdSyncRecordTime(remoteDeletion)>mdSyncBranchTime(localMeta,path,localValue,localFallback))return remoteValue;
     if(mdSyncIsPlainObject(localValue)&&mdSyncIsPlainObject(remoteValue)){
       const out={};
       const localObjectFallback=new Date(mdSyncValueTimestamp(localValue,localFallback)||0).toISOString();
@@ -186,10 +306,10 @@
         if(localHas&&remoteHas){
           out[key]=mdSyncMergeNode(localValue[key],remoteValue[key],childParts,localMeta,remoteMeta,localObjectFallback,remoteObjectFallback);
         }else if(localHas){
-          if(rr&&rr.deleted&&mdSyncRecordTime(rr,remoteObjectFallback)>mdSyncPathTime(localMeta,childPath,localObjectFallback)) continue;
+          if(rr&&rr.deleted&&mdSyncRecordTime(rr,remoteObjectFallback)>=mdSyncBranchTime(localMeta,childPath,localValue[key],localObjectFallback)) continue;
           out[key]=localValue[key];
         }else if(remoteHas){
-          if(lr&&lr.deleted&&mdSyncRecordTime(lr,localObjectFallback)>mdSyncPathTime(remoteMeta,childPath,remoteObjectFallback)) continue;
+          if(lr&&lr.deleted&&mdSyncRecordTime(lr,localObjectFallback)>=mdSyncBranchTime(remoteMeta,childPath,remoteValue[key],remoteObjectFallback)) continue;
           out[key]=remoteValue[key];
         }
       }
@@ -208,7 +328,31 @@
       if(rec) out.fields[path]=rec;
     }
     out.fields=mdSyncTrimFields(out.fields);
+    out.history={};
+    for(const id of new Set([...Object.keys(l.history),...Object.keys(r.history)])){
+      const record=mdSyncMergeRecord(l.history[id],r.history[id],localFallback,remoteFallback);
+      if(record)out.history[id]=record;
+    }
+    out.history=mdSyncTrimFields(out.history);
+    const generation=mdSyncGeneration(l)||mdSyncGeneration(r);
+    if(generation)out.generation=Object.assign({},generation);
     return out;
+  }
+  function mdSyncMergeHistory(local,remote,localMeta,remoteMeta,mergedMeta){
+    const entries=new Map();
+    const time=(entry,meta)=>mdSyncRecordTime(meta.history[mdSyncHistoryId(entry)],null)||Number(entry&&entry.ts)||0;
+    for(const [source,meta] of [[local,localMeta],[remote,remoteMeta]])for(const entry of source){
+      const id=mdSyncHistoryId(entry),updatedAt=time(entry,meta),deleted=mergedMeta.history[id];
+      if(deleted&&deleted.deleted&&mdSyncRecordTime(deleted)>=updatedAt)continue;
+      const current=entries.get(id);
+      if(!current||updatedAt>current.updatedAt||(updatedAt===current.updatedAt&&mdSyncStable(entry)>mdSyncStable(current.entry)))entries.set(id,{entry,updatedAt});
+    }
+    return [...entries.values()].sort((a,b)=>{
+      const delta=(Number(b.entry&&b.entry.ts)||0)-(Number(a.entry&&a.entry.ts)||0);
+      if(delta)return delta;
+      const left=mdSyncStable(a.entry),right=mdSyncStable(b.entry);
+      return left===right?0:left>right?-1:1;
+    }).slice(0,100).map(item=>item.entry);
   }
   function mdSyncMergeSnapshots(localItems,remoteItems,localMetaMap,remoteMetaMap,localFallback,remoteFallback){
     if(window.__mdDailyStorage){
@@ -226,6 +370,15 @@
       const remoteHas=Object.prototype.hasOwnProperty.call(remoteItems||{},key);
       const lm=mdSyncNormalizeKeyMeta((localMetaMap||{})[key]);
       const rm=mdSyncNormalizeKeyMeta((remoteMetaMap||{})[key]);
+      const generationOrder=mdSyncCompareGenerations(lm,rm);
+      if(generationOrder){
+        // An offline old-generation client may keep editing, but its clocks
+        // cannot undo a later explicit reset or reintroduce old counters.
+        const newer=generationOrder>0?lm:rm,has=generationOrder>0?localHas:remoteHas;
+        itemMeta[key]=newer;
+        if(has)items[key]=generationOrder>0?localItems[key]:remoteItems[key];
+        continue;
+      }
       const mergedMeta=mdSyncMergeKeyMeta(lm,rm,localFallback,remoteFallback);
       itemMeta[key]=mergedMeta;
       if(localHas&&remoteHas){
@@ -234,7 +387,9 @@
         }
         if(localItems[key]===remoteItems[key]){items[key]=localItems[key];continue}
         const lp=mdSyncParse(localItems[key]),rp=mdSyncParse(remoteItems[key]);
-        if(lp.json&&rp.json&&mdSyncIsPlainObject(lp.value)&&mdSyncIsPlainObject(rp.value)){
+        if(mdSyncIsFocusHistoryKey(key)&&lp.json&&rp.json&&Array.isArray(lp.value)&&Array.isArray(rp.value)){
+          items[key]=JSON.stringify(mdSyncMergeHistory(lp.value,rp.value,lm,rm,mergedMeta));
+        }else if(lp.json&&rp.json&&mdSyncIsPlainObject(lp.value)&&mdSyncIsPlainObject(rp.value)){
           const merged=mdSyncMergeNode(lp.value,rp.value,[],lm,rm,localFallback,remoteFallback);
           items[key]=JSON.stringify(merged);
         }else{
@@ -409,5 +564,5 @@
     }
   };
 
-  window.__mdDriveSyncV2={mergeSnapshots:mdSyncMergeSnapshots,diff:mdSyncDiff,stable:mdSyncStable};
+  window.__mdDriveSyncV2={mergeSnapshots:mdSyncMergeSnapshots,diff:mdSyncDiff,stable:mdSyncStable,resetKey:mdSyncResetKey,historySessionId:mdSyncHistorySessionId};
 })();
