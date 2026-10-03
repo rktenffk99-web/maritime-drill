@@ -21,7 +21,7 @@ jobs:
   patch:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Rebuild and test final app
         run: bash tools/check_app.sh
       - name: Commit index update
