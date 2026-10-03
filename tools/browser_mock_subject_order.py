@@ -84,6 +84,20 @@ try:
             page.evaluate("grade=>{pastYearPickVariant='상선';pastVariant='상선';renderPastYearPick(grade,grade)}", grade)
             for field in page.locator('.past-allyears-subj-check').all():
                 field.set_checked(field.input_value() in SELECTED)
+            if grade == 'navi2':
+                assert page.evaluate("getPastExam('navi2',2023,1).questions.filter(q=>q['과목']==='법규'&&q['번호']===4).length===2")
+                # Force the known ambiguous source tuple into the draw if it was
+                # incorrectly allowed into the candidate pool before the quota.
+                page.evaluate("""()=>{
+                  window.__auditOriginalShuffle=shuffle;
+                  const bad=q=>q._short==='navi2'&&q._year===2023&&q['회차']===1&&q['과목']==='법규'&&q['번호']===4;
+                  shuffle=rows=>rows.slice().sort((a,b)=>Number(bad(b))-Number(bad(a)));
+                }""")
+                try:
+                    page.evaluate("startPastAllYearsSession('mock')")
+                    check_paper(page, SELECTED, 'navi2: all-years mock filters ambiguous source tuples before drawing 25 per subject')
+                finally:
+                    page.evaluate('shuffle=window.__auditOriginalShuffle;delete window.__auditOriginalShuffle')
             page.evaluate("startPastAllYearsSession('mock')")
             check_paper(page, SELECTED, f'{grade}: all-years mock uses the same subject order')
             page.evaluate('(grade)=>renderPastYearPick(grade,grade)', grade)

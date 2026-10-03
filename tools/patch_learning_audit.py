@@ -29,6 +29,14 @@ function mdSourceQuestionUsable(exam,q){return mdQuestionUsable(q)&&!mdSourceQue
 '''
     if 'function mdSourceQuestionContentIssue(exam,q)' not in text:
         replace_once('function mdQuestionContentIssue(q){return window.__mdLearningIntegrity.contentIssue(q)}\n', source_guard)
+    # All-years sampling visits undecorated rows, so pass their source exam explicitly.
+    # Year-pick and single-session sampling already attach source coordinates first.
+    replace_once(
+        "  exams.forEach(p => p.questions.forEach(q => {\n"
+        "    if(!filterSet.has(q['과목'])||!mdQuestionUsable(q)) return;",
+        "  exams.forEach(p => p.questions.forEach(q => {\n"
+        "    if(!filterSet.has(q['과목'])||!mdSourceQuestionUsable(p,q)) return;",
+    )
     replace_once(
         "      if(q&&mdQuestionUsable(q))return {...q,_year:hit.year",
         "      if(q&&!mdSourceQuestionUsable(exam,q))continue;\n"

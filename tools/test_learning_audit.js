@@ -55,6 +55,12 @@ function sourceQuestion(){
   vm.runInContext(zlib.gunzipSync(Buffer.from(m[1].trim(),'base64')).toString('utf8'),s);
   return s.MD_PAST['2026-navi3-3'].questions.find(q=>q['과목']==='법규'&&q['번호']===20);
 }
+function loadRealBundles(s){
+  for(const m of html.matchAll(/<script[^>]+id=["']md-bundle-([^"']+)["'][^>]*>([\s\S]*?)<\/script>/g)){
+    if(!/^past-(?:\d{4}-navi[23](?:e)?-\d+|analysis-navi[23])_js$/.test(m[1]))continue;
+    vm.runInContext(zlib.gunzipSync(Buffer.from(m[2].trim(),'base64')).toString('utf8'),s);
+  }
+}
 let passed=0;
 async function test(name,fn){await fn();passed++;console.log('PASS '+name)}
 (async()=>{
@@ -134,10 +140,7 @@ async function test(name,fn){await fn();passed++;console.log('PASS '+name)}
   });
   await test('real 2/3-grade pools still provide full balanced papers with unique source IDs',async()=>{
     const {s}=harness();
-    for(const m of html.matchAll(/<script[^>]+id=["']md-bundle-([^"']+)["'][^>]*>([\s\S]*?)<\/script>/g)){
-      if(!/^past-(?:\d{4}-navi[23](?:e)?-\d+|analysis-navi[23])_js$/.test(m[1]))continue;
-      vm.runInContext(zlib.gunzipSync(Buffer.from(m[2].trim(),'base64')).toString('utf8'),s);
-    }
+    loadRealBundles(s);
     for(const name of ['balanced-mock.js','reported-content-fixes.js'])vm.runInContext(fs.readFileSync(path.join(root,name),'utf8'),s);
     s.getPastExam=(grade,year,session)=>s.MD_PAST[`${year}-${grade}-${session}`];
     s.n3aData=grade=>s.MD_NAVI_FREQUENCY[grade];s.ensureNavi3FrequencyData=async grade=>s.n3aData(grade);
@@ -158,6 +161,49 @@ async function test(name,fn){await fn();passed++;console.log('PASS '+name)}
           assert.equal(new Set(ids).size,25,`${grade} ${subject} paper ${run}`);
         }
       }
+    }
+  });
+  await test('source filtering precedes every ordinary mock quota across forced draws and random seeds',async()=>{
+    const {s}=harness();loadRealBundles(s);
+    const all=['항해','운용','법규','영어','상선전문'];
+    s.Math=Object.create(Math);s.baseFromShort=short=>short.replace(/e$/,'');
+    s.variantMatches=(short,variant)=>variant==='all'||(variant==='상선'&&!short.endsWith('e'));
+    s.PAST_MOCK_PER_SUBJECT=25;s.NAVI_ANALYSIS_GRADES=[];s.pastVariant='상선';s.pastYearPickVariant='상선';
+    s.document.querySelectorAll=selector=>selector.includes('past-year-check')?[{value:'2023'}]:all.map(value=>({value,checked:true}));
+    function section(start,end){const a=html.indexOf(start),b=html.indexOf(end,a);assert.ok(a>=0&&b>a);return html.slice(a,b)}
+    vm.runInContext(section('function getPastExamsByBase(', '// ── v5.00:'),s);
+    vm.runInContext(section('function orderNavigatorMockQuestions(', 'function pastQuestionsMatch('),s);
+    vm.runInContext(html.match(/function shuffle\(a\)\{[^\n]+/)[0],s);
+    vm.runInContext(section('async function startPastYearPickSession(', '// v4.44: 전 년도'),s);
+    const allYears=section('async function startPastAllYearsSession(', '// v4.38: renderPastSubjectAggregate');
+    vm.runInContext(allYears,s);
+    vm.runInContext(section('async function startPastSession(', 'function mdQuestionContentIssue('),s);
+    s.getPastExamsForSession=(grade,year,session,variant)=>s.getPastExamsByBase(grade,variant).filter(exam=>exam.meta.year===year&&exam.meta.session===session);
+    const shuffle=s.shuffle,bad=q=>q._short==='navi2'&&q._year===2023&&q['회차']===1&&q['과목']==='법규'&&q['번호']===4;
+    s.shuffle=rows=>rows.slice().sort((a,b)=>Number(bad(b))-Number(bad(a)));
+    s.pastBaseShort='navi2';let beforeGuard=0,afterGuard=0;
+    s.renderPastCard=()=>{beforeGuard=s.pastQueue.length;s.mdGuardPastQueue();afterGuard=s.pastQueue.length};
+    // The old raw-row guard cannot resolve the source exam and draws both ambiguous rows.
+    vm.runInContext(allYears.replace('mdSourceQuestionUsable(p,q)','mdQuestionUsable(q)'),s);
+    await s.startPastAllYearsSession('mock');assert.equal(beforeGuard,125);assert.ok(afterGuard<125,'legacy quota loses source questions after drawing');
+    vm.runInContext(allYears,s);
+    s.renderPastCard=()=>{const count=s.pastQueue.length;s.mdGuardPastQueue();assert.equal(s.pastQueue.length,count,'nothing is removed after quota selection')};
+    await s.startPastAllYearsSession('mock');assert.equal(s.pastQueue.length,125);assert.ok(s.pastQueue.every(q=>!bad(q)));
+    s.shuffle=shuffle;
+    const id=q=>`${q._short}|${q._year}|${q['회차']}|${q['과목']}|${q['번호']}`;
+    function paper(grade,subjects,counts){
+      const expected=subjects.flatMap(subject=>Array(counts?.[subject]??25).fill(subject));
+      assert.equal(JSON.stringify(s.pastQueue.map(q=>q['과목'])),JSON.stringify(expected),grade);
+      assert.equal(new Set(s.pastQueue.map(id)).size,s.pastQueue.length,grade);
+      assert.ok(s.pastQueue.every(s.mdQuestionUsable));
+    }
+    for(const grade of ['navi2','navi3'])for(let run=1;run<=12;run++){
+      let seed=run;s.Math.random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296};
+      s.pastBaseShort=grade;
+      await s.startPastAllYearsSession('mock');paper(grade,all);
+      await s.startPastYearPickSession('mock');paper(grade,all);
+      s.pastYear=2026;s.pastSession=Math.max(...s.getPastExamsByBase(grade,'상선').filter(exam=>exam.meta.year===2026).map(exam=>exam.meta.session));
+      await s.startPastSession('mock','법규');paper(grade,['법규'],{'법규':grade==='navi3'?24:25});
     }
   });
   console.log(`learning audit regressions: PASS (${passed} cases)`);

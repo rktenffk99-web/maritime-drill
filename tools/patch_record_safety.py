@@ -178,6 +178,12 @@ function mergeImportedBackupEntries(entries,backup){
             "      if(!window.__mdDriveSyncV2.resetKey(PROGRESS_KEY,'{}','합격 플랜 진도'))return;safeStorageSet(DAILY_KEY,'{}','합격 플랜 오늘 숙제');ppClearPassSessionCheckpoint();")
     replace("hist.unshift({ts:Date.now(),subjectId:", "hist.unshift({sessionId:driveSyncNewDeviceId(),ts:Date.now(),subjectId:")
     replace("()=>{saveFocusHistory([]);renderHome();}", "()=>{if(!window.__mdDriveSyncV2.resetKey(focusHistoryKey(),'[]','집중 학습 기록'))return;renderHome();}")
+    # Legacy generators retain their anchors and can append this sentence and
+    # spacer lines on every rebuild. Keep the checked-in final artifact stable.
+    spacing_note='세션 끝부분은 최소 15문제 간격을 확보하고, 여유가 없으면 다음 날 재확인합니다.'
+    text=re.sub(re.escape(spacing_note)+r'(?:\s+'+re.escape(spacing_note)+r')+',spacing_note,text)
+    for anchor in ['  const ppBuildTodayAssignmentBeforeSubjectBalance=', '  window.startNavigatorWeakDrill=']:
+        text=re.sub(r'\n{3,}(?='+re.escape(anchor)+r')','\n\n',text)
     text=re.sub(r"const APP_VERSION = '[^']+';", "const APP_VERSION = '5.19';", text, count=1)
     text=re.sub(r'<title>Maritime Drill v[\d.]+ · Android</title>', '<title>Maritime Drill v5.19 · Android</title>', text, count=1)
     text=re.sub(r'<script src="(keyboard-controls|convenience-controls)\.js(?:\?v=[^"]*)?"></script>', lambda m: f'<script src="{m[1]}.js?v=5.19"></script>', text)
