@@ -111,6 +111,19 @@ try:
     touched=page.evaluate("""()=>Object.entries(JSON.parse(localStorage.getItem('md_nav23_pass_progress_v1')||'{}')).filter(([k,v])=>v&&v.lastPracticeMode==='predictive-mock').map(([k])=>k)""")
     assert touched==[submitted_key],touched
     assert '4점' in page.locator('#md-predictive-analysis').inner_text()
+    page.wait_for_selector('#md-past-review-slot .md-past-review-question')
+    assert page.locator('#md-past-review-slot .md-past-review-question').count()==1
+    assert page.locator('#md-past-review-progress').inner_text().strip()=='1 / 74'
+    first_source=page.locator('#md-past-review-slot .md-past-review-question').get_attribute('data-source-index')
+    assert page.locator('#md-past-review-prev').is_disabled()
+    assert not page.locator('#md-past-review-next').is_disabled()
+    page.locator('#md-past-review-next').click()
+    assert page.locator('#md-past-review-progress').inner_text().strip()=='2 / 74'
+    assert page.locator('#md-past-review-slot .md-past-review-question').get_attribute('data-review-index')=='1'
+    assert page.locator('#md-past-review-slot .md-past-review-question').get_attribute('data-source-index')!=first_source
+    page.locator('#md-past-review-prev').click()
+    assert page.locator('#md-past-review-progress').inner_text().strip()=='1 / 74'
+    report['cases'].append('result review shows exactly one wrong question at a time with previous/next paging')
     assert page.evaluate("localStorage.getItem('md_mock_exposure_v1')")==saved_exposure
     next_button=page.get_by_role('button',name='새 실전 모의',exact=True)
     assert next_button.get_attribute('onclick')=="startNavigatorPassPlanMock('navi3')"
