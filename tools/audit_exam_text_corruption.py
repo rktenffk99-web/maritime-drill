@@ -14,6 +14,11 @@ KEYWORDS = [
     "선저여유수심",
     "침하량",
     "방형계수",
+    "ensureNavi3FrequencyData",
+    "getPastExam",
+    "MD_NAVI_FREQUENCY",
+    "pastExam",
+    "frequency",
 ]
 
 SUSPICIOUS = {
