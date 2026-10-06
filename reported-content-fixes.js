@@ -99,6 +99,27 @@
     return null;
   }
 
+  // PDF page footer (e.g. "- 4 -" / "4 -") was sometimes concatenated
+  // to the final answer choice during text extraction. In the source corpus
+  // every verified occurrence is on the last choice, never in the stem.
+  const PDF_FOOTER_SUFFIX_RE=/\s+(?:[1-9]|1[01])\s*-\s*$/;
+
+  function stripPdfFooterArtifact(value){
+    const source=String(value==null?'':value);
+    return source.replace(PDF_FOOTER_SUFFIX_RE,'').trimEnd();
+  }
+
+  function patchPdfFooterArtifact(obj){
+    const choices=getChoices(obj);
+    if(!choices||!choices.length)return false;
+    const i=choices.length-1;
+    if(typeof choices[i]!=='string')return false;
+    const fixed=stripPdfFooterArtifact(choices[i]);
+    if(fixed===choices[i])return false;
+    choices[i]=fixed;
+    return true;
+  }
+
   function setChoices(obj,items){
     const choices=getChoices(obj);
     if(!choices||choices.length!==items.length)return false;
@@ -689,6 +710,7 @@
       if(typeof current==='string')value[key]=fixString(current);
       else patchObject(current,visited);
     }
+    patchPdfFooterArtifact(value);
     patchVerifiedFormulaQuestion(value);
     return value;
   }
@@ -802,7 +824,8 @@
 
   global.__mdReportedContentFixes={
     fixString,normalizeEquationGlyphs,normalizeFormulaArtifacts,patchObject,patchKnownData,
-    patchVerifiedFormulaQuestion,auditKnownData,collectBrokenGlyphs,replacements:REPLACEMENTS,
+    patchVerifiedFormulaQuestion,patchPdfFooterArtifact,stripPdfFooterArtifact,
+    auditKnownData,collectBrokenGlyphs,replacements:REPLACEMENTS,
     equationCharMap:EQUATION_CHAR_MAP
   };
 
