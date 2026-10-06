@@ -44,8 +44,15 @@ jobs:
           git commit -m 'Apply tested app patches'
 
           # A newer commit can still arrive between the stale check and push.
-          # Treat that as superseded work rather than a failed build.
+          # Ignore only a genuine superseded push; do not hide auth/network failures.
           if ! git push origin "HEAD:${GITHUB_REF_NAME}"; then
-            echo 'Remote advanced while this run was finishing. A newer run owns the final rebuild.'
-            exit 0
+            parent_sha="$(git rev-parse HEAD^)"
+            git fetch origin "+refs/heads/${GITHUB_REF_NAME}:refs/remotes/origin/${GITHUB_REF_NAME}"
+            remote_sha="$(git rev-parse "origin/${GITHUB_REF_NAME}")"
+            if [ "$remote_sha" != "$parent_sha" ]; then
+              echo 'Remote advanced while this run was finishing. A newer run owns the final rebuild.'
+              exit 0
+            fi
+            echo 'Push failed without a newer remote commit; treating as a real CI failure.'
+            exit 1
           fi
