@@ -75,6 +75,15 @@ assert.deepStrictEqual(
 );
 assert.strictEqual(squat['정답'],0);
 assert.strictEqual(context.window.__mdReportedContentFixes.fixString('\uE012 \uE047 \uE002\uE0E6'),'S = Cb');
+const grainClean='탱크 내의 Free surface effects를 수정한 후의 메타센터높이(G₀M)는 0.15m 이상일 것';
+assert.strictEqual(
+  context.window.__mdReportedContentFixes.fixString('탱크 내의 Free surface effects를 수정한 후 □ 의 메타센터높이(□□)는 0.15m 이상일 것 □'),
+  grainClean
+);
+assert.strictEqual(
+  context.window.__mdReportedContentFixes.fixString('탱크 내의 Free surface effects를 수정한 후 \uE06D 의 메타센터높이(\uE006\uE00C)는 0.15m 이상일 것 \uE0F3'),
+  grainClean
+);
 const audit=context.window.__mdReportedContentFixes.auditKnownData();
 assert.strictEqual(audit.navi2.length,0);
 
