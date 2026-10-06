@@ -50,7 +50,7 @@ assert(navi3.q7.includes('총톤수 100톤 이상'));
 assert(!navi3.q7.includes('모든 선박이 비치해야'));
 assert(context.window.MD_DATA.navi2.q5.includes('적절한 묘쇄'));
 
-const fixedLaw25=context.window.MD_PAST['2025-navi2-1'].questions[0];
+const fixedLaw25=context.window.getPastExam().questions[0];
 assert(fixedLaw25['문제'].includes('선박은 기적'));
 assert(fixedLaw25['문제'].includes('혼동되지 아니하는'));
 assert(fixedLaw25['문제'].includes('두어야 한다'));
