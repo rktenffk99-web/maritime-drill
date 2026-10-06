@@ -51,7 +51,6 @@
   function patchKnownData(){
     if(global.MD_NAVI_FREQUENCY)patchObject(global.MD_NAVI_FREQUENCY);
     if(global.MD_DATA)patchObject(global.MD_DATA);
-    if(global.MD_PAST)patchObject(global.MD_PAST);
   }
 
   function installFrequencyHook(){
@@ -74,7 +73,6 @@
     function wrappedGetPastExam(){
       const result=original.apply(this,arguments);
       patchObject(result);
-      patchKnownData();
       return result;
     }
     wrappedGetPastExam.__mdReportedTextFix=true;
