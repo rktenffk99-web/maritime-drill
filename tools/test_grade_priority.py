@@ -44,13 +44,21 @@ assert 'deferredStrongReviewCount,rotationPolicy:' in body
 assert "rotationPolicy:'knowledge-gap-priority-v4-dedupe'" in body
 assert "assignmentPolicy:'knowledge-gap-priority-v6-coverage-balanced'" in text
 
-# High-accuracy mastered questions get longer intervals.
+# Mature mastered questions get progressively longer intervals, capped near the exam.
 commit=re.search(r"function ppCommitOutcome\(q,answer,confidence\)\{.*?\n  \}",text,re.S)
 assert commit, 'commit outcome missing'
 c=commit.group(0)
-assert 'accuracy>=0.90' in c and 'interval=14' in c
-assert 'accuracy>=0.80' in c and 'interval=7' in c
-assert 'accuracy>=0.70' in c and 'interval=5' in c
+assert "reviewSpacingPolicy:'review-spacing-v3-mastery-ladder'" in text
+for needle in [
+    'reviews>=5&&attempts>=7&&sureRate>=0.90)interval=30;',
+    'reviews>=4&&attempts>=6&&sureRate>=0.85)interval=21;',
+    'reviews>=3&&attempts>=5&&sureRate>=0.80)interval=14;',
+    'reviews>=2&&attempts>=4&&sureRate>=0.75)interval=7;',
+    'accuracy>=0.70)interval=5;',
+    'if(dday<=7)interval=Math.min(interval,3);',
+    'else if(dday<=21)interval=Math.min(interval,7);',
+]:
+    assert needle in c, f'adaptive spacing missing: {needle}'
 
 # Grade ratio stays exact.
 helper=re.search(r"function ppPriorityProfile\(plan,today\)\{.*?\n  \}",text,re.S)

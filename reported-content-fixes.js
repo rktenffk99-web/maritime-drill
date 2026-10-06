@@ -13,6 +13,10 @@
     ['옳지않은','옳지 않은'],
     ['위하여한쪽','위하여 한쪽'],
     ['다른선박','다른 선박'],
+    // 2025년 1회 2급 법규 Q25 신고: 정답(20m, 100m)은 맞고 원문 띄어쓰기가 깨져 있었다.
+    ['선박은기적','선박은 기적'],
+    ['혼동되지아니하는','혼동되지 아니하는'],
+    ['두어야한다','두어야 한다'],
     ['MARPOL Annex V에 따라 모든 선박이 비치해야 하는 법정 장부.','MARPOL Annex V에 따라 총톤수 100톤 이상 선박, 일정 조건의 15인 이상 승선 선박 및 고정·부유식 플랫폼 등에 비치가 요구되는 법정 장부.']
   ]);
 
@@ -63,6 +67,19 @@
     global.ensureNavi3FrequencyData=wrappedEnsureNavi3FrequencyData;
   }
 
+  function installPastExamHook(){
+    const original=global.getPastExam;
+    if(typeof original!=='function'||original.__mdReportedTextFix)return;
+    function wrappedGetPastExam(){
+      const result=original.apply(this,arguments);
+      patchObject(result);
+      return result;
+    }
+    wrappedGetPastExam.__mdReportedTextFix=true;
+    wrappedGetPastExam.__mdReportedTextFixOriginal=original;
+    global.getPastExam=wrappedGetPastExam;
+  }
+
   function patchDom(root){
     if(!root||typeof document==='undefined'||!document.createTreeWalker)return;
     const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
@@ -99,6 +116,7 @@
 
   patchKnownData();
   installFrequencyHook();
+  installPastExamHook();
 
   global.__mdReportedContentFixes={fixString,patchObject,patchKnownData,replacements:REPLACEMENTS};
 
