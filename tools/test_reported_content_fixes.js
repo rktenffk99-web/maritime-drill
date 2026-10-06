@@ -3,6 +3,13 @@ const vm=require('vm');
 const assert=require('assert');
 
 const source=fs.readFileSync('reported-content-fixes.js','utf8');
+const law25={
+  '번호':25,
+  '과목':'법규',
+  '문제':'( )에 순서대로 적합한 것은? "국제해상충돌방지규칙상 길이 ( ) 이상의 선박은기적 1개와 호종 1개를 갖추어 두어야 하며, 길이 ( ) 이상의 선박은 이에 덧붙여 호종과 혼동되지아니하는 음조와 소리를 가진 징을 갖추어 두어야한다."',
+  '선택지':['12미터, 50미터','12미터, 100미터','20미터, 50미터','20미터, 100미터'],
+  '정답':3
+};
 const context={
   window:{
     MD_NAVI_FREQUENCY:{navi3:{
@@ -14,11 +21,14 @@ const context={
       q6:'• ㉴ Garbage recycling on board / • ㉵ Discharge to a port reception facility',
       q7:'garbage record book → MARPOL Annex V에 따라 모든 선박이 비치해야 하는 법정 장부. 쓰레기 처리 내역을 기재.'
     }},
-    MD_DATA:{navi2:{q5:'Stockless anchor의 적절한묘쇄 신출량은 수심의 몇 배인가?'}}
+    MD_DATA:{navi2:{q5:'Stockless anchor의 적절한묘쇄 신출량은 수심의 몇 배인가?'}},
+    MD_PAST:{'2025-navi2-1':{questions:[law25]}},
+    getPastExam(){return this.MD_PAST['2025-navi2-1'];}
   },
   document:{readyState:'loading',addEventListener(){},getElementById(){return null},body:null},
   WeakSet,Object,String,console
 };
+context.getPastExam=context.window.getPastExam.bind(context.window);
 
 vm.createContext(context);
 vm.runInContext(source,context);
@@ -39,5 +49,12 @@ assert(!navi3.q6.includes('㉵'));
 assert(navi3.q7.includes('총톤수 100톤 이상'));
 assert(!navi3.q7.includes('모든 선박이 비치해야'));
 assert(context.window.MD_DATA.navi2.q5.includes('적절한 묘쇄'));
+
+const fixedLaw25=context.window.MD_PAST['2025-navi2-1'].questions[0];
+assert(fixedLaw25['문제'].includes('선박은 기적'));
+assert(fixedLaw25['문제'].includes('혼동되지 아니하는'));
+assert(fixedLaw25['문제'].includes('두어야 한다'));
+assert.strictEqual(fixedLaw25['정답'],3);
+assert.strictEqual(fixedLaw25['선택지'][3],'20미터, 100미터');
 
 console.log('reported-content-fixes tests: PASS');
