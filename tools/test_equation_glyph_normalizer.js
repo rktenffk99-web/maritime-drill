@@ -19,8 +19,13 @@ assert.ok(fixes && typeof fixes.fixString==='function','content fixer did not in
 
 const bundleRe=/<script\s+type="application\/gzip"\s+id="(md-bundle-[^"]+)">\s*([A-Za-z0-9+/=\r\n]+?)\s*<\/script>/gs;
 const target=/^past-(20\d{2})-navi([123])(?:e)?-(\d+)\.js$/;
+const analysisTarget=/^past-analysis-navi([123])\.js$/;
 const beforeByGrade={1:0,2:0,3:0};
+const analysisBeforeByGrade={1:0,2:0,3:0};
 let targetBundles=0;
+let analysisBundles=0;
+
+assert.match(index,/reported-content-fixes\.js/,'index.html does not load reported-content-fixes.js');
 
 function bundleName(id){
   let name=id.replace(/^md-bundle-/,'');
@@ -34,10 +39,16 @@ function puaCount(text){
 for(const match of index.matchAll(bundleRe)){
   const name=bundleName(match[1]);
   const m=name.match(target);
-  if(!m)continue;
-  targetBundles++;
+  const a=name.match(analysisTarget);
+  if(!m && !a)continue;
   const raw=zlib.gunzipSync(Buffer.from(match[2].replace(/\s+/g,''),'base64')).toString('utf8');
-  beforeByGrade[m[2]]+=puaCount(raw);
+  if(m){
+    targetBundles++;
+    beforeByGrade[m[2]]+=puaCount(raw);
+  }else{
+    analysisBundles++;
+    analysisBeforeByGrade[a[1]]+=puaCount(raw);
+  }
   vm.runInContext(raw,sandbox,{filename:name});
 }
 
