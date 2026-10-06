@@ -40,6 +40,7 @@ python tools/patch_readiness_algorithms.py
 python tools/patch_record_safety.py
 python tools/patch_learning_audit.py
 python tools/patch_safe_learning_render.py
+python tools/patch_review_spacing_v3.py
 node tools/test_navi2_reviewed.js
 node tools/test_balanced_mock.js
 python tools/test_predictive_mock.py
