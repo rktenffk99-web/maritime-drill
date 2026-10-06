@@ -1,0 +1,18 @@
+'use strict';
+const fs=require('node:fs'),assert=require('node:assert/strict');
+const html=fs.readFileSync('index.html','utf8');
+const start=html.indexOf('function renderPastResult(){');
+const end=html.indexOf('\nfunction escapeHtml(',start);
+assert.ok(start>=0&&end>start,'renderPastResult missing');
+const marker=html.lastIndexOf('// md-past-result-pager-v1',start);
+assert.ok(marker>=0,'mock result pager marker missing');
+const source=html.slice(marker,end);
+assert.match(source,/id="md-past-review-shell"/);
+assert.match(source,/id="md-past-review-slot"/);
+assert.match(source,/id="md-past-review-progress"/);
+assert.match(source,/stepPastResultReview\(-1\)/);
+assert.match(source,/stepPastResultReview\(1\)/);
+assert.match(source,/showPastResultReview\(0\)/);
+assert.doesNotMatch(source,/wrongs\.slice\(0,30\)/);
+assert.doesNotMatch(source,/상위 30개만 표시/);
+console.log('mock result one-question pager: PASS');
