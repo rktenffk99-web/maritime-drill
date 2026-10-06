@@ -54,7 +54,7 @@ window.showPastResultReview=function(index){
 window.stepPastResultReview=function(delta){
   const state=window.__mdPastResultReview;
   if(!state)return;
-  showPastResultReview((Number(state.index)||0)+(Number(delta)||0));
+  window.showPastResultReview((Number(state.index)||0)+(Number(delta)||0));
 };
 
 '''
@@ -94,7 +94,7 @@ window.stepPastResultReview=function(delta){
     replacement="""  `;
   if(wrongs.length){
     window.__mdPastResultReview={indices:wrongs.map(row=>row.i),index:0};
-    showPastResultReview(0);
+    if(typeof window.showPastResultReview==='function')window.showPastResultReview(0);
   }else{
     window.__mdPastResultReview=null;
   }
