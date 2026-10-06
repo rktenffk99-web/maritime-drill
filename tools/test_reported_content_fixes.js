@@ -22,7 +22,16 @@ const context={
       q7:'garbage record book → MARPOL Annex V에 따라 모든 선박이 비치해야 하는 법정 장부. 쓰레기 처리 내역을 기재.'
     }},
     MD_DATA:{navi2:{q5:'Stockless anchor의 적절한묘쇄 신출량은 수심의 몇 배인가?'}},
-    MD_PAST:{'2025-navi2-1':{questions:[law25]}},
+    MD_PAST:{
+      '2025-navi2-1':{questions:[law25]},
+      '2022-navi2-3':{questions:[{
+        '번호':47,
+        '과목':'운용',
+        '문제':'선저여유수심이 충분한 해역에서 스쿼팅(Squatting) 현상에 의한 선체 침하량을 구하는 식을 옳게 표현한 것은?[단, S: 침하량(m), C: 방형계수, V: 선속(kn)] b',
+        '선택지':['\uE012 \uE047 \uE002\uE0E6 × \uE015 \uE054\uE034\uE03D\uE03D \uE035','\uE012 \uE047 \uE002\uE0E6 × \uE015\uE054\uE034\uE03D\uE03D','\uE012 \uE047 \uE002\uE0E6\uE035 × \uE015 \uE035\uE054\uE034\uE03D','\uE012 \uE047 \uE002\uE0E6\uE035 × \uE015\uE054\uE034\uE03D'],
+        '정답':0
+      }]}
+    },
     getPastExam(){return this.MD_PAST['2025-navi2-1'];}
   },
   document:{readyState:'loading',addEventListener(){},getElementById(){return null},body:null},
@@ -56,5 +65,17 @@ assert(fixedLaw25['문제'].includes('혼동되지 아니하는'));
 assert(fixedLaw25['문제'].includes('두어야 한다'));
 assert.strictEqual(fixedLaw25['정답'],3);
 assert.strictEqual(fixedLaw25['선택지'][3],'20미터, 100미터');
+
+const squat=context.window.MD_PAST['2022-navi2-3'].questions[0];
+assert(squat['문제'].includes('Cb: 방형계수'));
+assert(!squat['문제'].endsWith(' b'));
+assert.deepStrictEqual(
+  Array.from(squat['선택지']),
+  ['S = Cb × V² / 100','S = Cb × V / 100','S = Cb² × V² / 10','S = Cb² × V / 10']
+);
+assert.strictEqual(squat['정답'],0);
+assert.strictEqual(context.window.__mdReportedContentFixes.fixString('\uE012 \uE047 \uE002\uE0E6'),'S = Cb');
+const audit=context.window.__mdReportedContentFixes.auditKnownData();
+assert.strictEqual(audit.navi2.length,0);
 
 console.log('reported-content-fixes tests: PASS');
