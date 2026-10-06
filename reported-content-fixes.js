@@ -113,6 +113,249 @@
     const answer=Number(obj['정답']??obj.answer);
     let changed=false;
 
+    // 1급: 해수 비중 변화에 따른 흘수 변화량.
+    if(/Tons per centimeter immersion/.test(q)&&/흘수 변화량/.test(q)&&/해수비중/.test(q)){
+      setQuestionText(obj,'배수량 W, Tcm(Tons per centimeter immersion)인 선박이 해수비중 ρ₁인 해역에서 해수비중 ρ₂인 수역으로 입항할 때 흘수 변화량을 계산하는 식은?');
+      setChoices(obj,[
+        '(W / Tcm) × (1 − ρ₁ / ρ₂)',
+        '(W / Tcm) × (1.025 / ρ₂ − 1.025 / ρ₁)',
+        '(W / Mcm) × (1 − ρ₁ / ρ₂)',
+        '(W / Mcm) × (1.025 / ρ₂ − 1.025 / ρ₁)'
+      ]);
+      changed=true;
+    }
+
+    // 1급: 일정 연료량에서의 항속거리.
+    if(/항속거리를 구하는 식/.test(q)&&/주기관용 연료/.test(q)&&/사용할 수 있는 연료/.test(q)){
+      setQuestionText(obj,'일정한 양의 연료를 보유한 선박이 속력 V로 항주할 때 항속거리 D를 구하는 식은? (단, Q: 속력 V에서 1일 주기관 연료소비량, M: 1일 잡용연료량, F: 사용 가능한 연료량)');
+      setChoices(obj,[
+        'D = V × 12 × F / (M + Q)',
+        'D = V × 24 × F / (M + Q)',
+        'D = V × 12 × F × M + Q',
+        'D = V × 24 × F × M + Q'
+      ]);
+      changed=true;
+    }
+
+    // 1급: 기온·수온 차이에 따른 초인거리 개정값.
+    if(/기온이 수온보다 높은 경우/.test(q)&&/개정값/.test(q)){
+      setQuestionText(obj,'해도상 광달거리로부터 등화의 초인거리를 구할 때 기온이 수온보다 높은 경우의 개정값 공식은? (단, tₐ: 기온, tᵥ: 수온)');
+      setChoices(obj,[
+        '0.28(tᵥ − tₐ)',
+        '2 × 0.28(tᵥ − tₐ)',
+        '0.28(tₐ − tᵥ)',
+        '2 × 0.28(tₐ − tᵥ)'
+      ]);
+      changed=true;
+    }
+
+    // 1급: 정률법 감가상각 — 잔존가액 10% 가정.
+    if(/정률법에 의한 감가상각액 계산식/.test(q)){
+      setQuestionText(obj,'선박의 사용년수에 따른 정률법의 상각비율 r을 정하는 식은? (단, A: 취득선가, n: 내용년수, 잔존가액은 취득선가의 10%)');
+      setChoices(obj,[
+        'A(1 + r)ⁿ / A = 1/10',
+        'A(1 + r)ⁿ / A = 1/20',
+        'A(1 − r)ⁿ / A = 1/10',
+        'A(1 − r)ⁿ / A = 1/20'
+      ]);
+      changed=true;
+    }
+
+    // 1급: 교차방위법 선위 정밀도. 과거 1급 원문과 대조.
+    if(/교차방위법/.test(q)&&/선위의 정밀도 K/.test(q)){
+      setQuestionText(obj,'연안항해 중 A, B 두 물표의 방위를 측정하여 교차방위법으로 위치를 구했을 때 선위의 정밀도 K를 나타내는 식은? (단, 두 물표까지의 거리 d₁, d₂, 두 방위선의 교각 θ)');
+      setChoices(obj,[
+        'K ∝ sin θ / (d₁ × d₂)',
+        'K ∝ (d₁ × d₂) × sin θ',
+        'K ∝ (d₁ × d₂) / sin θ',
+        'K ∝ (d₁ × sin θ) / d₂'
+      ]);
+      changed=true;
+    }
+
+    // 1급: 선수방위별 자차식.
+    if(/선수방위에 따른 자차량/.test(q)){
+      setQuestionText(obj,'선수방위에 따른 자차량을 나타내는 공식으로 옳지 않은 것은? (단, δ: 자차, A·B·C·D·E: 자차계수)');
+      setChoices(obj,[
+        '선수방위가 동(E)일 때 δ = A + B + E',
+        '선수방위가 서(W)일 때 δ = A − B − E',
+        '선수방위가 남(S)일 때 δ = A − C + E',
+        '선수방위가 북(N)일 때 δ = A + C + E'
+      ]);
+      changed=true;
+    }
+
+    // 1급: 점장위도항법 관계식.
+    if(/점장위도항법/.test(q)&&/점장변위/.test(q)){
+      setQuestionText(obj,'점장위도항법에서 변위 ℓ, 변경 DLo, 동서거 p, 점장변위 m, 침로 C, 항정 D의 관계로 옳지 않은 것은?');
+      setChoices(obj,[
+        'D = ℓ sec C',
+        'p = DLo cos C',
+        'ℓ = D cos C',
+        'DLo = m tan C'
+      ]);
+      changed=true;
+    }
+
+    // 1급: 장방형 수선면의 길이방향 관성모멘트.
+    if(/장방형 구조물/.test(q)&&/길이방향의 관성모멘트/.test(q)){
+      setQuestionText(obj,'길이 L, 폭 B인 장방형 구조물의 중심을 지나는 길이방향 축에 대한 관성모멘트는?');
+      setChoices(obj,[
+        'I = LB² / 12',
+        'I = LB³ / 12',
+        'I = BL² / 12',
+        'I = BL³ / 12'
+      ]);
+      changed=true;
+    }
+
+    // 1급: 자동조타 PID형 타각식.
+    if(/자동조타장치에서 타각/.test(q)&&/비례상수/.test((getChoices(obj)||[]).join(' '))){
+      setQuestionText(obj,'자동조타장치에서 타각 μ를 정하는 식 μ = −(Nθ + R·dθ/dt + I∫θdt)에 관한 설명으로 옳지 않은 것은?');
+      const choices=getChoices(obj);
+      if(choices){
+        choices[0]='비례상수 N, R, I는 작으면 작을수록 좋다.';
+        choices[1]='I는 정상편차를 조정하기 위한 비례상수이다.';
+        choices[2]='θ는 설정 침로에서 벗어난 각도, 즉 편각을 말한다.';
+        choices[3]='R은 조정 가능한 상수이고 R을 조정하는 것을 레이트(Rate) 조정이라고 한다.';
+      }
+      changed=true;
+    }
+
+    // 1급: 극상정중 관측 조건.
+    if(/극상정중을 관측할 수 있는 조건/.test(q)){
+      setQuestionText(obj,'위도 L과 적위 d가 이명일 때 광력이 약한 혹성이나 항성의 극상정중을 관측할 수 있는 조건은?');
+      setChoices(obj,['d < 80° − L','d < 90° − L','L > 90° − d','L > 100° − d']);
+      changed=true;
+    }
+
+    // 1급: 등대 지리학적 광달거리.
+    if(/등대가 수평선상에 처음 보일 때/.test(q)&&/지리학적/.test(q)){
+      setQuestionText(obj,'등대가 수평선상에 처음 보일 때 등대까지의 지리학적 광달거리를 계산하는 식으로 옳은 것은? (단, h: 안고(m), H: 등대 높이(m), D: 광달거리(해리))');
+      setChoices(obj,[
+        'D = 1.144(H + h)',
+        'D = 1.144(√H + √h)',
+        'D = 2.083(H + h)',
+        'D = 2.083(√H + √h)'
+      ]);
+      changed=true;
+    }
+
+    // 1급: Doppler log의 선수·선미 방향 속도식.
+    if(/도플러 선속계\(Doppler log\)/.test(q)&&/옳지 않은 것은/.test(q)){
+      setQuestionText(obj,'도플러 선속계(Doppler log)에서 선수·선미 방향 속도 V = c(f_f − f_a) / (4f_s cos θ)를 구하는 식에 관한 설명으로 옳지 않은 것은?');
+      const choices=getChoices(obj);
+      if(choices){
+        choices[0]='θ는 선박의 경사각이다.';
+        choices[1]='c는 수중에서의 음속이다.';
+        choices[2]='f_s는 송신 음파의 주파수이다.';
+        choices[3]='f_f, f_a는 선수·선미 방향에서 수신한 음파의 주파수이다.';
+      }
+      changed=true;
+    }
+
+    // 1급: 태풍 최대풍속 실험식.
+    if(/태풍의 최대풍속/.test(q)&&/중위도 지방/.test(q)){
+      setQuestionText(obj,'태풍의 최대풍속을 구하는 실험식 V(m/s) = K√(1010 − Pc)에서 중위도 지방의 상수 K 값은? (단, Pc: 태풍 중심기압(hPa))');
+      changed=true;
+    }
+
+    // 1급: 롤링에 따른 레이더 스캐너 횡이동·거리오차.
+    if(/레이더 스캐너/.test(q)&&/횡방향으로 움직이고/.test(q)&&/측정거리/.test(q)){
+      setQuestionText(obj,'레이더 스캐너가 롤링축으로부터 H m 높이에 있고 선박이 L° 롤링할 때, 스캐너의 횡방향 이동량과 선수에서 θ 방위의 물표에 대한 거리오차를 순서대로 고른 것은?');
+      setChoices(obj,[
+        'H sin L sin θ, H sin L',
+        'H sin L, H sin L sin θ',
+        'H cos L, H cos L sin θ',
+        'H cos L sin θ, H cos L'
+      ]);
+      changed=true;
+    }
+
+    // 1급: 일반화물선 상갑판 안전하중 약산식.
+    if(/일반화물선에서 (?:Upper deck|상갑판)의 안전하중/.test(q)){
+      setQuestionText(obj,'일반화물선에서 상갑판(Upper deck)의 안전하중(ton)을 계산하는 약산식으로 옳은 것은? (단, A: 갑판면적(ft²))');
+      setChoices(obj,['3A / 35','3A / 50','5A / 35','5A / 50']);
+      changed=true;
+    }
+
+    // 1급: Admiralty coefficient(속력계수) 식.
+    if(/속력계수/.test(q)&&/실마력/.test(q)&&/연료소비량/.test(q)){
+      setQuestionText(obj,'기관의 실마력 IHP = W^(2/3) × V³ / C에서 속력계수 C에 관한 설명으로 옳지 않은 것은? (단, W: 배수량, V: 속력)');
+      changed=true;
+    }
+
+    // 1급: Anchor shank 각도에 따른 파주력 감소량.
+    if(/Anchor shank/.test(q)&&/파주력의 감소량/.test(q)){
+      setQuestionText(obj,'투묘 중 Anchor shank가 해저면에서 15° 들리면 파주력의 감소량은?');
+      setChoices(obj,['약 1/2','약 1/3','약 1/4','약 1/5']);
+      changed=true;
+    }
+
+    // 1급(어선): Broaching 방지를 위한 감속 한계.
+    if(/브로칭을 피하기/.test(q)&&/감속 한계값/.test(q)){
+      setQuestionText(obj,'황천항해 시 Broaching을 피하기 위한 선체길이 L 대비 감속 한계값은?');
+      setChoices(obj,['0.8√L','1.0√L','1.8√L','2.0√L']);
+      changed=true;
+    }
+
+    // 1급: 등대 회항 시 일정거리 변침법.
+    if(/등대로부터 일정한 거리를 유지/.test(q)&&/언제 변침/.test(q)){
+      setQuestionText(obj,'등대를 회항하면서 등대로부터 일정한 거리를 유지하려면, 변침각 θ에 대해 언제 변침하여야 하는가?');
+      setChoices(obj,[
+        '(1/2)θ°씩 등대가 정횡방향에서 뒤로 보일 때 변침',
+        '(1/2)θ°씩 등대가 정횡방향에서 앞으로 보일 때 변침',
+        'θ°씩 등대가 정횡방향에서 뒤로 보일 때 변침',
+        'θ°씩 등대가 정횡방향에서 앞으로 보일 때 변침'
+      ]);
+      changed=true;
+    }
+
+    // 1급: 파공부 침수 유속(Torricelli).
+    if(/파공부의 침수 유속/.test(q)){
+      setQuestionText(obj,'수면하 선체 파공부의 침수 유속을 구하는 식은? (단, v: 유속(m/s), g: 중력가속도(m/s²), h: 파공부에서 수선면까지의 높이(m))');
+      setChoices(obj,['v = 2gh','v = 2√(gh)','v = √(2gh)','v = (1/2)gh']);
+      changed=true;
+    }
+
+    // 1급(어선): TPC의 Cw, Cb 첨자 표기.
+    if(/매 cm 배수톤/.test(q)&&/수선면적계수/.test(q)&&/방형비척계수/.test(q)){
+      setQuestionText(obj,'길이 80m, 폭 12m의 어선이 3.2m 등흘수로 비중 1.000의 담수에 떠 있다. 이 어선의 매 cm 배수톤은? (단, 수선면적계수 Cw = 0.90, 방형비척계수 Cb = 0.80)');
+      changed=true;
+    }
+
+    // 1급: 복원성 설명 중 깨진 GM 표기.
+    if(/공선 상태에서는 배수량이 작으므로/.test((getChoices(obj)||[]).join(' '))){
+      const choices=getChoices(obj);
+      if(choices)choices[3]='공선 상태에서는 배수량이 작으므로 만선 상태와 같은 복원력을 가지기 위해서는 만선 상태보다 작은 GM을 필요로 한다.';
+      changed=true;
+    }
+
+    // 1급: 정액법 감가상각식.
+    if(/정액법에 의한 선박의 감가상각/.test(q)){
+      const choices=getChoices(obj);
+      if(choices)choices[0]='상각액 계산식은 (취득가액 + 수리비 − 잔존가액) / 내용년수이다.';
+      changed=true;
+    }
+
+    // 1급: 경사시험 관련 θ 기호가 깨진 수치문항.
+    if(/중량물을.*횡.*이동/.test(q)&&/tan/.test(q)&&/GM/.test(q)){
+      setQuestionText(obj,getQuestionText(obj).replace(/tan\s*[A-Za-zθ]+/,'tan θ').replace(/각이\s*[A-Za-zθ]+라면/,'각이 θ라면'));
+      changed=true;
+    }
+    if(/선체 중심의수평 이동량|선체 중심의 수평 이동량/.test(q)&&/메타센터 높이\(GM\)/.test(q)){
+      setQuestionText(obj,getQuestionText(obj).replace(/tan\s*[A-Za-zθ]+/,'tan θ').replace(/각이\s*[A-Za-zθ]+/,'각이 θ'));
+      changed=true;
+    }
+
+    // 1급: 등대 정횡 반복변침의 θ 표기.
+    if(/등대를 정횡으로 볼 때마다/.test(q)&&/선위는 어떻게/.test(q)){
+      setQuestionText(obj,getQuestionText(obj).replace(/[A-Za-zθ]+°씩 변침/,'θ°씩 변침'));
+      const choices=getChoices(obj);
+      if(choices)choices[3]='변침각 θ의 크기에 따라 접근할 수도 있고 멀어질 수도 있다.';
+      changed=true;
+    }
+
     // 2급: Tackle 배율 — repeated across 2020~2023.
     if(/Tackle의 배율을 구하는 식/.test(q)){
       setQuestionText(obj,'Tackle의 배율을 구하는 식은? (단, N: 배율, m: Tackle의 Sheave 총수, n: 동활차에 걸리는 Rope의 수)');
@@ -262,7 +505,7 @@
     }
 
     // 2급: 일반화물선 상갑판 관용 최대하중.
-    if(/상갑판.*(최대하중|안전하중)|상갑판 최대하중/.test(q)){
+    if(/(중량화물|갑판적 화물|특수선박)/.test(q)&&/상갑판.*(최대하중|안전하중)|상갑판 최대하중/.test(q)){
       setQuestionText(obj,'중량화물이나 갑판적 화물을 운반하는 특수선박을 제외한 일반화물선의 관용상 상갑판 최대하중을 구하는 식은? (단, A: 갑판면적(ft²))');
       setChoices(obj,['5A / 35','10A / 35','5A / 50','10A / 50']);
       changed=true;
@@ -282,7 +525,7 @@
     }
 
     // 2급: 항속거리 D.
-    if(/항속거리/.test(q)&&/주기관의 연료량/.test(q)&&/잡용연료량/.test(q)){
+    if(answer===3&&/항속거리/.test(q)&&/주기관의 연료량/.test(q)&&/잡용연료량/.test(q)){
       setQuestionText(obj,'속력 V로 1일에 소비하는 주기관 연료량을 Q, 1일 잡용연료량을 M, 사용 가능한 전 연료량을 F라 할 때 항속거리 D를 구하는 식은?');
       setChoices(obj,[
         'D = V × 24 × M + Q / F',
@@ -360,7 +603,7 @@
     }
 
     // 3급: 등대의 지리학적 광달거리.
-    if(/지리학적 광달거리/.test(q)&&/등고/.test(q)&&/안고/.test(q)){
+    if(/표준대기상태/.test(q)&&/지리학적 광달거리/.test(q)&&/등고/.test(q)&&/안고/.test(q)){
       setQuestionText(obj,'표준대기상태에서 등대의 지리학적 광달거리를 구하는 공식은? (단, D: 광달거리(해리), H: 등고(m), h: 안고(m))');
       setChoices(obj,[
         'D = 2.074(√H + h)',
