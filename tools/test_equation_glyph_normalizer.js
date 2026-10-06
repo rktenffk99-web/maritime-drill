@@ -93,7 +93,7 @@ assert.ok(q2021['선택지'].every(x=>!/[\uE000-\uF8FF]/.test(x)));
 assert.match(q2021['선택지'][0],/^S = Cb × V² \/ 100/);
 
 // Verified formula reconstruction regressions — source text was compared with the exam copies.
-function q(examId,subject,no){
+function formulaQ(examId,subject,no){
   const exam=sandbox.window.MD_PAST[examId];
   assert.ok(exam,`${examId} missing`);
   const row=exam.questions.find(x=>x['과목']===subject&&x['번호']===no);
@@ -102,22 +102,22 @@ function q(examId,subject,no){
   return row;
 }
 
-assert.deepEqual(Array.from(q('2020-navi2-2','상선전문',3)['선택지']),[
+assert.deepEqual(Array.from(formulaQ('2020-navi2-2','상선전문',3)['선택지']),[
   'N = (10n / m) × 10','N = 10n / (10 + m)','N = 10m / (10 + n)','N = (10 + n) / (10m)'
 ]);
-assert.equal(q('2020-navi2-3','운용',10)['선택지'][2],'GM = (w × d) / (D × tan Q)');
-assert.equal(q('2022-navi2-1','상선전문',8)['선택지'][2],'F = W(1 + a / g)');
-assert.equal(q('2022-navi2-2','항해',23)['선택지'][3],'I.H.P. ∝ W^(2/3)');
-assert.equal(q('2024-navi2-2','항해',24)['선택지'][3],'D = V × 24 × F / (M + Q)');
-assert.equal(q('2024-navi2-3','항해',9)['선택지'][2],'p = D × sin C');
-assert.match(q('2024-navi2-4','운용',5)['문제'],/S = √\[h\(h \+ 2H\/w\)\]/);
-assert.equal(q('2024-navi2-4','운용',10)['선택지'][1],'w × d / (Δ + w)');
+assert.equal(formulaQ('2020-navi2-3','운용',10)['선택지'][2],'GM = (w × d) / (D × tan Q)');
+assert.equal(formulaQ('2022-navi2-1','상선전문',8)['선택지'][2],'F = W(1 + a / g)');
+assert.equal(formulaQ('2022-navi2-2','항해',23)['선택지'][3],'I.H.P. ∝ W^(2/3)');
+assert.equal(formulaQ('2024-navi2-2','항해',24)['선택지'][3],'D = V × 24 × F / (M + Q)');
+assert.equal(formulaQ('2024-navi2-3','항해',9)['선택지'][2],'p = D × sin C');
+assert.match(formulaQ('2024-navi2-4','운용',5)['문제'],/S = √\[h\(h \+ 2H\/w\)\]/);
+assert.equal(formulaQ('2024-navi2-4','운용',10)['선택지'][1],'w × d / (Δ + w)');
 
-assert.equal(q('2020-navi3-4','항해',5)['선택지'][1],'D = 2.074(√H + √h)');
-assert.equal(q('2022-navi3e-2','어선전문',6)['선택지'][2],'t = w × d / M.T.C.');
-assert.equal(q('2023-navi3-3','항해',16)['선택지'][0],'p = DLo cos L');
-assert.equal(q('2024-navi3-2','상선전문',6)['선택지'][3],'[(a + b) / 2]² × (π / 4) × l × (1 / 12)');
-assert.equal(q('2024-navi3-3','상선전문',1)['선택지'][3],'P = W × (10 + m) / (10n) × 1.10');
+assert.equal(formulaQ('2020-navi3-4','항해',5)['선택지'][1],'D = 2.074(√H + √h)');
+assert.equal(formulaQ('2022-navi3e-2','어선전문',6)['선택지'][2],'t = w × d / M.T.C.');
+assert.equal(formulaQ('2023-navi3-3','항해',16)['선택지'][0],'p = DLo cos L');
+assert.equal(formulaQ('2024-navi3-2','상선전문',6)['선택지'][3],'[(a + b) / 2]² × (π / 4) × l × (1 / 12)');
+assert.equal(formulaQ('2024-navi3-3','상선전문',1)['선택지'][3],'P = W × (10 + m) / (10n) × 1.10');
 
 console.log(`navigator bundles tested: ${targetBundles}; analysis bundles: ${analysisBundles}; exams: ${examCount}`);
 console.log(`PUA before normalization (exam) — 1급: ${beforeByGrade[1]}, 2급: ${beforeByGrade[2]}, 3급: ${beforeByGrade[3]}`);
