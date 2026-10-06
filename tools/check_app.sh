@@ -42,6 +42,7 @@ python tools/patch_learning_audit.py
 python tools/patch_safe_learning_render.py
 python tools/patch_review_spacing_v3.py
 python tools/patch_reported_content_fixes.py
+python tools/patch_mock_result_pager.py
 node tools/test_navi2_reviewed.js
 node tools/test_balanced_mock.js
 python tools/test_predictive_mock.py
@@ -53,6 +54,7 @@ python tools/test_problem_report_modes.py
 node tools/test_reported_content_fixes.js
 node tools/test_equation_glyph_normalizer.js
 node tools/test_pdf_footer_cleanup.js
+node tools/test_mock_result_pager.js
 python tools/test_weak_topic_analytics.py
 python tools/test_2026_session3_explanations.py
 python tools/test_weak_drills.py
@@ -79,5 +81,4 @@ node tools/test_safe_learning_render.js --final
 python tools/audit_broken_exam_glyphs.py
 node tools/audit_formula_questions.js
 node tools/audit_pdf_footer_artifacts.js
-python tools/inspect_mock_result_source.py
 python tools/check_final_syntax.py
