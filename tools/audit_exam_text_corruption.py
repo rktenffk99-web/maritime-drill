@@ -95,6 +95,8 @@ def main() -> int:
     by_grade = Counter()
     total_findings = 0
     focus_hits = 0
+    pua_counts = Counter()
+    pua_samples = {}
 
     for name, text in targets:
         gm = re.search(r"navi([123])", name)
@@ -102,6 +104,12 @@ def main() -> int:
             by_grade[gm.group(1)] += 1
 
         hits = suspicious_chars(text)
+        for idx, ch in enumerate(text):
+            if unicodedata.category(ch) == "Co":
+                key = f"U+{ord(ch):04X}"
+                pua_counts[key] += 1
+                if key not in pua_samples:
+                    pua_samples[key] = (name, compact(text[max(0, idx-90):min(len(text), idx+110)]))
         keyword_positions = []
         for word in FOCUS_WORDS:
             start = 0
@@ -133,6 +141,10 @@ def main() -> int:
             last_pos = pos
 
     print("GRADE_BUNDLE_COUNTS=" + ",".join(f"{k}:{v}" for k,v in sorted(by_grade.items())))
+    print(f"UNIQUE_PUA={len(pua_counts)}")
+    for key, count in sorted(pua_counts.items(), key=lambda kv: (-kv[1], kv[0])):
+        name, sample = pua_samples[key]
+        print(f"PUA code={key} count={count} bundle={name} sample={sample}")
     print(f"TOTAL_SUSPICIOUS={total_findings}")
     print(f"TOTAL_FOCUS_HITS={focus_hits}")
     return 0
