@@ -1,25 +1,23 @@
 #!/usr/bin/env python3
 from __future__ import annotations
+
+import base64
+import gzip
 import re
 import unicodedata
+from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-TEXT_EXTS = {".html", ".js", ".json", ".py", ".md", ".txt", ".yml", ".yaml"}
-SKIP_PARTS = {".git", "node_modules"}
+INDEX = ROOT / "index.html"
 
-KEYWORDS = [
-    "getPastDataFilesForSubject",
-    "PAST_DATA_FILES",
-    "PAST_GRADE_MAP",
-    "loadOptionalScript",
-    "loadScriptsWithLimit",
-    "past-navi",
-    "past-analysis-",
-]
+TARGET_RE = re.compile(
+    r"^(?:past-(?:20\d{2})-navi(?:1|2|3)(?:e)?-\d+|past-analysis-navi(?:1|2|3)|past-explain-20\d{2})\.js$"
+)
+FOCUS_WORDS = ("Squatting", "스쿼팅", "선저여유수심", "침하량", "방형계수")
 
-SUSPICIOUS = {
-    "\u25a1": "WHITE SQUARE",
+# Common signs of failed PDF/HWP equation/font conversion.
+BAD_GLYPHS = {
     "\ufffd": "REPLACEMENT CHARACTER",
     "\u25af": "WHITE VERTICAL RECTANGLE",
     "\u25ab": "WHITE SMALL SQUARE",
@@ -27,116 +25,116 @@ SUSPICIOUS = {
     "\u25fd": "WHITE MEDIUM SMALL SQUARE",
 }
 
-CONTEXT_PATTERNS = [
-    ("detached_subscript_b", re.compile(r"\]\s*b(?=(?:[\s\"'<,.;:)}]|$))")),
-    ("detached_subscript_b2", re.compile(r"\)\]\s*b(?=(?:[\s\"'<,.;:)}]|$))")),
-    ("box_run", re.compile(r"[□▯▫◻◽]{2,}")),
-]
+def compact(value: str) -> str:
+    return re.sub(r"\s+", " ", value).strip()
 
-def compact(s: str) -> str:
-    return re.sub(r"\s+", " ", s).strip()
+def bundle_name(bundle_id: str) -> str:
+    name = bundle_id.removeprefix("md-bundle-")
+    if name.endswith("_js"):
+        name = name[:-3] + ".js"
+    return name
 
-def nearest_exam_hint(text: str, pos: int) -> str:
-    window = text[max(0, pos-2200):min(len(text), pos+900)]
-    tags = []
-    for pat in [
-        r"20\d{2}년\s*\d회",
-        r"(?:1|2|3)급\s*항해사",
-        r"(?:1|2|3)급",
-        r"Q\d{1,3}",
-        r"운용|항해|법규|영어|전문",
-    ]:
-        found = re.findall(pat, window)
-        if found:
-            tags.append(str(found[-1]))
-    return " | ".join(tags[-5:])
-
-def iter_targets():
-    for path in ROOT.rglob("*"):
-        if not path.is_file() or path.suffix.lower() not in TEXT_EXTS:
-            continue
-        if any(part in SKIP_PARTS for part in path.parts):
-            continue
-        if path.name == "audit_exam_text_corruption.py":
-            continue
-        yield path
-
-def is_private_use(ch: str) -> bool:
-    cp = ord(ch)
-    return (
-        0xE000 <= cp <= 0xF8FF
-        or 0xF0000 <= cp <= 0xFFFFD
-        or 0x100000 <= cp <= 0x10FFFD
-        or unicodedata.category(ch) == "Co"
+def decode_bundles(index_text: str):
+    rx = re.compile(
+        r'<script\s+type="application/gzip"\s+id="(md-bundle-[^"]+)">\s*([A-Za-z0-9+/=\r\n]+?)\s*</script>',
+        re.S,
     )
+    for match in rx.finditer(index_text):
+        bid, payload = match.groups()
+        name = bundle_name(bid)
+        try:
+            raw = gzip.decompress(base64.b64decode(re.sub(r"\s+", "", payload)))
+            text = raw.decode("utf-8")
+        except Exception as exc:
+            print(f"BUNDLE_DECODE_ERROR name={name} error={exc!r}")
+            continue
+        yield name, text
+
+def suspicious_chars(text: str):
+    findings = []
+    for i, ch in enumerate(text):
+        cp = ord(ch)
+        cat = unicodedata.category(ch)
+        if ch in BAD_GLYPHS:
+            findings.append((i, f"{BAD_GLYPHS[ch]} U+{cp:04X}", ch))
+        elif cat in {"Co", "Cs"}:
+            findings.append((i, f"{cat} U+{cp:04X}", ch))
+        elif cat == "Cc" and ch not in "\r\n\t":
+            findings.append((i, f"CONTROL U+{cp:04X}", ch))
+    # A single WHITE SQUARE can be a legitimate diagram label (e.g. □A), so
+    # only flag it when it is repeated or occurs in formula-like context.
+    for m in re.finditer(r"□{2,}", text):
+        findings.append((m.start(), "REPEATED WHITE SQUARE", m.group()))
+    for m in re.finditer(r"(?:[A-Za-z]\s*[:=]\s*)?□(?:\s*□){1,}|□{2,}\s*[×x*/÷+\-]", text):
+        findings.append((m.start(), "FORMULA WHITE SQUARE", m.group()))
+    # Detached subscript/variable suffix seen in converted stems: "... C: 방형계수 ... ] b"
+    for m in re.finditer(r"(?:방형계수|block\s*coefficient)[^\n\r]{0,100}[\]\)]\s*b(?=[\s\"'<,.;:)}]|$)", text, re.I):
+        findings.append((m.start(), "DETACHED SUBSCRIPT b", m.group()))
+    # Deduplicate positions/kinds.
+    out = []
+    seen = set()
+    for item in sorted(findings, key=lambda x: (x[0], x[1])):
+        key = (item[0], item[1], item[2])
+        if key not in seen:
+            seen.add(key)
+            out.append(item)
+    return out
+
+def print_context(prefix: str, text: str, pos: int, radius: int = 700):
+    snippet = compact(text[max(0, pos-radius):min(len(text), pos+radius)])
+    print(f"{prefix} {snippet}")
 
 def main() -> int:
-    total = 0
-    keyword_hits = 0
+    index_text = INDEX.read_text(encoding="utf-8")
+    targets = []
+    for name, text in decode_bundles(index_text):
+        if TARGET_RE.match(name):
+            targets.append((name, text))
 
-    for path in iter_targets():
-        try:
-            text = path.read_text(encoding="utf-8")
-        except UnicodeDecodeError:
-            continue
+    print(f"TARGET_BUNDLES={len(targets)}")
+    by_grade = Counter()
+    total_findings = 0
+    focus_hits = 0
 
-        findings = []
-        seen = set()
+    for name, text in targets:
+        gm = re.search(r"navi([123])", name)
+        if gm:
+            by_grade[gm.group(1)] += 1
 
-        def add(pos: int, kind: str, token: str):
-            key = (pos, kind, token)
-            if key not in seen:
-                seen.add(key)
-                findings.append(key)
-
-        for ch, label in SUSPICIOUS.items():
+        hits = suspicious_chars(text)
+        keyword_positions = []
+        for word in FOCUS_WORDS:
             start = 0
             while True:
-                pos = text.find(ch, start)
+                pos = text.find(word, start)
                 if pos < 0:
                     break
-                add(pos, f"{label} U+{ord(ch):04X}", ch)
-                start = pos + 1
+                keyword_positions.append((pos, word))
+                start = pos + len(word)
 
-        for pos, ch in enumerate(text):
-            if is_private_use(ch):
-                add(pos, f"PRIVATE USE U+{ord(ch):04X}", ch)
-            elif unicodedata.category(ch) == "Cc" and ch not in "\n\r\t":
-                add(pos, f"CONTROL U+{ord(ch):04X}", ch)
+        if hits or keyword_positions:
+            print(f"BUNDLE name={name} suspicious={len(hits)} focus={len(keyword_positions)} chars={len(text)}")
 
-        for name, rx in CONTEXT_PATTERNS:
-            for m in rx.finditer(text):
-                add(m.start(), name, m.group())
+        for pos, word in sorted(keyword_positions):
+            focus_hits += 1
+            print(f"FOCUS name={name} word={word!r} pos={pos}")
+            print_context("  CONTEXT:", text, pos, 1200)
 
-        findings.sort(key=lambda x: x[0])
-        if findings:
-            rel = path.relative_to(ROOT)
-            print(f"FILE {rel}: {len(findings)} suspicious occurrences")
-            for i, (pos, kind, token) in enumerate(findings, 1):
-                left = max(0, pos - 320)
-                right = min(len(text), pos + max(len(token), 1) + 420)
-                ctx = compact(text[left:right])
-                hint = nearest_exam_hint(text, pos)
-                print(f"FINDING {i:04d} pos={pos} kind={kind} token={token!r} hint={hint}")
-                print(f"  CONTEXT: {ctx}")
-            total += len(findings)
+        # Keep output useful: one context per nearby cluster rather than every glyph.
+        last_pos = -10_000
+        for pos, kind, token in hits:
+            total_findings += 1
+            if pos - last_pos < 120:
+                continue
+            cp = " ".join(f"U+{ord(ch):04X}" for ch in token[:12])
+            names = " | ".join(unicodedata.name(ch, "<no name>") for ch in token[:8])
+            print(f"FINDING name={name} pos={pos} kind={kind} token={token!r} cps={cp} names={names}")
+            print_context("  CONTEXT:", text, pos)
+            last_pos = pos
 
-        for kw in KEYWORDS:
-            start = 0
-            while True:
-                pos = text.find(kw, start)
-                if pos < 0:
-                    break
-                rel = path.relative_to(ROOT)
-                ctx = compact(text[max(0,pos-500):min(len(text),pos+900)])
-                hint = nearest_exam_hint(text, pos)
-                print(f"KEYWORD file={rel} kw={kw!r} pos={pos} hint={hint}")
-                print(f"  CONTEXT: {ctx}")
-                keyword_hits += 1
-                start = pos + max(1, len(kw))
-
-    print(f"TOTAL_SUSPICIOUS={total}")
-    print(f"TOTAL_KEYWORD_HITS={keyword_hits}")
+    print("GRADE_BUNDLE_COUNTS=" + ",".join(f"{k}:{v}" for k,v in sorted(by_grade.items())))
+    print(f"TOTAL_SUSPICIOUS={total_findings}")
+    print(f"TOTAL_FOCUS_HITS={focus_hits}")
     return 0
 
 if __name__ == "__main__":
