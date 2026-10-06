@@ -15,6 +15,21 @@ text = index_path.read_text(encoding="utf-8-sig")
 original = text
 source = source_path.read_text(encoding="utf-8")
 
+# Normalize answer text at the shared renderer too. Some homework/frequency
+# queues clone question strings before MD_PAST is patched, so object-level
+# normalization alone is not sufficient.
+choice_marker = "/* md-reported-choice-normalize */"
+if choice_marker not in text:
+    replacement = (
+        "function pastChoiceText(value){\n"
+        "  " + choice_marker + "\n"
+        "  if(window.__mdReportedContentFixes&&window.__mdReportedContentFixes.fixString)"
+        " value=window.__mdReportedContentFixes.fixString(value);"
+    )
+    text, count = re.subn(r"function pastChoiceText\(value\)\{", replacement, text, count=1)
+    if count != 1:
+        raise SystemExit("pastChoiceText renderer hook not found")
+
 # Idempotently remove any earlier embedded copy.
 text = re.sub(
     r'\n?<script data-bundled-src="reported-content-fixes\.js">.*?</script>\s*',
