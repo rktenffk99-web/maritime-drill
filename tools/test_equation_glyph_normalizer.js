@@ -26,6 +26,7 @@ let targetBundles=0;
 let analysisBundles=0;
 
 assert.match(index,/data-bundled-src="reported-content-fixes\.js"/,'final index.html does not embed reported-content-fixes.js');
+assert.match(index,/md-reported-choice-normalize/,'shared pastChoiceText renderer is not normalized');
 
 function bundleName(id){
   let name=id.replace(/^md-bundle-/,'');
