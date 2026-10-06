@@ -9,16 +9,13 @@ TEXT_EXTS = {".html", ".js", ".json", ".py", ".md", ".txt", ".yml", ".yaml"}
 SKIP_PARTS = {".git", "node_modules"}
 
 KEYWORDS = [
-    "Squatting",
-    "스쿼팅",
-    "선저여유수심",
-    "침하량",
-    "방형계수",
-    "ensureNavi3FrequencyData",
-    "getPastExam",
-    "MD_NAVI_FREQUENCY",
-    "pastExam",
-    "frequency",
+    "getPastDataFilesForSubject",
+    "PAST_DATA_FILES",
+    "PAST_GRADE_MAP",
+    "loadOptionalScript",
+    "loadScriptsWithLimit",
+    "past-navi",
+    "past-analysis-",
 ]
 
 SUSPICIOUS = {
@@ -59,6 +56,8 @@ def iter_targets():
         if not path.is_file() or path.suffix.lower() not in TEXT_EXTS:
             continue
         if any(part in SKIP_PARTS for part in path.parts):
+            continue
+        if path.name == "audit_exam_text_corruption.py":
             continue
         yield path
 
