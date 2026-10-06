@@ -67,6 +67,13 @@
     out=out.replace(/S\s*=\s*C2×V2\/10(\(m\))?/g,'S = Cb² × V² / 10$1');
     out=out.replace(/S\s*=\s*C2×V\/10(\(m\))?\s*b\s*b/g,'S = Cb² × V / 10$1');
 
+    // Grain-code choice can arrive through homework/frequency queues as a plain
+    // string rather than a full question object. Handle both raw PUA and already
+    // tofu-rendered □ forms here so every renderer gets the same clean text.
+    if(/Free surface effects/.test(out)&&/메타센터높이/.test(out)&&/0\.15m/.test(out)){
+      out='탱크 내의 Free surface effects를 수정한 후의 메타센터높이(G₀M)는 0.15m 이상일 것';
+    }
+
     return out;
   }
 
