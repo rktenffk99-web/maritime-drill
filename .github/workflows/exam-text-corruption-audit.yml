@@ -16,3 +16,5 @@ jobs:
           python-version: '3.12'
       - name: Scan embedded exam text for conversion corruption
         run: python tools/audit_exam_text_corruption.py
+      - name: Verify navigator equation normalization
+        run: node tools/test_equation_glyph_normalizer.js
