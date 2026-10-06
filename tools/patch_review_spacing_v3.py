@@ -1,5 +1,4 @@
 from pathlib import Path
-import re
 
 p=Path('index.html')
 text=p.read_text(encoding='utf-8-sig')
@@ -7,19 +6,31 @@ original=text
 POLICY='review-spacing-v3-mastery-ladder'
 
 # Mature, repeatedly recalled questions should stop consuming frequent homework slots.
-# masteryReviews increments only after a sure recall on a later date, so it is a stronger
-# signal than raw attempts. "unsure" answers count as correct in legacy counters, therefore
-# sureRate removes them before granting the longest intervals.
-pattern=re.compile(
-    r"""const attempts=Math\.max\(1,Number\(r\.attempts\)\|\|1\),accuracy=\(Number\(r\.correct\)\|\|0\)/attempts;\s*
-        let interval=4;\s*
-        if\(attempts>=4&&accuracy>=0\.90&&\(Number\(r\.wrong\)\|\|0\)<=1&&\(Number\(r\.unsure\)\|\|0\)<=1\)interval=14;\s*
-        else if\(attempts>=3&&accuracy>=0\.80\)interval=7;\s*
-        else if\(accuracy>=0\.70\)interval=5;\s*
-        const exam=ppExamDay\(ppLoadPlan\(\),q\._planGrade\);let due=ppAddDays\(today,interval\);if\(exam\)\{const dayBefore=ppAddDays\(exam,-1\);due=ppMinDate\(due,dayBefore\)\}r\.dueDate=due;""",
-    re.X
-)
-replacement="""const attempts=Math.max(1,Number(r.attempts)||1),correctCount=Math.max(0,Number(r.correct)||0),unsureCount=Math.max(0,Number(r.unsure)||0),accuracy=correctCount/attempts,sureRate=Math.max(0,correctCount-unsureCount)/attempts,reviews=Math.max(0,Number(r.masteryReviews)||0);
+# This patch runs after the safety/integrity transforms, so locate the final interval block
+# structurally instead of depending on the exact earlier source text.
+fn_start=text.find('  function ppCommitOutcome(q,answer,confidence){')
+if fn_start<0:
+    raise SystemExit('ppCommitOutcome not found')
+fn_end=text.find('  window.prevNavigatorPassPlanQuestion=',fn_start)
+if fn_end<0:
+    fn_end=text.find('  window.nextNavigatorPassPlanQuestion=',fn_start)
+if fn_end<0:
+    raise SystemExit('ppCommitOutcome end anchor not found')
+body=text[fn_start:fn_end]
+
+if 'sureRate=Math.max(0,correctCount-unsureCount)/attempts' not in body:
+    interval_pos=body.find('let interval=4;')
+    attempt_pos=body.rfind('const attempts=',0,interval_pos)
+    due_end=body.find('r.dueDate=due;',interval_pos)
+    if interval_pos<0 or attempt_pos<0 or due_end<0:
+        raise SystemExit('adaptive mastered review interval block not found')
+    block_start=body.rfind('\n',0,attempt_pos)+1
+    block_end=due_end+len('r.dueDate=due;')
+    old_block=body[block_start:block_end]
+    if 'const exam=ppExamDay' not in old_block:
+        raise SystemExit('mastered review exam anchor not found')
+
+    replacement="""        const attempts=Math.max(1,Number(r.attempts)||1),correctCount=Math.max(0,Number(r.correct)||0),unsureCount=Math.max(0,Number(r.unsure)||0),accuracy=correctCount/attempts,sureRate=Math.max(0,correctCount-unsureCount)/attempts,reviews=Math.max(0,Number(r.masteryReviews)||0);
         let interval=4;
         if(reviews>=5&&attempts>=7&&sureRate>=0.90)interval=30;
         else if(reviews>=4&&attempts>=6&&sureRate>=0.85)interval=21;
@@ -36,10 +47,8 @@ replacement="""const attempts=Math.max(1,Number(r.attempts)||1),correctCount=Mat
           }
         }
         let due=ppAddDays(today,interval);if(exam){const dayBefore=ppAddDays(exam,-1);due=ppMinDate(due,dayBefore)}r.dueDate=due;"""
-
-text,n=pattern.subn(replacement,text,count=1)
-if n!=1 and POLICY not in text:
-    raise SystemExit('adaptive mastered review interval block not found')
+    body=body[:block_start]+replacement+body[block_end:]
+    text=text[:fn_start]+body+text[fn_end:]
 
 if "reviewSpacingPolicy:'review-spacing-v2'" in text:
     text=text.replace("reviewSpacingPolicy:'review-spacing-v2'",f"reviewSpacingPolicy:'{POLICY}'",1)
