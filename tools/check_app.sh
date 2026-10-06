@@ -41,6 +41,7 @@ python tools/patch_record_safety.py
 python tools/patch_learning_audit.py
 python tools/patch_safe_learning_render.py
 python tools/patch_review_spacing_v3.py
+python tools/patch_reported_content_fixes.py
 node tools/test_navi2_reviewed.js
 node tools/test_balanced_mock.js
 python tools/test_predictive_mock.py
@@ -50,6 +51,7 @@ python tools/test_predictive_mock_history_fingerprint.py
 python tools/test_predictive_mock_priority_core.py
 python tools/test_problem_report_modes.py
 node tools/test_reported_content_fixes.js
+node tools/test_equation_glyph_normalizer.js
 python tools/test_weak_topic_analytics.py
 python tools/test_2026_session3_explanations.py
 python tools/test_weak_drills.py
