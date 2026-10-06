@@ -11,7 +11,7 @@ sandbox.window.window=sandbox.window;
 vm.createContext(sandbox);
 
 const bundleRe=/<script\s+type="application\/gzip"\s+id="(md-bundle-[^"]+)">\s*([A-Za-z0-9+/=\r\n]+?)\s*<\/script>/gs;
-const target=/^past-(20\d{2})-navi([23])(?:e)?-(\d+)\.js$/;
+const target=/^past-(20\d{2})-navi([123])(?:e)?-(\d+)\.js$/;
 
 function bundleName(id){
   let name=id.replace(/^md-bundle-/,'');
@@ -34,7 +34,7 @@ for(const m of index.matchAll(bundleRe)){
 
 const rows=[];
 for(const [examId,exam] of Object.entries(sandbox.window.MD_PAST||{})){
-  const gm=/^(20\d{2})-navi([23])(?:e)?-(\d+)$/.exec(examId);
+  const gm=/^(20\d{2})-navi([123])(?:e)?-(\d+)$/.exec(examId);
   if(!gm||!exam||!Array.isArray(exam.questions))continue;
   for(const q of exam.questions){
     const stem=q['문제']??q.question??'';
