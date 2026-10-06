@@ -73,4 +73,5 @@ node tools/test_sync_audit_fixes.js
 node tools/test_record_safety.js
 node tools/test_learning_audit.js --final
 node tools/test_safe_learning_render.js --final
+python tools/audit_broken_exam_glyphs.py
 python tools/check_final_syntax.py
