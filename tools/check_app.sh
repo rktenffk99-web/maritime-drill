@@ -79,4 +79,5 @@ node tools/test_safe_learning_render.js --final
 python tools/audit_broken_exam_glyphs.py
 node tools/audit_formula_questions.js
 node tools/audit_pdf_footer_artifacts.js
+python tools/inspect_mock_result_source.py
 python tools/check_final_syntax.py
