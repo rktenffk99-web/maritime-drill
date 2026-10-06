@@ -42,6 +42,7 @@ for(const match of index.matchAll(bundleRe)){
 }
 
 assert.ok(targetBundles>100,`unexpected navigator bundle count: ${targetBundles}`);
+assert.equal(analysisBundles,3,`unexpected navigator analysis bundle count: ${analysisBundles}`);
 assert.ok(sandbox.window.MD_PAST,'MD_PAST was not populated');
 
 let afterTotal=0;
@@ -54,6 +55,10 @@ for(const exam of Object.values(sandbox.window.MD_PAST)){
 }
 
 assert.equal(afterTotal,0,'navigator 1/2/3 exam data still contains private-use equation glyphs after normalization');
+
+fixes.patchKnownData();
+const analysisAfter=puaCount(JSON.stringify(sandbox.window.MD_NAVI_FREQUENCY||{}));
+assert.equal(analysisAfter,0,'navigator 1/2/3 analysis data still contains private-use equation glyphs after normalization');
 
 // Regression: screenshot/report case — 2022 3회 2급 항해사 운용.
 const exam=sandbox.window.MD_PAST['2022-navi2-3'];
@@ -77,7 +82,8 @@ assert.ok(q2021,'2021-navi2-2 운용 7번 missing');
 assert.ok(q2021['선택지'].every(x=>!/[\uE000-\uF8FF]/.test(x)));
 assert.equal(q2021['선택지'][0],'S = Cb × V² / 100(m)');
 
-console.log(`navigator bundles tested: ${targetBundles}; exams: ${examCount}`);
-console.log(`PUA before normalization — 1급: ${beforeByGrade[1]}, 2급: ${beforeByGrade[2]}, 3급: ${beforeByGrade[3]}`);
-console.log('PUA after normalization — 1/2/3급: 0');
+console.log(`navigator bundles tested: ${targetBundles}; analysis bundles: ${analysisBundles}; exams: ${examCount}`);
+console.log(`PUA before normalization (exam) — 1급: ${beforeByGrade[1]}, 2급: ${beforeByGrade[2]}, 3급: ${beforeByGrade[3]}`);
+console.log(`PUA before normalization (analysis) — 1급: ${analysisBeforeByGrade[1]}, 2급: ${analysisBeforeByGrade[2]}, 3급: ${analysisBeforeByGrade[3]}`);
+console.log('PUA after normalization — exam/analysis 1/2/3급: 0');
 console.log('Squatting regression: PASS');
