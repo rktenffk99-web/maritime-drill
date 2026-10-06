@@ -15,7 +15,7 @@ permissions:
 
 concurrency:
   group: patch-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   patch:
@@ -30,8 +30,22 @@ jobs:
             echo 'No change needed.'
             exit 0
           fi
+
+          # Do not let a workflow for an older commit overwrite a newer push.
+          git fetch origin "+refs/heads/${GITHUB_REF_NAME}:refs/remotes/origin/${GITHUB_REF_NAME}"
+          if [ "$(git rev-parse HEAD)" != "$(git rev-parse "origin/${GITHUB_REF_NAME}")" ]; then
+            echo 'A newer commit already exists. Skipping this stale generated index; the newer run will rebuild it.'
+            exit 0
+          fi
+
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
           git commit -m 'Apply tested app patches'
-          git push
+
+          # A newer commit can still arrive between the stale check and push.
+          # Treat that as superseded work rather than a failed build.
+          if ! git push origin "HEAD:${GITHUB_REF_NAME}"; then
+            echo 'Remote advanced while this run was finishing. A newer run owns the final rebuild.'
+            exit 0
+          fi
