@@ -1,0 +1,18 @@
+name: Exam text corruption audit
+
+on:
+  push:
+    branches:
+      - 'fix/exam-text-corruption-audit-20261006'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Scan embedded exam text for conversion corruption
+        run: python tools/audit_exam_text_corruption.py
