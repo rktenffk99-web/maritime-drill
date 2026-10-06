@@ -118,6 +118,15 @@ assert.equal(formulaQ('2022-navi3e-2','어선전문',6)['선택지'][2],'t = w �
 assert.equal(formulaQ('2023-navi3-3','항해',16)['선택지'][0],'p = DLo cos L');
 assert.equal(formulaQ('2024-navi3-2','상선전문',6)['선택지'][3],'[(a + b) / 2]² × (π / 4) × l × (1 / 12)');
 assert.equal(formulaQ('2024-navi3-3','상선전문',1)['선택지'][3],'P = W × (10 + m) / (10n) × 1.10');
+assert.equal(formulaQ('2020-navi1-2','상선전문',4)['선택지'][1],'(W / Tcm) × (1.025 / ρ₂ − 1.025 / ρ₁)');
+assert.equal(formulaQ('2020-navi1-4','상선전문',12)['선택지'][2],'A(1 − r)ⁿ / A = 1/10');
+assert.equal(formulaQ('2021-navi1-2','항해',8)['선택지'][0],'K ∝ sin θ / (d₁ × d₂)');
+assert.equal(formulaQ('2021-navi1-3','운용',18)['선택지'][2],'v = √(2gh)');
+assert.equal(formulaQ('2023-navi1-3','운용',8)['선택지'][1],'I = LB³ / 12');
+assert.equal(formulaQ('2024-navi1-1','항해',4)['선택지'][2],'f_s는 송신 음파의 주파수이다.');
+assert.equal(formulaQ('2024-navi1-4','항해',7)['선택지'][3],'D = 2.083(√H + √h)');
+assert.equal(formulaQ('2025-navi1-3','상선전문',3)['선택지'][3],'5A / 50');
+
 
 console.log(`navigator bundles tested: ${targetBundles}; analysis bundles: ${analysisBundles}; exams: ${examCount}`);
 console.log(`PUA before normalization (exam) — 1급: ${beforeByGrade[1]}, 2급: ${beforeByGrade[2]}, 3급: ${beforeByGrade[3]}`);
