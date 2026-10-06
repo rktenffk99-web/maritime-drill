@@ -1,114 +1,161 @@
 #!/usr/bin/env python3
-"""Audit built exam data for broken PDF/OCR glyphs.
+"""Full audit of navigator past-exam bundles for PDF/HWP equation corruption.
 
-This is intentionally conservative: it reports suspicious characters and nearby
-source context. It does not guess at unknown formulas.
+The single-file app stores past papers as gzip+base64 bundles. This scanner
+decodes every 1/2/3급 navigator bundle, counts all suspicious private-use
+characters, and reports concentration by grade/bundle without guessing fixes.
 """
 from __future__ import annotations
 
-from collections import Counter, defaultdict
-from pathlib import Path
+import base64
+import gzip
 import re
-import sys
+import unicodedata
+from collections import Counter
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-TARGETS = [
-    ROOT / "index.html",
-    ROOT / "navi2-reviewed-content.js",
-    ROOT / "explain-2026-navi3-3.js",
-    ROOT / "explain-2026-navi3-3-english.js",
-]
+INDEX = ROOT / "index.html"
 
-# PUA = common result of Korean HWP/PDF math-font extraction.
-BROKEN_RE = re.compile(r"[\uE000-\uF8FF\uFFFD\u25A1]")
-# Long runs are especially likely to be formulas rendered as empty boxes.
-RUN_RE = re.compile(r"(?:[\uE000-\uF8FF\uFFFD\u25A1][ \t]*){2,}")
+TARGET_RE = re.compile(
+    r"^(?:past-(?:20\d{2})-navi(?:1|2|3)(?:e)?-\d+|past-analysis-navi(?:1|2|3)|past-explain-20\d{2})\.js$"
+)
+FOCUS_WORDS = ("Squatting", "스쿼팅", "선저여유수심", "침하량", "방형계수")
 
-MAX_CONTEXTS_PER_FILE = 80
-WINDOW = 220
-
-
-def clean_context(s: str) -> str:
-    s = s.replace("\n", " ").replace("\r", " ").replace("\t", " ")
-    return re.sub(r"\s+", " ", s).strip()
+BAD_GLYPHS = {
+    "\ufffd": "REPLACEMENT CHARACTER",
+    "\u25af": "WHITE VERTICAL RECTANGLE",
+    "\u25ab": "WHITE SMALL SQUARE",
+    "\u25fb": "WHITE MEDIUM SQUARE",
+    "\u25fd": "WHITE MEDIUM SMALL SQUARE",
+}
 
 
-def classify_context(ctx: str) -> str:
-    low = ctx.lower()
-    if "navi2" in low or "2급" in ctx:
-        return "2급"
-    if "navi3" in low or "3급" in ctx:
-        return "3급"
-    if "navi1" in low or "1급" in ctx:
-        return "1급"
-    return "미분류"
+def compact(value: str) -> str:
+    return re.sub(r"\s+", " ", value).strip()
 
 
-def audit_file(path: Path):
-    if not path.exists():
-        return None
-    text = path.read_text(encoding="utf-8", errors="replace")
-    matches = list(BROKEN_RE.finditer(text))
-    codepoints = Counter(f"U+{ord(m.group(0)):04X}" for m in matches)
-    grade_counts = Counter()
-    samples = []
-    seen = set()
+def bundle_name(bundle_id: str) -> str:
+    name = bundle_id.removeprefix("md-bundle-")
+    if name.endswith("_js"):
+        name = name[:-3] + ".js"
+    return name
 
-    for m in matches:
-        a = max(0, m.start() - WINDOW)
-        b = min(len(text), m.end() + WINDOW)
-        ctx = clean_context(text[a:b])
-        grade = classify_context(ctx)
-        grade_counts[grade] += 1
 
-        # De-duplicate nearby repeated glyphs from the same formula.
-        key = (grade, ctx[:180])
-        if key in seen:
+def decode_bundles(index_text: str):
+    rx = re.compile(
+        r'<script\s+type="application/gzip"\s+id="(md-bundle-[^"]+)">\s*([A-Za-z0-9+/=\r\n]+?)\s*</script>',
+        re.S,
+    )
+    for match in rx.finditer(index_text):
+        bid, payload = match.groups()
+        name = bundle_name(bid)
+        try:
+            raw = gzip.decompress(base64.b64decode(re.sub(r"\s+", "", payload)))
+            text = raw.decode("utf-8")
+        except Exception as exc:
+            print(f"BUNDLE_DECODE_ERROR name={name} error={exc!r}")
             continue
-        seen.add(key)
-        cps = " ".join(f"U+{ord(ch):04X}" for ch in m.group(0))
-        samples.append((grade, cps, ctx))
-        if len(samples) >= MAX_CONTEXTS_PER_FILE:
-            break
+        yield name, text
 
-    runs = list(RUN_RE.finditer(text))
-    return {
-        "path": path,
-        "count": len(matches),
-        "runs": len(runs),
-        "codepoints": codepoints,
-        "grades": grade_counts,
-        "samples": samples,
-    }
+
+def suspicious_chars(text: str):
+    findings = []
+    for i, ch in enumerate(text):
+        cp = ord(ch)
+        cat = unicodedata.category(ch)
+        if ch in BAD_GLYPHS:
+            findings.append((i, f"{BAD_GLYPHS[ch]} U+{cp:04X}", ch))
+        elif cat in {"Co", "Cs"}:
+            findings.append((i, f"{cat} U+{cp:04X}", ch))
+        elif cat == "Cc" and ch not in "\r\n\t":
+            findings.append((i, f"CONTROL U+{cp:04X}", ch))
+
+    for m in re.finditer(r"□{2,}", text):
+        findings.append((m.start(), "REPEATED WHITE SQUARE", m.group()))
+    for m in re.finditer(r"(?:[A-Za-z]\s*[:=]\s*)?□(?:\s*□){1,}|□{2,}\s*[×x*/÷+\-]", text):
+        findings.append((m.start(), "FORMULA WHITE SQUARE", m.group()))
+    for m in re.finditer(r"(?:방형계수|block\s*coefficient)[^\n\r]{0,100}[\]\)]\s*b(?=[\s\"'<,.;:)}]|$)", text, re.I):
+        findings.append((m.start(), "DETACHED SUBSCRIPT b", m.group()))
+
+    out, seen = [], set()
+    for item in sorted(findings, key=lambda x: (x[0], x[1])):
+        key = (item[0], item[1], item[2])
+        if key not in seen:
+            seen.add(key)
+            out.append(item)
+    return out
 
 
 def main() -> int:
-    reports = [r for p in TARGETS if (r := audit_file(p))]
-    total = sum(r["count"] for r in reports)
-    total_runs = sum(r["runs"] for r in reports)
-    all_cps = Counter()
-    all_grades = Counter()
-    for r in reports:
-        all_cps.update(r["codepoints"])
-        all_grades.update(r["grades"])
+    index_text = INDEX.read_text(encoding="utf-8")
+    targets = [(n, t) for n, t in decode_bundles(index_text) if TARGET_RE.match(n)]
 
-    print("=== broken exam glyph audit ===")
-    print(f"files={len(reports)} suspicious_chars={total} suspicious_runs={total_runs}")
-    print("codepoints:", ", ".join(f"{k}:{v}" for k, v in all_cps.most_common()) or "none")
-    print("grade-nearby:", ", ".join(f"{k}:{v}" for k, v in all_grades.most_common()) or "none")
+    grade_bundle_counts = Counter()
+    grade_pua_counts = Counter()
+    bundle_counts = Counter()
+    pua_counts = Counter()
+    pua_samples = {}
+    total_findings = 0
+    focus_rows = []
 
-    for r in reports:
-        print(f"\n--- {r['path'].name} ---")
-        print(
-            f"suspicious_chars={r['count']} runs={r['runs']} "
-            f"grades={dict(r['grades'])} codepoints={dict(r['codepoints'])}"
-        )
-        for i, (grade, cps, ctx) in enumerate(r["samples"], 1):
-            print(f"[{i:03d}] grade={grade} cp={cps} :: {ctx}")
+    for name, text in targets:
+        gm = re.search(r"navi([123])", name)
+        grade = gm.group(1) if gm else "?"
+        grade_bundle_counts[grade] += 1
 
-    # Audit only. Unknown glyphs must not make the production rebuild fail.
-    # Known/verified formulas are covered by regression tests in
-    # test_reported_content_fixes.js.
+        hits = suspicious_chars(text)
+        total_findings += len(hits)
+        bundle_counts[name] += len(hits)
+
+        for idx, ch in enumerate(text):
+            if unicodedata.category(ch) == "Co":
+                cp = f"U+{ord(ch):04X}"
+                pua_counts[cp] += 1
+                grade_pua_counts[grade] += 1
+                pua_samples.setdefault(
+                    cp,
+                    (name, compact(text[max(0, idx-90):min(len(text), idx+110)])),
+                )
+
+        for word in FOCUS_WORDS:
+            start = 0
+            while True:
+                pos = text.find(word, start)
+                if pos < 0:
+                    break
+                focus_rows.append(
+                    (name, word, compact(text[max(0, pos-220):min(len(text), pos+520)]))
+                )
+                start = pos + len(word)
+
+    print("=== NAVIGATOR EXAM TEXT CORRUPTION AUDIT ===")
+    print(f"TARGET_BUNDLES={len(targets)}")
+    print("GRADE_BUNDLE_COUNTS=" + ",".join(f"{k}:{v}" for k,v in sorted(grade_bundle_counts.items())))
+    print("GRADE_PUA_COUNTS=" + ",".join(f"{k}:{v}" for k,v in sorted(grade_pua_counts.items())))
+    print(f"UNIQUE_PUA={len(pua_counts)}")
+    print(f"TOTAL_SUSPICIOUS={total_findings}")
+    print(f"TOTAL_FOCUS_HITS={len(focus_rows)}")
+
+    print("\nTOP_AFFECTED_BUNDLES")
+    for name, count in bundle_counts.most_common(30):
+        if count:
+            print(f"  {name}: {count}")
+
+    print("\nPUA_CODEPOINT_COUNTS")
+    for cp, count in pua_counts.most_common():
+        name, sample = pua_samples[cp]
+        print(f"  {cp}: {count} first={name} sample={sample}")
+
+    print("\nFOCUS_CONTEXTS")
+    seen = set()
+    for name, word, sample in focus_rows:
+        key = (name, sample)
+        if key in seen:
+            continue
+        seen.add(key)
+        print(f"  {name} [{word}] {sample}")
+
     return 0
 
 
