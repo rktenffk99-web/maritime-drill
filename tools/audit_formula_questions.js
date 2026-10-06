@@ -60,7 +60,7 @@ for(const [examId,exam] of Object.entries(sandbox.window.MD_PAST||{})){
 }
 
 rows.sort((a,b)=>a.grade-b.grade||a.year-b.year||a.session-b.session||String(a.subject).localeCompare(String(b.subject),'ko')||(a.no??0)-(b.no??0));
-const byGrade={2:0,3:0}, puaByGrade={2:0,3:0};
+const byGrade={1:0,2:0,3:0}, puaByGrade={1:0,2:0,3:0};
 for(const r of rows){byGrade[r.grade]++;puaByGrade[r.grade]+=r.pua}
 console.log('FORMULA_CANDIDATE_SUMMARY '+JSON.stringify({count:rows.length,byGrade,puaByGrade}));
 for(const r of rows)console.log('FORMULA_CANDIDATE '+JSON.stringify(r));
