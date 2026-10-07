@@ -184,9 +184,9 @@ function mergeImportedBackupEntries(entries,backup){
     text=re.sub(re.escape(spacing_note)+r'(?:\s+'+re.escape(spacing_note)+r')+',spacing_note,text)
     for anchor in ['  const ppBuildTodayAssignmentBeforeSubjectBalance=', '  window.startNavigatorWeakDrill=']:
         text=re.sub(r'\n{3,}(?='+re.escape(anchor)+r')','\n\n',text)
-    text=re.sub(r"const APP_VERSION = '[^']+';", "const APP_VERSION = '5.19';", text, count=1)
-    text=re.sub(r'<title>Maritime Drill v[\d.]+ · Android</title>', '<title>Maritime Drill v5.19 · Android</title>', text, count=1)
-    text=re.sub(r'<script src="(keyboard-controls|convenience-controls)\.js(?:\?v=[^"]*)?"></script>', lambda m: f'<script src="{m[1]}.js?v=5.19"></script>', text)
+    text=re.sub(r"const APP_VERSION = '[^']+';", "const APP_VERSION = '5.20';", text, count=1)
+    text=re.sub(r'<title>Maritime Drill v[\d.]+ · Android</title>', '<title>Maritime Drill v5.20 · Android</title>', text, count=1)
+    text=re.sub(r'<script src="(keyboard-controls|convenience-controls)\.js(?:\?v=[^"]*)?"></script>', lambda m: f'<script src="{m[1]}.js?v=5.20"></script>', text)
     return text
 
 
