@@ -55,6 +55,7 @@ node tools/test_reported_content_fixes.js
 node tools/test_equation_glyph_normalizer.js
 node tools/test_pdf_footer_cleanup.js
 node tools/test_mock_result_pager.js
+node tools/test_mock_explanation_controls.js
 python tools/test_weak_topic_analytics.py
 python tools/test_2026_session3_explanations.py
 python tools/test_weak_drills.py
