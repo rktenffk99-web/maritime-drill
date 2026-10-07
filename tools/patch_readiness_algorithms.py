@@ -86,7 +86,11 @@ balance_fn = r"""  function ppBalanceSingleGradeSubjects(plan,pools,progress,tod
     const rowsBySubject=new Map(subjects.map(s=>[s,[]]));
     for(const item of pool){
       const subject=String(item.subject||'').trim();
-      if(rowsBySubject.has(subject))rowsBySubject.get(subject).push(item);
+      if(!rowsBySubject.has(subject))continue;
+      // Do not let subject balancing resurrect an already-seen question before its review date.
+      // Eligible replacements are only genuinely unseen questions or reviews that are actually due today.
+      if(ppHomeworkClusterSeen(item,progress)&&!ppIsDue(ppProgressFor(progress,item.key),today))continue; // no-premature-review-v1
+      rowsBySubject.get(subject).push(item);
     }
     rowsBySubject.forEach(rows=>rows.sort(compare));
 
