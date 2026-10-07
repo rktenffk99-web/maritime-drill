@@ -38,6 +38,8 @@ assert bb.index('for(const key of originalKeys)') < bb.index('while(selectedKeys
 assert "const PP_SUBJECT_BALANCE_POLICY='coverage-even-v2'" in html
 assert "assignmentPolicy:'knowledge-gap-priority-v6-coverage-balanced'" in html
 assert "cp.subjectBalancePolicy!=='coverage-even-v2'" in html
+assert 'no-premature-review-v1' in bb
+assert 'if(ppHomeworkClusterSeen(item,progress)&&!ppIsDue(ppProgressFor(progress,item.key),today))continue;' in bb
 
 # 3) Same-day recheck gets a real spacing floor; tail questions move to next-day recall.
 r=re.search(r"function ppScheduleSameDayRecheck\(q\)\{(.*?)\n  \}",html,re.S)
@@ -83,7 +85,7 @@ for forbidden in ['ppLoadProgress','ppWeakTopicBoost','ppPredictiveWeight','last
 assert "q&&(q._predictiveReview||q._evaluationMock)" in analytics
 
 # Version bump makes clients refresh the changed runtime.
-assert "const APP_VERSION = '5.20';" in html
-assert '<title>Maritime Drill v5.20 · Android</title>' in html
+assert "const APP_VERSION = '5.21';" in html
+assert '<title>Maritime Drill v5.21 · Android</title>' in html
 
 print('exam-readiness algorithm checks: PASS')
