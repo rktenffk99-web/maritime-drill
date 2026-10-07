@@ -21,6 +21,8 @@ for needle in [
     "assignmentPolicy:'knowledge-gap-priority-v6-coverage-balanced'",
     "subjectBalancePolicy:'coverage-even-v2'",
     "cp.subjectBalancePolicy!=='coverage-even-v2'",
+    'no-premature-review-v1',
+    'if(ppHomeworkClusterSeen(item,progress)&&!ppIsDue(ppProgressFor(progress,item.key),today))continue;',
 ]:
     assert needle in text, f'missing subject-balance marker: {needle}'
 
