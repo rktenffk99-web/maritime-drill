@@ -6,19 +6,19 @@ function test(name,fn){fn();passed++;console.log('PASS '+name)}
 function harness(id='device-a'){
   const data=new Map(),timers=[];
   const app={textContent:'실전예측 모의 결과',querySelector:()=>null,appendChild(){}};
-  const s={window:null,console,Date,Math,Set,Map,JSON,crypto:{randomUUID:()=>id},
+  const s={window:null,__testSessionStartedAt:Date.now(),console,Date,Math,Set,Map,JSON,crypto:{randomUUID:()=>id},
     localStorage:{getItem:k=>data.get(k)||null,setItem:(k,v)=>data.set(k,String(v)),removeItem:k=>data.delete(k)},
     safeStorageSet:(k,v)=>{data.set(k,String(v));return true},currentMode:'pass-plan-session',
     setTimeout:fn=>timers.push(fn),requestAnimationFrame(){},MutationObserver:class{observe(){}},
     document:{documentElement:{},addEventListener(){},getElementById:k=>k==='app'?app:null,createElement:()=>({style:{}})},
-    removePastWrong(){},addPastWrong(){},pqid:()=>'',showConfirm:(m,f)=>f(),showToast(){},getPastProgress:()=>null,clearPastProgress(){},mdQuestionUsable:()=>true};
+    removePastWrong(){},addPastWrong(){},pqid:()=>'',showConfirm:(m,f)=>f(),showToast(){},getPastProgress:()=>null,clearPastProgress(){},mdQuestionUsable:()=>true,n3aNormalizeQuestion:v=>String(v||'').normalize('NFKC').toLowerCase().replace(/[\s\p{P}\p{S}]+/gu,'')};
   s.window=s;s.__mdDriveSyncV2={resetKey:(k,v,label)=>s.safeStorageSet(k,v,label)};vm.createContext(s);
-  for(const name of ['daily-storage.js','learning-integrity.js','weak-topic-classifier.js','predictive-analytics.js'])vm.runInContext(fs.readFileSync(path.join(root,name),'utf8'),s,{filename:name});
+  for(const name of ['daily-storage.js','learning-integrity.js','data-identity.js','weak-topic-classifier.js','predictive-analytics.js'])vm.runInContext(fs.readFileSync(path.join(root,name),'utf8'),s,{filename:name});
   const sourceStart=html.indexOf('function mdSourceQuestionContentIssue('),sourceEnd=html.indexOf('function mdQuestionUsable(',sourceStart);
   assert.ok(sourceStart>=0&&sourceEnd>sourceStart);vm.runInContext(html.slice(sourceStart,sourceEnd),s);
   const start=html.indexOf('// ── v5.07: 2·3급 항해사 합격 플랜 / 오늘의 숙제'),end=html.indexOf('</script>',start);
   let src=html.slice(start,end),pos=src.lastIndexOf('})();');
-  src=src.slice(0,pos)+`window.__test={setup(q,prior){planSessionQueue=[q,{...q,_planKey:'navi3|other'}];planSessionIdx=0;planSessionStartedAt=12345;planSessionAnswers=[null,null];planSessionConfidence=[null,null];planSessionCommitted=new Set();planSessionKind='today';if(prior)ppSaveProgress({[q._planKey]:prior});},snapshot(){return {progress:ppLoadProgress(),checkpoint:ppLoadPassSessionCheckpoint(),confidence:planSessionConfidence.slice(),idx:planSessionIdx}},find:ppFindQuestion,profile:ppLoadWeakTopicProfile,boost:ppWeakTopicBoost,order:ppChoiceOrder};`+src.slice(pos);
+  src=src.slice(0,pos)+`window.__test={setup(q,prior){planSessionQueue=[q,{...q,_planKey:'navi3|other'}];planSessionIdx=0;planSessionStartedAt=window.__testSessionStartedAt;planSessionAnswers=[null,null];planSessionConfidence=[null,null];planSessionCommitted=new Set();planSessionKind='today';if(prior)ppSaveProgress({[q._planKey]:prior});},snapshot(){return {progress:ppLoadProgress(),checkpoint:ppLoadPassSessionCheckpoint(),confidence:planSessionConfidence.slice(),idx:planSessionIdx}},find:ppFindQuestion,profile:ppLoadWeakTopicProfile,boost:ppWeakTopicBoost,order:ppChoiceOrder};`+src.slice(pos);
   vm.runInContext(src,s);s.renderNavigatorPassPlanCard=()=>{};s.renderNavigatorPassPlan=()=>{};
   return {s,data,render:timers[0],api:s.__mdLearningIntegrity};
 }
@@ -87,13 +87,18 @@ test('known missing diagram and underline are excluded; textual figures stay usa
 test('presentation shuffle preserves canonical answers and matches explanation labels',()=>{
   const {s,api}=harness();s.__test.setup(q);const base=s.__test.order(q),repeat=s.__test.order({...q,_sameDayRecheck:true});assert.deepEqual([...base].sort(),[0,1,2,3]);assert.notDeepEqual([...base],[...repeat]);assert.equal(q['정답'],0);assert.equal(api.remapExplanation('정답 ㉮',base),'정답 '+'㉮㉯㉰㉱'[base.indexOf(0)]);
 });
-test('frequency records with stale spacing still resolve to the verified source',()=>{
+test('frequency records with stale spacing resolve through unique source references and retain content guards',()=>{
   const {s,api}=harness();
-  const actual={'과목':'항해','번호':12,'문제':'방위각 오차에 대한 설명으로 옳지 않은 것은?'};
-  s.getPastExam=()=>({questions:[actual]});s.n3aNormalizeQuestion=v=>String(v||'').normalize('NFKC').toLowerCase().replace(/[\s\p{P}\p{S}]+/gu,'');s.mdQuestionUsable=q=>!api.contentIssue(q);
-  const item={key:'navi2|q-1aakhul',subject:'항해',normalized:'방위각오차에대한설명으로옳지 않은것은',hits:[{year:2024,session:2,number:12}]};
-  assert.equal(s.__test.find('navi2',item)['문제'],actual['문제']);
-  actual['문제']='다음 그림의 선박은?';item.normalized=s.n3aNormalizeQuestion(actual['문제']);assert.equal(s.__test.find('navi2',item),null);
+  const actual={'과목':'항해','번호':12,'문제':'방위각 오차에 대한 설명으로 옳지 않은 것은?','선택지':['첫째','둘째','셋째','넷째'],'정답':0};
+  const exam={questions:[actual]};s.getPastExam=()=>exam;s.mdQuestionUsable=q=>!api.contentIssue(q)&&!s.__mdDataIdentity.questionIssue(q);
+  const makeData=()=>({meta:{years:[2024]},subjects:['항해'],groups:[{id:'spacing-fixture',subject:'항해',question:actual['문제'],normalized:'방위각오차에대한설명으로옳지 않은것은',hits:[{year:2024,session:2,number:12}]}]});
+  const opts={gradeId:'navi2',getExam:s.getPastExam,usable:s.mdQuestionUsable};
+  const pool=s.__mdDataIdentity.buildPool(makeData(),opts);assert.equal(pool.length,1);assert.equal(pool[0].key,'navi2|spacing-fixture');
+  assert.equal(s.__test.find('navi2',pool[0])['문제'],actual['문제']);assert.equal(pool[0].normalized,'방위각오차에대한설명으로옳지않은것은');
+  actual['문제']='다음 그림의 선박은?';assert.equal(s.__mdDataIdentity.buildPool(makeData(),opts).length,0);
+  assert.equal(s.__test.find('navi2',{...pool[0],canonicalQuestion:{...actual}}),null);
+  actual['문제']='방위각 오차에 대한 설명으로 옳지 않은 것은?';exam.questions.push({...actual,'문제':'같은 번호의 다른 문항'});
+  assert.equal(s.__mdDataIdentity.buildPool(makeData(),opts).length,0);
 });
 test('predictive resume serializes identity and ordinary references',()=>{
   assert.ok(html.includes('predictive:q._predictiveMock===true'));assert.ok(html.includes('_predictiveMock:r.predictive===true'));assert.ok(html.includes('_planKey:r.planKey'));assert.ok(!html.includes("if(pastReturnView!=='pass-plan-predictive-mock')savePastProgress()"));

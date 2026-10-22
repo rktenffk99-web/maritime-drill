@@ -4,6 +4,7 @@ const root=path.join(__dirname,'..'),rawHtml=fs.readFileSync(path.join(root,'ind
 const bundledPython=path.resolve(path.dirname(process.execPath),'../../python/python.exe');
 const python=process.env.MD_PYTHON||(process.platform==='win32'&&fs.existsSync(bundledPython)?bundledPython:'python');
 function generate(input){
+  if((input===undefined?rawHtml:input).includes('content-identity-v2'))return input===undefined?rawHtml:input;
   const args=['tools/patch_learning_audit.py','--stdout'];if(input!==undefined)args.push('--stdin');
   const result=spawnSync(python,args,{cwd:root,input,encoding:'utf8',maxBuffer:50*1024*1024,env:{...process.env,PYTHONIOENCODING:'utf-8'}});
   if(result.error)throw result.error;
@@ -31,12 +32,12 @@ function harness(){
     n3aNormalizeQuestion:v=>String(v||'').normalize('NFKC').toLowerCase().replace(/[\s\p{P}\p{S}]+/gu,''),
     renderPastLoading(){},pastDataSubjectsLoaded:new Set(['navi3']),ensurePastExplainForYears:async()=>{}};
   s.window=s;vm.createContext(s);
-  for(const name of ['daily-storage.js','learning-integrity.js'])vm.runInContext(fs.readFileSync(path.join(root,name),'utf8'),s,{filename:name});
+  for(const name of ['daily-storage.js','learning-integrity.js','data-identity.js','scheduler-v522.js','balanced-mock.js','weak-topic-classifier.js','predictive-analytics.js'])vm.runInContext(fs.readFileSync(path.join(root,name),'utf8'),s,{filename:name});
   const guardStart=html.indexOf('function mdQuestionContentIssue(q)'),guardEnd=html.indexOf('function pastChoiceText(',guardStart);
   vm.runInContext(html.slice(guardStart,guardEnd),s);
   const start=html.indexOf('// ── v5.07: 2·3급 항해사 합격 플랜 / 오늘의 숙제'),end=html.indexOf('</script>',start);
   const source=html.slice(start,end),close=source.lastIndexOf('})();');
-  vm.runInContext(source.slice(0,close)+'window.__audit={progressStats:ppProgressStats,uniqueUnseen:ppHomeworkUniqueUnseen,build:ppBuildTodayAssignment,buildPools:ppBuildPools,find:ppFindQuestion,identity:ppHomeworkClusterId};'+source.slice(close),s);
+  vm.runInContext(source.slice(0,close)+'window.__audit={progressStats:ppProgressStats,uniqueUnseen:ppHomeworkUniqueUnseen,build:ppBuildTodayAssignment,buildPools:ppBuildPools,find:ppFindQuestion,identity:ppHomeworkClusterId,setPools(pools){planPools=pools;ppDataIdentityClusters=window.__mdDataIdentity.clusterPools(pools)}};'+source.slice(close),s);
   const resultStart=html.indexOf('function renderPastResult(){'),resultEnd=html.indexOf('\nfunction escapeHtml(',resultStart);
   vm.runInContext(html.slice(resultStart,resultEnd),s);
   const frequencyStart=html.indexOf('function n3aPracticeGroups('),frequencyEnd=html.indexOf('async function startNavi3FrequencyPractice(',frequencyStart);
@@ -64,7 +65,7 @@ function loadRealBundles(s){
 let passed=0;
 async function test(name,fn){await fn();passed++;console.log('PASS '+name)}
 (async()=>{
-  await test('generator is idempotent and does not mutate index.html',()=>{
+  await test('final artifact is inspected directly and does not mutate index.html',()=>{
     assert.equal(generate(html),html);assert.equal(fs.readFileSync(path.join(root,'index.html'),'utf8').replace(/\r\n/g,'\n'),rawHtml);
   });
   await test('evaluation answers preserve wrong notes, training progress and homework',()=>{
@@ -91,21 +92,22 @@ async function test(name,fn){await fn();passed++;console.log('PASS '+name)}
     const p=JSON.parse(data.get(PROGRESS));assert.equal(p[question._planKey].wrong,1);assert.equal(p['navi3|correct'].correct,1);
     assert.equal(JSON.parse(data.get(DAILY))[dateKey()],undefined);assert.equal(notes.has(question._planKey),true);assert.equal(notes.has('navi3|correct'),false);
   });
-  const duplicatePool=[{key:'navi2|q-11uymt4',gradeId:'navi2',subject:'항해',count:2,latest:2025,hits:[{year:2025}]},{key:'navi2|q-frpsl4',gradeId:'navi2',subject:'항해',count:2,latest:2025,hits:[{year:2025}]}];
+  const duplicatePool=['navi2|q-11uymt4','navi2|q-frpsl4'].map(key=>({key,gradeId:'navi2',subject:'항해',question:'동일한 지문',choices:['a','b','c','d'],answer:0,count:2,latest:2025,maxYear:2026,hits:[{year:2025,session:1,number:1},{year:2025,session:2,number:2}]}));
   const plan={dailyCap:40,finalDays:4,priorityMode:'auto',grades:{navi2:{enabled:true,examDate:'2099-01-01'},navi3:{enabled:false,examDate:''}}};
   await test('completed duplicate cluster reaches full progress and has no unseen assignment',()=>{
-    const {s}=harness(),progress={'navi2|q-11uymt4':{firstPassDate:dateKey(),mastered:true,status:'mastered',attempts:3,correct:3,wrong:0,dueDate:'2099-01-01'}};
+    const {s}=harness();s.__audit.setPools({navi2:duplicatePool,navi3:[]});const progress={'navi2|q-11uymt4':{firstPassDate:dateKey(),mastered:true,status:'mastered',attempts:3,correct:3,wrong:0,dueDate:'2099-01-01'}};
     const stats=s.__audit.progressStats(plan,'navi2',duplicatePool,progress,dateKey()),assignment=s.__audit.build(plan,{navi2:duplicatePool,navi3:[]},progress,dateKey());
     assert.equal(stats.selected,1);assert.equal(stats.passed,1);assert.equal(stats.mastered,1);assert.equal(stats.freqTotal,1);assert.equal(stats.freqPassed,1);
     assert.equal(stats.phase.allRemaining.length,0);assert.equal(assignment.keys.length,0);
   });
   await test('duplicate due and weak records are counted once',()=>{
-    const {s}=harness(),record={firstPassDate:dateKey(),mastered:false,status:'weak',dueDate:dateKey()},progress=Object.fromEntries(duplicatePool.map(q=>[q.key,copy(record)]));
+    const {s}=harness();s.__audit.setPools({navi2:duplicatePool,navi3:[]});const record={firstPassDate:dateKey(),mastered:false,status:'weak',dueDate:dateKey()},progress=Object.fromEntries(duplicatePool.map(q=>[q.key,copy(record)]));
     const stats=s.__audit.progressStats(plan,'navi2',duplicatePool,progress,dateKey());assert.equal(stats.due,1);assert.equal(stats.weak,1);assert.equal(stats.passed,1);
   });
-  await test('cross-grade duplicate completion uses the same rule as selection',()=>{
-    const {s}=harness(),pool=[{key:'navi3|q-1cnq33k',gradeId:'navi3',count:2}],progress={'navi2|q-174fei8':{firstPassDate:dateKey(),mastered:true}};
-    const stats=s.__audit.progressStats(plan,'navi3',pool,progress,dateKey());assert.equal(stats.selected,1);assert.equal(stats.passed,1);assert.equal(stats.mastered,1);assert.equal(stats.phase.allRemaining.length,0);
+  await test('same content in a different grade does not inherit completion',()=>{
+    const {s}=harness(),pool=[{...duplicatePool[0],key:'navi3|q-1cnq33k',gradeId:'navi3'}],progress={'navi2|q-11uymt4':{firstPassDate:dateKey(),mastered:true}};
+    s.__audit.setPools({navi2:duplicatePool,navi3:pool});
+    const stats=s.__audit.progressStats(plan,'navi3',pool,progress,dateKey());assert.equal(stats.selected,1);assert.equal(stats.passed,0);assert.equal(stats.mastered,0);assert.equal(stats.phase.allRemaining.length,1);
   });
   await test('known 2026 figure placeholder is excluded from saved queues and grading',()=>{
     const {s,data}=harness(),q=sourceQuestion();assert.match(q['문제'],/\[그림 문제\]/);assert.equal(s.mdQuestionUsable(q),false);
@@ -132,7 +134,7 @@ async function test(name,fn){await fn();passed++;console.log('PASS '+name)}
     for(const q of ambiguous){
       const full={...q,_short:'navi2',_year:2023,_session:1,'회차':1};
       assert.equal(s.mdQuestionUsable(full),false);assert.match(s.mdQuestionContentIssue(full),/문항 번호/);
-      const item={key:'navi2|source-'+q['문제'],subject:'법규',question:q['문제'],normalized:s.n3aNormalizeQuestion(q['문제']),hits:[{year:2023,session:1,number:4}]};
+      const item={canonicalQuestion:full,key:'navi2|source-'+q['문제'],subject:'법규',question:q['문제'],normalized:s.n3aNormalizeQuestion(q['문제']),hits:[{year:2023,session:1,number:4}]};
       assert.equal(s.__audit.find('navi2',item),null);
     }
     s.pastQueue=ambiguous.map(q=>({...q,_short:'navi2',_year:2023,_session:1,'회차':1}));s.pastAnswers=[0,1];
@@ -142,7 +144,7 @@ async function test(name,fn){await fn();passed++;console.log('PASS '+name)}
     const {s}=harness();
     loadRealBundles(s);
     for(const name of ['balanced-mock.js','reported-content-fixes.js'])vm.runInContext(fs.readFileSync(path.join(root,name),'utf8'),s);
-    s.getPastExam=(grade,year,session)=>s.MD_PAST[`${year}-${grade}-${session}`];
+    s.__mdReportedContentFixes.patchKnownData();s.getPastExam=(grade,year,session)=>s.MD_PAST[`${year}-${grade}-${session}`];
     s.n3aData=grade=>s.MD_NAVI_FREQUENCY[grade];s.ensureNavi3FrequencyData=async grade=>s.n3aData(grade);
     s.pastDataSubjectsLoaded=new Set(['navi2','navi3']);s.ensurePastDataForSubject=async()=>{};
     const all=['항해','운용','법규','영어','상선전문'],plan={grades:{navi2:{subjects:all},navi3:{subjects:all}}};

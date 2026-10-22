@@ -1,5 +1,7 @@
 """Real Chromium storage/lifecycle tests; fake GIS and Drive only, no user account."""
 from functools import partial
+from email import policy
+from email.parser import BytesParser
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 import json
@@ -43,7 +45,17 @@ def route_request(route):
             remote = req.post_data_json
             data = {'id': 'test-file', 'modifiedTime': remote['updatedAt']}
         elif req.method == 'POST':
-            data = {'id': 'test-file'}
+            # Google Drive atomically creates metadata and contents in one MIME request.
+            assert 'uploadType=multipart' in req.url
+            mime = BytesParser(policy=policy.default).parsebytes(
+                ('Content-Type: '+req.headers['content-type']+'\r\nMIME-Version: 1.0\r\n\r\n').encode('ascii')
+                + req.post_data.encode('utf-8'))
+            parts = list(mime.iter_parts())
+            assert len(parts) == 2
+            metadata = json.loads(parts[0].get_payload(decode=True))
+            assert metadata['parents'] == ['appDataFolder']
+            remote = json.loads(parts[1].get_payload(decode=True))
+            data = {'id': 'test-file', 'modifiedTime': remote['updatedAt']}
         elif 'alt=media' in req.url:
             data = remote
         else:

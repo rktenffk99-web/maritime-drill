@@ -17,48 +17,24 @@ assert 'id="pp-priority-navi3-pct"' in text
 assert 'toggleNavigatorPassPlanPriorityCustom' in text
 assert "plan.priorityMode=['auto','navi3','navi2','custom'].includes" in text
 assert 'delete daily[today];ppSaveDaily(daily)' in text
-assert '하루 전체 숙제를 선택 비율로 배분' in text
-assert '틀렸거나 불확실한 문제 → 아직 안 본 신규 문제 → 일반 복습 → 정답률 높은 숙달 문제' in text
+assert '급수 비율은 기본문항에 적용' in text
+assert '7일 이상 연체를 우선' in text
 
-m=re.search(r"function ppBuildTodayAssignment\(plan,pools,progress,today\)\{.*?\n  \}(?=\n  // subject-balanced-homework-v1|\n  function ppGetItemByKey)",text,re.S)
-assert m, 'assignment builder missing'
-body=m.group(0)
-assert 'knowledge-gap-priority-v4-dedupe' in body
-assert 'const priority=ppPriorityProfile(plan,today);' in body
-assert 'requests[g]=remaining.length?Math.ceil(remaining.length/daysLeft):0;' in body
-assert 'const requiredNew=Math.min(cap,requestedNew);' in body
-assert 'function reviewTier(item)' in body
-assert "r.status==='weak'" in body and "r.lastOutcome==='wrong'" in body and "r.lastOutcome==='unsure'" in body
-assert 'const weakDue=' in body and 'const normalDue=' in body and 'const strongDue=' in body
-assert "if(priority.mode==='auto')" in body
-assert 'const quotas=ppAllocateNewSlots(requests,requiredNew);' in body
-assert 'const totalQuotas=ppPriorityFlexQuotas(plan,today,cap);' in body
-assert 'takeReviewList(weakDue,g,target,used);' in body
-assert 'for(const item of sortedNewCandidates(g))' in body
-assert 'takeReviewList(normalDue,g,target,used);' in body
-assert 'takeReviewList(strongDue,g,target,used);' in body
-manual_start=body.index('const totalQuotas=ppPriorityFlexQuotas(plan,today,cap);')
-assert body.index('takeReviewList(weakDue,g,target,used);',manual_start) < body.index('for(const item of sortedNewCandidates(g))',manual_start) < body.index('takeReviewList(normalDue,g,target,used);',manual_start) < body.index('takeReviewList(strongDue,g,target,used);',manual_start)
-assert 'const deferredStrongReviewCount=' in body
-assert 'deferredStrongReviewCount,rotationPolicy:' in body
-assert "rotationPolicy:'knowledge-gap-priority-v4-dedupe'" in body
-assert "assignmentPolicy:'knowledge-gap-priority-v6-coverage-balanced'" in text
+# Grade ratios and review/new ordering are exercised against the actual scheduler.
+import subprocess
+assert '// scheduler-v522-adapter:start' in text
+subprocess.run(['node','tools/test_scheduler_v522.js'],check=True)
 
-# Mature mastered questions get progressively longer intervals, capped near the exam.
+# Recent independent recalls determine spacing; cumulative totals remain historical statistics.
 commit=re.search(r"function ppCommitOutcome\(q,answer,confidence\)\{.*?\n  \}",text,re.S)
 assert commit, 'commit outcome missing'
 c=commit.group(0)
-assert "reviewSpacingPolicy:'review-spacing-v3-mastery-ladder'" in text
-for needle in [
-    'reviews>=5&&attempts>=7&&sureRate>=0.90)interval=30;',
-    'reviews>=4&&attempts>=6&&sureRate>=0.85)interval=21;',
-    'reviews>=3&&attempts>=5&&sureRate>=0.80)interval=14;',
-    'reviews>=2&&attempts>=4&&sureRate>=0.75)interval=7;',
-    'accuracy>=0.70)interval=5;',
-    'if(dday<=7)interval=Math.min(interval,3);',
-    'else if(dday<=21)interval=Math.min(interval,7);',
-]:
-    assert needle in c, f'adaptive spacing missing: {needle}'
+assert 'ppInitializeReviewSchedule(r)' in c
+assert 'ppResetReviewSchedule(r,today)' in c
+assert 'r.reviewSuccessDate!==today' in c
+assert '[1,5,7,14,21,30]' in c
+assert 'ppReviewDueDate(today,interval,exam)' in c
+assert 'sureRate=' not in c, 'lifetime accuracy must not trap recent recovery or override a new lapse'
 
 # Grade ratio stays exact.
 helper=re.search(r"function ppPriorityProfile\(plan,today\)\{.*?\n  \}",text,re.S)

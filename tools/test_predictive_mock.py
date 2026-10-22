@@ -9,11 +9,14 @@ required=[
     '실전예측 모의 · 가중 랜덤',
     "pastReturnView='pass-plan-predictive-mock'",
     "weight*=0.45",
-    "best/(1+used*2.5)",
 ]
 for needle in required:
     if needle not in src:
         raise SystemExit(f'missing predictive mock marker: {needle}')
+if 'predictive-mass-sampling-v522' in src:
+    assert 'return window.__mdBalancedMock.predictiveSample(items,{' in src
+else:
+    assert 'best/(1+used*2.5)' in src
 if src.count("const PREDICTIVE_HISTORY_KEY='md_predictive_mock_history_v2'")!=1:
     raise SystemExit('predictive mock patch is not idempotent')
 

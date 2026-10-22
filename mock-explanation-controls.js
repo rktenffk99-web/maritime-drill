@@ -13,7 +13,12 @@
     return String(value==null?'':value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   }
   function isMockExam(){
-    try{return typeof currentMode!=='undefined'&&currentMode==='past'&&typeof pastMode!=='undefined'&&pastMode==='mock'}catch(e){return false}
+    try{
+      if(!(typeof currentMode!=='undefined'&&currentMode==='past'&&typeof pastMode!=='undefined'&&pastMode==='mock'))return false;
+      // Evaluation scores must reflect answers given before seeing explanations.
+      if(typeof pastQueue!=='undefined'&&Array.isArray(pastQueue)&&pastQueue.some(q=>q&&q._evaluationMock))return false;
+      return true;
+    }catch(e){return false}
   }
   function currentQuestion(){
     try{

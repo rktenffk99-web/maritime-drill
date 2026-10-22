@@ -4,7 +4,7 @@ import re
 text=Path('index.html').read_text(encoding='utf-8-sig')
 
 required=[
-    'predictive-no-duplicate-v1',
+    'predictive-content-identity-v522' if 'predictive-content-identity-v522' in text else 'predictive-no-duplicate-v1',
     'function ppPredictiveQuestionFingerprint(item)',
     'function ppUniquePredictiveCandidates(items)',
     'selectedFingerprints=new Set()',
@@ -28,6 +28,9 @@ assert "const unique=typeof ppUniquePredictiveCandidates==='function'?ppUniquePr
 
 # The fingerprint must collapse harmless presentation differences that would otherwise
 # let the same stem appear twice under different source keys/years.
-assert ".normalize('NFKC').toLowerCase().replace(/\\s+/g,' ').trim()" in text
+if 'predictive-content-identity-v522' in text:
+    assert 'return window.__mdBalancedMock.fingerprint(item);' in text
+else:
+    assert ".normalize('NFKC').toLowerCase().replace(/\\s+/g,' ').trim()" in text
 
 print('predictive mock no-duplicate checks: PASS')

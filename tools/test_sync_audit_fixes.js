@@ -163,12 +163,13 @@ async function test(name,fn){await fn();passed++;console.log('PASS '+name)}
   await test('the commit identity helper retains the same device ID across calls',()=>{
     const h=harness();assert.equal(h.s.__mdLearningIntegrity.getDeviceId(),'counter-device-a');assert.equal(h.s.__mdLearningIntegrity.getDeviceId(),'counter-device-a');
   });
-  await test('independent homework commit identities survive merging and keep the latest 64',()=>{
-    const h=harness(),aIds=Array.from({length:50},(_,i)=>'device-a|'+(i+1)+'|q|0'),bIds=Array.from({length:50},(_,i)=>'device-b|'+(i+51)+'|q|0');
+  await test('today independent homework commit identities survive merging and keep the latest 64',()=>{
+    const today=new Date();today.setHours(0,0,0,0);const start=today.getTime();
+    const h=harness(),aIds=Array.from({length:50},(_,i)=>'device-a|'+(start+i+1)+'|q|0'),bIds=Array.from({length:50},(_,i)=>'device-b|'+(start+i+51)+'|q|0');
     const left={q1:{homeworkCommitIds:aIds}},right={q1:{homeworkCommitIds:bIds}};
     const a={items:{[PROGRESS]:JSON.stringify(left)},itemMeta:{},updatedAt:T0},b={items:{[PROGRESS]:JSON.stringify(right)},itemMeta:{},updatedAt:T0};
     const m=h.merge(a,b),ids=JSON.parse(m.items[PROGRESS]).q1.homeworkCommitIds;
-    assert.equal(ids.length,64);assert.equal(ids[0],'device-a|37|q|0');assert.equal(ids[63],'device-b|100|q|0');
+    assert.equal(ids.length,64);assert.equal(ids[0],'device-a|'+(start+37)+'|q|0');assert.equal(ids[63],'device-b|'+(start+100)+'|q|0');
     assert.deepEqual(h.merge(b,a),m);
   });
   await test('numeric string and malformed remote counters cannot replace a valid local count',()=>{

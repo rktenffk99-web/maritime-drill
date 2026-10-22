@@ -21,13 +21,18 @@ jobs:
           python -m playwright install --with-deps chromium
       - name: Exercise real browser study and result flows
         run: |
-          python tools/browser_smoke.py
-          python tools/browser_integrity.py
-          python tools/browser_daily_storage.py
-          python tools/browser_drive_auth.py
-          python tools/browser_menu_cleanup.py
-          python tools/browser_mock_subject_order.py
-          python tools/browser_balanced_mock.py
+          status=0
+          for test in \
+            tools/browser_smoke.py \
+            tools/browser_integrity.py \
+            tools/browser_daily_storage.py \
+            tools/browser_drive_auth.py \
+            tools/browser_menu_cleanup.py \
+            tools/browser_mock_subject_order.py \
+            tools/browser_balanced_mock.py; do
+            python "$test" || status=1
+          done
+          exit "$status"
       - uses: actions/upload-artifact@v6
         if: always()
         with:

@@ -9,9 +9,12 @@ assert len(set(keys))==125, 'duplicate explanation keys'
 for subject in ('항해','운용','법규','영어','상선전문'):
     nums=sorted(int(n) for s,n in keys if s==subject)
     assert nums==list(range(1,26)), f'{subject} explanation numbers incomplete: {nums}'
-assert '<script src="explain-2026-navi3-3.js"></script>' in src
-assert '<script src="explain-2026-navi3-3-english.js"></script>' in src
-assert src.index('<script src="explain-2026-navi3-3.js"></script>') < src.index('<script src="explain-2026-navi3-3-english.js"></script>')
+script_positions=[]
+for name in ('explain-2026-navi3-3.js','explain-2026-navi3-3-english.js'):
+    match=re.search(r'<script src="'+re.escape(name)+r'(?:\?v=[^"]+)?"></script>',src)
+    assert match, f'{name} loader missing'
+    script_positions.append(match.start())
+assert script_positions[0] < script_positions[1], 'English override must load after base explanations'
 assert 'get2026Navi3Session3Explain(q)' in src
 
 # Detailed English override: every session-3 English question must have the same study sections used by recent years.

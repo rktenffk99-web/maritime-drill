@@ -5,7 +5,7 @@ src=Path('index.html').read_text(encoding='utf-8-sig')
 required=[
     'predictive-history-fingerprint-v1',
     "const PREDICTIVE_FP_HISTORY_KEY='md_predictive_mock_fingerprint_history_v1'",
-    "item.question||item['문제']",
+    'return window.__mdBalancedMock.fingerprint(item);' if 'predictive-content-identity-v522' in src else "item.question||item['문제']",
     'function ppLoadPredictiveFingerprintHistory(gradeId)',
     'function ppSavePredictiveFingerprintHistory(gradeId,rows)',
     'function ppPredictiveRecentLevel(item,keyHistory)',

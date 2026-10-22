@@ -279,45 +279,16 @@
     return (Number.isInteger(v)?String(v):v.toFixed(1))+'%';
   }
   function mdTodayResultStats(){
-    if(typeof planSessionQueue==='undefined'||!Array.isArray(planSessionQueue)||!planSessionQueue.length)return null;
-    const answers=(typeof planSessionAnswers!=='undefined'&&Array.isArray(planSessionAnswers))?planSessionAnswers:[];
-    let progress=null,today=null,canReadCleared=false;
+    // The pass-plan owns its lexical session state. Read its explicit API rather
+    // than guessing inaccessible variables from this separate script.
+    const api=window.__mdPassPlanLearningAPI;
+    if(!api||typeof api.getResultStats!=='function')return null;
     try{
-      if(typeof ppLoadProgress==='function'&&typeof ppDateKey==='function'&&typeof ppProgressFor==='function'&&typeof ppTodayCleared==='function'){
-        progress=ppLoadProgress();today=ppDateKey(new Date());canReadCleared=true;
-      }
-    }catch(e){}
-    const unique=new Map();
-    planSessionQueue.forEach((q,i)=>{
-      if(!q)return;
-      const key=q._planKey?String(q._planKey):'idx:'+i;
-      if(unique.has(key))return;
-      const answer=answers[i];
-      const firstCorrect=Number.isInteger(answer)&&answer===q['정답'];
-      let cleared=firstCorrect;
-      if(canReadCleared&&q._planKey){
-        try{cleared=!!ppTodayCleared(ppProgressFor(progress,q._planKey),today)}catch(e){}
-      }
-      unique.set(key,{key,subject:mdResultSubjectName(q),firstCorrect,cleared});
-    });
-    if(!unique.size)return null;
-    const bySubject=new Map();
-    for(const row of unique.values()){
-      const subject=row.subject||'기타';
-      if(!bySubject.has(subject))bySubject.set(subject,{subject,total:0,firstCorrect:0,cleared:0});
-      const s=bySubject.get(subject);s.total++;if(row.firstCorrect)s.firstCorrect++;if(row.cleared)s.cleared++;
-    }
-    const preferred=['영어','항해','법규','운용','상선전문','기타'];
-    const order=new Map(preferred.map((s,i)=>[s,i]));
-    const subjects=[...bySubject.values()].sort((a,b)=>{
-      const ao=order.has(a.subject)?order.get(a.subject):preferred.length;
-      const bo=order.has(b.subject)?order.get(b.subject):preferred.length;
-      return ao-bo||a.subject.localeCompare(b.subject,'ko');
-    });
-    const total=unique.size;
-    const firstCorrect=[...unique.values()].filter(x=>x.firstCorrect).length;
-    const cleared=[...unique.values()].filter(x=>x.cleared).length;
-    return {subjects,total,firstCorrect,cleared,unresolved:total-cleared};
+      const value=api.getResultStats();
+      if(!value||value.kind!=='today'||!Array.isArray(value.subjects))return null;
+      const count=n=>Math.max(0,Number(n)||0);
+      return {...value,total:count(value.baseTotal??value.total),firstCorrect:count(value.baseCorrect??value.firstCorrect),cleared:count(value.cleared),pendingNextDay:count(value.pendingNextDay),unresolved:count(value.unresolved),subjects:value.subjects.map(row=>({...row,total:count(row.total),firstCorrect:count(row.firstCorrect),cleared:count(row.cleared),pendingNextDay:count(row.pendingNextDay),unresolved:count(row.unresolved)}))};
+    }catch(e){return null}
   }
   function enhanceTodayResult(){
     const root=appRoot();if(!root||document.getElementById('md-today-subject-result'))return;
@@ -326,11 +297,11 @@
     const stats=mdTodayResultStats();if(!stats||!stats.subjects.length)return;
     const firstCard=root.querySelector('.card');if(!firstCard)return;
     const rows=stats.subjects.map(s=>{
-      const firstRate=mdPercent(s.firstCorrect,s.total),clearedRate=mdPercent(s.cleared,s.total),unresolved=s.total-s.cleared;
+      const firstRate=mdPercent(s.firstCorrect,s.total),clearedRate=mdPercent(s.cleared,s.total),unresolved=s.unresolved;
       return '<div style="display:grid;grid-template-columns:minmax(90px,1.15fr) minmax(150px,1.8fr) minmax(135px,1.6fr) minmax(80px,.8fr);gap:12px;align-items:center;padding:11px 14px;border-top:1px solid #E2E8F0">'
         +'<div style="font-size:13px;font-weight:900;color:#0F172A">'+escapeText(s.subject)+'</div>'
         +'<div><div style="display:flex;justify-content:space-between;gap:8px;font-size:11px"><span>'+s.firstCorrect+' / '+s.total+'</span><b>'+firstRate+'</b></div><div style="height:6px;background:#E2E8F0;border-radius:999px;overflow:hidden;margin-top:5px"><div style="height:100%;width:'+firstRate+';background:#7C3AED;border-radius:999px"></div></div></div>'
-        +'<div style="font-size:11px"><b style="font-size:12px;color:#334155">'+s.cleared+' / '+s.total+'</b><span style="color:#64748B"> · '+clearedRate+'</span></div>'
+        +'<div style="font-size:11px"><b style="font-size:12px;color:#334155">'+s.cleared+' / '+s.total+'</b><span style="color:#64748B"> · '+clearedRate+'</span>'+(s.pendingNextDay?'<div style="font-size:10px;color:#7C3AED;margin-top:3px">다음 날 확인 예정 '+s.pendingNextDay+'문제</div>':'')+'</div>'
         +'<div style="font-size:12px;font-weight:900;color:'+(unresolved?'#B45309':'#047857')+'">'+unresolved+'문제</div>'
         +'</div>';
     }).join('');
@@ -338,18 +309,19 @@
     if(stats.subjects.length>=2){
       const ranked=stats.subjects.slice().sort((a,b)=>(a.firstCorrect/Math.max(1,a.total))-(b.firstCorrect/Math.max(1,b.total))||(b.total-b.cleared)-(a.total-a.cleared));
       const w=ranked[0];
-      weakestHtml='<div style="padding:10px 14px;background:#F8FAFC;border-top:1px solid #E2E8F0;font-size:11px;color:#475569">첫 시도 정답률 최저: <b style="color:#B91C1C">'+escapeText(w.subject)+' '+mdPercent(w.firstCorrect,w.total)+'</b> · 현재 미해결 '+(w.total-w.cleared)+'문제</div>';
+      weakestHtml='<div style="padding:10px 14px;background:#F8FAFC;border-top:1px solid #E2E8F0;font-size:11px;color:#475569">첫 시도 정답률 최저: <b style="color:#B91C1C">'+escapeText(w.subject)+' '+mdPercent(w.firstCorrect,w.total)+'</b> · 현재 미해결 '+w.unresolved+'문제</div>';
     }
     const section=document.createElement('div');
     section.id='md-today-subject-result';section.className='card';section.style.cssText='padding:0;overflow:hidden';
     section.innerHTML=
       '<div style="padding:15px 14px 12px">'
       +'<div style="font-size:16px;font-weight:900;color:#0F172A">과목별 결과</div>'
-      +'<div style="font-size:10px;color:#64748B;margin-top:4px">첫 시도 정답률과 현재 숙제 통과 상태를 분리해 표시합니다. 재확인 문제는 중복 집계하지 않습니다.</div>'
+      +'<div style="font-size:10px;color:#64748B;margin-top:4px">기본 문제의 첫 시도, 당일 재확인 완료, 다음 날 확인 예정을 분리합니다. 재시도·재확인으로 첫 답을 덮어쓰지 않습니다.</div>'
       +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;font-size:11px">'
       +'<span style="padding:6px 9px;border-radius:999px;background:#F1F5F9;color:#334155">고유 문항 <b>'+stats.total+'</b></span>'
       +'<span style="padding:6px 9px;border-radius:999px;background:#F5F3FF;color:#6D28D9">첫 시도 정답 <b>'+stats.firstCorrect+' ('+mdPercent(stats.firstCorrect,stats.total)+')</b></span>'
       +'<span style="padding:6px 9px;border-radius:999px;background:#ECFDF5;color:#047857">현재 통과 <b>'+stats.cleared+'</b></span>'
+      +'<span style="padding:6px 9px;border-radius:999px;background:#F5F3FF;color:#6D28D9">다음 날 확인 예정 <b>'+stats.pendingNextDay+'</b></span>'
       +'<span style="padding:6px 9px;border-radius:999px;background:#FFF7ED;color:#B45309">미해결 <b>'+stats.unresolved+'</b></span>'
       +'</div></div>'
       +'<div style="overflow-x:auto"><div style="min-width:620px">'
