@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="md-build" content="android-single-file">
-<title>Maritime Drill v5.21 · Android</title>
+<title>Maritime Drill v5.22 · Android</title>
 <style>
 
 *{margin:0;padding:0;box-sizing:border-box}
@@ -14673,7 +14673,7 @@ window.MD_DATA["safety2"] = { meta: META, QUESTIONS, IMP, TTS_MAP, SHIP_INFO, NE
 <script>
 
 // ── 앱 버전 (업데이트 시마다 올리기) ──
-const APP_VERSION = '5.21';
+const APP_VERSION = '5.22';
 
 // ── v4.81: 브라우저 저장 실패를 사용자에게 즉시 알리는 공통 저장기 ──
 function showStorageWarning(label, error){
@@ -15206,12 +15206,20 @@ async function driveSyncFindRemoteFile(){
   const data=await res.json();
   const files=Array.isArray(data.files)?data.files:[];
   const matches=files.filter(f=>f&&f.name===DRIVE_SYNC_FILE);
-  matches.sort((a,b)=>String(b.modifiedTime||'').localeCompare(String(a.modifiedTime||'')));
+  const empty=file=>file.size==='0'||file.size===0;
+  // v5.22: an interrupted legacy creation must not hide an existing full file.
+  matches.sort((a,b)=>Number(empty(a))-Number(empty(b))||String(b.modifiedTime||'').localeCompare(String(a.modifiedTime||''))||String(a.id||'').localeCompare(String(b.id||'')));
   return matches[0]||null;
 }
 async function driveSyncDownloadPayload(fileId){
   const res=await driveSyncFetch('https://www.googleapis.com/drive/v3/files/'+encodeURIComponent(fileId)+'?alt=media');
-  const payload=await res.json();
+  const raw=await res.text();
+  if(raw.length===0){
+    const error=new Error('Drive의 동기화 파일이 비어 있습니다.');
+    error.mdEmptyDriveFile=true;
+    throw error;
+  }
+  const payload=JSON.parse(raw);
   if(!payload||payload.app!=='Maritime Drill'||!payload.items||typeof payload.items!=='object'||Array.isArray(payload.items)){
     throw new Error('Drive의 동기화 파일 형식이 올바르지 않습니다.');
   }
@@ -15232,14 +15240,25 @@ function driveSyncBuildPayload(state){
   };
 }
 async function driveSyncCreateRemote(payload){
-  const metaRes=await driveSyncFetch('https://www.googleapis.com/drive/v3/files?fields=id,modifiedTime',{
+  // v5.22: create metadata and contents together; failed uploads cannot leave
+  // a named zero-byte file that blocks every later synchronization attempt.
+  const metadata=JSON.stringify({name:DRIVE_SYNC_FILE,parents:['appDataFolder'],mimeType:'application/json'});
+  const content=JSON.stringify(payload);
+  let boundary;
+  do{boundary='md_drive_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2)}
+  while(metadata.includes(boundary)||content.includes(boundary));
+  const body=[
+    '--'+boundary,'Content-Type: application/json; charset=UTF-8','',metadata,
+    '--'+boundary,'Content-Type: application/json; charset=UTF-8','',content,
+    '--'+boundary+'--',''
+  ].join('\r\n');
+  const res=await driveSyncFetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,modifiedTime',{
     method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({name:DRIVE_SYNC_FILE,parents:['appDataFolder'],mimeType:'application/json'})
+    headers:{'Content-Type':'multipart/related; boundary='+boundary},
+    body
   });
-  const meta=await metaRes.json();
+  const meta=await res.json();
   if(!meta.id) throw new Error('Drive 동기화 파일을 만들지 못했습니다.');
-  await driveSyncUploadRemote(meta.id,payload);
   return meta.id;
 }
 async function driveSyncUploadRemote(fileId,payload){
@@ -16173,7 +16192,7 @@ function n3aPresetYears(mode,skipRender){
   const all=(data.meta.years||[]).map(Number).sort((a,b)=>a-b);
   const partial=new Set((data.meta.partialYears||[]).map(Number));
   const complete=((data.meta.completeYears||[]).length?(data.meta.completeYears||[]).map(Number):all.filter(year=>!partial.has(year))).sort((a,b)=>a-b);
-  if(mode==='recent5')navi3AnalysisState.years=complete.slice(-5);
+  if(mode==='recent5')navi3AnalysisState.years=window.__mdDataIdentity.trainingYears(data);
   else if(mode==='excludeLatest'){
     const latest=Math.max(...all);
     navi3AnalysisState.years=all.filter(year=>year!==latest);
@@ -16211,7 +16230,7 @@ function n3aData(subjectId){
 const n3aOriginIndexes={};
 function n3aOriginKey(year,session,subject,number){return `${year}|${session}|${subject}|${number}`}
 function n3aQuestionOrigin(q){
-  if(!q||Number(q._year)<2026)return null;
+  if(!q||!Number(q._year))return null;
   const gradeId=baseFromShort(q._short||'');
   if(!NAVI_ANALYSIS_GRADES.includes(gradeId))return null;
   const data=n3aData(gradeId);
@@ -16232,18 +16251,22 @@ function n3aOriginTagHtml(q){
   };
   const style=styles[origin.status]||styles.new;
   const history=origin.previousCount
-    ? `2020~2025년 동일 문항 ${origin.previousCount}회 · ${origin.previousYears.join('·')}년`
-    : '2020~2025년 동일 문항 없음';
+    ? `보유 이전 연도 동일 문항 ${origin.previousCount}회 · ${origin.previousYears.join('·')}년`
+    : `${origin.year}년 이전 보유 자료에 동일 문항 없음`;
   const sameYear=origin.sameYearEarlierCount?` · ${origin.year}년 앞 회차 ${origin.sameYearEarlierCount}회`:'';
   const count=origin.status==='frequent'?` · 과거 ${origin.previousCount}회`:origin.status==='past'?' · 과거 1회':'';
   return `<span class="tag" style="background:${style.bg};color:${style.color};margin:0" title="${escapeHtml(history+sameYear)}">${style.label}${count}</span>`;
 }
 async function ensureNavi3FrequencyData(subjectId){
   const gradeId=subjectId||naviAnalysisSubjectId;
-  const existing=n3aData(gradeId);if(existing)return existing;
-  const loaded=await loadOptionalScript(`past-analysis-${gradeId}.js`);
-  const data=n3aData(gradeId);
-  if(!loaded||!data)throw new Error(`${gradeId.replace('navi','')}급 항해사 분석 데이터를 불러오지 못했습니다.`);
+  let data=n3aData(gradeId);
+  if(!data){const loaded=await loadOptionalScript(`past-analysis-${gradeId}.js`);data=n3aData(gradeId);if(!loaded||!data)throw new Error(`${gradeId.replace('navi','')}급 항해사 분석 데이터를 불러오지 못했습니다.`)}
+  if(['navi2','navi3'].includes(gradeId)&&window.__mdDataIdentity&&data.identityPolicy!==window.__mdDataIdentity.policy){
+    if(!pastDataSubjectsLoaded.has(gradeId))await ensurePastDataForSubject(gradeId);
+    if(window.__mdReportedContentFixes)window.__mdReportedContentFixes.patchKnownData();
+    window.__mdDataIdentity.prepareFrequency(data,{gradeId,getExam:getPastExam,usable:mdQuestionUsable});
+    delete n3aOriginIndexes[gradeId];
+  }
   return data;
 }
 function n3aRangeYears(data,range){
@@ -16251,7 +16274,7 @@ function n3aRangeYears(data,range){
   n3aEnsureFilterState(data);
   if(Array.isArray(navi3AnalysisState.years))return new Set(navi3AnalysisState.years.map(Number).filter(year=>all.includes(year)));
   if(range==='complete')return new Set((data.meta.completeYears||[]).map(Number));
-  if(range==='recent')return new Set(all.filter(year=>year>=2023));
+  if(range==='recent')return new Set(window.__mdDataIdentity.trainingYears(data));
   return new Set(all);
 }
 function n3aRangeLabel(data,range){
@@ -16433,7 +16456,7 @@ async function renderNavi3Frequency(subjectId){
   if(subjectId)n3aActivateGrade(subjectId);
   stopTTS();stopMockTimer();currentMode='analysis';
   let data=n3aData();
-  if(!data){
+  if(!data||(['navi2','navi3'].includes(naviAnalysisSubjectId)&&data.identityPolicy!=='content-identity-v2')){
     renderPastLoading(`${naviAnalysisSubjectId.replace('navi','')}급 항해사 빈출 통계를 불러오는 중입니다`);
     try{data=await ensureNavi3FrequencyData()}catch(error){
       app.innerHTML=`<div class="card" style="margin-top:32px;text-align:center;border-left:4px solid #DC2626"><div style="font-size:16px;font-weight:900;color:#991B1B">빈출 분석 데이터를 열지 못했습니다</div><div style="font-size:12px;color:var(--textDim);margin-top:7px">${escapeHtml(error.message||String(error))}</div><div class="flex gap8" style="margin-top:16px"><button class="btn btn-outline" onclick="pickPrepType('${naviAnalysisSubjectId}')">뒤로</button><button class="btn btn-accent" onclick="renderNavi3Frequency()">다시 시도</button></div></div>`;
@@ -17549,6 +17572,7 @@ async function startPastSession(mode, subjFilter){
 }
 
 function mdQuestionContentIssue(q){
+  const identityIssue=window.__mdDataIdentity&&window.__mdDataIdentity.questionIssue(q);if(identityIssue)return identityIssue;
   const issue=window.__mdLearningIntegrity.contentIssue(q);if(issue)return issue;
   const short=q&&(q._short||q._gradeShort),year=q&&q._year,session=q&&(q._session||q['회차']);
   const exam=short&&year&&session&&typeof getPastExam==='function'?getPastExam(short,year,session):null;
@@ -17814,6 +17838,16 @@ function qualityFromInput(correct, confidence){
 }
 
 // 순수 SM-2 계산. item을 변이시키고 nextReview(ISO) 갱신.
+// oral-review-exam-cap-v522: keep the SM-2 interval model; bring an actual due date inside the remaining exam window.
+function mdOralReviewDays(interval){
+  const days=Math.max(1,Number(interval)||1);
+  if(typeof schedule==='undefined'||!schedule||typeof schedule.exam!=='string')return days;
+  const match=schedule.exam.match(/^(\d{4})-(\d{2})-(\d{2})$/);if(!match)return days;
+  const exam=new Date(Number(match[1]),Number(match[2])-1,Number(match[3]));
+  if(exam.getFullYear()!==Number(match[1])||exam.getMonth()!==Number(match[2])-1||exam.getDate()!==Number(match[3]))return days;
+  const today=new Date();today.setHours(0,0,0,0);const left=Math.round((exam-today)/86400000);
+  return left>0?Math.min(days,Math.max(1,left-1)):days;
+}
 function updateSM2(item, q){
   // EF 갱신 (q에 무관하게 항상 적용되는 게 원안)
   let ef = (typeof item.ef==='number') ? item.ef : SM2_DEFAULT_EF;
@@ -17839,7 +17873,7 @@ function updateSM2(item, q){
   item.interval = interval;
   const next = new Date();
   next.setHours(0,0,0,0);
-  next.setDate(next.getDate() + interval);
+  next.setDate(next.getDate() + mdOralReviewDays(interval));
   item.nextReview = next.toISOString();
 }
 
@@ -20896,7 +20930,7 @@ function toggleAnswerCollapse(scope){
 function previewNextInterval(item, q){
   const sameDay=item.sm2Day===studyDateKey();
   const effectiveQ=sameDay?Math.min(typeof item.sm2DayQuality==='number'?item.sm2DayQuality:5,q):q;
-  if(sameDay&&effectiveQ===item.sm2DayQuality)return item.interval||1;
+  if(sameDay&&effectiveQ===item.sm2DayQuality)return mdOralReviewDays(item.interval||1);
   const source=sameDay?(item.sm2DayBase||{}):item;
   const ef0 = (typeof source.ef==='number')?source.ef:SM2_DEFAULT_EF;
   let ef = ef0 + (0.1 - (5-effectiveQ)*(0.08 + (5-effectiveQ)*0.02));
@@ -20909,7 +20943,7 @@ function previewNextInterval(item, q){
     else if(reps===1) interval=6;
     else interval = Math.round((source.interval||1)*ef);
   }
-  return interval;
+  return mdOralReviewDays(interval);
 }
 function fmtInterval(days){
   if(days<=1) return '1일 후';
@@ -21376,7 +21410,7 @@ function previewSchedule(){
     html=`<div style="color:var(--red);font-size:13px;font-weight:600;padding:12px;background:var(--redDim);border-radius:8px;margin-bottom:12px">${days}일은 너무 짧습니다. 최소 7일 이상 필요합니다.</div>`;
     canApply=false;
   } else if(days<14){
-    html=`<div style="color:var(--amber);font-size:13px;font-weight:600;padding:12px;background:var(--amberDim);border-radius:8px;margin-bottom:12px">! ${days}일: Leitner BOX2(3일)·BOX3(7일) 간격반복이 1회전밖에 안 됩니다. 14일 이상을 권장합니다.</div>`;
+    html=`<div style="color:var(--amber);font-size:13px;font-weight:600;padding:12px;background:var(--amberDim);border-radius:8px;margin-bottom:12px">! ${days}일: SM-2 간격복습은 첫 성공 1일, 다음 성공 6일 뒤를 기준으로 조정합니다. 시험이 가까우면 실제 복습일을 시험 전으로 당깁니다.</div>`;
   } else if(days>90){
     html=`<div style="color:var(--amber);font-size:13px;font-weight:600;padding:12px;background:var(--amberDim);border-radius:8px;margin-bottom:12px">! ${days}일: 집중력 유지가 어렵습니다. 60일 이내를 권장합니다. 진행은 가능합니다.</div>`;
   }
@@ -21846,6 +21880,9 @@ function appPrompt(opts,onSubmit){
 window.alert=appAlert;
 </script>
 
+<script src="data-identity.js?v=5.22"></script>
+
+<script src="scheduler-v522.js?v=5.22"></script>
 <script>
 // ── v5.07: 2·3급 항해사 합격 플랜 / 오늘의 숙제 ──
 // 시험일에서 역산하여 최근 5개년 빈출 → 전체 → 시험 직전 복습 순으로 배정하고,
@@ -21866,11 +21903,12 @@ window.alert=appAlert;
   let planSessionStartedAt=0;
   let planSessionCommitted=new Set();
   let planSessionKind='today';
+  let planSessionFirstAnswers={}; // mastery-session-policy-v522
 
   const PASS_SESSION_CHECKPOINT_KEY='md_pass_plan_session_checkpoint_v2';
   function ppSavePassSessionCheckpoint(nextIndex){
     try{
-      if(planSessionKind!=='today'){localStorage.removeItem(PASS_SESSION_CHECKPOINT_KEY);return}
+      if(planSessionKind!=='today')return; // A separate drill must preserve today's saved session.
       if(!Array.isArray(planSessionQueue)||!planSessionQueue.length)return;
       const idx=Math.max(0,Number(nextIndex)||0);
       if(idx>=planSessionQueue.length){localStorage.removeItem(PASS_SESSION_CHECKPOINT_KEY);return}
@@ -21880,7 +21918,8 @@ window.alert=appAlert;
         answers:Array.isArray(planSessionAnswers)?planSessionAnswers.slice():[],
         confidence:Array.isArray(planSessionConfidence)?planSessionConfidence.slice():[],
         commitIds:planSessionCommitIds.slice(),
-        committed:Array.from(planSessionCommitted||[])
+        committed:Array.from(planSessionCommitted||[]),
+        firstAnswers:planSessionFirstAnswers
       }));
     }catch(e){console.warn('[pass-plan] checkpoint save failed',e)}
   }
@@ -21888,7 +21927,7 @@ window.alert=appAlert;
     try{
       const raw=localStorage.getItem(PASS_SESSION_CHECKPOINT_KEY);if(!raw)return null;
       const cp=JSON.parse(raw);
-      if(!cp||cp.version!==2||cp.dedupePolicy!==PP_HOMEWORK_DEDUPE_POLICY||cp.subjectBalancePolicy!=='coverage-even-v2'||cp.date!==ppDateKey(new Date())||!Array.isArray(cp.queueKeys)){
+      if(!cp||cp.version!==2||cp.date!==ppDateKey(new Date())||!Array.isArray(cp.queueKeys)||cp.queueKeys.some(key=>typeof key!=='string')){
         localStorage.removeItem(PASS_SESSION_CHECKPOINT_KEY);return null
       }
       return cp;
@@ -21956,9 +21995,10 @@ window.alert=appAlert;
     return safeStorageSet(PLAN_KEY,JSON.stringify(plan),'2·3급 합격 플랜');
   }
   function ppLoadProgress(){
-    try{const raw=localStorage.getItem(PROGRESS_KEY);return raw?JSON.parse(raw)||{}:{}}catch(e){return {}}
+    // progress-storage-budget-r4: hydrate omitted defaults before scheduling, scoring or synchronization.
+    try{const raw=localStorage.getItem(PROGRESS_KEY),value=raw?JSON.parse(raw)||{}:{};return window.__mdPassProgressStorage?window.__mdPassProgressStorage.hydrate(value):value}catch(e){return {}}
   }
-  function ppSaveProgress(progress){return safeStorageSet(PROGRESS_KEY,JSON.stringify(progress),'합격 플랜 진도')}
+  function ppSaveProgress(progress){const value=window.__mdPassProgressStorage?window.__mdPassProgressStorage.compact(progress):progress;return safeStorageSet(PROGRESS_KEY,JSON.stringify(value),'합격 플랜 진도')}
   let planDailySaveSucceeded=true;
   function ppLoadDaily(){
     try{
@@ -21979,19 +22019,9 @@ window.alert=appAlert;
     if(!Array.isArray(saved))return all;
     return all.filter(s=>saved.includes(s));
   }
-  function ppTrainingYears(data){
-    const metaYears=(data.meta&&data.meta.years||[]).map(Number);
-    const hitYears=[];
-    (data.groups||[]).forEach(group=>(group.hits||[]).forEach(hit=>{const y=Number(hit.year);if(Number.isFinite(y))hitYears.push(y)}));
-    const all=[...new Set([...metaYears,...hitYears])].sort((a,b)=>a-b);
-    // 2026 is the current exam year. Include it even when the source marks it as a partial year.
-    if(all.includes(2026))return all.filter(y=>y<=2026).slice(-5);
-    const partial=new Set((data.meta&&data.meta.partialYears||[]).map(Number));
-    const complete=((data.meta&&data.meta.completeYears||[]).length?(data.meta.completeYears||[]).map(Number):all.filter(y=>!partial.has(y))).sort((a,b)=>a-b);
-    return complete.slice(-5);
-  }
+  function ppTrainingYears(data){return window.__mdDataIdentity.trainingYears(data)}
   function ppItemKey(gradeId,groupId){return `${gradeId}|${groupId}`}
-  function ppHas2026(item){return !!(item&&Array.isArray(item.hits)&&item.hits.some(h=>Number(h.year)===2026))}
+  function ppHas2026(item){return !!(item&&Array.isArray(item.hits)&&item.hits.some(h=>Number(h.year)===Number(item.maxYear)))}
   function pp2026NeedsPriority(item,progress){return ppHas2026(item)&&!ppProgressFor(progress,item.key).mastered}
   async function ppEnsureFrequency(){
     for(const gradeId of PLAN_GRADES){
@@ -21999,35 +22029,13 @@ window.alert=appAlert;
     }
   }
   async function ppBuildPools(plan){
-    await ppEnsureFrequency();
-    const pools={};
-    PLAN_GRADES.forEach(gradeId=>{
-      const data=n3aData(gradeId);if(!data){pools[gradeId]=[];return}
-      const selected=new Set(ppSelectedSubjects(plan,gradeId,data));
-      const years=ppTrainingYears(data),yearSet=new Set(years);
-      const maxYear=years.length?Math.max(...years):0;
-      const items=[];
-      (data.groups||[]).forEach(group=>{
-        if(!selected.has(group.subject)||!mdQuestionUsable({question:group.question}))return;
-        const hits=(group.hits||[]).filter(hit=>yearSet.has(Number(hit.year)));
-        if(!hits.length)return;
-        const sortedHits=[...hits].sort((a,b)=>b.year-a.year||b.session-a.session||b.number-a.number);
-        items.push({
-          key:ppItemKey(gradeId,group.id),gradeId,groupId:group.id,subject:group.subject,
-          question:group.question,normalized:group.normalized,count:hits.length,latest:sortedHits[0].year,
-          hits:sortedHits,rep:sortedHits[0],years:[...new Set(hits.map(h=>Number(h.year)))].sort((a,b)=>a-b),maxYear
-        });
-      });
-      items.sort((a,b)=>b.count-a.count||b.latest-a.latest||String(a.question).localeCompare(String(b.question),'ko'));
-      pools[gradeId]=items;
-    });
+    await ppEnsureFrequency();const pools={};
     for(const gradeId of PLAN_GRADES){
-      if(!pools[gradeId].length)continue;
+      const data=n3aData(gradeId);if(!data){pools[gradeId]=[];continue}
       if(!pastDataSubjectsLoaded.has(gradeId))await ensurePastDataForSubject(gradeId);
-      pools[gradeId]=pools[gradeId].filter(item=>!!ppFindQuestion(gradeId,item));
+      pools[gradeId]=window.__mdDataIdentity.buildPool(data,{gradeId,subjects:ppSelectedSubjects(plan,gradeId,data),years:ppTrainingYears(data),getExam:getPastExam,usable:mdQuestionUsable});
     }
-    planPools=pools;
-    return pools;
+    planPools=pools;ppDataIdentityClusters=window.__mdDataIdentity.clusterPools(pools);return pools;
   }
   function ppProgressFor(progress,key){
     if(!progress[key])progress[key]={firstPassDate:null,mastered:false,status:'new',dueDate:null,lastDate:null,lastSureDate:null,lastOutcome:null,attempts:0,correct:0,wrong:0,unsure:0,masteryReviews:0,recoveryStartDate:null,sameDayFirstCorrectDate:null,sameDayConfirmedDate:null,lastWrongDate:null,todayWrongReviewDate:null};
@@ -22041,15 +22049,13 @@ window.alert=appAlert;
   }
   function ppExamDay(plan,gradeId){return plan.grades[gradeId]&&plan.grades[gradeId].examDate||''}
   // homework-near-duplicate-v1:start
-  const PP_HOMEWORK_DEDUPE_POLICY="near-duplicate-v1";
-  const PP_HOMEWORK_DUPLICATE_CLUSTER=Object.freeze({"navi2|q-11uymt4":"hd-c2c9b8c0f4","navi2|q-frpsl4":"hd-c2c9b8c0f4","navi2|q-12bwiqe":"hd-84564e4e84","navi2|q-1we6cpi":"hd-84564e4e84","navi2|q-12moj8p":"hd-64954fba28","navi2|q-qelz6x":"hd-64954fba28","navi2|q-13zwiu3":"hd-2247934dca","navi2|q-7wow2j":"hd-2247934dca","navi2|q-15lwc6h":"hd-1c825ac5e2","navi2|q-xk9nwh":"hd-1c825ac5e2","navi2|q-16t6pd6":"hd-62ccafefbf","navi2|q-1dz48ve":"hd-62ccafefbf","navi2|q-16vyrgk":"hd-2639b4b352","navi2|q-saa0sk":"hd-2639b4b352","navi2|q-174fei8":"hd-95e44dbd4c","navi3|q-1cnq33k":"hd-95e44dbd4c","navi2|q-174s4fu":"hd-da8f3ee5b8","navi2|q-59wygp":"hd-da8f3ee5b8","navi2|q-188cwfc":"hd-8a6559ccea","navi2|q-1yqcmy0":"hd-8a6559ccea","navi2|q-18ky3nd":"hd-79404509f7","navi2|q-g9jqwv":"hd-79404509f7","navi2|q-19cops7":"hd-446011212c","navi2|q-1pp8ivb":"hd-446011212c","navi2|q-1b2ea8v":"hd-529525ce53","navi2|q-1gn65kz":"hd-529525ce53","navi2|q-1ca308m":"hd-49335b6833","navi2|q-1cj3e8n":"hd-49335b6833","navi2|q-1ch6jb4":"hd-c51eae01d2","navi2|q-y8796o":"hd-c51eae01d2","navi2|q-1ev0qm8":"hd-59c8f8f445","navi2|q-vwgog0":"hd-59c8f8f445","navi2|q-1fsu9ck":"hd-a71ae00f83","navi2|q-delmtw":"hd-a71ae00f83","navi2|q-1g0qgf3":"hd-f92c4fcbe8","navi2|q-1w23xr3":"hd-f92c4fcbe8","navi2|q-1gljq2y":"hd-00b81d5209","navi2|q-ckgjy9":"hd-00b81d5209","navi2|q-1horb9q":"hd-d01b75b825","navi2|q-4r4ez2":"hd-d01b75b825","navi3|q-1horb9q":"hd-d01b75b825","navi2|q-1ij3ny8":"hd-746d8af894","navi2|q-1kajz3s":"hd-746d8af894","navi2|q-1iyos8h":"hd-579c13cc34","navi2|q-mrfb3l":"hd-579c13cc34","navi2|q-1jgrnqm":"hd-79b44e134f","navi2|q-zde36c":"hd-79b44e134f","navi2|q-1jir57c":"hd-99e98de037","navi2|q-de2qzc":"hd-99e98de037","navi2|q-1kzwk5u":"hd-b65c59de5d","navi3|q-1kzwk5u":"hd-b65c59de5d","navi2|q-1l2gsg4":"hd-3ec0979e9d","navi3|q-12x2bk4":"hd-3ec0979e9d","navi3|q-1l2gsg4":"hd-3ec0979e9d","navi2|q-1leoqym":"hd-3569ff4f88","navi2|q-yyh3lq":"hd-3569ff4f88","navi2|q-1lm9fo":"hd-44994cccfd","navi3|q-1lm9fo":"hd-44994cccfd","navi2|q-1lndopt":"hd-06814bf335","navi2|q-cvrxjt":"hd-06814bf335","navi2|q-1mmec7r":"hd-42d560afaa","navi2|q-3ij4w6":"hd-42d560afaa","navi2|q-1myil93":"hd-d0adec684e","navi2|q-emahyk":"hd-d0adec684e","navi2|q-1n60bv4":"hd-fd484cbd7e","navi2|q-cx455c":"hd-fd484cbd7e","navi2|q-1o3ai7l":"hd-eeabedf66f","navi2|q-adsy3x":"hd-eeabedf66f","navi2|q-1ooj42a":"hd-27655b5968","navi2|q-90l7mw":"hd-27655b5968","navi2|q-1p1xslz":"hd-b5af1c4c6b","navi2|q-8v1ct3":"hd-b5af1c4c6b","navi2|q-1p6hq1y":"hd-cee4af5ef1","navi2|q-yfo6e":"hd-cee4af5ef1","navi2|q-1phkrer":"hd-1c2666fc58","navi2|q-a0ydvn":"hd-1c2666fc58","navi2|q-1pm3giy":"hd-2bc892afe0","navi2|q-1wkqgz6":"hd-2bc892afe0","navi2|q-1sti8ce":"hd-90163fc115","navi2|q-pd7dmm":"hd-90163fc115","navi2|q-1tv8ido":"hd-4c65744416","navi2|q-2q93ik":"hd-4c65744416","navi2|q-1v8l8i8":"hd-ebaa29a7c5","navi2|q-h2q4pc":"hd-ebaa29a7c5","navi3|q-h2q4pc":"hd-ebaa29a7c5","navi2|q-1xbr8pj":"hd-44d345c119","navi2|q-1yrrjwv":"hd-44d345c119","navi2|q-3lairz":"hd-44d345c119","navi2|q-1xn64cs":"hd-0fafdbc920","navi3|q-1xn64cs":"hd-0fafdbc920","navi2|q-1y4jwds":"hd-cdf7387d72","navi3|q-1y4jwds":"hd-cdf7387d72","navi2|q-1yiplpw":"hd-4d6445de66","navi3|q-1fy83lg":"hd-4d6445de66","navi2|q-6imy6h":"hd-0006ba1640","navi2|q-dksm15":"hd-0006ba1640","navi2|q-7zezdr":"hd-a5f5e71b60","navi2|q-i1k33b":"hd-a5f5e71b60","navi2|q-8do9j8":"hd-ed1b6368fb","navi2|q-kr7wao":"hd-ed1b6368fb","navi2|q-aolvdd":"hd-1a8dc52891","navi2|q-k75fdd":"hd-1a8dc52891","navi2|q-b8t8iq":"hd-013906fa72","navi2|q-nf1bc6":"hd-013906fa72","navi2|q-bf5z9z":"hd-8d4c50f0c3","navi2|q-fkwul3":"hd-8d4c50f0c3","navi2|q-c9xzm2":"hd-93fdc21ca8","navi2|q-mu4xxl":"hd-93fdc21ca8","navi2|q-ezzzye":"hd-a5b17c96d1","navi2|q-pvye8h":"hd-a5b17c96d1","navi2|q-fc077y":"hd-4ccd1730ab","navi3|q-fc077y":"hd-4ccd1730ab","navi2|q-g9jehk":"hd-347848dc38","navi3|q-g9jehk":"hd-347848dc38","navi2|q-j7ekb6":"hd-56c04dee30","navi2|q-ph100i":"hd-56c04dee30","navi2|q-lskgw3":"hd-d3b970bd61","navi2|q-vfr4w3":"hd-d3b970bd61","navi2|q-oszrwr":"hd-befa506d30","navi3|q-8d3q0v":"hd-befa506d30","navi2|q-r0celb":"hd-40f7cb87c9","navi3|q-r0celb":"hd-40f7cb87c9","navi2|q-t8c8ze":"hd-a7733c603d","navi3|q-t8c8ze":"hd-a7733c603d","navi2|q-xe9e12":"hd-482eb1c013","navi3|q-xe9e12":"hd-482eb1c013","navi3|q-10lqtzi":"hd-f9d297d44f","navi3|q-1eeb3ny":"hd-f9d297d44f","navi3|q-112vuqu":"hd-c8ac025999","navi3|q-1a8hch2":"hd-c8ac025999","navi3|q-119glhz":"hd-8a0171352d","navi3|q-w26ove":"hd-8a0171352d","navi3|q-11e18fp":"hd-c7f1a5c840","navi3|q-1ny7305":"hd-c7f1a5c840","navi3|q-11xbtie":"hd-926dd4112b","navi3|q-1xpcvka":"hd-926dd4112b","navi3|q-muuqzq":"hd-926dd4112b","navi3|q-11z92n3":"hd-5080cb5fe0","navi3|q-16tn2qn":"hd-5080cb5fe0","navi3|q-11zxdst":"hd-c4a06967e3","navi3|q-bsyfwx":"hd-c4a06967e3","navi3|q-13oaxwa":"hd-df19106f6b","navi3|q-158qvvi":"hd-df19106f6b","navi3|q-13tvnn2":"hd-4d6ddec49c","navi3|q-2pf63a":"hd-4d6ddec49c","navi3|q-15o58f":"hd-f2219898a9","navi3|q-ucq45b":"hd-f2219898a9","navi3|q-18gf7f1":"hd-99463542c4","navi3|q-lqkhu5":"hd-99463542c4","navi3|q-18h84xn":"hd-1308b6a5f5","navi3|q-19wxzto":"hd-1308b6a5f5","navi3|q-18m7s3h":"hd-55d8f6bd16","navi3|q-lb0zun":"hd-55d8f6bd16","navi3|q-19h7tp3":"hd-fe0e4cde92","navi3|q-1jb6tzf":"hd-fe0e4cde92","navi3|q-19we693":"hd-2443f486d9","navi3|q-sl77zb":"hd-2443f486d9","navi3|q-1bmd4s8":"hd-62c889ec92","navi3|q-r6meu0":"hd-62c889ec92","navi3|q-1dajndy":"hd-890b767851","navi3|q-1ez9j59":"hd-890b767851","navi3|q-1e7rgf":"hd-6fc1c3033f","navi3|q-1lrrun":"hd-6fc1c3033f","navi3|q-1h0m03x":"hd-9327439927","navi3|q-kto42x":"hd-9327439927","navi3|q-1iixmi0":"hd-9d974ee317","navi3|q-1mhqutt":"hd-9d974ee317","navi3|q-1jbfjen":"hd-adf0fa7c06","navi3|q-76tmgv":"hd-adf0fa7c06","navi3|q-1ncqk9e":"hd-cd5afc6db7","navi3|q-1nvaw20":"hd-cd5afc6db7","navi3|q-1o4hksm":"hd-319578a7d9","navi3|q-sdvfk6":"hd-319578a7d9","navi3|q-1p6jdvm":"hd-791a5ccb22","navi3|q-1qzb5rx":"hd-791a5ccb22","navi3|q-ik9a8u":"hd-791a5ccb22","navi3|q-p0zxgy":"hd-791a5ccb22","navi3|q-1q1qcez":"hd-6f86017c8c","navi3|q-rt99az":"hd-6f86017c8c","navi3|q-1uwuz18":"hd-b48bc553ac","navi3|q-1xk319q":"hd-b48bc553ac","navi3|q-1vtr5fz":"hd-a8a69e1c3e","navi3|q-rml4x":"hd-a8a69e1c3e","navi3|q-u41e2p":"hd-a8a69e1c3e","navi3|q-1xrlx9h":"hd-d23f176f39","navi3|q-85bp2d":"hd-d23f176f39","navi3|q-3ksbrq":"hd-b8e9c9b1a5","navi3|q-z2k2je":"hd-b8e9c9b1a5","navi3|q-6mkjb":"hd-ff3d4eb4cf","navi3|q-ipt5dj":"hd-ff3d4eb4cf","navi3|q-e8sjis":"hd-fc58516b9d","navi3|q-hjf1ec":"hd-fc58516b9d","navi3|q-fgxghq":"hd-854c10b0cb","navi3|q-nna9e":"hd-854c10b0cb","navi3|q-w2w0ce":"hd-854c10b0cb","navi3|q-gg4xpe":"hd-ed81444448","navi3|q-yx83oi":"hd-ed81444448","navi3|q-i6xpg9":"hd-87592caf6e","navi3|q-jwb2u1":"hd-87592caf6e","navi3|q-kgpvel":"hd-0f15f2eb77","navi3|q-ot9lbx":"hd-0f15f2eb77","navi3|q-nqvwvf":"hd-9607829802","navi3|q-p1pp9l":"hd-9607829802","navi3|q-o8mk1k":"hd-3ce1ea2fae","navi3|q-zym1j8":"hd-3ce1ea2fae","navi3|q-rcaifv":"hd-3b9641cd12","navi3|q-wg0dsr":"hd-3b9641cd12"});
-  const PP_HOMEWORK_DUPLICATE_MEMBERS=Object.freeze({"hd-c2c9b8c0f4":["navi2|q-11uymt4","navi2|q-frpsl4"],"hd-84564e4e84":["navi2|q-12bwiqe","navi2|q-1we6cpi"],"hd-64954fba28":["navi2|q-12moj8p","navi2|q-qelz6x"],"hd-2247934dca":["navi2|q-13zwiu3","navi2|q-7wow2j"],"hd-1c825ac5e2":["navi2|q-15lwc6h","navi2|q-xk9nwh"],"hd-62ccafefbf":["navi2|q-16t6pd6","navi2|q-1dz48ve"],"hd-2639b4b352":["navi2|q-16vyrgk","navi2|q-saa0sk"],"hd-95e44dbd4c":["navi2|q-174fei8","navi3|q-1cnq33k"],"hd-da8f3ee5b8":["navi2|q-174s4fu","navi2|q-59wygp"],"hd-8a6559ccea":["navi2|q-188cwfc","navi2|q-1yqcmy0"],"hd-79404509f7":["navi2|q-18ky3nd","navi2|q-g9jqwv"],"hd-446011212c":["navi2|q-19cops7","navi2|q-1pp8ivb"],"hd-529525ce53":["navi2|q-1b2ea8v","navi2|q-1gn65kz"],"hd-49335b6833":["navi2|q-1ca308m","navi2|q-1cj3e8n"],"hd-c51eae01d2":["navi2|q-1ch6jb4","navi2|q-y8796o"],"hd-59c8f8f445":["navi2|q-1ev0qm8","navi2|q-vwgog0"],"hd-a71ae00f83":["navi2|q-1fsu9ck","navi2|q-delmtw"],"hd-f92c4fcbe8":["navi2|q-1g0qgf3","navi2|q-1w23xr3"],"hd-00b81d5209":["navi2|q-1gljq2y","navi2|q-ckgjy9"],"hd-d01b75b825":["navi2|q-1horb9q","navi2|q-4r4ez2","navi3|q-1horb9q"],"hd-746d8af894":["navi2|q-1ij3ny8","navi2|q-1kajz3s"],"hd-579c13cc34":["navi2|q-1iyos8h","navi2|q-mrfb3l"],"hd-79b44e134f":["navi2|q-1jgrnqm","navi2|q-zde36c"],"hd-99e98de037":["navi2|q-1jir57c","navi2|q-de2qzc"],"hd-b65c59de5d":["navi2|q-1kzwk5u","navi3|q-1kzwk5u"],"hd-3ec0979e9d":["navi2|q-1l2gsg4","navi3|q-12x2bk4","navi3|q-1l2gsg4"],"hd-3569ff4f88":["navi2|q-1leoqym","navi2|q-yyh3lq"],"hd-44994cccfd":["navi2|q-1lm9fo","navi3|q-1lm9fo"],"hd-06814bf335":["navi2|q-1lndopt","navi2|q-cvrxjt"],"hd-42d560afaa":["navi2|q-1mmec7r","navi2|q-3ij4w6"],"hd-d0adec684e":["navi2|q-1myil93","navi2|q-emahyk"],"hd-fd484cbd7e":["navi2|q-1n60bv4","navi2|q-cx455c"],"hd-eeabedf66f":["navi2|q-1o3ai7l","navi2|q-adsy3x"],"hd-27655b5968":["navi2|q-1ooj42a","navi2|q-90l7mw"],"hd-b5af1c4c6b":["navi2|q-1p1xslz","navi2|q-8v1ct3"],"hd-cee4af5ef1":["navi2|q-1p6hq1y","navi2|q-yfo6e"],"hd-1c2666fc58":["navi2|q-1phkrer","navi2|q-a0ydvn"],"hd-2bc892afe0":["navi2|q-1pm3giy","navi2|q-1wkqgz6"],"hd-90163fc115":["navi2|q-1sti8ce","navi2|q-pd7dmm"],"hd-4c65744416":["navi2|q-1tv8ido","navi2|q-2q93ik"],"hd-ebaa29a7c5":["navi2|q-1v8l8i8","navi2|q-h2q4pc","navi3|q-h2q4pc"],"hd-44d345c119":["navi2|q-1xbr8pj","navi2|q-1yrrjwv","navi2|q-3lairz"],"hd-0fafdbc920":["navi2|q-1xn64cs","navi3|q-1xn64cs"],"hd-cdf7387d72":["navi2|q-1y4jwds","navi3|q-1y4jwds"],"hd-4d6445de66":["navi2|q-1yiplpw","navi3|q-1fy83lg"],"hd-0006ba1640":["navi2|q-6imy6h","navi2|q-dksm15"],"hd-a5f5e71b60":["navi2|q-7zezdr","navi2|q-i1k33b"],"hd-ed1b6368fb":["navi2|q-8do9j8","navi2|q-kr7wao"],"hd-1a8dc52891":["navi2|q-aolvdd","navi2|q-k75fdd"],"hd-013906fa72":["navi2|q-b8t8iq","navi2|q-nf1bc6"],"hd-8d4c50f0c3":["navi2|q-bf5z9z","navi2|q-fkwul3"],"hd-93fdc21ca8":["navi2|q-c9xzm2","navi2|q-mu4xxl"],"hd-a5b17c96d1":["navi2|q-ezzzye","navi2|q-pvye8h"],"hd-4ccd1730ab":["navi2|q-fc077y","navi3|q-fc077y"],"hd-347848dc38":["navi2|q-g9jehk","navi3|q-g9jehk"],"hd-56c04dee30":["navi2|q-j7ekb6","navi2|q-ph100i"],"hd-d3b970bd61":["navi2|q-lskgw3","navi2|q-vfr4w3"],"hd-befa506d30":["navi2|q-oszrwr","navi3|q-8d3q0v"],"hd-40f7cb87c9":["navi2|q-r0celb","navi3|q-r0celb"],"hd-a7733c603d":["navi2|q-t8c8ze","navi3|q-t8c8ze"],"hd-482eb1c013":["navi2|q-xe9e12","navi3|q-xe9e12"],"hd-f9d297d44f":["navi3|q-10lqtzi","navi3|q-1eeb3ny"],"hd-c8ac025999":["navi3|q-112vuqu","navi3|q-1a8hch2"],"hd-8a0171352d":["navi3|q-119glhz","navi3|q-w26ove"],"hd-c7f1a5c840":["navi3|q-11e18fp","navi3|q-1ny7305"],"hd-926dd4112b":["navi3|q-11xbtie","navi3|q-1xpcvka","navi3|q-muuqzq"],"hd-5080cb5fe0":["navi3|q-11z92n3","navi3|q-16tn2qn"],"hd-c4a06967e3":["navi3|q-11zxdst","navi3|q-bsyfwx"],"hd-df19106f6b":["navi3|q-13oaxwa","navi3|q-158qvvi"],"hd-4d6ddec49c":["navi3|q-13tvnn2","navi3|q-2pf63a"],"hd-f2219898a9":["navi3|q-15o58f","navi3|q-ucq45b"],"hd-99463542c4":["navi3|q-18gf7f1","navi3|q-lqkhu5"],"hd-1308b6a5f5":["navi3|q-18h84xn","navi3|q-19wxzto"],"hd-55d8f6bd16":["navi3|q-18m7s3h","navi3|q-lb0zun"],"hd-fe0e4cde92":["navi3|q-19h7tp3","navi3|q-1jb6tzf"],"hd-2443f486d9":["navi3|q-19we693","navi3|q-sl77zb"],"hd-62c889ec92":["navi3|q-1bmd4s8","navi3|q-r6meu0"],"hd-890b767851":["navi3|q-1dajndy","navi3|q-1ez9j59"],"hd-6fc1c3033f":["navi3|q-1e7rgf","navi3|q-1lrrun"],"hd-9327439927":["navi3|q-1h0m03x","navi3|q-kto42x"],"hd-9d974ee317":["navi3|q-1iixmi0","navi3|q-1mhqutt"],"hd-adf0fa7c06":["navi3|q-1jbfjen","navi3|q-76tmgv"],"hd-cd5afc6db7":["navi3|q-1ncqk9e","navi3|q-1nvaw20"],"hd-319578a7d9":["navi3|q-1o4hksm","navi3|q-sdvfk6"],"hd-791a5ccb22":["navi3|q-1p6jdvm","navi3|q-1qzb5rx","navi3|q-ik9a8u","navi3|q-p0zxgy"],"hd-6f86017c8c":["navi3|q-1q1qcez","navi3|q-rt99az"],"hd-b48bc553ac":["navi3|q-1uwuz18","navi3|q-1xk319q"],"hd-a8a69e1c3e":["navi3|q-1vtr5fz","navi3|q-rml4x","navi3|q-u41e2p"],"hd-d23f176f39":["navi3|q-1xrlx9h","navi3|q-85bp2d"],"hd-b8e9c9b1a5":["navi3|q-3ksbrq","navi3|q-z2k2je"],"hd-ff3d4eb4cf":["navi3|q-6mkjb","navi3|q-ipt5dj"],"hd-fc58516b9d":["navi3|q-e8sjis","navi3|q-hjf1ec"],"hd-854c10b0cb":["navi3|q-fgxghq","navi3|q-nna9e","navi3|q-w2w0ce"],"hd-ed81444448":["navi3|q-gg4xpe","navi3|q-yx83oi"],"hd-87592caf6e":["navi3|q-i6xpg9","navi3|q-jwb2u1"],"hd-0f15f2eb77":["navi3|q-kgpvel","navi3|q-ot9lbx"],"hd-9607829802":["navi3|q-nqvwvf","navi3|q-p1pp9l"],"hd-3ce1ea2fae":["navi3|q-o8mk1k","navi3|q-zym1j8"],"hd-3b9641cd12":["navi3|q-rcaifv","navi3|q-wg0dsr"]});
-  const PP_HOMEWORK_DUPLICATE_STATS=Object.freeze({"hd-c2c9b8c0f4":{"count":3,"latest":2025,"has2026":false},"hd-84564e4e84":{"count":2,"latest":2024,"has2026":false},"hd-64954fba28":{"count":2,"latest":2024,"has2026":false},"hd-2247934dca":{"count":5,"latest":2026,"has2026":true},"hd-1c825ac5e2":{"count":4,"latest":2026,"has2026":true},"hd-62ccafefbf":{"count":2,"latest":2024,"has2026":false},"hd-2639b4b352":{"count":2,"latest":2024,"has2026":false},"hd-95e44dbd4c":{"count":3,"latest":2025,"has2026":false},"hd-da8f3ee5b8":{"count":2,"latest":2024,"has2026":false},"hd-8a6559ccea":{"count":2,"latest":2024,"has2026":false},"hd-79404509f7":{"count":3,"latest":2026,"has2026":true},"hd-446011212c":{"count":4,"latest":2025,"has2026":false},"hd-529525ce53":{"count":2,"latest":2026,"has2026":true},"hd-49335b6833":{"count":3,"latest":2025,"has2026":false},"hd-c51eae01d2":{"count":2,"latest":2024,"has2026":false},"hd-59c8f8f445":{"count":3,"latest":2025,"has2026":false},"hd-a71ae00f83":{"count":3,"latest":2025,"has2026":false},"hd-f92c4fcbe8":{"count":2,"latest":2023,"has2026":false},"hd-00b81d5209":{"count":3,"latest":2025,"has2026":false},"hd-d01b75b825":{"count":3,"latest":2025,"has2026":false},"hd-746d8af894":{"count":2,"latest":2023,"has2026":false},"hd-579c13cc34":{"count":2,"latest":2023,"has2026":false},"hd-79b44e134f":{"count":4,"latest":2025,"has2026":false},"hd-99e98de037":{"count":2,"latest":2025,"has2026":false},"hd-b65c59de5d":{"count":3,"latest":2025,"has2026":false},"hd-3ec0979e9d":{"count":4,"latest":2026,"has2026":true},"hd-3569ff4f88":{"count":2,"latest":2024,"has2026":false},"hd-44994cccfd":{"count":2,"latest":2026,"has2026":true},"hd-06814bf335":{"count":2,"latest":2025,"has2026":false},"hd-42d560afaa":{"count":2,"latest":2022,"has2026":false},"hd-d0adec684e":{"count":4,"latest":2025,"has2026":false},"hd-fd484cbd7e":{"count":3,"latest":2025,"has2026":false},"hd-eeabedf66f":{"count":2,"latest":2025,"has2026":false},"hd-27655b5968":{"count":4,"latest":2025,"has2026":false},"hd-b5af1c4c6b":{"count":2,"latest":2024,"has2026":false},"hd-cee4af5ef1":{"count":3,"latest":2025,"has2026":false},"hd-1c2666fc58":{"count":2,"latest":2026,"has2026":true},"hd-2bc892afe0":{"count":2,"latest":2025,"has2026":false},"hd-90163fc115":{"count":2,"latest":2024,"has2026":false},"hd-4c65744416":{"count":4,"latest":2024,"has2026":false},"hd-ebaa29a7c5":{"count":6,"latest":2026,"has2026":true},"hd-44d345c119":{"count":4,"latest":2025,"has2026":false},"hd-0fafdbc920":{"count":6,"latest":2026,"has2026":true},"hd-cdf7387d72":{"count":2,"latest":2024,"has2026":false},"hd-4d6445de66":{"count":3,"latest":2023,"has2026":false},"hd-0006ba1640":{"count":3,"latest":2024,"has2026":false},"hd-a5f5e71b60":{"count":3,"latest":2022,"has2026":false},"hd-ed1b6368fb":{"count":3,"latest":2025,"has2026":false},"hd-1a8dc52891":{"count":3,"latest":2023,"has2026":false},"hd-013906fa72":{"count":2,"latest":2025,"has2026":false},"hd-8d4c50f0c3":{"count":3,"latest":2024,"has2026":false},"hd-93fdc21ca8":{"count":2,"latest":2023,"has2026":false},"hd-a5b17c96d1":{"count":3,"latest":2025,"has2026":false},"hd-4ccd1730ab":{"count":3,"latest":2022,"has2026":false},"hd-347848dc38":{"count":3,"latest":2026,"has2026":true},"hd-56c04dee30":{"count":2,"latest":2024,"has2026":false},"hd-d3b970bd61":{"count":5,"latest":2025,"has2026":false},"hd-befa506d30":{"count":2,"latest":2025,"has2026":false},"hd-40f7cb87c9":{"count":5,"latest":2025,"has2026":false},"hd-a7733c603d":{"count":2,"latest":2026,"has2026":true},"hd-482eb1c013":{"count":2,"latest":2024,"has2026":false},"hd-f9d297d44f":{"count":2,"latest":2024,"has2026":false},"hd-c8ac025999":{"count":2,"latest":2024,"has2026":false},"hd-8a0171352d":{"count":4,"latest":2024,"has2026":false},"hd-c7f1a5c840":{"count":2,"latest":2025,"has2026":false},"hd-926dd4112b":{"count":3,"latest":2024,"has2026":false},"hd-5080cb5fe0":{"count":5,"latest":2025,"has2026":false},"hd-c4a06967e3":{"count":2,"latest":2023,"has2026":false},"hd-df19106f6b":{"count":3,"latest":2024,"has2026":false},"hd-4d6ddec49c":{"count":2,"latest":2026,"has2026":true},"hd-f2219898a9":{"count":2,"latest":2025,"has2026":false},"hd-99463542c4":{"count":2,"latest":2025,"has2026":false},"hd-1308b6a5f5":{"count":4,"latest":2025,"has2026":false},"hd-55d8f6bd16":{"count":2,"latest":2025,"has2026":false},"hd-fe0e4cde92":{"count":3,"latest":2026,"has2026":true},"hd-2443f486d9":{"count":3,"latest":2023,"has2026":false},"hd-62c889ec92":{"count":3,"latest":2025,"has2026":false},"hd-890b767851":{"count":4,"latest":2025,"has2026":false},"hd-6fc1c3033f":{"count":5,"latest":2025,"has2026":false},"hd-9327439927":{"count":3,"latest":2025,"has2026":false},"hd-9d974ee317":{"count":2,"latest":2025,"has2026":false},"hd-adf0fa7c06":{"count":2,"latest":2024,"has2026":false},"hd-cd5afc6db7":{"count":2,"latest":2026,"has2026":true},"hd-319578a7d9":{"count":4,"latest":2025,"has2026":false},"hd-791a5ccb22":{"count":7,"latest":2024,"has2026":false},"hd-6f86017c8c":{"count":5,"latest":2025,"has2026":false},"hd-b48bc553ac":{"count":3,"latest":2026,"has2026":true},"hd-a8a69e1c3e":{"count":4,"latest":2025,"has2026":false},"hd-d23f176f39":{"count":4,"latest":2024,"has2026":false},"hd-b8e9c9b1a5":{"count":2,"latest":2025,"has2026":false},"hd-ff3d4eb4cf":{"count":3,"latest":2025,"has2026":false},"hd-fc58516b9d":{"count":3,"latest":2025,"has2026":false},"hd-854c10b0cb":{"count":3,"latest":2025,"has2026":false},"hd-ed81444448":{"count":2,"latest":2025,"has2026":false},"hd-87592caf6e":{"count":6,"latest":2025,"has2026":false},"hd-0f15f2eb77":{"count":2,"latest":2024,"has2026":false},"hd-9607829802":{"count":2,"latest":2024,"has2026":false},"hd-3ce1ea2fae":{"count":3,"latest":2026,"has2026":true},"hd-3b9641cd12":{"count":3,"latest":2026,"has2026":true}});
-  function ppHomeworkClusterId(item){return PP_HOMEWORK_DUPLICATE_CLUSTER[item&&item.key]||(item&&item.key)||''}
-  function ppHomeworkClusterMemberKeys(item){const cid=ppHomeworkClusterId(item);return PP_HOMEWORK_DUPLICATE_MEMBERS[cid]||((item&&item.key)?[item.key]:[])}
+  const PP_HOMEWORK_DEDUPE_POLICY="content-identity-v2";
+  let ppDataIdentityClusters={clusterFor:{},members:{},stats:{}};
+  function ppHomeworkClusterId(item){return ppDataIdentityClusters.clusterFor[item&&item.key]||(item&&item.key)||''}
+  function ppHomeworkClusterMemberKeys(item){return ppDataIdentityClusters.members[ppHomeworkClusterId(item)]||((item&&item.key)?[item.key]:[])}
   function ppHomeworkClusterSeen(item,progress){return ppHomeworkClusterMemberKeys(item).some(key=>!!ppProgressFor(progress,key).firstPassDate)}
   function ppHomeworkClusterMastered(item,progress){return ppHomeworkClusterMemberKeys(item).some(key=>!!ppProgressFor(progress,key).mastered)}
-  function ppHomeworkClusterStats(item){return PP_HOMEWORK_DUPLICATE_STATS[ppHomeworkClusterId(item)]||null}
+  function ppHomeworkClusterStats(item){return ppDataIdentityClusters.stats[ppHomeworkClusterId(item)]||null}
   function ppHomeworkImportanceCount(item){const row=ppHomeworkClusterStats(item);return row?Number(row.count)||0:Number(item&&item.count)||0}
   function ppHomeworkImportanceLatest(item){const row=ppHomeworkClusterStats(item);return row?Number(row.latest)||0:Number(item&&item.latest)||0}
   function ppHomeworkHas2026(item){const row=ppHomeworkClusterStats(item);return row?!!row.has2026:ppHas2026(item)}
@@ -22078,46 +22084,21 @@ window.alert=appAlert;
     const final=dday!==null&&dday>=0&&dday<=finalDays;
     if(final){
       const candidates=stage1Unseen.length?stage1Unseen:allRemaining;
-      return {phase:'final',label:stage1Unseen.length?'시험 직전 · 전범위 1회독 보장 + 2026/빈출 우선 + 취약 복습':'시험 직전 · 전범위 1회독 보장 + 취약 복습',dday,freqRemaining,current2026Remaining,allRemaining,candidates,learningDays:Math.max(1,dday+1)};
+      return {phase:'final',label:stage1Unseen.length?'시험 직전 · 전범위 미통과량 확인 + 최신 연도/빈출 우선 + 취약 복습':'시험 직전 · 전범위 미통과량 확인 + 취약 복습',dday,freqRemaining,current2026Remaining,allRemaining,candidates,learningDays:Math.max(1,dday+1)};
     }
     if(stage1Unseen.length){
       const learningDays=Math.max(1,(dday===null?14:dday+1)-finalDays);
       const stageDays=Math.max(1,Math.ceil(learningDays*0.45));
-      return {phase:'stage1',label:'1단계 · 전범위 1회독 보장 + 2026/빈출 우선 + 취약 복습',dday,freqRemaining,current2026Remaining,allRemaining,candidates:stage1Unseen,learningDays:stageDays};
+      return {phase:'stage1',label:'1단계 · 전범위 미통과량 확인 + 최신 연도/빈출 우선 + 취약 복습',dday,freqRemaining,current2026Remaining,allRemaining,candidates:stage1Unseen,learningDays:stageDays};
     }
     const learningDays=Math.max(1,(dday===null?10:dday+1)-finalDays);
-    return {phase:'stage2',label:'2단계 · 전범위 1회독 보장 + 최근 5개년 전체 + 취약 복습',dday,freqRemaining,current2026Remaining,allRemaining,candidates:allRemaining,learningDays};
+    return {phase:'stage2',label:'2단계 · 전범위 미통과량 확인 + 최근 5개년 전체 + 취약 복습',dday,freqRemaining,current2026Remaining,allRemaining,candidates:allRemaining,learningDays};
   }
   function ppIsDue(rec,today){return !!(rec&&rec.dueDate&&rec.dueDate<=today&&(rec.firstPassDate||rec.status==='weak'))}
-  function ppUrgentSort(a,b,progress){
-    const ra=ppProgressFor(progress,a.key),rb=ppProgressFor(progress,b.key);
-    const wa=(ra.status==='weak'||ra.lastOutcome==='wrong'||ra.lastOutcome==='unsure')?1:0;
-    const wb=(rb.status==='weak'||rb.lastOutcome==='wrong'||rb.lastOutcome==='unsure')?1:0;
-    if(wb!==wa)return wb-wa;
-    if(a.count!==b.count)return b.count-a.count;
-    const da=ra.dueDate||'9999-12-31',db=rb.dueDate||'9999-12-31';
-    if(da!==db)return da.localeCompare(db);
-    return b.latest-a.latest;
-  }
   function ppPlanSignature(plan,pools){
-    const compact={dailyCap:plan.dailyCap,finalDays:plan.finalDays,revision:plan.revision,assignmentPolicy:'knowledge-gap-priority-v6-coverage-balanced',grades:{}};
+    const compact={dailyCap:plan.dailyCap,finalDays:plan.finalDays,revision:plan.revision,assignmentPolicy:'scheduler-v522',grades:{}};
     PLAN_GRADES.forEach(g=>{compact.grades[g]={enabled:plan.grades[g].enabled,examDate:plan.grades[g].examDate,subjects:plan.grades[g].subjects,pool:(pools[g]||[]).length}});
     return JSON.stringify(compact);
-  }
-  function ppAllocateNewSlots(requests,slots){
-    const out={navi2:0,navi3:0};
-    const active=PLAN_GRADES.filter(g=>requests[g]>0);
-    if(slots<=0||!active.length)return out;
-    const totalReq=active.reduce((s,g)=>s+requests[g],0);
-    if(totalReq<=slots){active.forEach(g=>out[g]=requests[g]);return out}
-    let used=0;
-    active.forEach(g=>{out[g]=Math.min(requests[g],Math.floor(slots*requests[g]/totalReq));used+=out[g]});
-    while(used<slots){
-      const g=active.sort((a,b)=>(requests[b]-out[b])-(requests[a]-out[a]))[0];
-      if(!g||out[g]>=requests[g])break;
-      out[g]++;used++;
-    }
-    return out;
   }
   function ppPriorityProfile(plan,today){ // grade-priority-v1
     const mode=['auto','navi3','navi2','custom'].includes(String(plan&&plan.priorityMode||''))?String(plan.priorityMode):'auto';
@@ -22129,284 +22110,50 @@ window.alert=appAlert;
     }
     return {mode:'auto',navi2:50,navi3:50,label:'자동 추천 · 시험일 역산'};
   }
-  function ppPriorityFlexQuotas(plan,today,slots){
-    const total=Math.max(0,Number(slots)||0),profile=ppPriorityProfile(plan,today);
-    if(!total)return {navi2:0,navi3:0};
-    const weights={navi2:0,navi3:0};
-    PLAN_GRADES.forEach(g=>{if(plan.grades[g]&&plan.grades[g].enabled&&plan.grades[g].examDate)weights[g]=Math.max(0,Number(profile[g])||0)});
-    const weightSum=weights.navi2+weights.navi3;
-    if(weightSum<=0)return {navi2:0,navi3:0};
-    let n2=Math.floor(total*weights.navi2/weightSum),n3=Math.floor(total*weights.navi3/weightSum);
-    let rest=total-n2-n3;
-    const order=weights.navi3>=weights.navi2?['navi3','navi2']:['navi2','navi3'];
-    const out={navi2:n2,navi3:n3};
-    for(let i=0;rest>0;i++,rest--)out[order[i%order.length]]++;
-    return out;
+
+  // scheduler-v522-adapter:start
+  // Existing progress keys remain unchanged. Only future assignment policy changes.
+  function ppBuildTodayAssignment(plan,pools,progress,today){
+    const profile=ppPriorityProfile(plan,today),rows=[];
+    for(const gradeId of PLAN_GRADES){
+      const weakProfile=ppLoadWeakTopicProfile(gradeId);
+      for(const item of pools[gradeId]||[]){
+        const r=ppProgressFor(progress,item.key),attempts=Math.max(1,Number(r.attempts)||1),accuracy=(Number(r.correct)||0)/attempts;
+        const due=ppIsDue(r,today),pendingDate=r.nextDayRecheckScheduledDate||r.sameDayFirstCorrectDate;
+        const priorRecall=!!(r.sameDayConfirmedDate&&r.sameDayConfirmedDate<today)||!!(r.lateSessionNextDayRecheck&&pendingDate&&pendingDate<today);
+        rows.push({...item,clusterId:ppHomeworkClusterId(item),seen:ppHomeworkClusterSeen(item,progress),mastered:!!r.mastered,
+          due,cleared:ppTodayCleared(r,today),overdueDays:due?Math.max(0,ppDiffDays(r.dueDate,today)||0):0,
+          weak:r.status==='weak'||r.lastOutcome==='wrong'||r.lastOutcome==='unsure'||(Number(r.wrong)||0)>0&&accuracy<.75,
+          count:ppHomeworkImportanceCount(item),latest:ppHomeworkImportanceLatest(item),has2026:ppHomeworkHas2026(item),boost:ppWeakTopicBoost(item,weakProfile),
+          needsSameDayConfirmation:!priorRecall&&r.sameDayFirstCorrectDate!==today});
+      }
+    }
+    return window.__mdSchedulerV522.build({today,cap:plan.dailyCap,finalDays:plan.finalDays,priorityMode:profile.mode,priorityLabel:profile.label,
+      weights:{navi2:profile.navi2,navi3:profile.navi3},grades:PLAN_GRADES.map(id=>({id,...plan.grades[id]})),rows});
   }
-
-  function ppBuildTodayAssignment(plan,pools,progress,today){ // knowledge-gap-priority-v4-dedupe
-    const cap=Math.max(40,Math.min(250,Number(plan.dailyCap)||120));
-    const priority=ppPriorityProfile(plan,today);
-    const allItems=PLAN_GRADES.flatMap(g=>(plan.grades[g].enabled&&plan.grades[g].examDate)?(pools[g]||[]):[]);
-    const phases={},requests={navi2:0,navi3:0};
-
-    PLAN_GRADES.forEach(g=>{
-      if(!plan.grades[g].enabled||!plan.grades[g].examDate){phases[g]=null;return}
-      const phase=ppPhaseForGrade(plan,g,pools[g]||[],progress,today);phases[g]=phase;
-      const remaining=phase.allRemaining||[];
-      const daysLeft=phase.dday===null?Math.max(1,phase.learningDays||1):Math.max(1,phase.dday+1);
-      requests[g]=remaining.length?Math.ceil(remaining.length/daysLeft):0;
-    });
-
-    const due=allItems.filter(item=>ppIsDue(ppProgressFor(progress,item.key),today)).sort((a,b)=>ppUrgentSort(a,b,progress));
-    function reviewTier(item){
-      const r=ppProgressFor(progress,item.key),attempts=Math.max(1,Number(r.attempts)||1),accuracy=(Number(r.correct)||0)/attempts;
-      if(r.status==='weak'||r.lastOutcome==='wrong'||r.lastOutcome==='unsure'||(Number(r.wrong)||0)>0&&accuracy<0.75)return 2;
-      if(!r.mastered||attempts<3||accuracy<0.85)return 1;
-      return 0;
-    }
-    const weakDue=due.filter(item=>reviewTier(item)===2);
-    const normalDue=due.filter(item=>reviewTier(item)===1);
-    const strongDue=due.filter(item=>reviewTier(item)===0);
-    const requestedNew=PLAN_GRADES.reduce((sum,g)=>sum+(requests[g]||0),0);
-    const requiredNew=Math.min(cap,requestedNew);
-    const dueSelected=[],newItems=[],selectedKeys=new Set(),selectedClusters=new Set();
-    const reviewByGrade={navi2:0,navi3:0},newByGrade={navi2:0,navi3:0};
-
-    function sortedNewCandidates(g){
-      const phase=phases[g];if(!phase)return [];
-      const preferred=new Set((phase.candidates||[]).map(item=>item.key));
-      const candidates=(phase.allRemaining||[]).filter(item=>!ppHomeworkClusterSeen(item,progress)&&!selectedKeys.has(item.key)&&!selectedClusters.has(ppHomeworkClusterId(item)));
-      const weakProfile=ppLoadWeakTopicProfile(g);
-      candidates.sort((a,b)=>ppWeakTopicBoost(b,weakProfile)-ppWeakTopicBoost(a,weakProfile)||(preferred.has(b.key)?1:0)-(preferred.has(a.key)?1:0)||(ppHomework2026NeedsPriority(b,progress)?1:0)-(ppHomework2026NeedsPriority(a,progress)?1:0)||ppHomeworkImportanceCount(b)-ppHomeworkImportanceCount(a)||ppHomeworkImportanceLatest(b)-ppHomeworkImportanceLatest(a));
-      return candidates;
-    }
-    function takeReview(item){
-      if(!item||selectedKeys.has(item.key))return false;
-      const cid=ppHomeworkClusterId(item);if(selectedClusters.has(cid))return false;
-      dueSelected.push(item);selectedKeys.add(item.key);selectedClusters.add(cid);reviewByGrade[item.gradeId]=(reviewByGrade[item.gradeId]||0)+1;return true;
-    }
-    function takeNew(item){
-      if(!item||selectedKeys.has(item.key)||ppHomeworkClusterSeen(item,progress))return false;
-      const cid=ppHomeworkClusterId(item);if(selectedClusters.has(cid))return false;
-      newItems.push(item);selectedKeys.add(item.key);selectedClusters.add(cid);newByGrade[item.gradeId]=(newByGrade[item.gradeId]||0)+1;return true;
-    }
-    function takeReviewList(list,g,target,used){
-      for(const item of list){
-        if(used[g]>=target)break;
-        if(item.gradeId!==g||selectedKeys.has(item.key)||selectedClusters.has(ppHomeworkClusterId(item)))continue;
-        if(takeReview(item))used[g]++;
-      }
-    }
-    function globalNewRows(){
-      const rows=[];
-      PLAN_GRADES.forEach(g=>{
-        const phase=phases[g];if(!phase)return;
-        const preferred=new Set((phase.candidates||[]).map(item=>item.key));
-        const weakProfile=ppLoadWeakTopicProfile(g);
-        (phase.allRemaining||[]).forEach(item=>{
-          if(ppHomeworkClusterSeen(item,progress)||selectedKeys.has(item.key)||selectedClusters.has(ppHomeworkClusterId(item)))return;
-          rows.push({item,preferred:preferred.has(item.key),boost:ppWeakTopicBoost(item,weakProfile),priority:Number(priority[g])||0});
-        });
-      });
-      rows.sort((a,b)=>b.priority-a.priority||b.boost-a.boost||(b.preferred?1:0)-(a.preferred?1:0)||(ppHomework2026NeedsPriority(b.item,progress)?1:0)-(ppHomework2026NeedsPriority(a.item,progress)?1:0)||ppHomeworkImportanceCount(b.item)-ppHomeworkImportanceCount(a.item)||ppHomeworkImportanceLatest(b.item)-ppHomeworkImportanceLatest(a.item));
-      return rows;
-    }
-
-    if(priority.mode==='auto'){
-      const quotas=ppAllocateNewSlots(requests,requiredNew);
-      PLAN_GRADES.forEach(g=>{
-        if(!phases[g]||!quotas[g])return;
-        let picked=0;
-        for(const item of sortedNewCandidates(g)){if(picked>=quotas[g])break;if(takeNew(item))picked++}
-      });
-      let fill=Math.max(0,cap-selectedKeys.size);
-      for(const item of weakDue){if(fill<=0)break;if(takeReview(item))fill--}
-      if(fill>0){for(const row of globalNewRows()){if(fill<=0)break;if(takeNew(row.item))fill--}}
-      for(const item of normalDue){if(fill<=0)break;if(takeReview(item))fill--}
-      for(const item of strongDue){if(fill<=0)break;if(takeReview(item))fill--}
-    }else{
-      const totalQuotas=ppPriorityFlexQuotas(plan,today,cap);
-      const used={navi2:0,navi3:0};
-      PLAN_GRADES.forEach(g=>{
-        const target=Math.max(0,totalQuotas[g]||0);if(!target||!phases[g])return;
-        takeReviewList(weakDue,g,target,used);
-        if(used[g]<target){for(const item of sortedNewCandidates(g)){if(used[g]>=target)break;if(takeNew(item))used[g]++}}
-        if(used[g]<target)takeReviewList(normalDue,g,target,used);
-        if(used[g]<target)takeReviewList(strongDue,g,target,used);
-      });
-      let fill=Math.max(0,cap-selectedKeys.size);
-      for(const item of weakDue){if(fill<=0)break;if(takeReview(item))fill--}
-      if(fill>0){for(const row of globalNewRows()){if(fill<=0)break;if(takeNew(row.item))fill--}}
-      for(const item of normalDue){if(fill<=0)break;if(takeReview(item))fill--}
-      for(const item of strongDue){if(fill<=0)break;if(takeReview(item))fill--}
-    }
-
-    const ordered=[];let ri=0,ni=0;
-    while(ri<dueSelected.length||ni<newItems.length){
-      if(ri>=dueSelected.length){ordered.push(newItems[ni++]);continue}
-      if(ni>=newItems.length){ordered.push(dueSelected[ri++]);continue}
-      const reviewProgress=ri/Math.max(1,dueSelected.length),newProgress=ni/Math.max(1,newItems.length);
-      if(reviewProgress<=newProgress)ordered.push(dueSelected[ri++]);else ordered.push(newItems[ni++]);
-    }
-
-    const coverageAtRisk=priority.mode==='auto'?requestedNew>cap:PLAN_GRADES.some(g=>(requests[g]||0)>(newByGrade[g]||0));
-    const totalQuotas=priority.mode==='auto'?null:ppPriorityFlexQuotas(plan,today,cap);
-    const dueClusterCount=new Set(due.map(item=>ppHomeworkClusterId(item))).size;
-    const deferredStrongReviewCount=new Set(strongDue.filter(item=>!selectedClusters.has(ppHomeworkClusterId(item))).map(item=>ppHomeworkClusterId(item))).size;
-    return {keys:ordered.map(i=>i.key),createdAt:Date.now(),requests,requiredNew,dueOverflow:Math.max(0,dueClusterCount-dueSelected.length),dueCount:dueSelected.length,newCount:newItems.length,newShortfall:Math.max(0,requiredNew-newItems.length),coverageAtRisk,priorityMode:priority.mode,priorityLabel:priority.label,priorityProfile:{navi2:priority.navi2,navi3:priority.navi3},quotaTarget:totalQuotas,gradeCounts:{navi2:{review:reviewByGrade.navi2,new:newByGrade.navi2},navi3:{review:reviewByGrade.navi3,new:newByGrade.navi3}},deferredStrongReviewCount,rotationPolicy:'knowledge-gap-priority-v4-dedupe',reviewSpacingPolicy:'review-spacing-v3-mastery-ladder',duplicatePolicy:PP_HOMEWORK_DEDUPE_POLICY};
-  }
-  // subject-balanced-homework-v1
-  const PP_SUBJECT_BALANCE_POLICY='coverage-even-v2';
-  function ppEvenSubjectQuotas(subjects,total,today){
-    const list=[...new Set((subjects||[]).map(s=>String(s||'').trim()).filter(Boolean))];
-    const out={};if(!list.length)return out;
-    const target=Math.max(0,Math.floor(Number(total)||0)),base=Math.floor(target/list.length),rest=target%list.length;
-    list.forEach(s=>{out[s]=base});
-    const seed=[...String(today||'')].reduce((n,c)=>n+c.charCodeAt(0),0)%list.length;
-    for(let i=0;i<rest;i++)out[list[(seed+i)%list.length]]++;
-    return out;
-  }
-  function ppBalanceSingleGradeSubjects(plan,pools,progress,today,assignment){ // coverage-balanced-v2
-    const activeGrades=PLAN_GRADES.filter(g=>plan.grades[g]&&plan.grades[g].enabled&&plan.grades[g].examDate);
-    if(activeGrades.length!==1)return assignment;
-    const grade=activeGrades[0],pool=(pools[grade]||[]).filter(Boolean);
-    if(!pool.length)return assignment;
-    const available=[...new Set(pool.map(item=>String(item.subject||'').trim()).filter(Boolean))];
-    const configured=Array.isArray(plan.grades[grade].subjects)?plan.grades[grade].subjects.map(s=>String(s||'').trim()).filter(Boolean):[];
-    const subjects=(configured.length?configured.filter(s=>available.includes(s)):available).filter((s,i,a)=>a.indexOf(s)===i);
-    if(subjects.length<2)return assignment;
-
-    const cap=Math.max(40,Math.min(250,Number(plan.dailyCap)||120));
-    const originalKeys=Array.isArray(assignment&&assignment.keys)?assignment.keys:[];
-    const target=Math.min(cap,originalKeys.length);
-    if(target<=0)return assignment;
-    const requiredNew=Math.min(target,Math.max(0,Number(assignment&&assignment.requiredNew)||0));
-    const originalRank=new Map(originalKeys.map((key,index)=>[key,index]));
-    const byKey=new Map(pool.map(item=>[item.key,item]));
-    const weakProfile=ppLoadWeakTopicProfile(grade);
-
-    function tier(item){
-      const r=ppProgressFor(progress,item.key),attempts=Math.max(1,Number(r.attempts)||1),accuracy=(Number(r.correct)||0)/attempts;
-      const due=ppIsDue(r,today);
-      const weak=r.status==='weak'||r.lastOutcome==='wrong'||r.lastOutcome==='unsure'||((Number(r.wrong)||0)>0&&accuracy<0.75);
-      if(due&&weak)return 0;
-      if(!ppHomeworkClusterSeen(item,progress))return 1;
-      if(due&&(!r.mastered||attempts<3||accuracy<0.85))return 2;
-      if(due)return 3;
-      return 4;
-    }
-    function compare(a,b){
-      const at=tier(a),bt=tier(b);if(at!==bt)return at-bt;
-      const ar=originalRank.has(a.key)?originalRank.get(a.key):Number.MAX_SAFE_INTEGER;
-      const br=originalRank.has(b.key)?originalRank.get(b.key):Number.MAX_SAFE_INTEGER;
-      if(ar!==br)return ar-br;
-      const boost=ppWeakTopicBoost(b,weakProfile)-ppWeakTopicBoost(a,weakProfile);if(boost)return boost;
-      const recent=(ppHomework2026NeedsPriority(b,progress)?1:0)-(ppHomework2026NeedsPriority(a,progress)?1:0);if(recent)return recent;
-      const count=ppHomeworkImportanceCount(b)-ppHomeworkImportanceCount(a);if(count)return count;
-      return ppHomeworkImportanceLatest(b)-ppHomeworkImportanceLatest(a);
-    }
-
-    const rowsBySubject=new Map(subjects.map(s=>[s,[]]));
-    for(const item of pool){
-      const subject=String(item.subject||'').trim();
-      if(!rowsBySubject.has(subject))continue;
-      // Do not let subject balancing resurrect an already-seen question before its review date.
-      // Eligible replacements are only genuinely unseen questions or reviews that are actually due today.
-      if(ppHomeworkClusterSeen(item,progress)&&!ppIsDue(ppProgressFor(progress,item.key),today))continue; // no-premature-review-v1
-      rowsBySubject.get(subject).push(item);
-    }
-    rowsBySubject.forEach(rows=>rows.sort(compare));
-
-    const quotas=ppEvenSubjectQuotas(subjects,target,today);
-    const pickedBySubject=new Map(subjects.map(s=>[s,[]]));
-    const selectedClusters=new Set(),selectedKeys=new Set();
-    const cursor=Object.fromEntries(subjects.map(s=>[s,0]));
-
-    function add(item){
-      if(!item||selectedKeys.has(item.key))return false;
-      const subject=String(item.subject||'').trim(),rows=pickedBySubject.get(subject);
-      if(!rows)return false;
-      const cid=ppHomeworkClusterId(item);
-      if(selectedClusters.has(cid))return false;
-      rows.push(item);selectedKeys.add(item.key);selectedClusters.add(cid);return true;
-    }
-    function pickNext(subject){
-      const rows=rowsBySubject.get(subject)||[];
-      while(cursor[subject]<rows.length){
-        const item=rows[cursor[subject]++];
-        if(add(item))return true;
-      }
-      return false;
-    }
-
-    for(const key of originalKeys){
-      if(selectedKeys.size>=requiredNew)break;
-      const item=byKey.get(key);
-      if(item&&!ppHomeworkClusterSeen(item,progress))add(item);
-    }
-    if(selectedKeys.size<requiredNew){
-      const unseen=pool.filter(item=>!ppHomeworkClusterSeen(item,progress)).sort(compare);
-      for(const item of unseen){if(selectedKeys.size>=requiredNew)break;add(item)}
-    }
-    const reservedNewCount=selectedKeys.size;
-
-    const seed=[...String(today||'')].reduce((n,c)=>n+c.charCodeAt(0),0)%subjects.length;
-    const order=subjects.map((_,i)=>subjects[(seed+i)%subjects.length]);
-    while(selectedKeys.size<target){
-      let added=false;
-      for(const subject of order){
-        if(selectedKeys.size>=target)break;
-        if((pickedBySubject.get(subject)||[]).length>=(quotas[subject]||0))continue;
-        if(pickNext(subject))added=true;
-      }
-      if(!added)break;
-    }
-    while(selectedKeys.size<target){
-      let added=false;
-      for(const subject of order){
-        if(selectedKeys.size>=target)break;
-        if(pickNext(subject))added=true;
-      }
-      if(!added)break;
-    }
-
-    const ordered=[],positions=Object.fromEntries(subjects.map(s=>[s,0]));
-    while(ordered.length<selectedKeys.size){
-      let added=false;
-      for(const subject of order){
-        const rows=pickedBySubject.get(subject)||[],pos=positions[subject]||0;
-        if(pos<rows.length){ordered.push(rows[pos]);positions[subject]=pos+1;added=true}
-      }
-      if(!added)break;
-    }
-
-    const subjectCounts=Object.fromEntries(subjects.map(s=>[s,(pickedBySubject.get(s)||[]).length]));
-    const balancedNewCount=ordered.filter(item=>!ppHomeworkClusterSeen(item,progress)).length;
-    const balancedReviewCount=Math.max(0,ordered.length-balancedNewCount);
-    const balancedDueCount=ordered.filter(item=>ppHomeworkClusterSeen(item,progress)&&ppIsDue(ppProgressFor(progress,item.key),today)).length;
-    const gradeCounts={...(assignment.gradeCounts||{})};
-    gradeCounts[grade]={review:balancedReviewCount,new:balancedNewCount};
-    const subjectBalanceRelaxedForCoverage=subjects.some(s=>(subjectCounts[s]||0)>(quotas[s]||0));
-    return {...assignment,keys:ordered.map(item=>item.key),newCount:balancedNewCount,dueCount:balancedDueCount,
-      newShortfall:Math.max(0,requiredNew-balancedNewCount),gradeCounts,subjectQuotaTarget:quotas,subjectCounts,
-      requiredNewReserved:Math.min(requiredNew,reservedNewCount),coverageProtected:balancedNewCount>=requiredNew,
-      subjectBalanceRelaxedForCoverage,subjectBalancePolicy:PP_SUBJECT_BALANCE_POLICY,
-      rotationPolicy:'knowledge-gap-priority-v6-coverage-balanced'};
-  }
-
-  const ppBuildTodayAssignmentBeforeSubjectBalance=ppBuildTodayAssignment;
-  ppBuildTodayAssignment=function(plan,pools,progress,today){
-    return ppBalanceSingleGradeSubjects(plan,pools,progress,today,ppBuildTodayAssignmentBeforeSubjectBalance(plan,pools,progress,today));
-  };
+  // scheduler-v522-adapter:end
 
   function ppGetItemByKey(key){
     for(const g of PLAN_GRADES){const item=(planPools[g]||[]).find(x=>x.key===key);if(item)return item}
     return null;
   }
-  function ppTodayCleared(rec,today){return !!(rec&&rec.sameDayConfirmedDate===today)}
+  function ppTodayCleared(rec,today){return !!(rec&&(rec.sameDayConfirmedDate===today||ppNextDayPending(rec,today)))}
   async function ppGetDailyAssignment(plan,pools,progress,force){
     const today=ppDateKey(new Date()),daily=ppLoadDaily(),signature=ppPlanSignature(plan,pools);
+    const activeCheckpoint=ppLoadPassSessionCheckpoint();
+    if(activeCheckpoint&&Array.isArray(activeCheckpoint.queueKeys)&&activeCheckpoint.queueKeys.length){
+      const byKey=new Map(PLAN_GRADES.flatMap(g=>(pools[g]||[])).map(item=>[item.key,item]));
+      const keys=[...new Set(activeCheckpoint.queueKeys)].filter(key=>byKey.has(key));
+      if(keys.length){
+        const previous=daily[today]||{},gradeCounts={navi2:{review:0,new:0},navi3:{review:0,new:0}};let dueCount=0;
+        keys.forEach(key=>{const item=byKey.get(key),g=item.gradeId||String(key).split('|')[0],due=ppIsDue(progress[key],today);if(due)dueCount++;if(gradeCounts[g])gradeCounts[g][due?'review':'new']++;});
+        const sameKeys=Array.isArray(previous.keys)&&JSON.stringify(previous.keys)===JSON.stringify(keys);
+        daily[today]={...previous,keys,signature,resumedCheckpoint:true,assignmentOrigin:'saved-session',
+          ...(sameKeys?{}:{dueCount,newCount:keys.length-dueCount,gradeCounts,dueOverflow:0,newShortfall:0,coverageAtRisk:false}),
+          estimatedAutomaticRechecks:Math.max(0,activeCheckpoint.queueKeys.length-keys.length),estimatedTotalAnswers:activeCheckpoint.queueKeys.length};
+        ppSaveDaily(daily);return daily[today];
+      }
+    }
     if(force||!daily[today]||daily[today].signature!==signature){
       const built=ppBuildTodayAssignment(plan,pools,progress,today);
       daily[today]={...built,signature};ppSaveDaily(daily);
@@ -22458,6 +22205,7 @@ window.alert=appAlert;
   };
 
   window.renderNavigatorPassPlan=async function(entrySubject){
+    if(!ppFlushTodayAnswer())return;
     planEntrySubject=PLAN_GRADES.includes(entrySubject)?entrySubject:planEntrySubject;
     stopTTS();stopMockTimer();currentMode='pass-plan';
     renderPastLoading('2·3급 합격 플랜을 계산하는 중입니다');
@@ -22471,9 +22219,10 @@ window.alert=appAlert;
     (assignment.keys||[]).forEach(key=>{
       const item=ppGetItemByKey(key);if(!item)return;
       const r=ppProgressFor(progress,key),bucket=gradeCounts[item.gradeId];bucket.total++;
-      if(r.firstPassDate)bucket.review++;else bucket.new++;
+      const scheduled=assignment.gradeCounts&&assignment.gradeCounts[item.gradeId];if(!scheduled){if(r.firstPassDate)bucket.review++;else bucket.new++;}
       if(!ppTodayCleared(r,today))bucket.unresolved++;
     });
+    PLAN_GRADES.forEach(g=>{const a=assignment.gradeCounts&&assignment.gradeCounts[g];if(a){gradeCounts[g].new=a.new;gradeCounts[g].review=a.review;}});
     const gradeCards=PLAN_GRADES.map(g=>{
       const data=n3aData(g),pool=planPools[g]||[],st=ppProgressStats(plan,g,pool,progress,today),cfg=plan.grades[g];
       const exam=cfg.examDate,dday=ppDiffDays(today,exam);
@@ -22495,14 +22244,14 @@ window.alert=appAlert;
       <section id="md-plan-config" class="card" style="padding:16px;margin-bottom:14px">
         <div style="font-size:16px;font-weight:900;margin-bottom:12px">시험 설정</div>
         ${PLAN_GRADES.map(g=>{const data=n3aData(g),cfg=plan.grades[g];return `<div style="padding:12px 0;border-bottom:1px solid #E2E8F0"><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><label style="font-weight:900"><input id="pp-enable-${g}" type="checkbox" ${cfg.enabled?'checked':''}> ${GRADE_LABELS[g]}</label><label style="font-size:12px;font-weight:700">시험일 <input id="pp-date-${g}" type="date" value="${escapeHtml(cfg.examDate)}" style="padding:8px;border:1px solid #CBD5E1;border-radius:8px"></label></div><div style="font-size:11px;color:var(--textDim);margin:8px 0 6px">응시 과목 · 부분합격 과목은 체크 해제</div><div style="display:flex;gap:6px;flex-wrap:wrap">${ppSubjectChecks(g,data,plan)}</div></div>`}).join('')}
-        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px"><label style="font-size:12px;font-weight:700">하루 최대 <input id="pp-daily-cap" type="number" min="40" max="250" step="5" value="${plan.dailyCap}" style="width:76px;padding:8px;border:1px solid #CBD5E1;border-radius:8px"> 문제</label><label style="font-size:12px;font-weight:700">시험 직전 모드 <input id="pp-final-days" type="number" min="2" max="7" value="${plan.finalDays}" style="width:58px;padding:8px;border:1px solid #CBD5E1;border-radius:8px"> 일</label></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px"><label style="font-size:12px;font-weight:700">하루 기본문항 상한 <input id="pp-daily-cap" type="number" min="40" max="250" step="5" value="${plan.dailyCap}" style="width:76px;padding:8px;border:1px solid #CBD5E1;border-radius:8px"> 문제</label><label style="font-size:12px;font-weight:700">시험 직전 모드 <input id="pp-final-days" type="number" min="2" max="7" value="${plan.finalDays}" style="width:58px;padding:8px;border:1px solid #CBD5E1;border-radius:8px"> 일</label></div>
         <div id="pp-priority-settings" style="margin-top:14px;padding:12px;background:#F8FAFC;border-radius:10px">
           <div style="font-size:13px;font-weight:900;margin-bottom:8px">학습 우선순위</div>
           <div style="display:flex;gap:7px;flex-wrap:wrap">
             ${[['auto','자동 추천'],['navi3','3급 우선'],['navi2','2급 우선'],['custom','직접 설정']].map(([value,label])=>`<label style="display:flex;align-items:center;gap:5px;padding:8px 10px;border:1px solid #CBD5E1;border-radius:9px;background:#fff;font-size:12px;font-weight:800;cursor:pointer"><input type="radio" name="pp-priority-mode" value="${value}" ${plan.priorityMode===value?'checked':''} onchange="toggleNavigatorPassPlanPriorityCustom()">${label}</label>`).join('')}
           </div>
           <div id="pp-priority-custom" style="display:${plan.priorityMode==='custom'?'block':'none'};margin-top:9px;padding-top:9px;border-top:1px solid #E2E8F0;font-size:12px;font-weight:700">3급 비중 <input id="pp-priority-navi3-pct" type="number" min="0" max="100" step="5" value="${plan.priorityNavi3Pct}" style="width:64px;padding:7px;border:1px solid #CBD5E1;border-radius:8px"> % <span style="font-size:10px;color:var(--textDim);font-weight:600">· 2급은 나머지 비율</span></div>
-          <div style="font-size:10px;color:var(--textDim);line-height:1.55;margin-top:8px">자동 추천은 시험일까지 필요한 신규 문제를 우선 확보합니다. 3급/2급 우선·직접 설정은 하루 전체 숙제를 선택 비율로 배분합니다. 각 급수 안에서는 틀렸거나 불확실한 문제 → 아직 안 본 신규 문제 → 일반 복습 → 정답률 높은 숙달 문제 순으로 배정합니다.</div>
+          <div style="font-size:10px;color:var(--textDim);line-height:1.55;margin-top:8px">시험 당일은 학습일에서 제외하고 시험 직전 모드 기간은 회상·복습 여유로 둡니다. 급수 비율은 기본문항에 적용하며 비활성 급수의 몫은 활성 급수에 배정합니다. 복습 예산 안에서 7일 이상 연체를 우선하고, 평소에는 복습 자리를 먼저 확보한 뒤 미통과량을 배분합니다. 신규가 남으면 기본문항의 최소 30%를 신규에 남깁니다. 이는 배분 정책이며 최대 지연 7일이나 전범위 완료를 보장하지 않습니다. 상한이 부족하면 부족량을 표시합니다.</div>
         </div>
         <button class="btn btn-accent" style="width:100%;margin-top:12px;background:#7C3AED;border-color:#7C3AED" onclick="saveNavigatorPassPlanSettings()">설정 저장 · 오늘 숙제 재계산</button>
       </section>
@@ -22510,9 +22259,12 @@ window.alert=appAlert;
       <section id="md-plan-today" class="card" style="padding:17px;border-left:4px solid #7C3AED">
         <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap"><div><div style="font-size:18px;font-weight:900">오늘의 숙제</div><div style="font-size:12px;color:var(--textDim);margin-top:3px">${today} · ${assignment.keys.length}문제 배정 · 남은 ${unresolved.length}문제</div></div><span class="tag" style="margin:0;background:${unresolved.length?'#FEF3C7':'#D1FAE5'};color:${unresolved.length?'#92400E':'#065F46'}">${unresolved.length?'진행 중':'오늘 완료'}</span></div>
         <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px"><div style="background:#EFF6FF;padding:11px;border-radius:9px"><b>2급 ${gradeCounts.navi2.total}</b><div style="font-size:10px;color:#475569">신규 ${gradeCounts.navi2.new} · 복습 ${gradeCounts.navi2.review}</div></div><div style="background:#ECFDF5;padding:11px;border-radius:9px"><b>3급 ${gradeCounts.navi3.total}</b><div style="font-size:10px;color:#475569">신규 ${gradeCounts.navi3.new} · 복습 ${gradeCounts.navi3.review}</div></div></div>
-        <div style="font-size:10px;color:var(--textDim);margin-top:7px">배분 기준: ${escapeHtml(assignment.priorityLabel||'자동 추천 · 시험일 역산')} · ${assignment.priorityMode==='auto'?'필수 신규량 우선':'설정 비율 우선'} · ${assignment.subjectBalancePolicy?'단일 급수 과목 균등':''}</div>
-        ${assignment.dueOverflow?`<div style="margin-top:10px;padding:9px 11px;background:#FEF2F2;border-radius:8px;font-size:11px;color:#991B1B">복습 예정 문제가 하루 상한을 넘어 ${assignment.dueOverflow}문제가 다음 배정으로 이월됩니다.</div>`:''}
-        <div style="font-size:11px;color:var(--textDim);line-height:1.6;margin-top:10px">답을 선택하면 정답·오답이 기록됩니다. 첫 정답 후 같은 날 재확인까지 맞히면 오늘 확인 완료, 다른 날 다시 맞히면 숙달됩니다.</div>
+        <div style="font-size:10px;color:var(--textDim);margin-top:7px">배분 기준: ${escapeHtml(assignment.priorityLabel||'자동 추천 · 시험일 역산')} · ${assignment.priorityMode==='auto'?'복습 보호·미통과량 배분':'설정 비율 우선'} · ${assignment.subjectBalancePolicy?'과목·신규·복습 통합 배분':''}</div>
+        <div style="font-size:11px;color:var(--textDim);line-height:1.65;margin-top:9px">기본문항 ${assignment.keys.length}개 · 정답 진행 기준 자동 재확인 약 ${assignment.estimatedAutomaticRechecks||0}회 · 총 약 ${assignment.estimatedTotalAnswers||assignment.keys.length}회 풀이. 오답 재풀이는 별도입니다.</div>
+        ${Object.entries(assignment.coverageByGrade||{}).filter(([,x])=>x.remainingFirstPass>0).map(([g,x])=>`<div style="font-size:11px;line-height:1.65;margin-top:7px;color:${x.coverageAtRisk?'#B45309':'var(--textDim)'}">${GRADE_LABELS[g]} 미통과 ${x.remainingFirstPass}개 · 신규 학습일 ${x.newStudyDays}일(시험 당일 제외·복습 여유 ${x.recallReserveDays}일). ${x.finalReview?'시험 직전 복습 우선 기간입니다.':`하루 필요 첫 통과 ${x.requiredFirstPassToday}개 / 오늘 배정 ${x.scheduledFirstPassToday}개.`}${x.coverageAtRisk?` 현재 상한·복습 배분으로 첫 통과 일정이 부족합니다${x.newShortfall?`(오늘 ${x.newShortfall}개 부족)`:''}. 전범위 완료를 보장하지 않습니다.`:''}</div>`).join('')}
+        ${assignment.pendingMockReview?'<div style="font-size:11px;margin-top:7px;color:#B45309">추가된 모의고사 오답은 별도 오답 복습에서 확인하세요. 진행 중 숙제는 유지됩니다.</div>':''}
+        ${assignment.dueOverflow?`<div style="margin-top:10px;padding:9px 11px;background:#FEF2F2;border-radius:8px;font-size:11px;color:#991B1B">오늘 배정하지 못한 기한 복습 ${assignment.dueOverflow}문제가 남았습니다.</div>`:''}
+        <div style="font-size:11px;color:var(--textDim);line-height:1.6;margin-top:10px">답을 고른 뒤 다음 문제로 이동하면 정답·오답이 기록됩니다. 당일 재확인 또는 다음 날 확인 예정으로 구분하며, 다른 날 다시 맞히면 숙달됩니다.</div>
         <button class="btn btn-accent" style="width:100%;margin-top:12px;background:#7C3AED;border-color:#7C3AED" ${unresolved.length?'':'disabled'} onclick="startNavigatorPassPlanToday()">${unresolved.length?`오늘 숙제 시작 · ${unresolved.length}문제`:'오늘 숙제 완료'}</button>
       </section>
       <section id="md-plan-review" class="card" style="padding:15px;margin-top:14px;border-left:4px solid #DC2626">
@@ -22524,7 +22276,7 @@ window.alert=appAlert;
         </div>
         <div style="font-size:10px;color:var(--textMuted);margin-top:8px">오늘 오답은 전용 복습에서 맞히면 목록에서 빠집니다. 자주 틀리는 문제는 누적 오답 횟수가 많은 순으로 출제되며 숙달되면 목록에서 빠집니다.</div>
       </section>
-      <section id="md-plan-rules-source" class="card" style="padding:15px;margin-top:14px;background:#F8FAFC"><div style="font-size:13px;font-weight:900;margin-bottom:6px">숙달 규칙</div><div style="font-size:11px;color:var(--textDim);line-height:1.75">① 첫 정답 → 학습 중, 같은 날 재확인 정답 → 오늘 확인 완료<br>② 확인 완료 후 다른 날 다시 정답 → 숙달<br>③ 숙달 문제도 정답률과 시험일에 따라 유지복습<br>④ 오답 → 미해결, 다시 풀고 재확인<br>⑤ 시험 직전 ${plan.finalDays}일은 저빈출 신규보다 빈출 미해결·복습을 우선</div></section>`;
+      <section id="md-plan-rules-source" class="card" style="padding:15px;margin-top:14px;background:#F8FAFC"><div style="font-size:13px;font-weight:900;margin-bottom:6px">숙달 규칙</div><div style="font-size:11px;color:var(--textDim);line-height:1.75">① 첫 정답 → 학습 중, 같은 날 재확인 정답 → 오늘 확인 완료<br>② 확인 완료 후 다른 날 다시 정답 → 숙달<br>③ 숙달 문제도 최근 재확인 결과와 시험일에 따라 유지복습<br>④ 오답 → 미해결, 다시 풀고 재확인<br>⑤ 시험 직전 ${plan.finalDays}일은 기한 복습을 우선하고 남는 자리에 미통과 문제 배정 · 상한 부족 시 일정 경고</div></section>`;
     window.mdOrganizePassPlan?.(planEntrySubject);
   };
 
@@ -22563,18 +22315,13 @@ window.alert=appAlert;
   };
   window.resetNavigatorPassPlanProgress=function(){
     showConfirm('2·3급 합격 플랜의 학습 진도와 오늘 숙제를 모두 초기화하시겠습니까?\n기존 일반 오답노트와 기출 풀이 기록은 유지됩니다.',()=>{
-      if(!window.__mdDriveSyncV2.resetKey(PROGRESS_KEY,'{}','합격 플랜 진도'))return;safeStorageSet(DAILY_KEY,'{}','합격 플랜 오늘 숙제');ppClearPassSessionCheckpoint();planSessionQueue=[];planSessionAnswers=[];planSessionConfidence=[];planSessionCommitIds=[];planSessionCommitted=new Set();planSessionIdx=0;const saved=getPastProgress();if(saved&&saved.meta.returnView==='pass-plan-predictive-mock')clearPastProgress();renderNavigatorPassPlan(planEntrySubject);
+      if(!window.__mdDriveSyncV2.resetKey(PROGRESS_KEY,'{}','합격 플랜 진도'))return;safeStorageSet(DAILY_KEY,'{}','합격 플랜 오늘 숙제');ppClearPassSessionCheckpoint();planSessionQueue=[];planSessionAnswers=[];planSessionConfidence=[];planSessionCommitIds=[];planSessionCommitted=new Set();planSessionFirstAnswers={};planSessionIdx=0;const saved=getPastProgress();if(saved&&saved.meta.returnView==='pass-plan-predictive-mock')clearPastProgress();renderNavigatorPassPlan(planEntrySubject);
     });
   };
 
   function ppFindQuestion(gradeId,item){
-    for(const hit of item.hits){
-      const exam=getPastExam(gradeId,hit.year,hit.session);if(!exam)continue;
-      const q=exam.questions.find(q=>q['과목']===item.subject&&Number(q['번호'])===Number(hit.number)&&n3aNormalizeQuestion(q['문제'])===n3aNormalizeQuestion(item.normalized||item.question));
-      if(q&&!mdSourceQuestionUsable(exam,q))continue;
-      if(q&&mdQuestionUsable(q))return {...q,_year:hit.year,_session:hit.session,'회차':hit.session,_short:gradeId,_planKey:item.key,_planGrade:gradeId,_planCount:item.count,_planGroupId:item.groupId};
-    }
-    return null;
+    const q=item&&item.canonicalQuestion;if(!q||!mdQuestionUsable(q))return null;
+    return {...q,_planKey:item.key,_planGrade:gradeId,_planCount:item.count,_planGroupId:item.groupId};
   }
   async function ppHydrateKeys(keys){
     const grades=[...new Set(keys.map(k=>(ppGetItemByKey(k)||{}).gradeId).filter(Boolean))];
@@ -22645,8 +22392,8 @@ window.alert=appAlert;
     if(remainingBase<minimumGap){
       const progress=ppLoadProgress(),rec=ppProgressFor(progress,q._planKey);
       if(rec.sameDayFirstCorrectDate===today&&!rec.sameDayConfirmedDate){
-        rec.status='provisional';rec.mastered=false;rec.sameDayConfirmedDate=today;
-        rec.recoveryStartDate=null;rec.dueDate=ppAddDays(today,1);rec.lateSessionNextDayRecheck=true;
+        rec.status='provisional';rec.mastered=false;rec.sameDayConfirmedDate=null;
+        rec.recoveryStartDate=null;rec.dueDate=ppReviewDueDate(today,1,ppExamDay(ppLoadPlan(),q._planGrade));rec.lateSessionNextDayRecheck=true;rec.nextDayRecheckScheduledDate=today;
         progress[q._planKey]=rec;ppSaveProgress(progress);
       }
       return false;
@@ -22669,6 +22416,7 @@ window.alert=appAlert;
 
   window.startNavigatorWeakDrill=async function(kind){
     if(!['today-wrong','frequent-wrong'].includes(kind))return;
+    if(!ppFlushTodayAnswer())return;
     const plan=ppLoadPlan();
     renderPastLoading(kind==='today-wrong'?'오늘 틀린 문제를 준비하는 중입니다':'자주 틀리는 문제를 준비하는 중입니다');
     try{
@@ -22678,7 +22426,7 @@ window.alert=appAlert;
       if(!items.length){showToast(kind==='today-wrong'?'오늘 다시 풀 오답이 없습니다.':'2회 이상 틀린 문제가 없습니다.');renderNavigatorPassPlan(planEntrySubject);return}
       const keys=items.map(item=>item.key),hydrated=await ppHydrateKeys(keys);
       if(hydrated.length!==keys.length)throw new Error('일부 기출문제 원문을 찾지 못했습니다.');
-      ppClearPassSessionCheckpoint();planSessionKind=kind;
+      planSessionKind=kind;planSessionFirstAnswers={}; // Preserve the separate homework checkpoint.
       planSessionQueue=kind==='today-wrong'?shuffle(hydrated):hydrated;
       planSessionIdx=0;planSessionAnswers=new Array(planSessionQueue.length).fill(null);planSessionConfidence=new Array(planSessionQueue.length).fill(null);planSessionCommitIds=new Array(planSessionQueue.length).fill(null);planSessionStartedAt=Date.now();planSessionCommitted=new Set();currentMode='pass-plan-session';renderNavigatorPassPlanCard();
     }catch(e){
@@ -22731,30 +22479,26 @@ window.alert=appAlert;
       if(rule.subject!==item.subject)continue;
       try{if(new RegExp(rule.pattern,'i').test(text))return `${item.subject}|${rule.id}`}catch(e){}
     }
-    return `${item.subject}|group:${item.groupId}`;
+    return `${item.subject}|종합`;
   }
   const WEAK_TOPIC_PROFILE_KEY='md_weak_topic_profile_v1'; // weak-topic-adaptive-v1
   function ppWeakTopicId(item){
-    // audit-topic-classifier-v1: one shared rule set for homework and results.
     const subject=String(item&&item.subject||'기타');
     const question=item&&(item.question||item['문제']||item['질문'])||'';
-    return window.__mdWeakTopicClassifier.classify(subject,question);
+    return window.__mdWeakTopicClassifier.classify(subject,question,item&&(item.choices||item['선택지']));
   }
-  function ppLoadWeakTopicProfile(gradeId){
-    try{
-      const v=JSON.parse(localStorage.getItem(WEAK_TOPIC_PROFILE_KEY)||'null');if(!v)return {};
-      if(v.grades&&v.grades[gradeId])return window.__mdWeakTopicAnalytics.aggregateProfile(v.grades[gradeId]);
-      if(v.version>=2)return {};
-      return v.topics&&typeof v.topics==='object'?v.topics:{};
-    }catch(e){return {}}
+  function ppLoadWeakTopicProfile(gradeId){ // recent-homework-topic-evidence-v522
+    try{return window.__mdWeakTopicAnalytics.getProfileForGrade(gradeId)}catch(e){return {}}
   }
   function ppWeakTopicBoost(item,profile){
     const grade=item&&(item.gradeId||item._planGrade||String(item.key||item._planKey||'').split('|')[0]);
     const p=profile||ppLoadWeakTopicProfile(grade),key=`${item&&item.subject||'기타'}|${ppWeakTopicId(item)}`,row=p[key];
     if(!row||!(Number(row.wrong)>0))return 1;
-    const share=Math.max(0,Math.min(100,Number(row.targetShare)||0));
-    const err=Math.max(0,Math.min(100,Number(row.errorRate)||0));
-    return Math.min(1.75,1+share/180+err/500);
+    if(Number.isFinite(Number(row.boostMultiplier)))return Math.max(1,Math.min(1.75,Number(row.boostMultiplier)));
+    // Legacy callers without evidence metadata get only a small, bounded boost.
+    const attempts=Math.max(0,Number(row.attempts)||0),wrong=Math.max(0,Number(row.wrong)||0);
+    const evidence=attempts/(attempts+5),error=(wrong+1)/(attempts+2);
+    return 1+Math.min(attempts<3?0.05:0.75,0.75*error*evidence);
   }
   function ppPredictivePersonalMultiplier(item,progress){
     const rec=progress&&progress[item&&item.key];
@@ -22769,8 +22513,9 @@ window.alert=appAlert;
   }
   const PREDICTIVE_FP_HISTORY_KEY='md_predictive_mock_fingerprint_history_v1'; // predictive-history-fingerprint-v1
   function ppPredictiveHistoryFingerprint(item){
-    return String(item&&(item.question||item['문제'])||'').normalize('NFKC').toLowerCase().replace(/\s+/g,' ').trim();
+    return window.__mdBalancedMock.fingerprint(item);
   }
+
   function ppNormalizePredictiveFingerprintHistory(value){
     const out={navi2:[],navi3:[]};
     if(value&&typeof value==='object'&&!Array.isArray(value)){
@@ -22813,23 +22558,25 @@ window.alert=appAlert;
     if(fpHistory[1]&&fpHistory[1].includes(fp))return 1;
     return -1;
   }
-  function ppPredictiveWeight(item,history,progress){
+  function ppPredictiveWeight(item,history,progress){ // rolling-latest-year-weights-v522
     const hits=item.hits||[],years=new Set(hits.map(h=>Number(h.year)));
+    const latestYear=Number(item.maxYear)||new Date().getFullYear();
     const count=hits.length;
     let weight=1+Math.min(5,count)*0.72;
     if(count>=2)weight+=0.8;
     if(count>=3)weight+=0.55;
     if(count>=4)weight+=0.35;
-    if(years.has(2026))weight+=0.9;
-    if(years.has(2025))weight+=0.6;
-    if(years.has(2024))weight+=0.3;
-    if(years.has(2026)&&hits.some(h=>Number(h.year)<2026))weight+=1.25;
+    if(years.has(latestYear))weight+=0.9;
+    if(years.has(latestYear-1))weight+=0.6;
+    if(years.has(latestYear-2))weight+=0.3;
+    if(years.has(latestYear)&&hits.some(h=>Number(h.year)<latestYear))weight+=1.25;
     const recentLevel=ppPredictiveRecentLevel(item,history);
     if(recentLevel===0)weight*=0.45;
     else if(recentLevel===1)weight*=0.75;
     weight*=ppPredictivePersonalMultiplier(item,progress);
     return Math.max(0.12,weight);
   }
+
   function ppWeightedChoice(rows,weightFn){
     if(!rows.length)return null;
     const weighted=rows.map(row=>({row,w:Math.max(0,Number(weightFn(row))||0)}));
@@ -22839,9 +22586,10 @@ window.alert=appAlert;
     for(const x of weighted){r-=x.w;if(r<=0)return x.row}
     return weighted[weighted.length-1].row;
   }
-  function ppPredictiveQuestionFingerprint(item){ // predictive-no-duplicate-v1
-    return String(item&&item.question||'').normalize('NFKC').toLowerCase().replace(/\s+/g,' ').trim();
+  function ppPredictiveQuestionFingerprint(item){ // predictive-content-identity-v522
+    return window.__mdBalancedMock.fingerprint(item);
   }
+
   function ppUniquePredictiveCandidates(items){
     const seen=new Set(),out=[];
     for(const item of (items||[])){
@@ -22867,34 +22615,15 @@ window.alert=appAlert;
     const rest=ppPredictiveSample(remainder,data,target-core.length,history,progress);
     return [...core,...rest];
   }
-  function ppPredictiveSample(items,data,count,history,progress){
-    const buckets=new Map(),uses=new Map(),picked=[];
-    items.forEach(item=>{
-      const concept=ppPredictiveConcept(item,data);
-      if(!buckets.has(concept))buckets.set(concept,[]);
-      buckets.get(concept).push(item);
+  function ppPredictiveSample(items,data,count,history,progress){ // predictive-mass-sampling-v522
+    return window.__mdBalancedMock.predictiveSample(items,{
+      count,weight:item=>ppPredictiveWeight(item,history,progress)
     });
-    while(picked.length<count){
-      const available=[...buckets.entries()].filter(([,arr])=>arr.length);
-      if(!available.length)break;
-      const chosenBucket=ppWeightedChoice(available,entry=>{
-        const [concept,arr]=entry;
-        const best=arr.reduce((m,item)=>Math.max(m,ppPredictiveWeight(item,history,progress)),0);
-        const used=uses.get(concept)||0;
-        return best/(1+used*2.5);
-      });
-      if(!chosenBucket)break;
-      const [concept,arr]=chosenBucket;
-      const item=ppWeightedChoice(arr,x=>ppPredictiveWeight(x,history,progress));
-      if(!item)break;
-      picked.push(item);
-      arr.splice(arr.indexOf(item),1);
-      uses.set(concept,(uses.get(concept)||0)+1);
-    }
-    return picked;
   }
+
   window.startNavigatorPredictiveMock=async function(gradeId){
     if(!PLAN_GRADES.includes(gradeId))return;
+    if(!ppFlushTodayAnswer())return;
     const plan=ppLoadPlan();
     renderPastLoading(`${GRADE_LABELS[gradeId]} 실전예측 모의를 만드는 중입니다`);
     try{
@@ -22922,7 +22651,7 @@ window.alert=appAlert;
         return {...q,_predictiveMock:true,_predictiveConcept:ppPredictiveConcept(item,data)};
       })),gradeId);
       clearPastProgress();
-      pastSubjectId=gradeId;pastBaseShort=gradeId;pastYear=2026;pastSession=0;pastVariant='상선';pastAllYears=false;pastReturnView='pass-plan-predictive-mock';
+      pastSubjectId=gradeId;pastBaseShort=gradeId;pastYear=null;pastSession=null;pastVariant='상선';pastAllYears=false;pastReturnView='pass-plan-predictive-mock';
       pastQueue=queue;pastIdx=0;pastAnswers=new Array(queue.length).fill(null);pastMode='mock';pastStartedAt=Date.now();currentMode='past';
       renderPastCard();
     }catch(e){
@@ -22940,9 +22669,10 @@ window.alert=appAlert;
       const answer=answers&&answers[i]; // mock-unanswered-neutral-v1
       if(answer===null||answer===undefined)return;
       const r=ppProgressFor(progress,q._planKey);window.__mdLearningIntegrity.initializeCounters(r);r.lastPracticeMode='predictive-mock';
-      if(answer===q['정답']){window.__mdLearningIntegrity.appendOutcome(r,'correct',false);return;}
+      if(answer===q['정답']){ppAppendReviewEvidence(r,'correct',today,'predictive-mock',ppMockEvidenceId(q));window.__mdLearningIntegrity.appendOutcome(r,'correct',false);return;}
       r.attempts=(r.attempts||0)+1;r.wrong=(r.wrong||0)+1;r.lastDate=today;r.lastOutcome='wrong';
       r.status='weak';r.mastered=false;r.recoveryStartDate=today;r.sameDayFirstCorrectDate=null;r.sameDayConfirmedDate=null;r.lastWrongDate=today;r.todayWrongReviewDate=null;r.dueDate=today;
+      ppResetReviewSchedule(r,today);ppAppendReviewEvidence(r,'wrong',today,'predictive-mock',ppMockEvidenceId(q));
       window.__mdLearningIntegrity.appendOutcome(r,'wrong',false);
     });
     const complete=rows.length>0&&!rows.some(q=>q&&q._predictiveReview)&&Array.isArray(answers)&&answers.length>=rows.length&&rows.every((q,i)=>answers[i]!==null&&answers[i]!==undefined);
@@ -22953,7 +22683,15 @@ window.alert=appAlert;
       ppSavePredictiveFingerprintHistory(gradeId,rows);
     }
     ppSaveProgress(progress);
-    const daily=ppLoadDaily();delete daily[today];ppSaveDaily(daily);
+    const daily=ppLoadDaily(),checkpoint=ppLoadPassSessionCheckpoint();
+    if(checkpoint&&Array.isArray(checkpoint.queueKeys)&&checkpoint.queueKeys.length){
+      if(daily[today]){
+        const newWrong=rows.filter((q,i)=>q&&q._planKey&&answers&&Number.isInteger(answers[i])&&answers[i]!==q['정답']).map(q=>q._planKey);
+        daily[today].pendingMockReviewKeys=[...new Set([...(Array.isArray(daily[today].pendingMockReviewKeys)?daily[today].pendingMockReviewKeys:[]),...newWrong])];
+        daily[today].pendingMockReview=daily[today].pendingMockReviewKeys.length>0;
+      }
+    }else delete daily[today];
+    ppSaveDaily(daily);
   };
 
   const PP_EVALUATION_EXPOSURE_KEY='md_evaluation_mock_exposure_v1'; // evaluation-mock-v1
@@ -22962,62 +22700,13 @@ window.alert=appAlert;
     for(let i=out.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[out[i],out[j]]=[out[j],out[i]]}
     return out;
   }
-  function ppEvaluationSelect(items,options){
-    const engine=window.__mdBalancedMock,{gradeId,data,state,identity,random=Math.random}=options;
-    const seenIds=new Set(),seenText=new Set(),rows=[];
-    for(const item of (items||[])){
-      const id=String(identity(item)),fp=ppPredictiveQuestionFingerprint(item);
-      if(!id||seenIds.has(id)||seenText.has(fp))continue;
-      seenIds.add(id);seenText.add(fp);rows.push({item,id,fp,topic:engine.topic(item,data)});
-    }
-    const target=Math.min(Math.max(0,Math.floor(Number(options.count)||0)),rows.length);
-    const history=engine.normalize(state).grades[gradeId]||{recent:[],seen:{}};
-    let available=rows,windowSize=Math.min(engine.RECENT_PAPERS||3,history.recent.length);
-    for(;windowSize>=0;windowSize--){
-      const recent=new Set(history.recent.slice(0,windowSize).flat());
-      available=rows.filter(row=>!recent.has(row.id));
-      if(available.length>=target)break;
-    }
-    if(!target)return {items:[],identities:[],recentWindow:windowSize,topicCounts:{}};
-
-    const groups=new Map();
-    for(const row of available){if(!groups.has(row.topic))groups.set(row.topic,[]);groups.get(row.topic).push(row)}
-    const allocation=[...groups].map(([topic,list])=>{
-      const raw=target*list.length/Math.max(1,available.length),base=Math.min(list.length,Math.floor(raw));
-      return {topic,list,quota:base,fraction:raw-base};
-    });
-    let rest=target-allocation.reduce((s,x)=>s+x.quota,0);
-    const remainderOrder=allocation.slice().sort((a,b)=>b.fraction-a.fraction||b.list.length-a.list.length||String(a.topic).localeCompare(String(b.topic)));
-    while(rest>0){
-      let added=false;
-      for(const row of remainderOrder){
-        if(rest<=0)break;
-        if(row.quota>=row.list.length)continue;
-        row.quota++;rest--;added=true;
-      }
-      if(!added)break;
-    }
-
-    const picked=[],pickedIds=new Set(),topicCounts={};
-    for(const row of allocation){
-      const ordered=ppEvaluationShuffle(row.list,random).sort((a,b)=>(history.seen[a.id]?.[0]||0)-(history.seen[b.id]?.[0]||0));
-      for(const chosen of ordered.slice(0,row.quota)){
-        picked.push(chosen);pickedIds.add(chosen.id);topicCounts[row.topic]=(topicCounts[row.topic]||0)+1;
-      }
-    }
-    if(picked.length<target){
-      const leftovers=ppEvaluationShuffle(available.filter(row=>!pickedIds.has(row.id)),random)
-        .sort((a,b)=>(history.seen[a.id]?.[0]||0)-(history.seen[b.id]?.[0]||0));
-      for(const chosen of leftovers){
-        if(picked.length>=target)break;
-        picked.push(chosen);pickedIds.add(chosen.id);topicCounts[chosen.topic]=(topicCounts[chosen.topic]||0)+1;
-      }
-    }
-    return {items:picked.map(row=>row.item),identities:picked.map(row=>row.id),recentWindow:windowSize,topicCounts};
+  function ppEvaluationSelect(items,options){ // evaluation-exposure-rotation-v522
+    return window.__mdBalancedMock.evaluationSelect(items,options);
   }
 
   window.startNavigatorEvaluationMock=async function(gradeId){
     if(!PLAN_GRADES.includes(gradeId)||window.__mdEvaluationMockCreating)return;
+    if(!ppFlushTodayAnswer())return;
     window.__mdEvaluationMockCreating=true;
     const engine=window.__mdBalancedMock,plan=ppLoadPlan();
     renderPastLoading(`${GRADE_LABELS[gradeId]} 평가용 모의고사를 구성하는 중입니다`);
@@ -23025,9 +22714,9 @@ window.alert=appAlert;
       await ppBuildPools(plan);
       const data=n3aData(gradeId),subjects=ppSelectedSubjects(plan,gradeId,data);
       if(!subjects.length)throw new Error('응시 과목을 1개 이상 선택하세요.');
-      const identity=item=>PP_HOMEWORK_DUPLICATE_CLUSTER[item.key]||item.key;
+      const identity=item=>window.__mdBalancedMock.identity(item);
       let raw=null;try{raw=JSON.parse(localStorage.getItem(PP_EVALUATION_EXPOSURE_KEY)||'null')}catch(e){}
-      let exposure=engine.normalize(raw),selected=[],identities=[],fingerprints=new Set();
+      let exposure=engine.rebaseExposure(raw,gradeId,planPools[gradeId]||[]),selected=[],identities=[],fingerprints=new Set();
       for(const subject of subjects){
         const candidates=(planPools[gradeId]||[]).filter(item=>item.subject===subject).map(item=>{
           const q=ppFindQuestion(gradeId,item);
@@ -23056,6 +22745,7 @@ window.alert=appAlert;
 
   window.startNavigatorPassPlanMock=async function(gradeId){
     if(!PLAN_GRADES.includes(gradeId)||window.__mdBalancedMockCreating)return;
+    if(!ppFlushTodayAnswer())return;
     window.__mdBalancedMockCreating=true;
     const EXPOSURE_KEY='md_mock_exposure_v1',engine=window.__mdBalancedMock;
     const plan=ppLoadPlan();
@@ -23064,9 +22754,9 @@ window.alert=appAlert;
       await ppBuildPools(plan);
       const data=n3aData(gradeId),subjects=ppSelectedSubjects(plan,gradeId,data);
       if(!subjects.length)throw new Error('응시 과목을 1개 이상 선택하세요.');
-      const identity=item=>PP_HOMEWORK_DUPLICATE_CLUSTER[item.key]||item.key;
+      const identity=item=>window.__mdBalancedMock.identity(item);
       let raw=window.__mdBalancedMockExposureFallback||safeStorageGetJSON(EXPOSURE_KEY,null,'모의고사 출제 이력');
-      let exposure=engine.normalize(raw);
+      let exposure=engine.rebaseExposure(raw,gradeId,planPools[gradeId]||[]);
       if(!exposure.grades[gradeId].sequence){
         const byKey=new Map((planPools[gradeId]||[]).map(item=>[item.key,item]));
         for(const oldRun of ppLoadPredictiveHistory(gradeId).slice().reverse()){
@@ -23148,6 +22838,7 @@ window.alert=appAlert;
               if(Array.isArray(checkpoint.committed)&&checkpoint.committed.includes(oldIdx))planSessionCommitted.add(newIdx);
             });
             for(let i=0;i<nextIndex;i++)if(planSessionAnswers[i]!==null)planSessionCommitted.add(i);
+            planSessionFirstAnswers=checkpoint.firstAnswers&&typeof checkpoint.firstAnswers==='object'&&!Array.isArray(checkpoint.firstAnswers)?checkpoint.firstAnswers:{};
             planSessionStartedAt=Number(checkpoint.startedAt)||Date.now();currentMode='pass-plan-session';
             ppSavePassSessionCheckpoint(nextIndex); // normalize after skipping stale keys, if any
             renderNavigatorPassPlanCard();return;
@@ -23184,7 +22875,7 @@ window.alert=appAlert;
         if(startIndex<0){showToast('오늘 숙제를 모두 완료했습니다.');ppClearPassSessionCheckpoint();renderNavigatorPassPlan(planEntrySubject);return}
       }
 
-      planSessionQueue=queue;planSessionIdx=startIndex;planSessionAnswers=new Array(queue.length).fill(null);planSessionConfidence=new Array(queue.length).fill(null);planSessionCommitIds=new Array(queue.length).fill(null);planSessionStartedAt=Date.now();planSessionCommitted=new Set();
+      planSessionFirstAnswers={};planSessionQueue=queue;planSessionIdx=startIndex;planSessionAnswers=new Array(queue.length).fill(null);planSessionConfidence=new Array(queue.length).fill(null);planSessionCommitIds=new Array(queue.length).fill(null);planSessionStartedAt=Date.now();planSessionCommitted=new Set();
       for(let i=0;i<startIndex;i++){
         const rec=ppProgressFor(progress,activeKeys[i]);
         if(rec&&rec.lastDate===today)planSessionCommitted.add(i);
@@ -23215,61 +22906,146 @@ window.alert=appAlert;
     const q=planSessionQueue[planSessionIdx];
     if(planSessionAnswers[planSessionIdx]!==null||!q||!Number.isInteger(i)||i<0||i>=q['선택지'].length)return;
     planSessionAnswers[planSessionIdx]=i;
+    if(!q._sameDayRecheck&&!Object.prototype.hasOwnProperty.call(planSessionFirstAnswers,q._planKey))planSessionFirstAnswers[q._planKey]={answer:i,correct:i===q['정답'],subject:String(q['과목']||q._planSubject||'기타')};
     // 'sure' is the legacy successful-answer code, no longer a self-rating.
     planSessionConfidence[planSessionIdx]=i===q['정답']?'sure':'wrong';
     if(!planSessionCommitIds[planSessionIdx])planSessionCommitIds[planSessionIdx]=window.__mdLearningIntegrity.getDeviceId()+'|'+planSessionStartedAt+'|'+planSessionIdx;
     ppSavePassSessionCheckpoint(planSessionIdx);renderNavigatorPassPlanCard();
   };
+  // mastery-session-policy-v522: cumulative counters remain history; spacing uses recent independent recalls.
+  // mastery-integration-r2: persist a chosen homework answer before another practice can change the same record.
+  let ppEvidenceNonce=0;
+  function ppMockEvidenceId(q){
+    const session=(typeof pastResultId!=='undefined'&&pastResultId)||(typeof pastProgressId!=='undefined'&&pastProgressId)||(typeof pastStartedAt!=='undefined'&&pastStartedAt)||'direct';
+    return 'mock|'+window.__mdLearningIntegrity.getDeviceId()+'|'+String(session)+'|'+String(q&&q._planKey||'');
+  }
+  function ppFlushTodayAnswer(){
+    // mastery-home-detour-r3: navigation may already have changed currentMode; the saved pending occurrence still owns its answer.
+    if(planSessionKind!=='today')return true;
+    const q=planSessionQueue[planSessionIdx],answer=planSessionAnswers[planSessionIdx];
+    if(!q||!Array.isArray(q['선택지'])||!Number.isInteger(answer)||answer<0||answer>=q['선택지'].length||planSessionCommitted.has(planSessionIdx))return true;
+    if(currentMode!=='pass-plan-session'){
+      const checkpoint=ppLoadPassSessionCheckpoint();
+      if(!checkpoint||Number(checkpoint.startedAt)!==Number(planSessionStartedAt)||Number(checkpoint.nextIndex)!==planSessionIdx||checkpoint.queueKeys[planSessionIdx]!==q._planKey||!Array.isArray(checkpoint.answers)||checkpoint.answers[planSessionIdx]!==answer)return true;
+    }
+    const confidence=answer===q['정답']?'sure':'wrong';planSessionConfidence[planSessionIdx]=confidence;
+    if(!ppCommitOutcome(q,answer,confidence))return false;
+    planSessionCommitted.add(planSessionIdx);if(confidence==='sure')ppScheduleSameDayRecheck(q);
+    ppSavePassSessionCheckpoint(planSessionIdx);return true;
+  }
+  function ppInitializeReviewSchedule(r){
+    if(r.reviewScheduleVersion===1){
+      // v5.21 clients preserve unknown fields when recording a newer wrong answer.
+      const newerLapse=!!(r.lastWrongDate&&(!r.reviewLapseDate||r.lastWrongDate>r.reviewLapseDate)&&(!r.reviewSuccessDate||r.lastWrongDate>=r.reviewSuccessDate));
+      if((r.status==='weak'||r.lastOutcome==='wrong'||newerLapse)&&Number(r.reviewStage)>0){r.reviewStage=0;r.reviewSuccessDate=null;r.reviewLapseDate=r.lastWrongDate||r.lastDate||r.reviewLapseDate||null;}
+      return;
+    }
+    const legacyStage=r.mastered?Math.max(1,Math.min(5,Number(r.masteryReviews)||1)):0;
+    r.reviewScheduleVersion=1;r.reviewStage=legacyStage;r.reviewSuccessDate=r.mastered?(r.sameDayConfirmedDate||r.lastSureDate||null):null;
+    r.reviewLapseDate=r.status==='weak'?(r.lastWrongDate||r.lastDate||null):null;
+  }
+  function ppResetReviewSchedule(r,today){
+    ppInitializeReviewSchedule(r);r.reviewStage=0;r.reviewSuccessDate=null;r.reviewLapseDate=today;
+    r.lateSessionNextDayRecheck=false;r.nextDayRecheckScheduledDate=null;
+  }
+  function ppAppendReviewEvidence(r,outcome,today,mode,identity){
+    const old=Array.isArray(r.recentOutcomes)?r.recentOutcomes.filter(x=>x&&typeof x==='object'):[];
+    const at=new Date().toISOString(),device=window.__mdLearningIntegrity.getDeviceId();
+    const evidenceId=String(identity||device+'|event|'+at+'|'+(++ppEvidenceNonce)+'|'+Math.random().toString(36).slice(2));
+    if(old.some(event=>event.evidenceId===evidenceId))return;
+    r.recentOutcomes=old.concat({evidenceId,at,date:today,outcome,mode}).slice(-20);
+  }
+  function ppReviewDueDate(today,interval,exam){
+    let days=Math.max(1,Number(interval)||1);
+    const dday=exam?ppDiffDays(today,exam):null;
+    if(dday!==null&&dday>=0){
+      if(dday<=7)days=Math.min(days,3);
+      else if(dday<=21)days=Math.min(days,7);
+      else if(dday<=44)days=Math.min(days,21);
+      // Never schedule into the past, including exam day / expired plans.
+      if(dday>1)days=Math.min(days,dday-1);
+      else if(dday<=1)days=1;
+    }
+    return ppAddDays(today,days);
+  }
+  function ppNextDayPending(rec,today){
+    return !!(rec&&rec.lateSessionNextDayRecheck&&rec.nextDayRecheckScheduledDate===today&&rec.sameDayFirstCorrectDate===today&&rec.lastOutcome==='sure'&&rec.status==='provisional');
+  }
+  function ppResultStats(){
+    const today=ppDateKey(new Date()),progress=ppLoadProgress(),base=new Map(),first=planSessionFirstAnswers||{};
+    for(const [key,v] of Object.entries(first))if(v&&typeof v==='object')base.set(key,{key,subject:String(v.subject||'기타'),answer:v.answer,correct:v.correct===true});
+    let recheckTotal=0,recheckAnswered=0,recheckCorrect=0;
+    planSessionQueue.forEach((q,i)=>{
+      if(!q||!q._planKey)return;const answer=planSessionAnswers[i];
+      if(q._sameDayRecheck){recheckTotal++;if(Number.isInteger(answer)){recheckAnswered++;if(answer===q['정답'])recheckCorrect++;}return;}
+      if(!base.has(q._planKey))base.set(q._planKey,{key:q._planKey,subject:String(q['과목']||q._planSubject||'기타'),answer,correct:Number.isInteger(answer)&&answer===q['정답']});
+    });
+    const subjects=new Map();let baseAnswered=0,baseCorrect=0,cleared=0,pendingNextDay=0,unresolved=0;
+    for(const row of base.values()){
+      if(!subjects.has(row.subject))subjects.set(row.subject,{subject:row.subject,total:0,firstCorrect:0,cleared:0,pendingNextDay:0,unresolved:0});
+      const group=subjects.get(row.subject),r=progress[row.key]||{};group.total++;
+      if(Number.isInteger(row.answer)){baseAnswered++;if(row.correct){baseCorrect++;group.firstCorrect++;}}
+      if(r.sameDayConfirmedDate===today){cleared++;group.cleared++;}
+      else if(ppNextDayPending(r,today)){pendingNextDay++;group.pendingNextDay++;}
+      else{unresolved++;group.unresolved++;}
+    }
+    return {kind:planSessionKind,date:today,baseTotal:base.size,baseAnswered,baseCorrect,recheckTotal,recheckAnswered,recheckCorrect,pendingNextDay,unresolved,completed:baseAnswered===base.size&&unresolved===0,total:base.size,firstCorrect:baseCorrect,cleared,subjects:[...subjects.values()]};
+  }
+  let ppEvidenceRaw=null,ppEvidenceRevision=0;const ppEvidenceCache=new Map();
+  window.__mdPassPlanLearningAPI={
+    getEvidenceRevision(){const raw=localStorage.getItem(PROGRESS_KEY)||'{}';if(raw!==ppEvidenceRaw){ppEvidenceRaw=raw;ppEvidenceRevision++;ppEvidenceCache.clear();}return ppEvidenceRevision;},
+    getResultStats:ppResultStats,
+    getRecentTopicEvidence(gradeId){
+      const revision=window.__mdPassPlanLearningAPI.getEvidenceRevision(),pool=planPools[gradeId]||[],cached=ppEvidenceCache.get(gradeId);
+      if(cached&&cached.revision===revision&&cached.pool===pool)return cached.rows;
+      const progress=ppLoadProgress(),rows=pool.filter(item=>progress[item.key]).map(item=>{
+        const r=progress[item.key],q=ppFindQuestion(gradeId,item)||{};
+        return {key:item.key,subject:String(item.subject||q['과목']||''),question:String(item.question||q['문제']||''),choices:Array.isArray(q['선택지'])?q['선택지'].slice():[],attempts:Number(r.attempts)||0,correct:Number(r.correct)||0,wrong:Number(r.wrong)||0,lastDate:r.lastDate||null,lastOutcome:r.lastOutcome||null,lastPracticeMode:r.lastPracticeMode||null,recentOutcomes:Array.isArray(r.recentOutcomes)?r.recentOutcomes.slice():[]};
+      });
+      ppEvidenceCache.set(gradeId,{revision,pool,rows});return rows;
+    }
+  };
   function ppCommitOutcome(q,answer,confidence){
     const progress=ppLoadProgress(),r=ppProgressFor(progress,q._planKey),today=ppDateKey(new Date()),correct=answer===q['정답'];
-    // homework-save-guard-v2: checkpoint occurrence identities survive queue filtering.
     const commitId=planSessionCommitIds[planSessionIdx]||(planSessionCommitIds[planSessionIdx]=window.__mdLearningIntegrity.getDeviceId()+'|'+planSessionStartedAt+'|'+planSessionIdx);
     const commitIds=Array.isArray(r.homeworkCommitIds)?r.homeworkCommitIds.filter(v=>typeof v==='string'):[];
     if(r.lastHomeworkCommitId===commitId||commitIds.includes(commitId))return true;
     let removeWrong=false;
-    window.__mdLearningIntegrity.initializeCounters(r);const oldMasteryReviews=Number(r.masteryReviews)||0;
-    const priorConfirmed=r.sameDayConfirmedDate||null,priorFirstCorrect=r.sameDayFirstCorrectDate||null;
+    window.__mdLearningIntegrity.initializeCounters(r);ppInitializeReviewSchedule(r);
+    const oldMasteryReviews=Number(r.masteryReviews)||0,priorConfirmed=r.sameDayConfirmedDate||null,priorFirstCorrect=r.sameDayFirstCorrectDate||null;
+    const priorDeferred=!!(r.lateSessionNextDayRecheck&&r.nextDayRecheckScheduledDate&&r.nextDayRecheckScheduledDate<today&&priorFirstCorrect&&priorFirstCorrect<today);
     r.lastPracticeMode='homework';r.attempts=(r.attempts||0)+1;r.lastDate=today;r.lastOutcome=correct?confidence:'wrong';
     if(correct)r.correct=(r.correct||0)+1;else r.wrong=(r.wrong||0)+1;
     if(correct&&confidence==='unsure')r.unsure=(r.unsure||0)+1;
     if(correct&&confidence==='sure'){
       r.lastSureDate=today;
-      const retainedAcrossDay=!!(priorConfirmed&&priorConfirmed<today);
+      const retainedAcrossDay=!!((priorConfirmed&&priorConfirmed<today)||priorDeferred),exam=ppExamDay(ppLoadPlan(),q._planGrade);
       if(retainedAcrossDay){
         r.status='mastered';r.mastered=true;r.masteryReviews=(r.masteryReviews||0)+1;
+        if(r.reviewSuccessDate!==today){r.reviewStage=Math.min(5,Math.max(0,Number(r.reviewStage)||0)+1);r.reviewSuccessDate=today;}
         r.sameDayFirstCorrectDate=today;r.sameDayConfirmedDate=today;r.recoveryStartDate=null;
-        const attempts=Math.max(1,Number(r.attempts)||1),correctCount=Math.max(0,Number(r.correct)||0),unsureCount=Math.max(0,Number(r.unsure)||0),accuracy=correctCount/attempts,sureRate=Math.max(0,correctCount-unsureCount)/attempts,reviews=Math.max(0,Number(r.masteryReviews)||0);
-        let interval=4;
-        if(reviews>=5&&attempts>=7&&sureRate>=0.90)interval=30;
-        else if(reviews>=4&&attempts>=6&&sureRate>=0.85)interval=21;
-        else if(reviews>=3&&attempts>=5&&sureRate>=0.80)interval=14;
-        else if(reviews>=2&&attempts>=4&&sureRate>=0.75)interval=7;
-        else if(accuracy>=0.70)interval=5;
-        const exam=ppExamDay(ppLoadPlan(),q._planGrade);
-        if(exam){
-          const dday=ppDiffDays(today,exam);
-          if(dday!==null&&dday>=0){
-            if(dday<=7)interval=Math.min(interval,3);
-            else if(dday<=21)interval=Math.min(interval,7);
-            else if(dday<=44)interval=Math.min(interval,21);
-          }
-        }
-        let due=ppAddDays(today,interval);if(exam){const dayBefore=ppAddDays(exam,-1);due=ppMinDate(due,dayBefore)}r.dueDate=due;
-        removeWrong=true;
+        r.lateSessionNextDayRecheck=false;r.nextDayRecheckScheduledDate=null;
+        const interval=[1,5,7,14,21,30][Math.max(1,Math.min(5,Number(r.reviewStage)||1))];
+        r.dueDate=ppReviewDueDate(today,interval,exam);removeWrong=true;
+      }else if(priorConfirmed===today&&r.mastered){
+        // Manual same-day revisits must not demote an already retained item or advance spacing twice.
+        r.sameDayFirstCorrectDate=today;removeWrong=true;
       }else if(priorFirstCorrect===today){
         if(!r.firstPassDate)r.firstPassDate=today;
-        r.status='provisional';r.mastered=false;r.sameDayFirstCorrectDate=today;r.sameDayConfirmedDate=today;r.recoveryStartDate=null;r.dueDate=ppAddDays(today,2);
-        removeWrong=true;
+        r.status='provisional';r.mastered=false;r.sameDayFirstCorrectDate=today;r.sameDayConfirmedDate=today;r.recoveryStartDate=null;
+        r.lateSessionNextDayRecheck=false;r.nextDayRecheckScheduledDate=null;r.dueDate=ppReviewDueDate(today,2,exam);removeWrong=true;
       }else{
         if(!r.firstPassDate)r.firstPassDate=today;
         r.status='provisional';r.mastered=false;r.sameDayFirstCorrectDate=today;r.sameDayConfirmedDate=null;r.dueDate=today;
+        r.lateSessionNextDayRecheck=false;r.nextDayRecheckScheduledDate=null;
       }
       if(planSessionKind==='today-wrong')r.todayWrongReviewDate=today;
     }else{
       r.status='weak';r.mastered=false;r.recoveryStartDate=today;r.dueDate=today;
       r.sameDayFirstCorrectDate=null;r.sameDayConfirmedDate=null;r.lastWrongDate=today;r.todayWrongReviewDate=null;
-
+      ppResetReviewSchedule(r,today);
     }
+    ppAppendReviewEvidence(r,correct?confidence:'wrong',today,planSessionKind==='today'?'homework':planSessionKind,'hw|'+commitId);
     window.__mdLearningIntegrity.appendOutcome(r,correct?confidence:'wrong',(Number(r.masteryReviews)||0)>oldMasteryReviews);
     r.lastHomeworkCommitId=commitId;r.homeworkCommitIds=commitIds.concat(commitId).slice(-64);progress[q._planKey]=r;
     if(!ppSaveProgress(progress))return false;
@@ -23293,7 +23069,7 @@ window.alert=appAlert;
       if(confidence==='sure')ppScheduleSameDayRecheck(q);
     }
     planSessionIdx++;
-    if(planSessionIdx>=planSessionQueue.length)ppClearPassSessionCheckpoint();else ppSavePassSessionCheckpoint(planSessionIdx);
+    if(planSessionIdx>=planSessionQueue.length){if(planSessionKind==='today')ppClearPassSessionCheckpoint();}else ppSavePassSessionCheckpoint(planSessionIdx);
     renderNavigatorPassPlanCard();
   };
   window.renderNavigatorPassPlanResult=function(){
@@ -23309,23 +23085,28 @@ window.alert=appAlert;
       app.innerHTML=`<div style="padding-top:22px;margin-bottom:14px"><div style="font-size:12px;letter-spacing:2px;font-weight:900;color:#D97706">WEAK DRILL</div><h1 style="font-size:24px;margin:4px 0">자주 틀리는 문제 결과</h1></div><div class="card" style="text-align:center;border-left:4px solid #D97706"><div style="font-size:40px;font-weight:900;color:#D97706">${sure+unsure} / ${planSessionQueue.length}</div><div style="font-size:14px;font-weight:800;margin-top:5px">정답</div><div style="font-size:11px;color:var(--textDim);margin-top:5px">오답 ${wrong} · ${Math.floor(elapsed/60)}분 ${elapsed%60}초</div></div><button class="btn btn-accent" style="width:100%;background:#D97706;border-color:#D97706" onclick="startNavigatorWeakDrill('frequent-wrong')">자주 틀리는 문제 다시 풀기</button><button class="btn btn-outline" style="width:100%;margin-top:10px" onclick="renderNavigatorPassPlan('${planEntrySubject}')">합격 플랜으로 돌아가기</button>`;
       return;
     }
-    const unresolved=[...new Map(planSessionQueue.filter(q=>!ppTodayCleared(ppProgressFor(progress,q._planKey),today)).map(q=>[q._planKey,q])).values()];
-    app.innerHTML=`<div style="padding-top:22px;margin-bottom:14px"><div style="font-size:12px;letter-spacing:2px;font-weight:900;color:#7C3AED">TODAY RESULT</div><h1 style="font-size:24px;margin:4px 0">오늘의 숙제 결과</h1></div><div class="card" style="text-align:center;border-left:4px solid #7C3AED"><div style="font-size:40px;font-weight:900;color:#7C3AED">${sure+unsure} / ${planSessionQueue.length}</div><div style="font-size:14px;font-weight:800;margin-top:5px">정답</div><div style="font-size:11px;color:var(--textDim);margin-top:5px">오답 ${wrong} · ${Math.floor(elapsed/60)}분 ${elapsed%60}초</div></div>${unresolved.length?`<div class="card" style="background:#FEF3C7;border-left:4px solid #D97706"><div style="font-size:15px;font-weight:900;color:#92400E">미해결 ${unresolved.length}문제</div><div style="font-size:11px;color:#78350F;margin-top:5px;line-height:1.6">오늘 숙제 완료로 처리되지 않습니다. 같은 날 다시 풀어 확인을 완료할 수 있으며, 숙달 판정은 다른 날 재확인이 필요합니다.</div></div><button class="btn btn-accent" style="width:100%;background:#D97706;border-color:#D97706" onclick="retryNavigatorPassPlanUnresolved()">미해결만 다시 풀기 · ${unresolved.length}문제</button>`:`<div class="card" style="background:#D1FAE5;text-align:center"><div style="font-size:18px;font-weight:900;color:#065F46">오늘 숙제 완료</div><div style="font-size:11px;color:#047857;margin-top:5px">내일 복습 대상은 시험일까지 자동으로 다시 계산됩니다.</div></div>`}<button class="btn btn-outline" style="width:100%;margin-top:10px" onclick="renderNavigatorPassPlan('${planEntrySubject}')">합격 플랜으로 돌아가기</button>`;
+    const stats=window.__mdPassPlanLearningAPI.getResultStats();
+    const pending=Number(stats.pendingNextDay)||0,unresolved=Number(stats.unresolved)||0;
+    const status=unresolved?`<div class="card" style="background:#FEF3C7;border-left:4px solid #D97706"><div style="font-size:15px;font-weight:900;color:#92400E">미해결 ${unresolved}문제</div><div style="font-size:11px;color:#78350F;margin-top:5px;line-height:1.6">아직 확인하지 못한 문제입니다. 다시 풀어 확인할 수 있으며 숙달 판정에는 다른 날 재확인이 필요합니다.</div></div><button class="btn btn-accent" style="width:100%;background:#D97706;border-color:#D97706" onclick="retryNavigatorPassPlanUnresolved()">미해결만 다시 풀기 · ${unresolved}문제</button>`:pending?`<div class="card" style="background:#F5F3FF;text-align:center"><div style="font-size:18px;font-weight:900;color:#5B21B6">오늘 분량 풀이 완료</div><div style="font-size:11px;color:#6D28D9;margin-top:5px">${pending}문제는 간격을 두고 다음 날 확인합니다. 아직 재확인을 마친 것은 아닙니다.</div></div>`:`<div class="card" style="background:#D1FAE5;text-align:center"><div style="font-size:18px;font-weight:900;color:#065F46">오늘 숙제 확인 완료</div><div style="font-size:11px;color:#047857;margin-top:5px">다음 복습일에 다시 확인합니다.</div></div>`;
+    app.innerHTML=`<div style="padding-top:22px;margin-bottom:14px"><div style="font-size:12px;letter-spacing:2px;font-weight:900;color:#7C3AED">TODAY RESULT</div><h1 style="font-size:24px;margin:4px 0">오늘의 숙제 결과</h1></div><div class="card" style="text-align:center;border-left:4px solid #7C3AED"><div style="font-size:40px;font-weight:900;color:#7C3AED">${stats.baseCorrect} / ${stats.baseTotal}</div><div style="font-size:14px;font-weight:800;margin-top:5px">기본 문제 첫 시도 정답</div><div style="font-size:12px;color:var(--textDim);margin-top:8px">당일 재확인 정답 ${stats.recheckCorrect} / ${stats.recheckTotal} · 다음 날 확인 예정 ${pending}문제</div><div style="font-size:11px;color:var(--textDim);margin-top:5px">${Math.floor(elapsed/60)}분 ${elapsed%60}초 · 재확인 문항은 기본 문제 수에 중복 합산하지 않습니다.</div></div>${status}<button class="btn btn-outline" style="width:100%;margin-top:10px" onclick="renderNavigatorPassPlan('${planEntrySubject}')">합격 플랜으로 돌아가기</button>`;
   };
   window.retryNavigatorPassPlanUnresolved=async function(){
+    if(planSessionKind!=='today')return; // Separate drills cannot replace saved homework.
     planSessionKind='today';
-    const today=ppDateKey(new Date()),progress=ppLoadProgress();const keys=planSessionQueue.map(q=>q._planKey).filter(k=>!ppTodayCleared(ppProgressFor(progress,k),today));if(!keys.length){renderNavigatorPassPlan(planEntrySubject);return}
-    const queue=await ppHydrateKeys(keys);ppClearPassSessionCheckpoint();planSessionQueue=shuffle(queue);planSessionIdx=0;planSessionAnswers=new Array(queue.length).fill(null);planSessionConfidence=new Array(queue.length).fill(null);planSessionCommitIds=new Array(queue.length).fill(null);planSessionStartedAt=Date.now();planSessionCommitted=new Set();currentMode='pass-plan-session';renderNavigatorPassPlanCard();
+    const today=ppDateKey(new Date()),progress=ppLoadProgress();const keys=[...new Set(planSessionQueue.map(q=>q._planKey).filter(k=>!ppTodayCleared(ppProgressFor(progress,k),today)))];if(!keys.length){renderNavigatorPassPlan(planEntrySubject);return}
+    const queue=await ppHydrateKeys(keys);ppClearPassSessionCheckpoint();planSessionQueue=shuffle(queue);planSessionIdx=0;planSessionAnswers=new Array(queue.length).fill(null);planSessionConfidence=new Array(queue.length).fill(null);planSessionCommitIds=new Array(queue.length).fill(null);planSessionStartedAt=Date.now();planSessionCommitted=new Set();currentMode='pass-plan-session';ppSavePassSessionCheckpoint(0);renderNavigatorPassPlanCard();
   };
 
   // 첫 진입 화면이 이미 렌더된 뒤 이 스크립트가 로드되므로 이후 내비게이션부터 카드가 표시됩니다.
 })();
 
 </script>
-<script src="keyboard-controls.js?v=5.21"></script>
-<script src="explain-2026-navi3-3.js"></script>
-<script src="explain-2026-navi3-3-english.js"></script>
-<script src="convenience-controls.js?v=5.21"></script>
+<script src="drive-state-codec.js?v=5.22"></script>
+<script src="keyboard-controls.js?v=5.22"></script>
+<script src="explain-2026-navi3-3.js?v=5.22"></script>
+<script src="explain-2026-navi3-3-english.js?v=5.22"></script>
+<script src="convenience-controls.js?v=5.22"></script>
+
 
 
 
