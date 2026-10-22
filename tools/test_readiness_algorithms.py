@@ -19,27 +19,12 @@ for needle in [
 assert body.index("if(answer===null||answer===undefined)return;") < body.index("const r=ppProgressFor"), 'unanswered is touching progress before being skipped'
 assert "if(!q._evaluationMock&&pastAnswers[i] === q['정답']) removePastWrong" in html
 
-# 2) Subject equalization cannot erase deadline-required unseen work.
-b=re.search(r"function ppBalanceSingleGradeSubjects\(plan,pools,progress,today,assignment\)\{(.*?)\n  \}(?=\n+\s*const ppBuildTodayAssignmentBeforeSubjectBalance)",html,re.S)
-assert b,'coverage-balanced subject function missing'
-bb=b.group(1)
-for needle in [
-    'coverage-balanced-v2',
-    'const requiredNew=',
-    'if(selectedKeys.size>=requiredNew)break;',
-    'if(item&&!ppHomeworkClusterSeen(item,progress))add(item);',
-    'if(selectedKeys.size<requiredNew)',
-    'coverageProtected:balancedNewCount>=requiredNew',
-    'requiredNewReserved:',
-    'subjectBalanceRelaxedForCoverage',
-]:
-    assert needle in bb,f'missing coverage-balance marker: {needle}'
-assert bb.index('for(const key of originalKeys)') < bb.index('while(selectedKeys.size<target)'), 'balancing starts before required-new reservation'
-assert "const PP_SUBJECT_BALANCE_POLICY='coverage-even-v2'" in html
-assert "assignmentPolicy:'knowledge-gap-priority-v6-coverage-balanced'" in html
-assert "cp.subjectBalancePolicy!=='coverage-even-v2'" in html
-assert 'no-premature-review-v1' in bb
-assert 'if(ppHomeworkClusterSeen(item,progress)&&!ppIsDue(ppProgressFor(progress,item.key),today))continue;' in bb
+# 2) Unified scheduling behavior replaces the old two-stage balancing policy.
+import subprocess
+assert '// scheduler-v522-adapter:start' in html
+assert 'function ppBalanceSingleGradeSubjects' not in html
+assert "cp.subjectBalancePolicy!=='coverage-even-v2'" not in html, 'upgrade must preserve compatible saved homework'
+subprocess.run(['node','tools/test_scheduler_v522.js'],check=True)
 
 # 3) Same-day recheck gets a real spacing floor; tail questions move to next-day recall.
 r=re.search(r"function ppScheduleSameDayRecheck\(q\)\{(.*?)\n  \}",html,re.S)
@@ -50,8 +35,9 @@ for needle in [
     'const minimumGap=15;',
     'const remainingBase=',
     'if(remainingBase<minimumGap)',
-    'rec.sameDayConfirmedDate=today;',
-    'rec.dueDate=ppAddDays(today,1);rec.lateSessionNextDayRecheck=true;',
+    'rec.sameDayConfirmedDate=null;',
+    'rec.lateSessionNextDayRecheck=true;rec.nextDayRecheckScheduledDate=today;',
+    'rec.dueDate=ppReviewDueDate(today,1,ppExamDay(ppLoadPlan(),q._planGrade));',
     'const delay=30+Math.floor(Math.random()*21);',
     'const desiredGap=Math.max(minimumGap,Math.min(delay,remainingBase));',
 ]:
@@ -85,7 +71,7 @@ for forbidden in ['ppLoadProgress','ppWeakTopicBoost','ppPredictiveWeight','last
 assert "q&&(q._predictiveReview||q._evaluationMock)" in analytics
 
 # Version bump makes clients refresh the changed runtime.
-assert "const APP_VERSION = '5.21';" in html
-assert '<title>Maritime Drill v5.21 · Android</title>' in html
+assert "const APP_VERSION = '5.22';" in html
+assert '<title>Maritime Drill v5.22 · Android</title>' in html
 
 print('exam-readiness algorithm checks: PASS')

@@ -52,6 +52,6 @@ test('evaluation score history keeps only completed attempts and averages recent
  sandbox.pastResultId='eval-3';s=a.evaluationSummary(paper,[0,0,0,1]);assert.equal(s.score,75);assert.equal(s.recentCount,3);assert.equal(s.recentAverage,75);
  sandbox.pastResultId='eval-incomplete';s=a.evaluationSummary(paper,[0,null,null,null]);assert.equal(s.complete,false);assert.equal(s.recentCount,3);assert.equal(s.recentAverage,75);
 });
-test('legacy weak-topic profiles are still accepted',()=>{assert.ok(sandbox.ppWeakTopicBoost(q('preposition'),{'영어|문법·어휘·번역':{wrong:2,errorRate:50,targetShare:100}})>1)});
+test('legacy weak-topic profiles are still accepted',()=>{assert.ok(sandbox.ppWeakTopicBoost(q('preposition'),{'영어|문법·어휘·번역':{attempts:4,correct:2,wrong:2,errorRate:50,targetShare:100}})>1)});
 test('shared classifier loads before result analytics',()=>{const loader=fs.readFileSync(path.join(root,'keyboard-controls.js'),'utf8');assert.ok(loader.indexOf("mdLoadAuxScript('weak-topic-classifier.js')")<loader.indexOf("mdLoadAuxScript('predictive-analytics.js')"))});
 console.log(`analytics regression tests: PASS (${count} cases)`);

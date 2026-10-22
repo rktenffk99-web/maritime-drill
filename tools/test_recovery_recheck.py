@@ -24,9 +24,7 @@ required=[
     "let startIndex=0;",
     "rec.lastDate===today",
     "_sameDayRecheck:true",
-    "숙달되면 목록에서 빠집니다.",
-    "30~50문제 뒤 자동 재확인",
-    "new Map(planSessionQueue.filter(q=>!ppTodayCleared",
+    "function ppNextDayPending(rec,today)",
 ]
 for needle in required:
     assert needle in src, f'missing marker: {needle}'
@@ -35,6 +33,24 @@ assert "filter(item=>(Number(ppProgressFor(progress,item.key).wrong)||0)>=2)" no
 assert src.count('function ppScheduleSameDayRecheck(q)')==1
 assert src.count('checkpoint-authoritative-resume-v3')==1
 assert src.count('stale-assignment-recovery-v3')==1
+
+# Check the executable policy rather than depending on a UI sentence. A recheck
+# has a 15-base-question spacing floor; the tail is explicitly pending tomorrow.
+recheck=re.search(r"function ppScheduleSameDayRecheck\(q\)\{(.*?)\n  \}",src,re.S)
+assert recheck, 'recheck scheduler missing'
+rbody=recheck.group(1)
+for needle in [
+    'const minimumGap=15;',
+    'const remainingBase=',
+    'if(remainingBase<minimumGap)',
+    'rec.sameDayConfirmedDate=null;',
+    'rec.lateSessionNextDayRecheck=true;rec.nextDayRecheckScheduledDate=today;',
+    'rec.dueDate=ppReviewDueDate(today,1,ppExamDay(ppLoadPlan(),q._planGrade));',
+    'const desiredGap=Math.max(minimumGap,Math.min(delay,remainingBase));',
+]:
+    assert needle in rbody, f'missing actual recheck policy: {needle}'
+assert rbody.index('if(remainingBase<minimumGap)') < rbody.index('const delay=30+Math.floor(Math.random()*21);')
+assert 'rec.sameDayConfirmedDate=today;' not in rbody, 'tail must not claim a second answer that never occurred'
 
 # Static ordering checks: commit must happen before scheduling, and scheduling before checkpoint save.
 choose=re.search(r"window\.nextNavigatorPassPlanQuestion=function\(\)\{(.*?)\n  \};",src,re.S)
@@ -61,5 +77,9 @@ assert m,'pass-plan script block not found'
 with tempfile.NamedTemporaryFile('w',suffix='.js',encoding='utf-8',delete=False) as f:
     f.write('// extracted for syntax check\n'+m.group(1)); name=f.name
 subprocess.run(['node','--check',name],check=True)
+
+# Real transition tests cover retained first answers, separate drill checkpoints,
+# next-day pending state and policy-upgrade restoration on the final artifact.
+subprocess.run(['node','tools/test_mastery_sessions_v522.js','--final'],check=True)
 
 print('recovery/recheck checks passed: checkpoint queue is authoritative and lost checkpoints recover from attempted-today progress')

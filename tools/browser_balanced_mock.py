@@ -40,12 +40,11 @@ try:
     # Evaluation mock is score measurement only: no adaptive progress mutation, even on submission.
     eval_before=page.evaluate("""()=>{const p=JSON.parse(localStorage.getItem('md_nav23_pass_progress_v1')||'{}');const keep=v=>v&&(Number(v.attempts)||Number(v.correct)||Number(v.wrong)||Number(v.unsure)||Number(v.masteryReviews)||v.firstPassDate||v.lastDate||v.lastOutcome||v.mastered);const fields=['attempts','correct','wrong','unsure','masteryReviews','firstPassDate','lastDate','lastOutcome','status','mastered','dueDate','lastPracticeMode'];return Object.fromEntries(Object.entries(p).filter(([,v])=>keep(v)).map(([k,v])=>[k,Object.fromEntries(fields.map(f=>[f,v?.[f]??null]))]))}""")
     page.evaluate("(grade)=>startNavigatorEvaluationMock(grade)",'navi2')
-    page.locator('#md-mock-explanation-toggle').wait_for(state='visible')
-    assert page.locator('#md-mock-explanation-panel').is_hidden()
-    page.locator('#md-mock-explanation-toggle').click()
-    assert not page.locator('#md-mock-explanation-panel').is_hidden()
-    assert page.locator('#md-mock-explanation-panel').inner_text().strip()
-    report['cases'].append('in-exam explanation toggle opens the current question explanation without submitting an answer')
+    page.wait_for_function("typeof window.__mdMockExplanationControls==='object'&&!window.__mdMockExplanationControls.isMockExam()")
+    assert page.locator('#md-mock-explanation-toggle').count()==0
+    assert page.locator('#md-mock-explanation-panel').count()==0
+    assert page.evaluate('pastAnswers.every(answer=>answer===null)')
+    report['cases'].append('evaluation mock cannot reveal an explanation or answer before submission')
     assert page.evaluate("pastQueue.length===125&&pastQueue.every(q=>q._evaluationMock&&q._predictiveMock)")
     assert page.evaluate("pastQueue.map(q=>q['과목'])")==[subject for subject in all_subjects for _ in range(25)]
     page.evaluate("choosePastAnswer(pastQueue[0]['정답']);pastIdx=pastQueue.length-1;choosePastAnswer((pastQueue[pastIdx]['정답']+1)%4);pastNext()")
@@ -67,6 +66,14 @@ try:
         assert page.evaluate("pastQueue.map(q=>q['과목'])")==[s for s in all_subjects for _ in range(25)]
         assert page.evaluate('pastQueue.every(q=>q._balancedMock&&q._predictiveMock)')
         assert page.evaluate('new Set(pastQueue.map(q=>q._year)).size')>1
+        if grade=='navi2':
+            page.locator('#md-mock-explanation-toggle').wait_for(state='visible')
+            assert page.locator('#md-mock-explanation-panel').is_hidden()
+            page.locator('#md-mock-explanation-toggle').click()
+            assert not page.locator('#md-mock-explanation-panel').is_hidden()
+            assert page.locator('#md-mock-explanation-panel').inner_text().strip()
+            assert page.evaluate('pastAnswers.every(answer=>answer===null)')
+            report['cases'].append('practice mock still opens the current explanation without submitting an answer')
     report['cases'].append('both grades have 125 valid questions in subject order, drawn across multiple years')
     selected=['항해','법규','영어'];configure(page,selected)
     # Reset only isolated test-browser assembly history, never application progress.

@@ -32,6 +32,6 @@ test('invalid evaluation history rows do not replace a valid completed score',()
   const h=harness();h.storage.set('md_evaluation_score_history_v1',JSON.stringify({navi2:[null,{score:'ordinary text'},{score:50,id:'valid'}],navi3:'ordinary text'}));
   const scores=h.s.__mdWeakTopicAnalytics.loadEvaluationScores();
   assert.equal(scores.navi2.length,1);assert.equal(scores.navi2[0].score,50);assert.equal(scores.navi3,undefined);
-  const summary=h.s.__mdWeakTopicAnalytics.evaluationSummary(h.s.pastQueue,[null]);assert.equal(summary.recentAverage,50);
+  const summary=h.s.__mdWeakTopicAnalytics.evaluationSummary(h.s.pastQueue,[null]);assert.equal(summary.recentAverage,null);assert.equal(scores.navi2[0].score,50); // Legacy scope is unknown and is preserved separately.
 });
 console.log(`predictive render safety regressions: PASS (${passed} cases)`);

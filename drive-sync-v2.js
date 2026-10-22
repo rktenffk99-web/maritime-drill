@@ -285,6 +285,26 @@
     if(rt>lt) return remoteValue;
     return mdSyncStable(localValue)>=mdSyncStable(remoteValue)?localValue:remoteValue;
   }
+  function mdSyncMergeRecentOutcomes(local,remote,preferred){
+    const id=entry=>mdSyncIsPlainObject(entry)&&typeof entry.evidenceId==='string'&&entry.evidenceId?entry.evidenceId:null;
+    const time=entry=>{
+      const parsed=Date.parse(entry&&(entry.at||entry.date)||'');
+      return Number.isFinite(parsed)?parsed:0;
+    };
+    const events=new Map();
+    for(const source of [local,remote])for(const entry of source){
+      const key=id(entry);if(!key)continue;
+      const prior=events.get(key);
+      if(!prior||time(entry)>time(prior)||(time(entry)===time(prior)&&mdSyncStable(entry)>mdSyncStable(prior)))events.set(key,entry);
+    }
+    if(!events.size)return preferred;
+    // Legacy entries have no immutable event identity. Keep the preferred
+    // snapshot's legacy sequence rather than inventing/deduplicating attempts.
+    const rows=(Array.isArray(preferred)?preferred:[]).filter(entry=>!id(entry)).map((entry,index)=>({entry,key:'legacy:'+String(index).padStart(12,'0')}));
+    for(const [key,entry] of events)rows.push({entry,key:'event:'+key});
+    rows.sort((a,b)=>time(a.entry)-time(b.entry)||(a.key===b.key?0:a.key>b.key?1:-1));
+    return rows.slice(-20).map(row=>row.entry);
+  }
   function mdSyncMergeNode(localValue,remoteValue,pathParts,localMeta,remoteMeta,localFallback,remoteFallback){
     if(mdSyncSame(localValue,remoteValue)) return localValue;
     const path=mdSyncPath(pathParts);
@@ -293,6 +313,9 @@
     // fields or lifetime counters from a snapshot preceding that deletion.
     if(localDeletion&&localDeletion.deleted&&mdSyncRecordTime(localDeletion)>mdSyncBranchTime(remoteMeta,path,remoteValue,remoteFallback))return localValue;
     if(remoteDeletion&&remoteDeletion.deleted&&mdSyncRecordTime(remoteDeletion)>mdSyncBranchTime(localMeta,path,localValue,localFallback))return remoteValue;
+    if(pathParts[pathParts.length-1]==='recentOutcomes'&&Array.isArray(localValue)&&Array.isArray(remoteValue)){
+      return mdSyncMergeRecentOutcomes(localValue,remoteValue,mdSyncChoose(localValue,remoteValue,path,localMeta,remoteMeta,localFallback,remoteFallback,pathParts));
+    }
     if(mdSyncIsPlainObject(localValue)&&mdSyncIsPlainObject(remoteValue)){
       const out={};
       const localObjectFallback=new Date(mdSyncValueTimestamp(localValue,localFallback)||0).toISOString();
@@ -511,7 +534,7 @@
         if(!driveSyncSaveState(connected))throw new Error('동기화 상태를 저장하지 못했습니다.');
       }
       const connectionVersion=mdSyncConnectionVersion();
-      const file=await driveSyncFindRemoteFile();
+      let file=await driveSyncFindRemoteFile();
       if(!driveSyncLoadState().enabled||connectionVersion!==mdSyncConnectionVersion())return;
       if(!file){
         const local=mdSyncReadLocal(),now=driveSyncNowIso();
@@ -523,7 +546,33 @@
         return;
       }
 
-      const remote=await driveSyncDownloadPayload(file.id);
+      let remote;
+      try{remote=await driveSyncDownloadPayload(file.id)}
+      catch(error){
+        // Only an explicitly zero-byte legacy file with an empty response is
+        // recoverable. Malformed, unknown or temporarily unreadable files may
+        // contain another device's progress and must never be overwritten.
+        if(!(error&&error.mdEmptyDriveFile===true&&(file.size==='0'||file.size===0)))throw error;
+        // A different device may have completed or created a full file while
+        // this download was in flight. Prefer its data and use the normal
+        // merge path; never hide an already visible full snapshot by recovery.
+        const candidate=await driveSyncFindRemoteFile();
+        if(!driveSyncLoadState().enabled||connectionVersion!==mdSyncConnectionVersion())return;
+        if(candidate&&candidate.size!=='0'&&candidate.size!==0){
+          file=candidate;
+          remote=await driveSyncDownloadPayload(file.id);
+        }else{
+          const local=mdSyncReadLocal();
+          const now=driveSyncNowIso(),revision=Math.max(1,(Number(local.state.revision)||0)+1);
+          const payload=mdSyncBuildV2Payload(local.state,local.items,local.itemMeta,now,revision);
+          // Create a complete replacement instead of overwriting the old file:
+          // another device could still fill it after the fresh metadata check.
+          const fileId=await driveSyncCreateRemote(payload);
+          mdSyncFinish(local,{items:local.items,itemMeta:local.itemMeta},fileId,now,revision,showNotice,
+            '비어 있던 Drive 동기화 파일을 복구하고 현재 학습 진도를 새 파일에 저장했습니다.',connectionVersion);
+          return;
+        }
+      }
       // Do not use a snapshot taken before this await: the learner may have
       // answered more questions while the download was in flight.
       const local=mdSyncReadLocal();

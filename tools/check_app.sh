@@ -43,6 +43,7 @@ python tools/patch_safe_learning_render.py
 python tools/patch_review_spacing_v3.py
 python tools/patch_reported_content_fixes.py
 python tools/patch_mock_result_pager.py
+python tools/patch_learning_system_v522.py
 node tools/test_navi2_reviewed.js
 node tools/test_balanced_mock.js
 python tools/test_predictive_mock.py
@@ -83,3 +84,9 @@ python tools/audit_broken_exam_glyphs.py
 node tools/audit_formula_questions.js
 node tools/audit_pdf_footer_artifacts.js
 python tools/check_final_syntax.py
+node tools/test_data_identity_v522.js
+node tools/test_scheduler_v522.js
+node tools/test_mastery_sessions_v522.js --final
+node tools/test_mock_sampling_v522.js
+node tools/test_metrics_v522.js
+node tools/test_drive_recovery_v522.js
