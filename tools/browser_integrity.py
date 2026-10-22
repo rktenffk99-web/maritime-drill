@@ -89,12 +89,12 @@ try:
         page.keyboard.press('Space')
         assert not page.locator('#md-modal-wrap').count()
         assert page.evaluate("JSON.parse(localStorage.getItem('md_pass_plan_session_checkpoint_v2')).nextIndex")==1
-        record=page.evaluate('(key)=>JSON.parse(localStorage.getItem("md_nav23_pass_progress_v1"))[key]',key)
+        record=page.evaluate('(key)=>window.__mdPassProgressStorage.hydrate(JSON.parse(localStorage.getItem("md_nav23_pass_progress_v1")))[key]',key)
         assert record['lastOutcome']=='sure' and record['correct']>=1 and not record['mastered'],record
         page.keyboard.press('Space')
         assert page.evaluate("JSON.parse(localStorage.getItem('md_pass_plan_session_checkpoint_v2')).nextIndex")==1
         page.keyboard.press('ArrowLeft');page.keyboard.press('Space')
-        assert page.evaluate('(key)=>JSON.parse(localStorage.getItem("md_nav23_pass_progress_v1"))[key]',key)==record
+        assert page.evaluate('(key)=>window.__mdPassProgressStorage.hydrate(JSON.parse(localStorage.getItem("md_nav23_pass_progress_v1")))[key]',key)==record
         report['cases'].append('no self-rating; Space advances a legacy checkpoint exactly once, cannot skip unanswered homework or activate a focused settings button; modal keys preserve progress')
         page.evaluate('resetNavigatorPassPlanProgress()');page.get_by_role('button',name='확인',exact=True).click()
         wait_plan(page)
