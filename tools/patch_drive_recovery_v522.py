@@ -1,6 +1,7 @@
 """Apply interrupted Drive creation recovery without changing release metadata."""
 from argparse import ArgumentParser
 from pathlib import Path
+import re
 
 
 FIND_AND_DOWNLOAD = '''async function driveSyncFindRemoteFile(){
@@ -65,7 +66,13 @@ def patch_html(text):
     text = text[:start] + FIND_AND_DOWNLOAD + text[end:]
     start = text.index('async function driveSyncCreateRemote(payload){')
     end = text.index('async function driveSyncUploadRemote(fileId,payload){', start)
-    return text[:start] + CREATE + text[end:]
+    text = text[:start] + CREATE + text[end:]
+    if not re.search(r'<script src="drive-state-codec\.js(?:\?v=[^"]*)?"></script>', text):
+        pattern = r'(?=<script src="keyboard-controls\.js(?:\?v=[^"]*)?"></script>)'
+        text, count = re.subn(pattern, '<script src="drive-state-codec.js?v=5.22"></script>\n', text, count=1)
+        if count != 1:
+            raise ValueError('missing Drive state codec loader anchor')
+    return text
 
 
 if __name__ == '__main__':

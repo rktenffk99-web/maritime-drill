@@ -4,7 +4,19 @@ import argparse,re,sys
 
 MARKER='mastery-session-policy-v522'
 
+def upgrade_storage_budget(text):
+    if '// progress-storage-budget-r4' in text:return text
+    old="    try{const raw=localStorage.getItem(PROGRESS_KEY);return raw?JSON.parse(raw)||{}:{}}catch(e){return {}}"
+    new="    // progress-storage-budget-r4: hydrate omitted defaults before scheduling, scoring or synchronization.\n    try{const raw=localStorage.getItem(PROGRESS_KEY),value=raw?JSON.parse(raw)||{}:{};return window.__mdPassProgressStorage?window.__mdPassProgressStorage.hydrate(value):value}catch(e){return {}}"
+    if old not in text:raise ValueError('missing progress load storage-budget anchor')
+    text=text.replace(old,new,1)
+    old="  function ppSaveProgress(progress){return safeStorageSet(PROGRESS_KEY,JSON.stringify(progress),'합격 플랜 진도')}"
+    new="  function ppSaveProgress(progress){const value=window.__mdPassProgressStorage?window.__mdPassProgressStorage.compact(progress):progress;return safeStorageSet(PROGRESS_KEY,JSON.stringify(value),'합격 플랜 진도')}"
+    if old not in text:raise ValueError('missing progress save storage-budget anchor')
+    return text.replace(old,new,1)
+
 def upgrade_home_detour(text):
+    text=upgrade_storage_budget(text)
     text=text.replace('숙달 문제도 정답률과 시험일에 따라 유지 복습', '숙달 문제도 최근 재확인 결과와 시험일에 따라 유지 복습').replace('숙달 문제도 정답률과 시험일에 따라 유지복습', '숙달 문제도 최근 재확인 결과와 시험일에 따라 유지복습')
     if '// mastery-home-detour-r3' in text:return text
     replacement=r"""  function ppFlushTodayAnswer(){

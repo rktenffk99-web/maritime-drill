@@ -29,7 +29,15 @@ try:
         hook="""  window.__dailyStorageFixture=function(){
           const today=ppDateKey(new Date()),plan=ppLoadPlan(),progress=ppLoadProgress();
           const assignment=JSON.parse(localStorage.getItem(DAILY_KEY))[today];
-          return {today,assignment:{...assignment,phases:Object.fromEntries(PLAN_GRADES.map(g=>[g,ppPhaseForGrade(plan,g,planPools[g]||[],progress,today)]))}};
+          // Recreate the pre-variant cache contract, not today's richer live pool.
+          // Assignment keys, checkpoint and progress stay byte-for-byte untouched.
+          const oldPool=g=>(planPools[g]||[]).filter(row=>!row.key.includes('~v-')).map(row=>({
+            key:row.key,gradeId:row.gradeId,groupId:row.groupId,subject:row.subject,
+            question:row.question,normalized:row.normalized,count:row.count,latest:row.latest,
+            hits:row.hits,rep:row.rep,years:row.years,maxYear:row.maxYear
+          }));
+          const phases=Object.fromEntries(PLAN_GRADES.map(g=>[g,ppPhaseForGrade(plan,g,oldPool(g),progress,today)]));
+          return {today,assignment:{...assignment,phases}};
         };
 """
         html=html.replace(anchor,hook+anchor,1)
@@ -48,7 +56,7 @@ try:
         assert page.locator('#md-storage-warning').count()==0
         report['new_daily_characters']=page.evaluate("localStorage.getItem('md_nav23_pass_daily_v1').length")
         assert report['new_daily_characters']<20000
-        assert page.evaluate("!!JSON.parse(localStorage.getItem('md_drive_sync_state_v1')).itemMeta.md_nav23_pass_daily_v1")
+        assert page.evaluate("!!driveSyncLoadState().itemMeta.md_nav23_pass_daily_v1")
         report['cases'].append('both grades, all subjects and maximum daily quota save without a storage warning')
         page.locator('[onclick="startNavigatorPassPlanToday()"]').click();page.wait_for_function("currentMode==='pass-plan-session'")
         page.locator('[onclick="chooseNavigatorPassPlanAnswer(0)"]').click()

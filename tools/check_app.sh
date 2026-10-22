@@ -2,47 +2,53 @@
 # Rebuild in the legacy order, then run regressions against the FINAL artifact.
 set -euo pipefail
 cd "$(dirname "$0")/.."
-python tools/patch_pass_plan.py
-python tools/patch_convenience.py
-python tools/patch_2026_navigation.py
-python tools/patch_same_day_confirmation.py
-python tools/patch_predictive_mock.py
-python tools/patch_predictive_mock_followup.py
-python tools/patch_predictive_mock_personalization.py
-python tools/patch_predictive_mock_no_duplicates.py
-python tools/patch_predictive_mock_history_fingerprint.py
-python tools/patch_predictive_mock_priority_core.py
-python tools/patch_2026_session3_explanations.py
-python tools/patch_weak_drills.py
-python tools/patch_recovery_recheck.py
-python tools/patch_stable_session_counter.py
-python tools/patch_rotation_mix.py
-python tools/patch_grade_priority.py
-python tools/patch_grade_priority_ratio_v2.py
-python tools/patch_weak_topic_adaptive.py
-python tools/patch_learning_priority.py
-python tools/patch_learning_priority_weak_drill_compat.py
-python tools/patch_review_spacing_v2.py
-python tools/patch_homework_duplicate_guard.py
-python tools/patch_subject_balance.py
-python tools/patch_audit_safety.py
-python tools/patch_learning_integrity.py
-python tools/patch_daily_storage.py
-python tools/patch_daily_cap_checkpoint.py
-python tools/patch_drive_auth.py
-python tools/patch_menu_cleanup.py
-python tools/patch_answer_flow.py
-python tools/patch_mock_subject_order.py
-python tools/patch_balanced_mock.py
-python tools/patch_navi2_recall.py
-python tools/patch_navi2_reviewed.py
-python tools/patch_readiness_algorithms.py
-python tools/patch_record_safety.py
-python tools/patch_learning_audit.py
-python tools/patch_safe_learning_render.py
-python tools/patch_review_spacing_v3.py
-python tools/patch_reported_content_fixes.py
-python tools/patch_mock_result_pager.py
+# Historical generators replace whole functions and are incompatible with a
+# released v5.22 artifact. Apply them only when upgrading the legacy baseline.
+if python -c 'from pathlib import Path; import sys; sys.exit(0 if "mastery-session-policy-v522" in Path("index.html").read_text(encoding="utf-8-sig") else 1)'; then
+  echo 'v5.22 artifact: reapply current release integration'
+else
+  python tools/patch_pass_plan.py
+  python tools/patch_convenience.py
+  python tools/patch_2026_navigation.py
+  python tools/patch_same_day_confirmation.py
+  python tools/patch_predictive_mock.py
+  python tools/patch_predictive_mock_followup.py
+  python tools/patch_predictive_mock_personalization.py
+  python tools/patch_predictive_mock_no_duplicates.py
+  python tools/patch_predictive_mock_history_fingerprint.py
+  python tools/patch_predictive_mock_priority_core.py
+  python tools/patch_2026_session3_explanations.py
+  python tools/patch_weak_drills.py
+  python tools/patch_recovery_recheck.py
+  python tools/patch_stable_session_counter.py
+  python tools/patch_rotation_mix.py
+  python tools/patch_grade_priority.py
+  python tools/patch_grade_priority_ratio_v2.py
+  python tools/patch_weak_topic_adaptive.py
+  python tools/patch_learning_priority.py
+  python tools/patch_learning_priority_weak_drill_compat.py
+  python tools/patch_review_spacing_v2.py
+  python tools/patch_homework_duplicate_guard.py
+  python tools/patch_subject_balance.py
+  python tools/patch_audit_safety.py
+  python tools/patch_learning_integrity.py
+  python tools/patch_daily_storage.py
+  python tools/patch_daily_cap_checkpoint.py
+  python tools/patch_drive_auth.py
+  python tools/patch_menu_cleanup.py
+  python tools/patch_answer_flow.py
+  python tools/patch_mock_subject_order.py
+  python tools/patch_balanced_mock.py
+  python tools/patch_navi2_recall.py
+  python tools/patch_navi2_reviewed.py
+  python tools/patch_readiness_algorithms.py
+  python tools/patch_record_safety.py
+  python tools/patch_learning_audit.py
+  python tools/patch_safe_learning_render.py
+  python tools/patch_review_spacing_v3.py
+  python tools/patch_reported_content_fixes.py
+  python tools/patch_mock_result_pager.py
+fi
 python tools/patch_learning_system_v522.py
 node tools/test_navi2_reviewed.js
 node tools/test_balanced_mock.js
@@ -90,3 +96,5 @@ node tools/test_mastery_sessions_v522.js --final
 node tools/test_mock_sampling_v522.js
 node tools/test_metrics_v522.js
 node tools/test_drive_recovery_v522.js
+node tools/test_drive_state_codec_v522.js
+node tools/test_progress_storage_v522.js

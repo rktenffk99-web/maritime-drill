@@ -6,7 +6,7 @@ function test(name,fn){fn();passed++;console.log('PASS '+name)}
 function harness(id='device-a'){
   const data=new Map(),timers=[];
   const app={textContent:'실전예측 모의 결과',querySelector:()=>null,appendChild(){}};
-  const s={window:null,console,Date,Math,Set,Map,JSON,crypto:{randomUUID:()=>id},
+  const s={window:null,__testSessionStartedAt:Date.now(),console,Date,Math,Set,Map,JSON,crypto:{randomUUID:()=>id},
     localStorage:{getItem:k=>data.get(k)||null,setItem:(k,v)=>data.set(k,String(v)),removeItem:k=>data.delete(k)},
     safeStorageSet:(k,v)=>{data.set(k,String(v));return true},currentMode:'pass-plan-session',
     setTimeout:fn=>timers.push(fn),requestAnimationFrame(){},MutationObserver:class{observe(){}},
@@ -18,7 +18,7 @@ function harness(id='device-a'){
   assert.ok(sourceStart>=0&&sourceEnd>sourceStart);vm.runInContext(html.slice(sourceStart,sourceEnd),s);
   const start=html.indexOf('// ── v5.07: 2·3급 항해사 합격 플랜 / 오늘의 숙제'),end=html.indexOf('</script>',start);
   let src=html.slice(start,end),pos=src.lastIndexOf('})();');
-  src=src.slice(0,pos)+`window.__test={setup(q,prior){planSessionQueue=[q,{...q,_planKey:'navi3|other'}];planSessionIdx=0;planSessionStartedAt=12345;planSessionAnswers=[null,null];planSessionConfidence=[null,null];planSessionCommitted=new Set();planSessionKind='today';if(prior)ppSaveProgress({[q._planKey]:prior});},snapshot(){return {progress:ppLoadProgress(),checkpoint:ppLoadPassSessionCheckpoint(),confidence:planSessionConfidence.slice(),idx:planSessionIdx}},find:ppFindQuestion,profile:ppLoadWeakTopicProfile,boost:ppWeakTopicBoost,order:ppChoiceOrder};`+src.slice(pos);
+  src=src.slice(0,pos)+`window.__test={setup(q,prior){planSessionQueue=[q,{...q,_planKey:'navi3|other'}];planSessionIdx=0;planSessionStartedAt=window.__testSessionStartedAt;planSessionAnswers=[null,null];planSessionConfidence=[null,null];planSessionCommitted=new Set();planSessionKind='today';if(prior)ppSaveProgress({[q._planKey]:prior});},snapshot(){return {progress:ppLoadProgress(),checkpoint:ppLoadPassSessionCheckpoint(),confidence:planSessionConfidence.slice(),idx:planSessionIdx}},find:ppFindQuestion,profile:ppLoadWeakTopicProfile,boost:ppWeakTopicBoost,order:ppChoiceOrder};`+src.slice(pos);
   vm.runInContext(src,s);s.renderNavigatorPassPlanCard=()=>{};s.renderNavigatorPassPlan=()=>{};
   return {s,data,render:timers[0],api:s.__mdLearningIntegrity};
 }

@@ -382,6 +382,13 @@
       localItems=window.__mdDailyStorage.compactItems(localItems);
       remoteItems=window.__mdDailyStorage.compactItems(remoteItems);
     }
+    // Sparse local records omit known false/zero/null defaults. Restore those
+    // values before comparing fields so an older remote true/stage cannot be
+    // mistaken for a missing local value and resurrected.
+    if(window.__mdPassProgressStorage){
+      localItems=window.__mdPassProgressStorage.hydrateItems(localItems);
+      remoteItems=window.__mdPassProgressStorage.hydrateItems(remoteItems);
+    }
     const items={},itemMeta={};
     const keys=new Set([
       ...Object.keys(localItems||{}),...Object.keys(remoteItems||{}),
@@ -437,7 +444,8 @@
       if(!Object.prototype.hasOwnProperty.call(items,key) && !meta.deleted && !Object.keys(meta.fields||{}).some(p=>meta.fields[p]?.deleted)) delete itemMeta[key];
     }
     // Unioning two cache histories may exceed the per-device retention bound.
-    return {items:window.__mdDailyStorage?window.__mdDailyStorage.compactItems(items):items,itemMeta};
+    const compacted=window.__mdDailyStorage?window.__mdDailyStorage.compactItems(items):window.__mdPassProgressStorage?window.__mdPassProgressStorage.compactItems(items):items;
+    return {items:compacted,itemMeta};
   }
   function mdSyncContentSignature(items,itemMeta){
     return mdSyncStable({items:items||{},itemMeta:itemMeta||{}});

@@ -169,7 +169,7 @@ async function test(name,fn){await fn();count++;console.log('PASS '+name)}
     const lapse={...old,reviewStage:0,reviewSuccessDate:null,reviewLapseDate:'2026-10-22',mastered:false,status:'weak',dueDate:'2026-10-22',sameDayConfirmedDate:null};
     const fields={};for(const field of Object.keys(lapse))fields[encodeURIComponent(q)+'/'+field]={updatedAt:'2026-10-22T02:00:00Z',deleted:false};
     const modernMeta={[key]:{updatedAt:'2026-10-22T02:00:00Z',fields}},a={[key]:JSON.stringify({[q]:lapse})},b={[key]:JSON.stringify({[q]:old})};
-    const result=JSON.parse(h.s.__mdDriveSyncV2.mergeSnapshots(a,b,modernMeta,{},'2026-10-22T02:00:00Z','2026-10-21T02:00:00Z').items[key])[q];assert.deepEqual(result,lapse);
+    const result=h.s.__mdPassProgressStorage.hydrate(JSON.parse(h.s.__mdDriveSyncV2.mergeSnapshots(a,b,modernMeta,{},'2026-10-22T02:00:00Z','2026-10-21T02:00:00Z').items[key]))[q];for(const field of Object.keys(lapse))assert.deepEqual(result[field],lapse[field]);
   });
   await test('identified concurrent evidence survives union while lifetime counters still add each device once',()=>{
     const h=harness(),key='md_nav23_pass_progress_v1',q='navi2|q-events',base={attempts:0,correct:0,wrong:0};
@@ -180,7 +180,7 @@ async function test(name,fn){await fn();count++;console.log('PASS '+name)}
     const twice=merge(once.items,b);assert.deepEqual(JSON.parse(twice.items[key]),JSON.parse(once.items[key]));assert.equal(JSON.parse(twice.items[key])[q].attempts,2);
   });
   await test('recent evidence union retains the latest twenty deterministically without mutating inputs',()=>{
-    const h=harness(),key='md_nav23_pass_progress_v1',q='navi2|q-window',entry=n=>({evidenceId:'event-'+String(n).padStart(2,'0'),at:new Date(Date.parse('2026-10-22T00:00:00Z')+n*1000).toISOString(),date:'2026-10-22',outcome:n%2?'sure':'wrong',mode:'homework'});
+    const h=harness(),key='md_other_evidence',q='navi2|q-window',entry=n=>({evidenceId:'event-'+String(n).padStart(2,'0'),at:new Date(Date.parse('2026-10-22T00:00:00Z')+n*1000).toISOString(),date:'2026-10-22',outcome:n%2?'sure':'wrong',mode:'homework'});
     const a={[key]:JSON.stringify({[q]:{recentOutcomes:Array.from({length:20},(_,i)=>entry(i))}})},b={[key]:JSON.stringify({[q]:{recentOutcomes:Array.from({length:20},(_,i)=>entry(i+10))}})},before=JSON.stringify([a,b]);
     const m=h.s.__mdDriveSyncV2.mergeSnapshots(a,b,{},{},'2026-10-22T01:00:00Z','2026-10-22T02:00:00Z'),events=JSON.parse(m.items[key])[q].recentOutcomes;
     assert.equal(events.length,20);assert.equal(events[0].evidenceId,'event-10');assert.equal(events[19].evidenceId,'event-29');assert.equal(JSON.stringify([a,b]),before);
@@ -193,9 +193,15 @@ async function test(name,fn){await fn();count++;console.log('PASS '+name)}
     assert.equal(events.length,3);assert.deepEqual(events.slice(0,2),[legacy,legacy]);assert.deepEqual(events[2],modern);
   });
   await test('same-day legacy sequence retains numeric occurrence order beyond ten entries',()=>{
-    const h=harness(),key='md_nav23_pass_progress_v1',q='navi2|q-legacy-order',legacy=Array.from({length:12},(_,i)=>({date:'2026-10-21',outcome:i%2?'sure':'wrong',mode:'legacy-'+i})),modern={evidenceId:'new',at:'2026-10-22T01:00:00Z',date:'2026-10-22',outcome:'sure',mode:'homework'};
+    const h=harness(),key='md_other_evidence',q='navi2|q-legacy-order',legacy=Array.from({length:12},(_,i)=>({date:'2026-10-21',outcome:i%2?'sure':'wrong',mode:'legacy-'+i})),modern={evidenceId:'new',at:'2026-10-22T01:00:00Z',date:'2026-10-22',outcome:'sure',mode:'homework'};
     const a={[key]:JSON.stringify({[q]:{recentOutcomes:[modern]}})},b={[key]:JSON.stringify({[q]:{recentOutcomes:legacy}})};
     const m=h.s.__mdDriveSyncV2.mergeSnapshots(a,b,{},{},'2026-10-22T01:00:00Z','2026-10-22T02:00:00Z');assert.deepEqual(JSON.parse(m.items[key])[q].recentOutcomes,[...legacy,modern]);
+  });
+  await test('sparse lapse defaults cannot resurrect older remote mastery during merge',()=>{
+    const h=harness(),key='md_nav23_pass_progress_v1',q='navi2|q-sparse',sparse={_storage:1,reviewScheduleVersion:1,status:'weak',reviewLapseDate:'2026-10-22',lastDate:'2026-10-22',lastOutcome:'wrong'},old={reviewScheduleVersion:1,status:'mastered',mastered:true,reviewStage:4,reviewSuccessDate:'2026-10-21',reviewLapseDate:null};
+    const fields={};for(const field of ['status','mastered','reviewStage','reviewSuccessDate','reviewLapseDate'])fields[encodeURIComponent(q)+'/'+field]={updatedAt:'2026-10-22T02:00:00Z',deleted:['mastered','reviewStage','reviewSuccessDate'].includes(field)};
+    const m=h.s.__mdDriveSyncV2.mergeSnapshots({[key]:JSON.stringify({[q]:sparse})},{[key]:JSON.stringify({[q]:old})},{[key]:{updatedAt:'2026-10-22T02:00:00Z',fields}},{},'2026-10-22T02:00:00Z','2026-10-21T02:00:00Z');
+    const saved=JSON.parse(m.items[key])[q],loaded=h.s.__mdPassProgressStorage.hydrate({[q]:saved})[q];assert.equal(saved._storage,1);assert.equal(saved.mastered,undefined);assert.equal(saved.reviewStage,undefined);assert.equal(loaded.mastered,false);assert.equal(loaded.reviewStage,0);assert.equal(loaded.reviewSuccessDate,null);assert.equal(loaded.reviewLapseDate,'2026-10-22');
   });
   console.log(`Drive recovery v5.22 tests: PASS (${count} cases)`);
 })().catch(error=>{console.error(error);process.exitCode=1});
