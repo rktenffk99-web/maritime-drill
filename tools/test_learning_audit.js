@@ -19,7 +19,7 @@ function harness(){
   const data=new Map(),writes=[],notes=new Map();
   const s={window:null,console,Date,Math,Set,Map,JSON,crypto:{randomUUID:()=> 'audit-device'},
     localStorage:{getItem:k=>data.get(k)||null,setItem:(k,v)=>{data.set(k,String(v));writes.push(k)},removeItem:k=>data.delete(k)},
-    safeStorageSet:(k,v)=>{data.set(k,String(v));writes.push(k);return true},
+    safeStorageSet:(k,v)=>{data.set(k,String(v));writes.push(k);return true},confirmPastProgressReplacement:async()=>true,
     app:{innerHTML:''},currentMode:'past',pastQueue:[],pastAnswers:[],pastIdx:0,pastMode:'mock',pastStartedAt:1,pastProgressId:'audit-result',pastResultId:null,
     pastReturnView:'pass-plan-predictive-mock',pastSubjectId:'navi3',pastBaseShort:'navi3',pastAllYears:false,pastYear:null,pastSession:null,
     SUBJECTS:[{id:'navi3',name:'3급 항해사'}],SUBJECT_GROUPS:[],n3aData:()=>null,

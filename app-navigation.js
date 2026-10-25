@@ -37,6 +37,8 @@
     #md-plan-rules{margin-top:14px}
     #md-plan-rules summary{font-size:13px;font-weight:800;cursor:pointer;margin-bottom:8px}
     .md-settings-section .md-danger{color:#B91C1C;border-color:#FCA5A5}
+    [data-past-resume] .btn-outline,[data-past-save-status] .btn-outline,
+    #md-modal-wrap button[onclick="mdPastReplaceSaved()"],#md-modal-wrap button[onclick="mdPastKeepSaved()"]{color:#334155;border-color:#94A3B8}
   `;
   document.head.appendChild(style);
 
@@ -166,9 +168,19 @@
   function syncQuestionScreenLayout(){
     const compact=typeof currentMode!=='undefined'&&['pass-plan-session','past'].includes(currentMode);
     document.body.classList.toggle('md-question-screen',compact);
+    const root=document.getElementById('app');
+    if(!root||!['select','prep','pass-plan','past-home','past-menu'].includes(currentMode)||root.querySelector('[data-past-resume]'))return;
+    const saved=renderPastResumeCard();
+    if(saved)root.insertAdjacentHTML('afterbegin',saved);
   }
   const appRoot=document.getElementById('app');
   if(appRoot)new MutationObserver(syncQuestionScreenLayout).observe(appRoot,{childList:true});
   syncQuestionScreenLayout();
+  // Answers are saved synchronously on selection; these also checkpoint the
+  // cursor when Android backgrounds the browser or connectivity changes.
+  const checkpoint=()=>{if(typeof currentMode!=='undefined'&&currentMode==='past')savePastProgress()};
+  window.addEventListener('pagehide',checkpoint);
+  window.addEventListener('offline',checkpoint);
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')checkpoint()});
   mountToolbar();
 })();

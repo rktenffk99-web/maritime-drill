@@ -7,6 +7,7 @@ import json
 import os
 import threading
 from playwright.sync_api import sync_playwright
+from browser_navigation_helpers import choose_new_papers
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / 'browser-test-results'
@@ -52,6 +53,7 @@ try:
         page.goto(origin, wait_until='load')
         page.get_by_role('button', name='동의합니다', exact=True).click()
         page.wait_for_function("hasAgreedTerms()&&!document.getElementById('md-modal-wrap')")
+        choose_new_papers(page)
         for grade in ('navi2', 'navi3'):
             page.evaluate("async grade=>{await ensurePastDataForSubject(grade);await ensureNavi3FrequencyData(grade)}", grade)
             # Select all subjects even when saved choices arrive in a different order.
@@ -68,6 +70,7 @@ try:
                     page.evaluate("pastIdx=24;choosePastAnswer(1);pastNext();choosePastAnswer(2)")
                     before = page.evaluate('({ids:pastQueue.map(pqid),answers:pastAnswers.slice(),idx:pastIdx})')
                     page.reload(wait_until='load')
+                    choose_new_papers(page)
                     page.evaluate('resumePastProgress()')
                     assert page.evaluate('({ids:pastQueue.map(pqid),answers:pastAnswers.slice(),idx:pastIdx})') == before
                     report['cases'].append(f'{grade}: reload preserves order, answers and subject boundary')

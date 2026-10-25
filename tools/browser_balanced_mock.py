@@ -6,7 +6,7 @@ from pathlib import Path
 from collections import Counter
 import json, os, re, threading
 from playwright.sync_api import sync_playwright
-from browser_navigation_helpers import wait_plan
+from browser_navigation_helpers import wait_plan, choose_new_papers
 
 ROOT=Path(__file__).resolve().parent.parent
 OUT=ROOT/'browser-test-results';OUT.mkdir(exist_ok=True)
@@ -27,6 +27,7 @@ def configure(page,subjects):
 def refresh_and_resume(page):
     page.reload(wait_until='domcontentloaded',timeout=60000)
     page.wait_for_function("window.__MD_BOOTED__===true&&typeof resumePastProgress==='function'&&typeof window.__mdMockExplanationControls==='object'")
+    choose_new_papers(page)
     page.evaluate('resumePastProgress()')
 
 try:
@@ -38,6 +39,7 @@ try:
     page=context.new_page();page.set_default_timeout(60000);page.on('pageerror',lambda e:report['page_errors'].append(str(e)))
     page.goto(origin,wait_until='load');page.get_by_role('button',name='동의합니다',exact=True).click()
     page.wait_for_function("hasAgreedTerms()&&!document.getElementById('md-modal-wrap')")
+    choose_new_papers(page)
     all_subjects=['항해','운용','법규','영어','상선전문']
     configure(page,all_subjects)
     assert page.locator('button[onclick^="startNavigatorPassPlanMock("]:visible').count()==2

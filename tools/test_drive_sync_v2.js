@@ -84,4 +84,11 @@ function raw(o){return JSON.stringify(o)}
  const key='md_nav23_pass_daily_v1',a={},b={};for(let i=1;i<=31;i++)(i<16?a:b)['2025-01-'+String(i).padStart(2,'0')]={keys:['q'+i]};
  const m=merge({[key]:raw(a)},{[key]:raw(b)},{},{},'2026-09-16T03:00:00Z','2026-09-16T04:00:00Z');assert.equal(Object.keys(JSON.parse(m.items[key])).length,30);
 }
-console.log('drive-sync-v2 tests: PASS (9 cases)');
+// 10) Written mock question references and answers are one indivisible checkpoint.
+{
+ const key='md_past_checkpoint_v2';
+ const a={meta:{id:'a',refs:[{id:'q1'},{id:'q2'}]},state:{id:'a',idx:1,answers:[0,null]}},b={meta:{id:'b',refs:[{id:'x'}]},state:{id:'b',idx:0,answers:[3]}};
+ const m=merge({[key]:raw(a)},{[key]:raw(b)},{},{},'2026-09-16T03:00:00Z','2026-09-16T04:00:00Z');
+ assert.deepEqual(JSON.parse(m.items[key]),b);
+}
+console.log('drive-sync-v2 tests: PASS (10 cases)');

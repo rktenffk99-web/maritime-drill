@@ -1,4 +1,4 @@
-"""Persist assisted evaluation sessions and publish the final v5.23 script URLs."""
+"""Persist assisted evaluation sessions and publish the final v5.24 script URLs."""
 from pathlib import Path
 import argparse
 import re
@@ -6,7 +6,7 @@ import sys
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '5.23'
+VERSION = '5.24'
 
 
 def patch_html(text: str) -> str:
@@ -19,10 +19,11 @@ def patch_html(text: str) -> str:
         text = text.replace(old, new, 1)
 
     # State is saved on every interaction, even when question metadata is cached.
-    replace_once(
-        "mode:pastMode,startedAt:pastStartedAt,savedAt:Date.now()}),'필기 진행');",
-        "mode:pastMode,startedAt:pastStartedAt,savedAt:Date.now(),evaluationExplanationViewed:pastQueue.some(q=>q&&q._evaluationExplanationViewed===true)}),'필기 진행');",
-    )
+    if 'const PAST_CHECKPOINT_KEY=' not in text:
+        replace_once(
+            "mode:pastMode,startedAt:pastStartedAt,savedAt:Date.now()}),'필기 진행');",
+            "mode:pastMode,startedAt:pastStartedAt,savedAt:Date.now(),evaluationExplanationViewed:pastQueue.some(q=>q&&q._evaluationExplanationViewed===true)}),'필기 진행');",
+        )
     replace_once(
         "    if(meta.evaluation)restored.forEach(q=>{q._evaluationMock=true;q._predictiveMock=true});\n",
         "    if(meta.evaluation)restored.forEach(q=>{q._evaluationMock=true;q._predictiveMock=true});\n"
@@ -68,7 +69,7 @@ def main() -> None:
         target = args.output or args.input
         if target != args.input or patched != original:
             target.write_text(patched, encoding='utf-8')
-        print('mock answer access state and v5.23 release patch applied')
+        print('mock answer access state and v5.24 release patch applied')
 
 
 if __name__ == '__main__':

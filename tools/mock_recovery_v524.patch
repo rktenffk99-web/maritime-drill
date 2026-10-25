@@ -1,0 +1,271 @@
+diff --git a/index.html b/index.html
+index e3364a3..6ee489e 100644
+--- a/index.html
++++ b/index.html
+@@ -7,7 +7,7 @@
+ <meta name="mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-capable" content="yes">
+ <meta name="md-build" content="android-single-file">
+-<title>Maritime Drill v5.23 · Android</title>
++<title>Maritime Drill v5.24 · Android</title>
+ <style>
+ 
+ *{margin:0;padding:0;box-sizing:border-box}
+@@ -14673,7 +14673,7 @@ window.MD_DATA["safety2"] = { meta: META, QUESTIONS, IMP, TTS_MAP, SHIP_INFO, NE
+ <script>
+ 
+ // ── 앱 버전 (업데이트 시마다 올리기) ──
+-const APP_VERSION = '5.23';
++const APP_VERSION = '5.24';
+ 
+ // ── v4.81: 브라우저 저장 실패를 사용자에게 즉시 알리는 공통 저장기 ──
+ function showStorageWarning(label, error){
+@@ -14842,6 +14842,17 @@ async function exportAllLearningData(){
+   let items;
+   try{ items=collectBackupItems(); }
+   catch(error){ showStorageWarning('전체 학습 데이터',error); return; }
++  // A quota failure must not leave the current in-memory answers out of a
++  // manual backup. Export uses the existing, importable all-learning format.
++  if(currentMode==='past'&&pastQueue.length){
++    savePastProgress();
++    if(pastProgressMeta){
++      const state=capturePastProgressState();
++      items[PAST_CHECKPOINT_KEY]=JSON.stringify({meta:pastProgressMeta,state});
++      items[PAST_PROGRESS_META_KEY]=JSON.stringify(pastProgressMeta);
++      items[PAST_PROGRESS_KEY]=JSON.stringify(state);
++    }
++  }
+   const backup={
+     app:'Maritime Drill',
+     schemaVersion:BACKUP_SCHEMA_VERSION,
+@@ -16416,6 +16427,7 @@ function n3aFindQuestion(group,hit){
+   return exam&&exam.questions.find(item=>item['과목']===group.subject&&Number(item['번호'])===Number(hit.number)&&n3aNormalizeQuestion(item['문제'])===group.normalized&&mdSourceQuestionUsable(exam,item));
+ }
+ async function startNavi3FrequencyPractice(source,id,limit,mode,returnKind,returnId){
++  if(!await confirmPastProgressReplacement())return;
+   const safeMode=mode==='mock'?'mock':'study';
+   const useAll=limit==='all';
+   const maxQuestions=useAll?Infinity:Math.max(1,Number(limit)||1);
+@@ -16590,6 +16602,7 @@ function renderNavi3FrequencyDetail(kind,id){
+ }
+ 
+ async function openNavi3FrequencyQuestion(groupId,year,session,number){
++  if(!await confirmPastProgressReplacement())return;
+   renderPastLoading(`${year}년 제${session}회 문제를 불러오는 중입니다`);
+   try{
+     const gradeId=naviAnalysisSubjectId;
+@@ -17040,6 +17053,7 @@ function renderPastMarksList(){
+ 
+ // 오답/북마크 전용 세션 시작
+ async function startPastSpecialSession(kind){
++  if(!await confirmPastProgressReplacement())return;
+   pastReturnView=null;
+   const m = kind==='wrong' ? loadPastWrongs() : loadPastMarks();
+   const arr = Object.values(m).map(e => ({...e.q, _source: kind}));
+@@ -17243,6 +17257,7 @@ function togglePastYearChecks(on){
+   document.querySelectorAll('.past-year-check').forEach(cb => { cb.checked = on; });
+ }
+ async function startPastYearPickSession(mode){
++  if(!await confirmPastProgressReplacement())return;
+   mode = mode || 'study';
+   const years = [...document.querySelectorAll('.past-year-check:checked')].map(cb => parseInt(cb.value));
+   if(!years.length){ showToast('년도를 1개 이상 선택해주세요.'); return; }
+@@ -17285,6 +17300,7 @@ async function startPastYearPickSession(mode){
+ }
+ // v4.44: 전 년도 통합 세션 시작 — 과목 체크박스 + 변종 필터 기준
+ async function startPastAllYearsSession(mode){
++  if(!await confirmPastProgressReplacement())return;
+   mode = mode || 'study';
+   const checks = document.querySelectorAll('.past-allyears-subj-check');
+   const picked = [...checks].filter(c=>c.checked).map(c=>c.value);
+@@ -17467,10 +17483,14 @@ function setPastRunnerVariant(v){
+ // v4.38: 그만/다시 시 복귀 — runner 한 종류만 남아 단순화.
+ // v4.44: 전 년도 통합 세션(pastAllYears=true)이면 년도 선택 화면으로 복귀.
+ function goBackFromPastSession(){
++  if(currentMode==='past'&&pastQueue.length&&savePastProgress()!==true){
++    showToast('답안을 저장하지 못해 나가기를 중단했습니다. 다시 저장하거나 답안 파일을 백업하세요.',6000);
++    return;
++  }
+   currentMode="past-menu";
+   if(!pastSubjectId||!pastBaseShort){renderSubjectSelect();return;}
+   if(pastReturnView==='pass-plan-predictive-mock'){
+-    clearPastProgress(); // predictive-mock-resume-isolated-v1
++    // Leaving an unfinished mock keeps its answers available after restart.
+     pastReturnView=null;
+     currentMode='pass-plan';
+     if(typeof window.renderNavigatorPassPlan==='function')window.renderNavigatorPassPlan(pastSubjectId||'navi2');
+@@ -17520,6 +17540,7 @@ function startPastSubjectSession(mode){
+ //        mock 모드일 때는 "과목당 PAST_MOCK_PER_SUBJECT 문"으로 샘플.
+ //        subjFilter: 'all' | string (단일과목) | string[] (다중과목)
+ async function startPastSession(mode, subjFilter){
++  if(!await confirmPastProgressReplacement())return;
+   const curV = pastVariant || 'all';
+   const exams = getPastExamsForSession(pastBaseShort, pastYear, pastSession, curV);
+   if(!exams.length){ showToast('데이터를 찾을 수 없습니다.'); return; }
+@@ -17605,7 +17626,7 @@ function pastChoiceText(value){
+ function renderPastCard(){
+   if(currentMode!=='past')return;
+   if(!mdGuardPastQueue())return;
+-  savePastProgress();
++  const progressSaved=savePastProgress();
+   if(pastIdx < 0 || pastIdx >= pastQueue.length){ renderPastResult(); return; }
+   const q = pastQueue[pastIdx];
+   const g = SUBJECT_GROUPS.find(x=>x.ids.includes(pastSubjectId));
+@@ -17617,7 +17638,7 @@ function renderPastCard(){
+   const marked = isPastMarked(q);  // v4.46: 북마크 상태
+   app.innerHTML = `
+     <div style="padding-top:20px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+-      <button class="btn btn-outline" style="width:auto;font-size:13px;padding:8px 12px;display:inline-flex;align-items:center;gap:5px" onclick="showConfirm('학습을 중단하시겠습니까?', goBackFromPastSession)">${icon('arrowLeft',14)} 그만</button>
++      <button class="btn btn-outline" style="width:auto;font-size:13px;padding:8px 12px;display:inline-flex;align-items:center;gap:5px" onclick="goBackFromPastSession()">${icon('arrowLeft',14)} 저장하고 나가기</button>
+       <div style="display:flex;align-items:center;gap:8px">
+         <button onclick="togglePastMark()" title="북마크 (B)" aria-label="북마크"
+           style="background:${marked?'#FEF3C7':'transparent'};border:1.5px solid ${marked?'#F59E0B':'#E5E7EB'};border-radius:8px;padding:6px 10px;cursor:pointer;font-size:16px;line-height:1;color:${marked?'#D97706':'#94A3B8'};font-weight:800">
+@@ -17628,6 +17649,7 @@ function renderPastCard(){
+         </div>
+       </div>
+     </div>
++    <div role="status" data-past-save-status style="font-size:12px;margin-bottom:10px;color:${progressSaved?'#047857':'#B91C1C'}">${progressSaved?'이 기기에 자동 저장됨 · 인터넷 연결 없이도 답안을 저장합니다.':'답안 저장 실패 · 이 화면을 닫지 말고 다시 저장하거나 파일로 백업하세요.'}${progressSaved?'':'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button class="btn btn-outline" style="width:auto" onclick="renderPastCard()">다시 저장</button><button class="btn btn-outline" style="width:auto" onclick="exportAllLearningData()">답안 파일 백업</button></div>'}</div>
+     <div class="card" style="border-left:3px solid ${gColor}">
+       <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+         <span class="tag" style="background:${gColor}20;color:${gColor};margin:0">${q._year}년</span>
+@@ -21744,11 +21766,18 @@ function startTargetedRetry(){
+ }
+ const PAST_PROGRESS_KEY='md_past_progress_v1';
+ const PAST_PROGRESS_META_KEY='md_past_progress_meta_v1';
++const PAST_CHECKPOINT_KEY='md_past_checkpoint_v2';
+ let pastSavedAnswers=null;
+ let pastProgressId=null;
++let pastProgressMeta=null;
++// mock-recovery-usability-v524
++function capturePastProgressState(){
++  return {id:pastProgressId,idx:pastIdx,answers:pastAnswers,mode:pastMode,startedAt:pastStartedAt,savedAt:Date.now(),evaluationExplanationViewed:pastQueue.some(q=>q&&q._evaluationExplanationViewed===true)};
++}
+ function clearPastProgress(){
++  safeStorageRemove(PAST_CHECKPOINT_KEY,'필기 답안 체크포인트');
+   safeStorageRemove(PAST_PROGRESS_KEY,'필기 진행');safeStorageRemove(PAST_PROGRESS_META_KEY,'필기 진행 문항');
+-  pastSavedAnswers=null;pastProgressId=null;
++  pastSavedAnswers=null;pastProgressId=null;pastProgressMeta=null;
+ }
+ function savePastProgress(){
+   if(currentMode!=='past'||!pastQueue.length)return;
+@@ -21756,22 +21785,50 @@ function savePastProgress(){
+     pastProgressId=Date.now()+'-'+Math.random().toString(36).slice(2);
+     const refs=pastQueue.map(q=>({id:pqid(q),short:q._short||q._gradeShort,year:q._year,session:q['회차'],source:q._source,group:q._n3aGroupId,predictive:q._predictiveMock===true,predictiveReview:q._predictiveReview===true,planKey:q._planKey,planGrade:q._planGrade,predictiveConcept:q._predictiveConcept}));
+     const meta={version:1,id:pastProgressId,balanced:pastQueue.every(q=>q._balancedMock===true),evaluation:pastQueue.every(q=>q._evaluationMock===true),refs,subjectId:pastSubjectId,base:pastBaseShort,year:pastYear,session:pastSession,variant:pastVariant,allYears:pastAllYears,returnView:pastReturnView,analysisSubject:naviAnalysisSubjectId,analysisDetail:navi3AnalysisDetail,practiceReturn:navi3PracticeReturn,practiceLabel:navi3PracticeLabel};
++    pastProgressMeta=meta;
+     if(!safeStorageSet(PAST_PROGRESS_META_KEY,JSON.stringify(meta),'필기 진행 문항'))return;
+     pastSavedAnswers=pastAnswers;
+   }
+-  safeStorageSet(PAST_PROGRESS_KEY,JSON.stringify({id:pastProgressId,idx:pastIdx,answers:pastAnswers,mode:pastMode,startedAt:pastStartedAt,savedAt:Date.now(),evaluationExplanationViewed:pastQueue.some(q=>q&&q._evaluationExplanationViewed===true)}),'필기 진행');
++  const state=capturePastProgressState();
++  // One atomic write keeps the paper and its answers together across restarts
++  // and Drive merges. The two old keys remain compatible with older clients.
++  const saved=safeStorageSet(PAST_CHECKPOINT_KEY,JSON.stringify({meta:pastProgressMeta,state}),'필기 답안 체크포인트');
++  safeStorageSet(PAST_PROGRESS_KEY,JSON.stringify(state),'필기 진행');
++  return saved;
+ }
+ function getPastProgress(){
+-  const meta=safeStorageGetJSON(PAST_PROGRESS_META_KEY,null,'필기 진행 문항');
+-  const state=safeStorageGetJSON(PAST_PROGRESS_KEY,null,'필기 진행');
+-  if(!meta||!state||meta.id!==state.id||!Array.isArray(meta.refs)||!meta.refs.length||!Array.isArray(state.answers)||meta.refs.length!==state.answers.length)return null;
+-  if(!Number.isInteger(state.idx)||state.idx<0||state.idx>=meta.refs.length||!['study','mock'].includes(state.mode))return null;
+-  return {meta,state};
++  const atomic=safeStorageGetJSON(PAST_CHECKPOINT_KEY,null,'필기 답안 체크포인트');
++  const legacy={meta:safeStorageGetJSON(PAST_PROGRESS_META_KEY,null,'필기 진행 문항'),state:safeStorageGetJSON(PAST_PROGRESS_KEY,null,'필기 진행')};
++  const valid=saved=>{
++    const meta=saved&&saved.meta,state=saved&&saved.state;
++    return !!(meta&&state&&meta.id===state.id&&Array.isArray(meta.refs)&&meta.refs.length&&Array.isArray(state.answers)&&meta.refs.length===state.answers.length&&Number.isInteger(state.idx)&&state.idx>=0&&state.idx<meta.refs.length&&['study','mock'].includes(state.mode));
++  };
++  return [atomic,legacy].filter(valid).sort((a,b)=>(Number(b.state.savedAt)||0)-(Number(a.state.savedAt)||0))[0]||null;
++}
++async function confirmPastProgressReplacement(){
++  const saved=getPastProgress();
++  if(!saved)return true;
++  const done=saved.state.answers.filter(a=>a!==null).length;
++  return new Promise(resolve=>{
++    let settled=false;
++    const finish=value=>{if(!settled){settled=true;resolve(value)}};
++    window.mdPastKeepSaved=()=>{closeModal();finish(false)};
++    window.mdPastReplaceSaved=()=>{closeModal();finish(true)};
++    window.mdPastResumeSaved=()=>{closeModal();finish(false);resumePastProgress()};
++    openModal({title:'중단한 시험이 있습니다',sub:`${done}/${saved.meta.refs.length}문제 응답이 저장되어 있습니다.`,closable:false,
++      body:'<p>새 시험을 시작하면 기존 시험의 답안을 대체합니다.</p><div style="display:flex;flex-direction:column;gap:10px"><button class="btn btn-green" onclick="mdPastResumeSaved()">이어서 풀기</button><button class="btn btn-outline" onclick="mdPastReplaceSaved()">기존 답안 대신 새 시험 시작</button></div>',
++      footer:'<button class="btn btn-outline" onclick="mdPastKeepSaved()">취소</button>'});
++    document.getElementById('md-modal-wrap')?.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();window.mdPastKeepSaved()}});
++  });
+ }
+ function renderPastResumeCard(subjectId){
+-  const saved=getPastProgress();if(!saved||saved.meta.subjectId!==subjectId)return '';
++  const saved=getPastProgress();if(!saved||(subjectId&&saved.meta.subjectId!==subjectId))return '';
+   const done=saved.state.answers.filter(a=>a!==null).length;
+-  return `<div class="card" style="border-left:3px solid #059669;background:#ECFDF5"><div style="font-weight:800;margin-bottom:8px">필기 이어서 풀기 · ${done}/${saved.meta.refs.length}문제 응답</div><p style="font-size:12px;margin-bottom:12px;color:var(--textDim)">선택한 답과 중단한 위치를 저장했습니다.</p><button class="btn btn-green" onclick="resumePastProgress()">필기 이어서 풀기</button><button class="btn btn-outline" style="margin-top:8px" onclick="showConfirm('저장된 필기 진행을 삭제할까요?',()=>{clearPastProgress();pickPrepType('${subjectId}')})">저장된 진행 삭제</button></div>`;
++  const label=saved.state.mode==='mock'?'모의고사 이어서 풀기':'필기 이어서 풀기';
++  const grade=SUBJECTS.find(s=>s.id===saved.meta.subjectId)?.name||'필기시험';
++  const kind=saved.meta.evaluation?'평가용 모의':saved.meta.balanced?'실전 모의':saved.meta.refs.some(r=>r.predictive)?'실전예측 모의':saved.state.mode==='mock'?'모의시험':'기출 학습';
++  const savedTime=Number(saved.state.savedAt)>0?backupDateLabel(new Date(saved.state.savedAt).toISOString()):'저장 시각 정보 없음';
++  return `<div class="card" data-past-resume style="border-left:3px solid #059669;background:#ECFDF5"><div style="font-weight:800;margin-bottom:8px">${label} · ${done}/${saved.meta.refs.length}문제 응답</div><p style="font-size:12px;margin-bottom:12px;color:var(--textDim)">${escapeHtml(grade)} · ${kind}<br>마지막 저장: ${escapeHtml(savedTime)}<br>선택한 답과 중단한 위치를 이 기기에 저장했습니다.</p><button class="btn btn-green" onclick="resumePastProgress()">${label}</button><button class="btn btn-outline" style="margin-top:8px" onclick="exportAllLearningData()">저장된 기록 파일 백업</button></div>`;
+ }
+ async function resumePastProgress(){
+   const saved=getPastProgress();if(!saved){showToast('이어 풀 기록이 없습니다.');return;}
+@@ -21803,7 +21860,7 @@ async function resumePastProgress(){
+     if(meta.analysisSubject)n3aActivateGrade(meta.analysisSubject);
+     if(meta.returnView&&meta.returnView.startsWith('navi3'))await ensureNavi3FrequencyData(meta.analysisSubject);
+     navi3AnalysisDetail=meta.analysisDetail;navi3PracticeReturn=meta.practiceReturn;navi3PracticeLabel=meta.practiceLabel;
+-    pastSavedAnswers=pastAnswers;pastProgressId=meta.id;currentMode='past';renderPastCard();
++    pastSavedAnswers=pastAnswers;pastProgressId=meta.id;pastProgressMeta=meta;currentMode='past';renderPastCard();
+   }catch(error){app.innerHTML=`<div class="card"><p>${escapeHtml(error.message)}</p><button class="btn btn-outline" onclick="pickPrepType('${escapeHtml(meta.subjectId)}')">학습 유형으로</button></div>`;}
+ }
+ function retryPastSessionWrongs(){
+@@ -21881,9 +21938,9 @@ function appPrompt(opts,onSubmit){
+ window.alert=appAlert;
+ </script>
+ 
+-<script src="data-identity.js?v=5.23"></script>
++<script src="data-identity.js?v=5.24"></script>
+ 
+-<script src="scheduler-v522.js?v=5.23"></script>
++<script src="scheduler-v522.js?v=5.24"></script>
+ 
+ <script>
+ // ── v5.07: 2·3급 항해사 합격 플랜 / 오늘의 숙제 ──
+@@ -22625,6 +22682,7 @@ window.alert=appAlert;
+ 
+   window.startNavigatorPredictiveMock=async function(gradeId){
+     if(!PLAN_GRADES.includes(gradeId))return;
++    if(!await confirmPastProgressReplacement())return;
+     if(!ppFlushTodayAnswer())return;
+     const plan=ppLoadPlan();
+     renderPastLoading(`${GRADE_LABELS[gradeId]} 실전예측 모의를 만드는 중입니다`);
+@@ -22708,6 +22766,7 @@ window.alert=appAlert;
+ 
+   window.startNavigatorEvaluationMock=async function(gradeId){
+     if(!PLAN_GRADES.includes(gradeId)||window.__mdEvaluationMockCreating)return;
++    if(!await confirmPastProgressReplacement())return;
+     if(!ppFlushTodayAnswer())return;
+     window.__mdEvaluationMockCreating=true;
+     const engine=window.__mdBalancedMock,plan=ppLoadPlan();
+@@ -22747,6 +22806,7 @@ window.alert=appAlert;
+ 
+   window.startNavigatorPassPlanMock=async function(gradeId){
+     if(!PLAN_GRADES.includes(gradeId)||window.__mdBalancedMockCreating)return;
++    if(!await confirmPastProgressReplacement())return;
+     if(!ppFlushTodayAnswer())return;
+     window.__mdBalancedMockCreating=true;
+     const EXPOSURE_KEY='md_mock_exposure_v1',engine=window.__mdBalancedMock;
+@@ -23103,11 +23163,11 @@ window.alert=appAlert;
+ })();
+ 
+ </script>
+-<script src="drive-state-codec.js?v=5.23"></script>
+-<script src="keyboard-controls.js?v=5.23"></script>
+-<script src="explain-2026-navi3-3.js?v=5.23"></script>
+-<script src="explain-2026-navi3-3-english.js?v=5.23"></script>
+-<script src="convenience-controls.js?v=5.23"></script>
++<script src="drive-state-codec.js?v=5.24"></script>
++<script src="keyboard-controls.js?v=5.24"></script>
++<script src="explain-2026-navi3-3.js?v=5.24"></script>
++<script src="explain-2026-navi3-3-english.js?v=5.24"></script>
++<script src="convenience-controls.js?v=5.24"></script>
+ 
+ 
+ 
