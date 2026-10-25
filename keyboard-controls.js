@@ -27,6 +27,8 @@
 
   document.addEventListener('keydown',function(event){
     if(event.defaultPrevented || event.isComposing || event.ctrlKey || event.metaKey || event.altKey || isEditableTarget(event.target)) return;
+    // Let the focused reveal button receive native Enter/Space activation.
+    if((event.key==='Enter'||event.code==='Space'||event.key===' ')&&event.target?.closest?.('#md-mock-explanation-toggle'))return;
     if(document.getElementById('md-modal-wrap') || document.getElementById('_confirmDialog')) return;
     try{
       if(typeof currentMode==='undefined') return;

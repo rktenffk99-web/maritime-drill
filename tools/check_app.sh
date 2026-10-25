@@ -50,6 +50,7 @@ else
   python tools/patch_mock_result_pager.py
 fi
 python tools/patch_learning_system_v522.py
+python tools/patch_mock_answer_access.py
 node tools/test_navi2_reviewed.js
 node tools/test_balanced_mock.js
 python tools/test_predictive_mock.py
@@ -63,6 +64,7 @@ node tools/test_equation_glyph_normalizer.js
 node tools/test_pdf_footer_cleanup.js
 node tools/test_mock_result_pager.js
 node tools/test_mock_explanation_controls.js
+node tools/test_mock_answer_progress.js --final
 python tools/test_weak_topic_analytics.py
 python tools/test_2026_session3_explanations.py
 python tools/test_weak_drills.py

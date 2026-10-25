@@ -9,7 +9,7 @@ def section(start,end,replacement):
  global text
  a=text.index(start);b=text.index(end,a);text=text[:a]+replacement+text[b:]
 # The external helper is versioned together with the final HTML.
-if 'src="data-identity.js?v=5.22"' not in text:
+if not re.search(r'''<script\b[^>]*\bsrc=["']data-identity\.js(?:\?[^"']*)?["']''',text,re.I):
  anchor='<script>\n// ── v5.07: 2·3급 항해사 합격 플랜 / 오늘의 숙제 ──'
  assert anchor in text
  text=text.replace(anchor,'<script src="data-identity.js?v=5.22"></script>\n\n'+anchor,1)
