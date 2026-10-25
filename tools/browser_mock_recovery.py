@@ -59,7 +59,7 @@ try:
 
         for name in ['startNavigatorPassPlanMock', 'startNavigatorPredictiveMock', 'startNavigatorEvaluationMock']:
             print(name+': starting', flush=True)
-            page.locator(f'''[onclick="{name}('navi2')"]''').click()
+            page.evaluate("name => {window[name]('navi2')}", name)
             if page.get_by_role('button', name='기존 답안 대신 새 시험 시작', exact=True).is_visible():
                 page.get_by_role('button', name='기존 답안 대신 새 시험 시작', exact=True).click()
             page.wait_for_function("currentMode==='past' && pastQueue.length===125")
@@ -95,7 +95,7 @@ try:
             assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
             if name == 'startNavigatorEvaluationMock':
                 page.screenshot(path=str(OUT / 'mock-resume-mobile.png'), full_page=True)
-            page.locator(f'''[onclick="{name}('navi2')"]''').click()
+            page.evaluate("name => {window[name]('navi2')}", name)
             assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
             if name == 'startNavigatorEvaluationMock':
                 page.screenshot(path=str(OUT / 'mock-replace-mobile.png'), full_page=True)

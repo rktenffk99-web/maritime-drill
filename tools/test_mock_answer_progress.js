@@ -46,9 +46,9 @@ async function test(name,run){await run();passed++;console.log('PASS '+name)}
 (async()=>{
   await test('release patch is idempotent, keeps embedded sources and versions every root script URL',()=>{
     assert.equal(generate(html),html);assert.equal(fs.readFileSync(indexPath,'utf8').replace(/\r\n/g,'\n'),raw);
-    assert.match(html,/const APP_VERSION = '5\.24';/);assert.match(html,/<title>Maritime Drill v5\.24 · Android<\/title>/);
+    assert.match(html,/const APP_VERSION = '5\.25';/);assert.match(html,/<title>Maritime Drill v5\.25 · Android<\/title>/);
     const scripts=[...html.matchAll(/<script\b[^>]*\ssrc=["']([^"']+)["']/g)];assert.ok(scripts.length>=7);
-    for(const [,src] of scripts)assert.equal(new URL(src,'https://local.test/').searchParams.get('v'),'5.24',src);
+    for(const [,src] of scripts)assert.equal(new URL(src,'https://local.test/').searchParams.get('v'),'5.25',src);
     const embedded=value=>[...value.matchAll(/<script\b[^>]*data-bundled-src=["'][^"']+["'][^>]*>/g)].map(m=>m[0]);
     assert.deepEqual(embedded(html),embedded(raw));
   });
@@ -95,6 +95,13 @@ async function test(name,run){await run();passed++;console.log('PASS '+name)}
     assert.deepEqual(plain(fresh.s.pastAnswers),answers);assert.deepEqual(fresh.s.pastQueue.map(fresh.s.pqid),saved.meta.refs.map(q=>q.id));
     assert.equal(first.data.has(TRAINING),false);assert.equal(first.data.has('md_evaluation_score_history_v1'),false);
   });
+  await test('unified and targeted flags survive restart without migrating legacy evaluations',async()=>{
+    for(const kind of ['_unifiedMock','_targetedPractice']){
+      const first=harness();first.s.pastQueue.forEach(q=>{delete q._evaluationMock;q[kind]=true;if(kind==='_unifiedMock')q._balancedMock=true});
+      first.s.savePastProgress();const fresh=harness(first.data);fresh.s.pastQueue=[];await fresh.s.resumePastProgress();
+      assert.ok(fresh.s.pastQueue.every(q=>q[kind]&&!q._evaluationMock));assert.deepEqual(plain(fresh.s.pastAnswers),[1,null]);
+    }
+  });
   await test('an atomic paper survives mismatched metadata from a separate session',async()=>{
     const first=harness();first.s.savePastProgress();const saved=plain(first.s.getPastProgress());
     first.data.set(META,JSON.stringify({...saved.meta,id:'another-device-session'}));
@@ -132,7 +139,7 @@ async function test(name,run){await run();passed++;console.log('PASS '+name)}
   });
   await test('manual backup includes live answers even when the first storage write fails',async()=>{
     const h=harness();h.s.safeStorageSet=()=>false;h.s.pastAnswers=[2,3];let file;
-    Object.assign(h.s,{collectBackupItems:()=>({}),BACKUP_SCHEMA_VERSION:1,APP_VERSION:'5.24',File,
+    Object.assign(h.s,{collectBackupItems:()=>({}),BACKUP_SCHEMA_VERSION:1,APP_VERSION:'5.25',File,
       navigator:{canShare:()=>true,share:async opts=>{file=opts.files[0]}},backupNotice(){},alert:message=>{throw new Error(message)}});
     const start=html.indexOf('async function exportAllLearningData(){'),end=html.indexOf('function validateImportedBackupEntries(',start);
     vm.runInContext(html.slice(start,end),h.s);await h.s.exportAllLearningData();

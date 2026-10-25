@@ -37,7 +37,7 @@ function harness(extra={}){
 }
 let passed=0;
 function test(name,fn){fn();passed++;console.log('PASS '+name)}
-test('every written mock can explicitly reveal the correct choice before answering',()=>{
+test('legacy mocks and targeted practice can explicitly reveal the correct choice before answering',()=>{
   for(const flag of [null,'_balancedMock','_predictiveMock','_evaluationMock']){
     const h=harness();if(flag)h.s.pastQueue[0][flag]=true;h.mount();
     assert.equal(h.panel.hidden,true);assert.equal(h.panel.innerHTML,'');assert.equal(h.button.textContent,'정답·해설 보기');
@@ -83,5 +83,10 @@ test('focused reveal buttons keep Enter and Space activation instead of navigati
     const h=harness();h.mount();let stopped=false;h.button.events.keydown({key,code,stopPropagation(){stopped=true}});assert.equal(stopped,true);
   }
   handler({key:' ',code:'Space',target:{tagName:'DIV'},preventDefault(){},stopImmediatePropagation(){}});assert.equal(advanced,1);
+});
+test('unified exams never reveal solutions and remove an old practice shell',()=>{
+  const h=harness();h.mount();h.click();assert.ok(h.nodes.has(SHELL));
+  h.s.pastQueue[0]._unifiedMock=true;h.mount();assert.equal(h.api.isMockExam(),false);assert.equal(h.nodes.size,0);
+  h.s.pastQueue[0]._unifiedMock=false;h.s.pastQueue[0]._targetedPractice=true;h.mount();assert.ok(h.button);
 });
 console.log(`mock in-exam answer and explanation controls: PASS (${passed} behavior cases)`);

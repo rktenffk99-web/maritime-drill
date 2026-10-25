@@ -36,6 +36,9 @@
     #md-plan-settings input[type="date"]{max-width:100%;min-width:0}
     #md-plan-rules{margin-top:14px}
     #md-plan-rules summary{font-size:13px;font-weight:800;cursor:pointer;margin-bottom:8px}
+    .md-plan-guide{margin:0 0 12px;padding:0 3px;font-size:12px;line-height:1.65;color:#475569}
+    #md-plan-panel-review .btn-outline,#md-plan-panel-mock .btn-outline{color:#334155;border-color:#94A3B8}
+    #md-plan-panel-mock .md-mock-note{color:#475569!important;line-height:1.65!important}
     .md-settings-section .md-danger{color:#B91C1C;border-color:#FCA5A5}
     [data-past-resume] .btn-outline,[data-past-save-status] .btn-outline,
     #md-modal-wrap button[onclick="mdPastReplaceSaved()"],#md-modal-wrap button[onclick="mdPastKeepSaved()"]{color:#334155;border-color:#94A3B8}
@@ -131,21 +134,30 @@
       previous.after(el);previous=el;panels[key]=el;
     }
     panels.today.append(today);panels.review.append(review);panels.records.append(records);
-    // Each grade keeps its distinct mock formats under a single menu.
+    const mockGuide=document.createElement('p');mockGuide.className='md-plan-guide';
+    mockGuide.textContent='같은 출제 기준으로 실력을 점검합니다. 제출 후 틀린 문제는 복습에 반영됩니다.';
+    panels.mock.append(mockGuide);
+    const reviewGuide=document.createElement('p');reviewGuide.className='md-plan-guide';
+    reviewGuide.textContent='오늘 오답을 먼저 복습하고, 더 연습하려면 빈출·취약 집중 연습을 선택하세요.';
+    panels.review.prepend(reviewGuide);
+    // One unified mock per grade. Targeted practice remains in the review panel.
+    let mockCount=0;
     for(const gradeCard of [...records.children]){
-      const actions=[...gradeCard.querySelectorAll('button[onclick^="startNavigator"]')];
+      const unified=gradeCard.querySelector('button[onclick^="startNavigatorUnifiedMock("]');
+      const actions=unified?[unified]:[...gradeCard.querySelectorAll('button[onclick^="startNavigatorPassPlanMock("],button[onclick^="startNavigatorEvaluationMock("],button[onclick^="startNavigatorPredictiveMock("]')];
       if(!actions.length)continue;
       const card=document.createElement('section');card.className='card';
+      card.dataset.mdMockCard='';
       const grade=actions[0].getAttribute('onclick').includes('navi3')?'3급 항해사':'2급 항해사';
       card.innerHTML=`<h2 style="font-size:16px;margin:0 0 12px">${grade} 모의시험</h2>`;
       for(const action of actions){
         const note=action.nextElementSibling;
         card.append(action);
-        if(note&&note.tagName==='DIV'&&(note.classList.contains('md-mock-note')||note.textContent.includes('가중 랜덤')))card.append(note);
+        if(note&&(note.classList.contains('md-mock-note')||note.hasAttribute('data-md-mock-note')||note.textContent.includes('가중 랜덤')))card.append(note);
       }
-      panels.mock.append(card);
+      panels.mock.append(card);mockCount++;
     }
-    if(!panels.mock.children.length)panels.mock.innerHTML='<div class="card">시험 설정에서 응시 급수와 시험일을 지정하면 모의시험을 시작할 수 있습니다.</div>';
+    if(!mockCount)panels.mock.innerHTML='<div class="card">시험 설정에서 응시 급수와 시험일을 지정하면 모의시험을 시작할 수 있습니다.</div>';
     const collections=document.createElement('section');collections.className='card';
     collections.innerHTML=`<div class="md-menu-grid">${button('필기 오답노트',`mdOpenPastCollection('wrong','${subjectId}')`)}${button('북마크',`mdOpenPastCollection('mark','${subjectId}')`)}</div><p class="md-menu-note">일반 기출 풀이에서 남긴 오답과 북마크입니다. 합격 플랜 복습 목록과 별도로 유지됩니다.</p>`;
     panels.review.append(collections);

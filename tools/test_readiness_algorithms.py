@@ -50,8 +50,8 @@ for needle in [
     "const PP_EVALUATION_EXPOSURE_KEY='md_evaluation_mock_exposure_v1'",
     'function ppEvaluationSelect(items,options)',
     'window.startNavigatorEvaluationMock=async function(gradeId)',
-    "평가용 모의고사 · 실력 측정",
-    '개인 취약도·학습진도 미반영',
+    "모의시험 시작",
+    '개인 취약도와 무관하게 출제',
     'evaluation:pastQueue.every(q=>q._evaluationMock===true)',
     'if(meta.evaluation)restored.forEach(q=>{q._evaluationMock=true;q._predictiveMock=true});',
     'const isEvaluationMock = pastQueue.some(q=>q&&q._evaluationMock);',
@@ -71,7 +71,7 @@ for forbidden in ['ppLoadProgress','ppWeakTopicBoost','ppPredictiveWeight','last
 assert "q&&(q._predictiveReview||q._evaluationMock)" in analytics
 
 # Version bump makes clients refresh the changed runtime.
-assert "const APP_VERSION = '5.24';" in html
-assert '<title>Maritime Drill v5.24 · Android</title>' in html
+assert "const APP_VERSION = '5.25';" in html
+assert '<title>Maritime Drill v5.25 · Android</title>' in html
 
 print('exam-readiness algorithm checks: PASS')

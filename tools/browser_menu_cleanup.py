@@ -24,7 +24,7 @@ try:
         page.on('dialog',lambda d:d.accept())
         page.goto(origin,wait_until='load');page.get_by_role('button',name='동의합니다',exact=True).click()
         page.wait_for_function("hasAgreedTerms() && !document.getElementById('md-modal-wrap')")
-        assert page.evaluate('APP_VERSION')=='5.24'
+        assert page.evaluate('APP_VERSION')=='5.25'
         assert page.locator('#md-settings-button').count()==1
         assert not page.get_by_role('button',name='전체 백업 저장',exact=True).count()
         assert not page.get_by_role('button',name='제작자의 말',exact=True).count()
@@ -73,11 +73,17 @@ try:
             assert page.locator(f'[data-md-plan-tab="{tab}"]').get_attribute('aria-pressed')=='true'
             assert page.evaluate('Math.max(0,document.documentElement.scrollWidth-innerWidth)')==0
             if tab=='mock':
-                assert page.locator('button[onclick^="startNavigatorPredictiveMock("]:visible').count()==2
-                assert page.locator('button[onclick^="startNavigatorPassPlanMock("]:visible').count()==2
+                assert page.locator('button[onclick^="startNavigatorUnifiedMock("]:visible').count()==2
+                assert page.locator('#md-plan-panel-mock button:visible').count()==2
+                assert not page.locator('button[onclick^="startNavigatorTargetedPractice("]:visible').count()
+                assert not page.locator('#md-plan-panel-records button[onclick^="startNavigatorUnifiedMock("]').count()
+                assert page.locator('#md-plan-panel-mock .md-mock-note:visible').count()==2
+            elif tab=='review':
+                assert page.locator('button[onclick^="startNavigatorTargetedPractice("]:visible').count()==2
+                assert not page.locator('button[onclick^="startNavigatorUnifiedMock("]:visible').count()
             page.screenshot(path=str(OUT/f'v514-mobile-{tab}.png'),full_page=True)
         assert page.evaluate('collectBackupItems()')==before
-        report['cases'].append('all four menus fit mobile, retain both mock formats and leave learning data byte-for-byte unchanged')
+        report['cases'].append('all four menus fit mobile; mock has one start per grade, targeted practice is only in review, and navigation leaves learning data byte-for-byte unchanged')
 
         wait_plan(page,configure=True)
         page.locator('#pp-daily-cap').fill('45')

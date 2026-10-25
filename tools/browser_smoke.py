@@ -32,10 +32,10 @@ try:
         agree.wait_for(state='visible')
         agree.click()
         page.wait_for_function("hasAgreedTerms() && !document.getElementById('md-modal-wrap')")
-        assert page.evaluate('APP_VERSION') == '5.24'
-        assert 'v5.24' in page.title()
+        assert page.evaluate('APP_VERSION') == '5.25'
+        assert 'v5.25' in page.title()
         assert page.evaluate("typeof window.__mdMockExplanationControls==='object'")
-        report['cases'].append('v5.24 startup and auxiliary scripts loaded')
+        report['cases'].append('v5.25 startup and auxiliary scripts loaded')
         page.evaluate("renderNavigatorPassPlan('navi3')")
         wait_plan(page, configure=True)
         target = (date.today() + timedelta(days=30)).isoformat()
@@ -49,7 +49,7 @@ try:
         wait_plan(page)
         for grade in ('navi2', 'navi3'):
             wait_plan(page, tab='mock')
-            page.locator(f'''[onclick="startNavigatorPredictiveMock('{grade}')"]''').click()
+            page.locator(f'''[onclick="startNavigatorUnifiedMock('{grade}')"]''').click()
             page.wait_for_function("currentMode==='past' && pastQueue.length>0")
             assert page.evaluate('pastQueue.length') == 25
             answer = page.evaluate("pastQueue[0]['정답']")

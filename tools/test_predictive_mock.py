@@ -6,7 +6,7 @@ required=[
     "const PREDICTIVE_HISTORY_KEY='md_predictive_mock_history_v2'",
     'window.startNavigatorPredictiveMock=async function(gradeId)',
     'window.commitNavigatorPredictiveMockResult=function(queue,answers)',
-    '실전예측 모의 · 가중 랜덤',
+    '빈출·취약 집중 연습',
     "pastReturnView='pass-plan-predictive-mock'",
     "weight*=0.45",
 ]
