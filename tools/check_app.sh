@@ -3,6 +3,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 python tools/patch_mock_recovery_v524.py
+python tools/patch_unified_mock_v525.py
 # Historical generators replace whole functions and are incompatible with a
 # released v5.22 artifact. Apply them only when upgrading the legacy baseline.
 if python -c 'from pathlib import Path; import sys; sys.exit(0 if "mastery-session-policy-v522" in Path("index.html").read_text(encoding="utf-8-sig") else 1)'; then
@@ -84,6 +85,8 @@ node tools/test_drive_sync_v2.js
 node tools/test_sync_races.js
 node tools/test_drive_auth.js
 node tools/test_analytics_regressions.js
+node tools/test_unified_mock_analytics.js
+node tools/test_unified_start.js
 node tools/test_predictive_render_safety.js
 node tools/test_sync_audit_fixes.js
 node tools/test_record_safety.js

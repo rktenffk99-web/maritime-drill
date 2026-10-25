@@ -20,7 +20,7 @@ required=[
     'Math.max(0.85,Math.min(1.85,mult))',
     'const complete=rows.length>0&&!rows.some(q=>q&&q._predictiveReview)&&Array.isArray(answers)&&answers.length>=rows.length&&rows.every',
     'ppSavePredictiveHistory(gradeId,keys);',
-    '핵심 중요도 상위군 40% 우선 · 나머지는 출제빈도·최근성·개인 취약도 가중 랜덤 · 동일 문항 중복 금지',
+    '자주 출제된 문제와 내 취약 문제에 비중을 두며',
 ]
 for needle in required:
     if needle not in src:

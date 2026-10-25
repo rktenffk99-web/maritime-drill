@@ -1,4 +1,4 @@
-"""Persist assisted evaluation sessions and publish the final v5.24 script URLs."""
+"""Persist assisted evaluation sessions and publish the final v5.25 script URLs."""
 from pathlib import Path
 import argparse
 import re
@@ -6,7 +6,7 @@ import sys
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '5.24'
+VERSION = '5.25'
 
 
 def patch_html(text: str) -> str:
@@ -69,7 +69,7 @@ def main() -> None:
         target = args.output or args.input
         if target != args.input or patched != original:
             target.write_text(patched, encoding='utf-8')
-        print('mock answer access state and v5.24 release patch applied')
+        print('mock answer access state and v5.25 release patch applied')
 
 
 if __name__ == '__main__':

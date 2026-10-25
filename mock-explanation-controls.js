@@ -17,6 +17,7 @@
   function isMockExam(){
     try{
       if(!(typeof currentMode!=='undefined'&&currentMode==='past'&&typeof pastMode!=='undefined'&&pastMode==='mock'))return false;
+      if(typeof pastQueue!=='undefined'&&pastQueue.some(q=>q&&q._unifiedMock))return false;
       return true;
     }catch(e){return false}
   }

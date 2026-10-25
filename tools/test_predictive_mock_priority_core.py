@@ -13,8 +13,7 @@ required=[
     'const core=ppPredictiveSample(topPool,data,coreCount,history,progress);',
     'const rest=ppPredictiveSample(remainder,data,target-core.length,history,progress);',
     'ppPredictivePrioritySample(candidates,data,Math.min(PAST_MOCK_PER_SUBJECT,candidates.length),history,progress)',
-    '핵심 중요도 상위군 40% 우선',
-    '동일 문항 중복 금지',
+    '빈출·취약 집중 연습',
 ]
 for needle in required:
     assert needle in text, f'missing predictive priority-core marker: {needle}'
