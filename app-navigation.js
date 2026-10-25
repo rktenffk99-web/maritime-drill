@@ -166,9 +166,19 @@
   function syncQuestionScreenLayout(){
     const compact=typeof currentMode!=='undefined'&&['pass-plan-session','past'].includes(currentMode);
     document.body.classList.toggle('md-question-screen',compact);
+    const root=document.getElementById('app');
+    if(!root||!['select','prep','pass-plan','past-home','past-menu'].includes(currentMode)||root.querySelector('[data-past-resume]'))return;
+    const saved=renderPastResumeCard();
+    if(saved)root.insertAdjacentHTML('afterbegin',saved);
   }
   const appRoot=document.getElementById('app');
   if(appRoot)new MutationObserver(syncQuestionScreenLayout).observe(appRoot,{childList:true});
   syncQuestionScreenLayout();
+  // Answers are saved synchronously on selection; these also checkpoint the
+  // cursor when Android backgrounds the browser or connectivity changes.
+  const checkpoint=()=>{if(typeof currentMode!=='undefined'&&currentMode==='past')savePastProgress()};
+  window.addEventListener('pagehide',checkpoint);
+  window.addEventListener('offline',checkpoint);
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')checkpoint()});
   mountToolbar();
 })();

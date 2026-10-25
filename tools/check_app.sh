@@ -2,6 +2,7 @@
 # Rebuild in the legacy order, then run regressions against the FINAL artifact.
 set -euo pipefail
 cd "$(dirname "$0")/.."
+python tools/patch_mock_recovery_v524.py
 # Historical generators replace whole functions and are incompatible with a
 # released v5.22 artifact. Apply them only when upgrading the legacy baseline.
 if python -c 'from pathlib import Path; import sys; sys.exit(0 if "mastery-session-policy-v522" in Path("index.html").read_text(encoding="utf-8-sig") else 1)'; then

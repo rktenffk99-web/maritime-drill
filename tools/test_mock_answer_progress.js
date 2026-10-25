@@ -11,17 +11,17 @@ function generate(input){
 }
 const html=generate();
 if(process.argv.includes('--final'))assert.equal(raw,html,'apply patch_mock_answer_access.py before final-artifact checks');
-const STATE='md_past_progress_v1',META='md_past_progress_meta_v1',TRAINING='md_nav23_pass_progress_v1';
+const STATE='md_past_progress_v1',META='md_past_progress_meta_v1',ATOMIC='md_past_checkpoint_v2',TRAINING='md_nav23_pass_progress_v1';
 const plain=value=>JSON.parse(JSON.stringify(value));
 const sourceRows=[
   {'과목':'법규','번호':1,'문제':'첫 문항','선택지':['가','나','다','라'],'정답':0},
   {'과목':'법규','번호':2,'문제':'둘째 문항','선택지':['마','바','사','아'],'정답':1},
 ];
-function harness(data=new Map()){
-  const writes=[],exam={questions:plain(sourceRows)};
+function harness(data=new Map(),rows=sourceRows){
+  const writes=[],exam={questions:plain(rows)};
   const s={window:null,console,Date,Math,Map,Set,JSON,app:{innerHTML:''},currentMode:'past',
-    pastQueue:sourceRows.map((q,i)=>({...plain(q),_year:2026,_short:'navi2',_session:2,'회차':2,_predictiveMock:true,_evaluationMock:true,_planKey:'navi2|q'+i,_planGrade:'navi2'})),
-    pastAnswers:[1,null],pastIdx:1,pastMode:'mock',pastStartedAt:Date.now()-10000,
+    pastQueue:rows.map((q,i)=>({...plain(q),_year:2026,_short:'navi2',_session:2,'회차':2,_predictiveMock:true,_evaluationMock:true,_planKey:'navi2|q'+i,_planGrade:'navi2'})),
+    pastAnswers:rows.map((q,i)=>i===0?1:null),pastIdx:1,pastMode:'mock',pastStartedAt:Date.now()-10000,
     pastSubjectId:'navi2',pastBaseShort:'navi2',pastYear:null,pastSession:null,pastVariant:'상선',pastAllYears:false,pastReturnView:'pass-plan-predictive-mock',
     naviAnalysisSubjectId:'navi2',navi3AnalysisDetail:null,navi3PracticeReturn:null,navi3PracticeLabel:null,
     safeStorageSet(key,value){data.set(key,String(value));writes.push(key);return true},
@@ -46,9 +46,9 @@ async function test(name,run){await run();passed++;console.log('PASS '+name)}
 (async()=>{
   await test('release patch is idempotent, keeps embedded sources and versions every root script URL',()=>{
     assert.equal(generate(html),html);assert.equal(fs.readFileSync(indexPath,'utf8').replace(/\r\n/g,'\n'),raw);
-    assert.match(html,/const APP_VERSION = '5\.23';/);assert.match(html,/<title>Maritime Drill v5\.23 · Android<\/title>/);
+    assert.match(html,/const APP_VERSION = '5\.24';/);assert.match(html,/<title>Maritime Drill v5\.24 · Android<\/title>/);
     const scripts=[...html.matchAll(/<script\b[^>]*\ssrc=["']([^"']+)["']/g)];assert.ok(scripts.length>=7);
-    for(const [,src] of scripts)assert.equal(new URL(src,'https://local.test/').searchParams.get('v'),'5.23',src);
+    for(const [,src] of scripts)assert.equal(new URL(src,'https://local.test/').searchParams.get('v'),'5.24',src);
     const embedded=value=>[...value.matchAll(/<script\b[^>]*data-bundled-src=["'][^"']+["'][^>]*>/g)].map(m=>m[0]);
     assert.deepEqual(embedded(html),embedded(raw));
   });
@@ -59,7 +59,7 @@ async function test(name,run){await run();passed++;console.log('PASS '+name)}
     const saved=s.getPastProgress();assert.equal(saved.state.evaluationExplanationViewed,true);
     assert.equal(data.get(META),meta);assert.equal(writes.filter(key=>key===META).length,1);
     assert.equal(saved.state.id,before.state.id);assert.deepEqual(plain(saved.state.answers),[1,null]);assert.equal(saved.state.idx,1);
-    assert.equal(data.get(TRAINING),'{"existing":{"attempts":7}}');assert.ok(writes.every(key=>[STATE,META].includes(key)));
+    assert.equal(data.get(TRAINING),'{"existing":{"attempts":7}}');assert.ok(writes.every(key=>[STATE,META,ATOMIC].includes(key)));
   });
   await test('refresh and resume preserve assisted status, exact responses and cursor; assisted results never enter evaluation average',async()=>{
     const first=harness();first.s.savePastProgress();first.s.pastQueue[1]._evaluationExplanationViewed=true;first.s.savePastProgress();
@@ -78,11 +78,51 @@ async function test(name,run){await run();passed++;console.log('PASS '+name)}
     for(const legacy of [true,false]){
       const first=harness();first.s.savePastProgress();const saved=JSON.parse(first.data.get(STATE));
       if(legacy)delete saved.evaluationExplanationViewed;else saved.evaluationExplanationViewed=false;
-      first.data.set(STATE,JSON.stringify(saved));const fresh=harness(first.data);fresh.s.pastQueue=[];fresh.s.pastAnswers=[];
+      first.data.set(STATE,JSON.stringify(saved));first.data.delete(ATOMIC);const fresh=harness(first.data);fresh.s.pastQueue=[];fresh.s.pastAnswers=[];
       await fresh.s.resumePastProgress();assert.deepEqual(plain(fresh.s.pastAnswers),[1,null]);assert.equal(fresh.s.pastIdx,1);
       assert.ok(fresh.s.pastQueue.every(q=>q._evaluationMock&&!q._evaluationExplanationViewed));
       assert.equal(fresh.s.getPastProgress().state.evaluationExplanationViewed,false);
     }
+  });
+  await test('50 answers in a 125-question mock survive a fresh runtime with exact paper and cursor',async()=>{
+    const rows=Array.from({length:125},(_,i)=>({...plain(sourceRows[i%2]),'번호':i+1,'문제':'문항 '+(i+1)}));
+    const first=harness(new Map(),rows);first.s.pastAnswers.fill(null);
+    for(let i=0;i<50;i++){first.s.pastIdx=i;first.s.pastAnswers[i]=i%4;assert.equal(first.s.savePastProgress(),true)}
+    first.s.pastIdx=50;first.s.savePastProgress();
+    const answers=plain(first.s.pastAnswers),saved=plain(first.s.getPastProgress());
+    const fresh=harness(first.data,rows);fresh.s.pastQueue=[];fresh.s.pastAnswers=[];fresh.s.currentMode='select';
+    await fresh.s.resumePastProgress();assert.equal(fresh.s.pastQueue.length,125);assert.equal(fresh.s.pastIdx,50);
+    assert.deepEqual(plain(fresh.s.pastAnswers),answers);assert.deepEqual(fresh.s.pastQueue.map(fresh.s.pqid),saved.meta.refs.map(q=>q.id));
+    assert.equal(first.data.has(TRAINING),false);assert.equal(first.data.has('md_evaluation_score_history_v1'),false);
+  });
+  await test('an atomic paper survives mismatched metadata from a separate session',async()=>{
+    const first=harness();first.s.savePastProgress();const saved=plain(first.s.getPastProgress());
+    first.data.set(META,JSON.stringify({...saved.meta,id:'another-device-session'}));
+    const fresh=harness(first.data);await fresh.s.resumePastProgress();
+    assert.deepEqual(plain(fresh.s.pastAnswers),[1,null]);assert.equal(fresh.s.getPastProgress().state.id,saved.state.id);
+  });
+  await test('failed storage reports failure and preserves the previously saved checkpoint',()=>{
+    const h=harness();h.s.savePastProgress();const prior=h.data.get(ATOMIC);
+    h.s.safeStorageSet=()=>false;h.s.pastAnswers[1]=3;
+    assert.equal(h.s.savePastProgress(),false);assert.equal(h.data.get(ATOMIC),prior);
+  });
+  await test('starting a replacement requires explicit choice and cancellation keeps the old answers',async()=>{
+    const h=harness();h.s.savePastProgress();const prior=h.data.get(ATOMIC);
+    h.s.openModal=opts=>{h.modal=opts};h.s.closeModal=()=>{};
+    const cancelled=h.s.confirmPastProgressReplacement();assert.equal(h.modal.closable,false);
+    h.s.mdPastKeepSaved();assert.equal(await cancelled,false);assert.equal(h.data.get(ATOMIC),prior);
+    const replace=h.s.confirmPastProgressReplacement();h.s.mdPastReplaceSaved();assert.equal(await replace,true);
+    assert.equal(h.data.get(ATOMIC),prior); // deletion waits until the new paper exists
+    const resume=h.s.confirmPastProgressReplacement();h.s.mdPastResumeSaved();assert.equal(await resume,false);
+    await Promise.resolve();assert.deepEqual(plain(h.s.pastAnswers),[1,null]);
+  });
+  await test('leaving a predictive mock preserves rather than clears the checkpoint',()=>{
+    const h=harness();h.s.renderNavigatorPassPlan=()=>{};
+    const start=html.indexOf('function goBackFromPastSession(){'),end=html.indexOf('// 체크박스 전체 선택/해제',start);
+    vm.runInContext(html.slice(start,end),h.s);h.s.goBackFromPastSession();
+    assert.equal(h.s.currentMode,'pass-plan');assert.ok(h.s.getPastProgress());
+    assert.deepEqual(plain(h.s.getPastProgress().state.answers),[1,null]);
+    h.s.clearPastProgress();assert.equal(h.s.getPastProgress(),null);assert.equal(h.data.has(ATOMIC),false);
   });
   console.log(`mock answer access progress: PASS (${passed} cases)`);
 })().catch(error=>{console.error(error);process.exitCode=1});

@@ -24,6 +24,7 @@ jobs:
           status=0
           for test in \
             tools/browser_smoke.py \
+            tools/browser_mock_recovery.py \
             tools/browser_integrity.py \
             tools/browser_daily_storage.py \
             tools/browser_drive_auth.py \
