@@ -37,6 +37,8 @@
     #md-plan-rules{margin-top:14px}
     #md-plan-rules summary{font-size:13px;font-weight:800;cursor:pointer;margin-bottom:8px}
     .md-settings-section .md-danger{color:#B91C1C;border-color:#FCA5A5}
+    [data-past-resume] .btn-outline,[data-past-save-status] .btn-outline,
+    #md-modal-wrap button[onclick="mdPastReplaceSaved()"],#md-modal-wrap button[onclick="mdPastKeepSaved()"]{color:#334155;border-color:#94A3B8}
   `;
   document.head.appendChild(style);
 
