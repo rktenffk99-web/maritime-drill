@@ -89,10 +89,16 @@ try:
             print(name+': refresh restored 50 answers', flush=True)
             report['cases'].append(f'{name}: 50/125 answers, offline answering, full browser restart, reload, exact paper/answers/cursor')
             # Real stop and replacement controls must preserve the paper on cancel.
-            page.get_by_role('button', name='그만', exact=False).click()
-            page.get_by_role('button', name='확인', exact=True).click()
+            page.get_by_role('button', name='저장하고 나가기', exact=True).click()
             wait_plan(page, tab='mock')
+            assert page.locator('[data-past-resume]').count() == 1
+            assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
+            if name == 'startNavigatorEvaluationMock':
+                page.screenshot(path=str(OUT / 'mock-resume-mobile.png'), full_page=True)
             page.locator(f'''[onclick="{name}('navi2')"]''').click()
+            assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
+            if name == 'startNavigatorEvaluationMock':
+                page.screenshot(path=str(OUT / 'mock-replace-mobile.png'), full_page=True)
             page.get_by_role('button', name='취소', exact=True).click()
             assert page.evaluate('getPastProgress().state.idx') == 50
             page.get_by_role('button', name='모의고사 이어서 풀기', exact=True).click()
@@ -110,8 +116,20 @@ try:
         page.locator('[onclick="choosePastAnswer(2)"]').click()
         assert '저장 실패' in page.locator('[data-past-save-status]').inner_text()
         assert page.evaluate("localStorage.getItem('md_past_checkpoint_v2')") == prior
+        page.get_by_role('button', name='저장하고 나가기', exact=True).click()
+        assert page.evaluate("currentMode==='past'")
+        page.evaluate("() => {Object.defineProperty(navigator,'canShare',{value:()=>false,configurable:true})}")
+        with page.expect_download() as download_info:
+            page.get_by_role('button', name='답안 파일 백업', exact=True).click()
+        backup = json.loads(Path(download_info.value.path()).read_text())
+        exported = json.loads(backup['items']['md_past_checkpoint_v2'])
+        assert exported['state']['answers'][50] == 2
+        assert sum(a is not None for a in exported['state']['answers']) == 51
+        assert page.evaluate("localStorage.getItem('md_past_checkpoint_v2')") == prior
         page.evaluate('() => {Storage.prototype.setItem=window.__testSetItem}')
-        report['cases'].append('quota failure shows failure while preserving the previous checkpoint')
+        page.get_by_role('button', name='다시 저장', exact=True).click()
+        assert '자동 저장됨' in page.locator('[data-past-save-status]').inner_text()
+        report['cases'].append('quota failure blocks exit, preserves the checkpoint, exports all 51 live answers and retries successfully')
         assert not report['page_errors'], report['page_errors']
         context.close()
         report['status'] = 'PASS'

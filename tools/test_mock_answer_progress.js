@@ -124,5 +124,22 @@ async function test(name,run){await run();passed++;console.log('PASS '+name)}
     assert.deepEqual(plain(h.s.getPastProgress().state.answers),[1,null]);
     h.s.clearPastProgress();assert.equal(h.s.getPastProgress(),null);assert.equal(h.data.has(ATOMIC),false);
   });
+  await test('a failed save blocks leaving the question screen',()=>{
+    const h=harness();h.s.renderNavigatorPassPlan=()=>{};
+    const start=html.indexOf('function goBackFromPastSession(){'),end=html.indexOf('// 체크박스 전체 선택/해제',start);
+    vm.runInContext(html.slice(start,end),h.s);h.s.safeStorageSet=()=>false;h.s.goBackFromPastSession();
+    assert.equal(h.s.currentMode,'past');assert.deepEqual(plain(h.s.pastAnswers),[1,null]);
+  });
+  await test('manual backup includes live answers even when the first storage write fails',async()=>{
+    const h=harness();h.s.safeStorageSet=()=>false;h.s.pastAnswers=[2,3];let file;
+    Object.assign(h.s,{collectBackupItems:()=>({}),BACKUP_SCHEMA_VERSION:1,APP_VERSION:'5.24',File,
+      navigator:{canShare:()=>true,share:async opts=>{file=opts.files[0]}},backupNotice(){},alert:message=>{throw new Error(message)}});
+    const start=html.indexOf('async function exportAllLearningData(){'),end=html.indexOf('function validateImportedBackupEntries(',start);
+    vm.runInContext(html.slice(start,end),h.s);await h.s.exportAllLearningData();
+    const payload=JSON.parse(await file.text()),checkpoint=JSON.parse(payload.items[ATOMIC]);
+    assert.equal(payload.app,'Maritime Drill');assert.deepEqual(checkpoint.state.answers,[2,3]);
+    assert.equal(checkpoint.meta.id,checkpoint.state.id);assert.equal(checkpoint.meta.refs.length,2);
+    assert.equal(h.data.size,0);
+  });
   console.log(`mock answer access progress: PASS (${passed} cases)`);
 })().catch(error=>{console.error(error);process.exitCode=1});
