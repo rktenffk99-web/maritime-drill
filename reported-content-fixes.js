@@ -116,6 +116,13 @@
     return source.replace(PDF_FOOTER_SUFFIX_RE,'').trimEnd();
   }
 
+  // A saved/cloned question can outlive its source object, and homework can
+  // display the original last choice in any position. Normalize at the choice
+  // renderer as well, without applying page-number stripping to arbitrary text.
+  function fixChoiceText(value){
+    return stripPdfFooterArtifact(fixString(value));
+  }
+
   function patchPdfFooterArtifact(obj){
     const choices=getChoices(obj);
     if(!choices||!choices.length)return false;
@@ -790,6 +797,22 @@
     global.getPastExam=wrappedGetPastExam;
   }
 
+  function installPastDataLoadHook(){
+    const original=global.ensurePastDataForSubject;
+    if(typeof original!=='function'||original.__mdReportedTextFix)return;
+    async function wrappedEnsurePastDataForSubject(){
+      const result=await original.apply(this,arguments);
+      // Ordinary past-paper selection reads MD_PAST through list helpers,
+      // bypassing getPastExam. Patch after every lazy load, before the caller
+      // can copy those questions into its study/mock queue.
+      patchObject(result);
+      return result;
+    }
+    wrappedEnsurePastDataForSubject.__mdReportedTextFix=true;
+    wrappedEnsurePastDataForSubject.__mdReportedTextFixOriginal=original;
+    global.ensurePastDataForSubject=wrappedEnsurePastDataForSubject;
+  }
+
   function patchDom(root){
     if(!root||typeof document==='undefined'||!document.createTreeWalker)return;
     const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
@@ -804,6 +827,7 @@
     patchKnownData();
     installFrequencyHook();
     installPastExamHook();
+    installPastDataLoadHook();
     const root=document.getElementById('app')||document.body;
     if(!root)return;
     patchDom(root);
@@ -828,9 +852,10 @@
   patchKnownData();
   installFrequencyHook();
   installPastExamHook();
+  installPastDataLoadHook();
 
   global.__mdReportedContentFixes={
-    fixString,normalizeEquationGlyphs,normalizeFormulaArtifacts,patchObject,patchKnownData,
+    fixString,fixChoiceText,normalizeEquationGlyphs,normalizeFormulaArtifacts,patchObject,patchKnownData,
     patchVerifiedFormulaQuestion,patchPdfFooterArtifact,stripPdfFooterArtifact,
     auditKnownData,collectBrokenGlyphs,replacements:REPLACEMENTS,
     equationCharMap:EQUATION_CHAR_MAP

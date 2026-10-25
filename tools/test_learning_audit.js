@@ -19,12 +19,12 @@ function harness(){
   const data=new Map(),writes=[],notes=new Map();
   const s={window:null,console,Date,Math,Set,Map,JSON,crypto:{randomUUID:()=> 'audit-device'},
     localStorage:{getItem:k=>data.get(k)||null,setItem:(k,v)=>{data.set(k,String(v));writes.push(k)},removeItem:k=>data.delete(k)},
-    safeStorageSet:(k,v)=>{data.set(k,String(v));writes.push(k);return true},confirmPastProgressReplacement:async()=>true,
+    safeStorageSet:(k,v)=>{data.set(k,String(v));writes.push(k);return true},safeStorageRemove:k=>{data.delete(k);return true},confirmPastProgressReplacement:async()=>true,
     app:{innerHTML:''},currentMode:'past',pastQueue:[],pastAnswers:[],pastIdx:0,pastMode:'mock',pastStartedAt:1,pastProgressId:'audit-result',pastResultId:null,
     pastReturnView:'pass-plan-predictive-mock',pastSubjectId:'navi3',pastBaseShort:'navi3',pastAllYears:false,pastYear:null,pastSession:null,
     SUBJECTS:[{id:'navi3',name:'3급 항해사'}],SUBJECT_GROUPS:[],n3aData:()=>null,
     addPastWrong(q,answer){notes.set(q._planKey,{q,answer})},removePastWrong:id=>notes.delete(id),pqid:q=>q._planKey,
-    icon:()=>'',escapeHtml:v=>String(v??''),pastChoiceText:v=>String(v??''),renderExplainBlock:()=>'',recordPastSession(){},clearPastProgress(){},
+    icon:()=>'',escapeHtml:v=>String(v??''),pastChoiceText:v=>String(v??''),renderExplainBlock:()=>'',recordPastSession(){},clearPastProgress(){},savePastProgress:()=>true,
     showConfirm:(m,f)=>f(),showToast(){},getPastProgress:()=>null,setTimeout(){},requestAnimationFrame(){},
     MutationObserver:class{observe(){}},document:{documentElement:{},addEventListener(){},getElementById:()=>null},
     navi3AnalysisState:{range:'all',sort:'count'},naviAnalysisSubjectId:'navi3',
@@ -38,7 +38,7 @@ function harness(){
   const start=html.indexOf('// ── v5.07: 2·3급 항해사 합격 플랜 / 오늘의 숙제'),end=html.indexOf('</script>',start);
   const source=html.slice(start,end),close=source.lastIndexOf('})();');
   vm.runInContext(source.slice(0,close)+'window.__audit={progressStats:ppProgressStats,uniqueUnseen:ppHomeworkUniqueUnseen,build:ppBuildTodayAssignment,buildPools:ppBuildPools,find:ppFindQuestion,identity:ppHomeworkClusterId,setPools(pools){planPools=pools;ppDataIdentityClusters=window.__mdDataIdentity.clusterPools(pools)}};'+source.slice(close),s);
-  const resultStart=html.indexOf('function renderPastResult(){'),resultEnd=html.indexOf('\nfunction escapeHtml(',resultStart);
+  const resultStart=html.indexOf('// mock-submission-transaction-v526:'),resultEnd=html.indexOf('\nfunction escapeHtml(',resultStart);
   vm.runInContext(html.slice(resultStart,resultEnd),s);
   const frequencyStart=html.indexOf('function n3aPracticeGroups('),frequencyEnd=html.indexOf('async function startNavi3FrequencyPractice(',frequencyStart);
   vm.runInContext(html.slice(frequencyStart,frequencyEnd),s);
@@ -72,7 +72,7 @@ async function test(name,fn){await fn();passed++;console.log('PASS '+name)}
     for(const answer of [0,1,null]){
       const {s,data,writes,notes}=harness(),q={...question,_evaluationMock:true},prior={q:{prior:true},answer:3};
       notes.set(q._planKey,prior);const before=JSON.stringify([...data]);s.pastQueue=[q];s.pastAnswers=[answer];s.renderPastResult();
-      assert.equal(JSON.stringify([...data]),before);assert.equal(notes.size,1);assert.equal(notes.get(q._planKey),prior);assert.equal(writes.length,0);
+      assert.equal(JSON.stringify([...data].filter(([key])=>key!=='md_evaluation_score_history_v1')),before);assert.equal(notes.size,1);assert.equal(notes.get(q._planKey),prior);assert.ok(writes.every(key=>key==='md_evaluation_score_history_v1'));
     }
   });
   await test('evaluation wrong-answer retry remains isolated',()=>{

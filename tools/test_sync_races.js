@@ -74,6 +74,11 @@ async function test(name,fn){await fn();count++;console.log('PASS '+name)}
     const h=harness({mode:'pass-plan-session'});h.remote.items.md_remote_only='"remote"';await h.sync();assert.equal(h.calls.apply,0);assert.equal(h.calls.reload,0);assert.equal(h.storage.getItem('md_remote_only'),null);
     h.sandbox.currentMode='home';await h.sync();assert.equal(h.storage.getItem('md_remote_only'),'"remote"');assert.equal(h.calls.reload,1);
   });
+  await test('visual oral drills defer incoming snapshots until the learner leaves the drill',async()=>{
+    const h=harness({mode:'visual'});h.remote.items.md_remote_only='"remote"';await h.sync();
+    assert.equal(h.calls.apply,0);assert.equal(h.calls.reload,0);
+    h.sandbox.currentMode='home';await h.sync();assert.equal(h.storage.getItem('md_remote_only'),'"remote"');assert.equal(h.calls.reload,1);
+  });
   await test('upload failures leave the original local data untouched',async()=>{
     const h=harness({uploadFails:true});h.remote.items.md_remote_only='"remote"';const before=h.collect();await h.sync();assert.deepEqual(h.collect(),before);assert.equal(h.calls.apply,0);assert.match(h.sandbox.driveSyncLastError,/network failed/);assert.equal(h.sandbox.driveSyncBusy,false);
   });

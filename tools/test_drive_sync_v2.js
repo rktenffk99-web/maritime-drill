@@ -91,4 +91,69 @@ function raw(o){return JSON.stringify(o)}
  const m=merge({[key]:raw(a)},{[key]:raw(b)},{},{},'2026-09-16T03:00:00Z','2026-09-16T04:00:00Z');
  assert.deepEqual(JSON.parse(m.items[key]),b);
 }
-console.log('drive-sync-v2 tests: PASS (10 cases)');
+// 11) Independent completed mock scores must survive without mixing test scopes.
+{
+ const key='md_evaluation_score_history_v1',scope='unified-v1|navi3|항해:20';
+ const row=(id,day,score)=>({id,at:`2026-10-${day}T00:00:00Z`,score,correct:score/5,total:20,signature:'항해:20'});
+ const common=row('common',21,80),a=row('phone',22,90),b=row('notebook',23,60);
+ const left={[key]:raw({[scope]:[a,common],navi3:[row('legacy',20,50)]})},right={[key]:raw({[scope]:[b,common]})};
+ const m=merge(left,right,{},{} ,'2026-10-22T01:00:00Z','2026-10-23T01:00:00Z');
+ assert.deepEqual(JSON.parse(m.items[key])[scope],[b,a,common]);assert.deepEqual(JSON.parse(m.items[key]).navi3,[row('legacy',20,50)]);
+ assert.deepEqual(merge(right,left,{},{} ,'2026-10-23T01:00:00Z','2026-10-22T01:00:00Z').items,m.items);
+ assert.deepEqual(merge(m.items,right,{},{} ,'2026-10-24T01:00:00Z','2026-10-23T01:00:00Z').items,m.items);
+}
+// 12) Score history union retains the ten latest completed runs and their exact scores.
+{
+ const key='md_evaluation_score_history_v1',scope='navi2|영어:20';
+ const rows=Array.from({length:15},(_,i)=>({id:String(i),at:new Date(Date.UTC(2026,9,1+i)).toISOString(),score:i,total:20,correct:0}));
+ const m=merge({[key]:raw({[scope]:rows.slice(0,8)})},{[key]:raw({[scope]:rows.slice(7)})},{},{},null,null);
+ assert.deepEqual(JSON.parse(m.items[key])[scope],rows.slice(5).reverse());
+}
+// 13) A recent lower score remains lower; lifetime best and attempt count survive.
+{
+ const key='md_past_history_v1',scope='3항|2026|3';
+ const old={correct:90,total:100,mode:'mock',at:Date.parse('2026-10-21T00:00:00Z'),best:0.9,tries:3};
+ const recent={correct:12,total:20,mode:'study',at:Date.parse('2026-10-22T00:00:00Z'),best:0.6,tries:4};
+ const left={[key]:raw({[scope]:old})},right={[key]:raw({[scope]:recent})};
+ const m=merge(left,right,{},{} ,'2026-10-23T00:00:00Z','2026-10-22T00:00:00Z');
+ assert.deepEqual(JSON.parse(m.items[key])[scope],{...recent,best:0.9});
+ assert.deepEqual(merge(right,left,{},{} ,'2026-10-22T00:00:00Z','2026-10-23T00:00:00Z').items,m.items);
+}
+// 14) Reports are immutable entries, not one device's replaceable array.
+{
+ const key='md_problem_reports_v1';
+ const report=(day,detail)=>({createdAt:`2026-10-${day}T00:00:00Z`,reason:'직접 입력',detail,question:'문제',tags:['2급'],counter:'1/10'});
+ const shared=report(20,'기존'),phone=report(21,'휴대폰 신고'),notebook=report(22,'노트북 신고'),sameTime=report(22,'다른 신고');
+ const a={[key]:raw([shared,phone])},b={[key]:raw([Object.fromEntries(Object.entries(shared).reverse()),notebook,sameTime])};
+ const before=raw([a,b]),m=merge(a,b,{},{},'2026-10-21T01:00:00Z','2026-10-22T01:00:00Z');
+ const rows=JSON.parse(m.items[key]);
+ assert.equal(rows.length,4);assert.deepEqual(rows.slice(0,2),[shared,phone]);
+ assert.deepEqual(new Set(rows.slice(2).map(row=>row.detail)),new Set([notebook.detail,sameTime.detail]));
+ assert.deepEqual(merge(b,a,{},{},'2026-10-22T01:00:00Z','2026-10-21T01:00:00Z').items,m.items);
+ assert.deepEqual(merge(m.items,b,{},{},null,null).items,m.items);assert.equal(raw([a,b]),before);
+}
+// 15) Sync must never silently discard reports at the input UI's 500-entry limit.
+{
+ const key='md_problem_reports_v1';
+ const reports=Array.from({length:650},(_,i)=>({createdAt:new Date(Date.UTC(2026,9,20,0,0,i)).toISOString(),question:'신고 '+i,reason:'오타/깨짐'}));
+ const m=merge({[key]:raw(reports.slice(0,350))},{[key]:raw(reports.slice(300))},{},{},null,null);
+ assert.deepEqual(JSON.parse(m.items[key]),reports);
+}
+// 16) Removing the entire reports key still wins over an older remote snapshot.
+{
+ const key='md_problem_reports_v1',older='2026-10-21T00:00:00Z',deletedAt='2026-10-22T00:00:00Z';
+ const reports={[key]:raw([{createdAt:older,question:'old'}])},deleted={[key]:{updatedAt:deletedAt,deleted:true,fields:{}}};
+ const m=merge({},reports,deleted,{},deletedAt,older);
+ assert.equal(Object.hasOwn(m.items,key),false);
+ assert.deepEqual(merge(reports,{}, {},deleted,older,deletedAt).items,m.items);
+}
+// 17) Explicit report resets prevent old entries returning after a new report.
+{
+ const key='md_problem_reports_v1',resetAt='2026-10-22T00:00:00Z',newRow={createdAt:'2026-10-23T00:00:00Z',question:'new'};
+ const reset={[key]:{updatedAt:newRow.createdAt,generation:{updatedAt:resetAt,id:'reset-reports'},deleted:false,fields:{}}};
+ const local={[key]:raw([newRow])},stale={[key]:raw([{createdAt:'2026-10-21T00:00:00Z',question:'old'}])};
+ const m=merge(local,stale,reset,{},newRow.createdAt,'2026-10-24T00:00:00Z');
+ assert.deepEqual(JSON.parse(m.items[key]),[newRow]);
+ assert.deepEqual(merge(stale,local,{},reset,'2026-10-24T00:00:00Z',newRow.createdAt).items,m.items);
+}
+console.log('drive-sync-v2 tests: PASS (17 cases)');

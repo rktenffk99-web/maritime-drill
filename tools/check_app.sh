@@ -52,7 +52,9 @@ else
   python tools/patch_mock_result_pager.py
 fi
 python tools/patch_learning_system_v522.py
+python tools/patch_reported_content_fixes.py
 python tools/patch_mock_answer_access.py
+python tools/patch_mock_submission_safety.py
 node tools/test_navi2_reviewed.js
 node tools/test_balanced_mock.js
 python tools/test_predictive_mock.py
@@ -61,12 +63,15 @@ python tools/test_predictive_mock_no_duplicates.py
 python tools/test_predictive_mock_history_fingerprint.py
 python tools/test_predictive_mock_priority_core.py
 python tools/test_problem_report_modes.py
+node tools/test_problem_report_storage.js
 node tools/test_reported_content_fixes.js
+node tools/test_reported_lazy_content.js
 node tools/test_equation_glyph_normalizer.js
 node tools/test_pdf_footer_cleanup.js
 node tools/test_mock_result_pager.js
 node tools/test_mock_explanation_controls.js
 node tools/test_mock_answer_progress.js --final
+node tools/test_mock_submission_safety.js
 python tools/test_weak_topic_analytics.py
 python tools/test_2026_session3_explanations.py
 python tools/test_weak_drills.py

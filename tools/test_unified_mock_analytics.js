@@ -51,12 +51,14 @@ test('explanation assistance, review attempts and legacy papers cannot pollute u
 });
 test('unified result renders both score trend and weakness feedback and still trains the learning profile',()=>{
   const h=harness();h.s.pastQueue=paper();h.s.pastAnswers=h.s.pastQueue.map(()=>1);
+  h.a.persistResult(h.s.pastQueue,h.s.pastAnswers);
   const html=h.render();assert.ok(html.includes('모의시험 성적 추이'));assert.ok(html.includes('이번 점수 0점'));assert.ok(html.includes('취약 파트 분석'));assert.ok(html.includes('점수 추이는 참고용'));
   const profile=JSON.parse(h.storage.get(PROFILE_KEY));assert.equal(profile.grades.navi2.topics['영어|SAR·통신 영어'].wrong,25);
   const stored=h.storage.get(SCORE_KEY);h.render();assert.equal(h.storage.get(SCORE_KEY),stored);assert.equal(Object.keys(JSON.parse(h.storage.get(PROFILE_KEY)).grades.navi2.subjects['영어']).length,1);
 });
 test('legacy evaluation remains isolated from training and keeps its original history scope',()=>{
   const h=harness();h.app.textContent='평가용 모의고사 결과';h.s.pastQueue=paper().map(q=>({...q,_unifiedMock:false,_evaluationMock:true}));h.s.pastAnswers=h.s.pastQueue.map(()=>1);
+  h.a.persistResult(h.s.pastQueue,h.s.pastAnswers);
   const html=h.render();assert.ok(html.includes('평가용 모의고사 분석'));assert.ok(!html.includes('모의시험 성적 추이'));assert.equal(h.storage.has(PROFILE_KEY),false);
   const stored=JSON.parse(h.storage.get(SCORE_KEY));assert.deepEqual(Object.keys(stored),['navi2|영어:25']);
 });
@@ -71,6 +73,11 @@ test('generic year/session mocks and mixed papers cannot create analysis or muta
 });
 test('renamed targeted practice renders learning feedback without entering mock score trends',()=>{
   const h=harness();h.app.textContent='빈출·취약 연습 결과';h.s.pastQueue=paper().map(q=>({...q,_unifiedMock:false,_balancedMock:false}));h.s.pastAnswers=h.s.pastQueue.map(()=>1);
+  h.a.persistResult(h.s.pastQueue,h.s.pastAnswers);
   const html=h.render();assert.ok(html.includes('취약 파트 분석'));assert.ok(!html.includes('모의시험 성적 추이'));assert.equal(h.storage.has(SCORE_KEY),false);assert.equal(h.storage.has(PROFILE_KEY),true);
+});
+test('rendering a result cannot create a score or profile outside the submission transaction',()=>{
+  const h=harness();h.s.pastQueue=paper();h.s.pastAnswers=h.s.pastQueue.map(()=>1);
+  h.render();h.render();assert.equal(h.storage.size,0);
 });
 console.log(`unified mock analytics: PASS (${passed} cases)`);

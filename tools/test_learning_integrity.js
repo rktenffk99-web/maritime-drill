@@ -20,7 +20,8 @@ function harness(id='device-a'){
   let src=html.slice(start,end),pos=src.lastIndexOf('})();');
   src=src.slice(0,pos)+`window.__test={setup(q,prior){planSessionQueue=[q,{...q,_planKey:'navi3|other'}];planSessionIdx=0;planSessionStartedAt=window.__testSessionStartedAt;planSessionAnswers=[null,null];planSessionConfidence=[null,null];planSessionCommitted=new Set();planSessionKind='today';if(prior)ppSaveProgress({[q._planKey]:prior});},snapshot(){return {progress:ppLoadProgress(),checkpoint:ppLoadPassSessionCheckpoint(),confidence:planSessionConfidence.slice(),idx:planSessionIdx}},find:ppFindQuestion,profile:ppLoadWeakTopicProfile,boost:ppWeakTopicBoost,order:ppChoiceOrder};`+src.slice(pos);
   vm.runInContext(src,s);s.renderNavigatorPassPlanCard=()=>{};s.renderNavigatorPassPlan=()=>{};
-  return {s,data,render:timers[0],api:s.__mdLearningIntegrity};
+  // Analysis is persisted by successful submission; its observer only renders it.
+  return {s,data,render(){s.__mdWeakTopicAnalytics.persistResult(s.pastQueue,s.pastAnswers);timers[0]()},api:s.__mdLearningIntegrity};
 }
 const q={_planKey:'navi3|test',_planGrade:'navi3','정답':0,'선택지':['a','b','c','d']};
 test('answer is saved for review and advances without a self-rating',()=>{

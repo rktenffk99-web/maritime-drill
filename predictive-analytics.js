@@ -187,7 +187,7 @@
     }catch(e){console.warn('평가용 모의 점수 저장 실패',e)}
     return raw[historyKey];
   }
-  function evaluationSummary(queue,answers){
+  function evaluationSummary(queue,answers,persist=true){
     const rows=Array.isArray(queue)?queue:[],total=rows.length;
     const answered=rows.reduce((n,q,i)=>n+((answers&&answers[i]!==null&&answers[i]!==undefined)?1:0),0);
     const correct=rows.reduce((n,q,i)=>n+((answers&&answers[i]===q['정답'])?1:0),0);
@@ -197,7 +197,7 @@
     const explanationViewed=rows.some(q=>q&&q._evaluationExplanationViewed===true);
     const complete=total>0&&answered===total;
     let history=loadEvaluationScores()[historyKey]||[];
-    if(complete&&!explanationViewed){
+    if(persist&&complete&&!explanationViewed){
       const id=String((typeof pastResultId!=='undefined'&&pastResultId)||((typeof pastStartedAt!=='undefined'&&pastStartedAt)||Date.now()));
       history=saveEvaluationScore(historyKey,{id,at:new Date().toISOString(),score,correct,total,signature});
     }
@@ -206,7 +206,7 @@
   }
   // Unified papers have a new selection policy. Keep their score history
   // separate from every legacy evaluation scope without migrating or deleting it.
-  function unifiedSummary(queue,answers){
+  function unifiedSummary(queue,answers,persist=true){
     const rows=Array.isArray(queue)?queue:[],total=rows.length;
     const answered=rows.reduce((n,q,i)=>n+((answers&&answers[i]!==null&&answers[i]!==undefined)?1:0),0);
     const correct=rows.reduce((n,q,i)=>n+((answers&&answers[i]===q['정답'])?1:0),0);
@@ -217,12 +217,20 @@
     const complete=total>0&&answered===total;
     const eligible=total>0&&rows.every(q=>q&&q._unifiedMock===true&&!q._predictiveReview&&!q._evaluationMock);
     let history=loadEvaluationScores()[historyKey]||[];
-    if(eligible&&complete&&!explanationViewed){
+    if(persist&&eligible&&complete&&!explanationViewed){
       const id=String((typeof pastResultId!=='undefined'&&pastResultId)||((typeof pastStartedAt!=='undefined'&&pastStartedAt)||Date.now()));
       history=saveEvaluationScore(historyKey,{id,at:new Date().toISOString(),score,correct,total,signature,mode:'unified-v1'},'모의시험 점수');
     }
     const recent=history.slice(0,3),avg=recent.length?Math.round(recent.reduce((s,r)=>s+(Number(r.score)||0),0)/recent.length*10)/10:null;
     return {grade,signature,historyKey,total,answered,correct,score,complete,eligible,explanationViewed,recentCount:recent.length,recentAverage:avg};
+  }
+  // Persist analysis inside the submission transaction, before deleting its answers.
+  function persistResult(queue,answers){
+    if(!Array.isArray(queue)||!queue.length||!queue.every(q=>q&&q._predictiveMock&&!q._predictiveReview))return;
+    const result=stats(queue,answers);if(!result.subjects.length)return;
+    saveProfile(result.topics);
+    if(queue.some(q=>q&&q._evaluationMock))evaluationSummary(queue,answers);
+    if(queue.every(q=>q&&q._unifiedMock===true))unifiedSummary(queue,answers);
   }
   function pctBar(value){return `<div style="height:7px;background:#E2E8F0;border-radius:999px;overflow:hidden"><div style="height:100%;width:${Math.max(0,Math.min(100,value))}%;background:#7C3AED"></div></div>`}
   function render(){
@@ -236,11 +244,10 @@
     const s=stats(pastQueue,pastAnswers);if(!s.subjects.length)return;
     const isEvaluation=(pastQueue||[]).some(q=>q&&q._evaluationMock);
     const isUnified=(pastQueue||[]).length>0&&pastQueue.every(q=>q&&q._unifiedMock===true);
-    saveProfile(s.topics);
     const grade=String((pastQueue.find(q=>q&&q._planGrade)||{})._planGrade||'');
     const boost=Object.values(getProfileForGrade(grade)||{}).sort((a,b)=>b.boostMultiplier-a.boostMultiplier);
-    const evaluation=isEvaluation?evaluationSummary(pastQueue,pastAnswers):null;
-    const unified=isUnified?unifiedSummary(pastQueue,pastAnswers):null;
+    const evaluation=isEvaluation?evaluationSummary(pastQueue,pastAnswers,false):null;
+    const unified=isUnified?unifiedSummary(pastQueue,pastAnswers,false):null;
     const host=document.createElement('section');host.id='md-predictive-analysis';host.className='card';host.style.cssText='margin-top:14px;border-left:4px solid #7C3AED';
     const subjects=s.subjects.sort((a,b)=>a.score-b.score).map(r=>`<div style="padding:11px;border:1px solid #E2E8F0;border-radius:10px"><div style="display:flex;justify-content:space-between;gap:8px"><b>${htmlText(r.label)}</b><b>${r.score}점</b></div><div style="font-size:11px;color:#64748B;margin:4px 0 7px">${r.total}문제 · 정답 ${r.correct} · 오답 ${r.wrong} · 무응답 ${r.unanswered}<br>푼 문제 중 정답률 ${r.accuracy===null?'—':r.accuracy+'%'} (응답 ${r.attempts}문제)</div>${pctBar(r.score)}</div>`).join('');
     const weak=boost.slice(0,6).map((r,i)=>`<div style="padding:10px 0;border-bottom:1px solid #E2E8F0"><div style="display:flex;justify-content:space-between;gap:10px"><div><b>${i+1}. ${htmlText(r.label)}</b><span style="font-size:10px;color:#64748B;margin-left:5px">${htmlText(r.subject)}</span></div><b>취약 가중치 ${(Number(r.boostMultiplier)||1).toFixed(2)}배</b></div><div style="font-size:11px;color:#64748B;margin:4px 0 6px">${r.attempts}문제 응답 · 오답 ${r.wrong} · 오답률 ${r.errorRate}% · 최근성·표본수 반영</div>${pctBar(Math.round((r.boostMultiplier-1)/0.75*100))}</div>`).join('');
@@ -250,7 +257,7 @@
     const firstCard=app.querySelector('.card');
     if(firstCard&&firstCard.parentNode)firstCard.parentNode.insertBefore(host,firstCard.nextSibling);else app.appendChild(host);
   }
-  global.__mdWeakTopicAnalytics={subjectOf,topicOf,stats,reinforcement,aggregateProfile,getProfileForGrade,recentHomeworkEvidence,evidenceDecay,evaluationSignature,evaluationSummary,unifiedSummary,loadEvaluationScores};
+  global.__mdWeakTopicAnalytics={subjectOf,topicOf,stats,reinforcement,aggregateProfile,getProfileForGrade,recentHomeworkEvidence,evidenceDecay,evaluationSignature,evaluationSummary,unifiedSummary,loadEvaluationScores,persistResult};
   new MutationObserver(()=>requestAnimationFrame(render)).observe(document.documentElement,{childList:true,subtree:true});
   document.addEventListener('DOMContentLoaded',render,{once:true});
   setTimeout(render,0);

@@ -147,20 +147,23 @@
     }
     return {counter,tags,question};
   }
-  function readReports(){
+  function readReports(strict=false){
     try{
-      const v=JSON.parse(localStorage.getItem(REPORTS_KEY)||'[]'),reports=Array.isArray(v)?v:[];
+      const reports=JSON.parse(localStorage.getItem(REPORTS_KEY)||'[]');
+      if(!Array.isArray(reports)||reports.some(r=>!r||typeof r!=='object'||Array.isArray(r)))throw new Error('invalid problem reports');
       const cutoff=Date.parse(RESOLVED_REPORTS_CUTOFF);
       const kept=reports.filter(r=>{
         const t=Date.parse(r&&r.createdAt||'');
         return !Number.isFinite(t)||t>cutoff;
       });
-      if(kept.length!==reports.length){
+      if(!strict&&kept.length!==reports.length){
+        try{
         if(kept.length)localStorage.setItem(REPORTS_KEY,JSON.stringify(kept));
         else localStorage.removeItem(REPORTS_KEY);
+        }catch(e){}
       }
       return kept;
-    }catch(e){return []}
+    }catch(e){if(strict)throw e;return []}
   }
   function formatReports(reports){
     return reports.map((r,i)=>{
@@ -172,13 +175,21 @@
     const reports=readReports();if(!reports.length){toast('저장된 문제 신고가 없습니다.');return}
     const text=formatReports(reports);
     try{await navigator.clipboard.writeText(text);toast(`문제 신고 ${reports.length}건을 복사했습니다.`)}catch(e){
-      const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast(`문제 신고 ${reports.length}건을 복사했습니다.`)
+      const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();
+      let copied=false;
+      try{copied=document.execCommand('copy')===true}catch(e){}finally{ta.remove()}
+      if(!copied){toast('신고를 복사하지 못했습니다. 신고 목록을 지우지 말고 브라우저의 복사 권한을 확인해 주세요.');return false}
+      toast(`문제 신고 ${reports.length}건을 복사했습니다.`);
     }
   }
   function clearReports(){
     const reports=readReports();if(!reports.length){toast('삭제할 문제 신고가 없습니다.');return}
-    if(typeof window.confirm==='function'&&!window.confirm(`저장된 문제 신고 ${reports.length}건을 모두 삭제하시겠습니까?`))return;
-    try{localStorage.removeItem(REPORTS_KEY)}catch(e){}
+    if(typeof window.confirm==='function'&&!window.confirm(`저장된 문제 신고 ${reports.length}건을 모두 삭제하시겠습니까? Drive 연결 시 다른 기기에도 삭제가 적용됩니다.`))return;
+    try{
+      if(window.__mdDriveSyncV2&&typeof window.__mdDriveSyncV2.resetKey==='function'){
+        if(!window.__mdDriveSyncV2.resetKey(REPORTS_KEY,'[]','문제 신고 전체 삭제'))throw new Error('report reset failed');
+      }else localStorage.removeItem(REPORTS_KEY);
+    }catch(e){toast('신고를 삭제하지 못했습니다. 기존 신고는 그대로 남아 있습니다.');return false}
     document.getElementById('md-report-list-btn')?.remove();
     document.getElementById('md-report-list-modal')?.remove();
     toast(`문제 신고 ${reports.length}건을 삭제했습니다.`);
@@ -192,7 +203,7 @@
       const detail=String(r.detail||'').trim();
       return `<div style="padding:10px;border:1px solid #E2E8F0;border-radius:9px;background:#F8FAFC"><div style="font-size:12px;font-weight:900">${escapeText(r.reason||'신고')} · #${reports.length-ri}</div><div style="font-size:10px;color:#64748B;margin-top:3px">${escapeText((r.tags||[]).join(' · '))} ${escapeText(r.counter||'')}</div><div style="font-size:12px;line-height:1.55;margin-top:6px">${escapeText(r.question||'문제 문구 없음')}</div>${detail?`<div style="font-size:12px;line-height:1.55;margin-top:7px;padding:8px;border-radius:7px;background:#FFF;border:1px solid #E2E8F0"><b>신고 내용</b><br>${escapeText(detail)}</div>`:''}</div>`;
     }).join(''):'<div style="padding:18px;text-align:center;color:#64748B">저장된 문제 신고가 없습니다.</div>';
-    overlay.innerHTML=`<div class="card" style="width:min(640px,100%);max-height:85vh;overflow:auto;margin:0;background:#fff"><div style="font-size:17px;font-weight:900">저장된 문제 신고 · ${reports.length}건</div><div style="font-size:11px;color:#64748B;margin:5px 0 12px">신고는 이 브라우저의 localStorage에만 저장됩니다. 2026-09-18 검수 완료 이전 신고는 자동 정리되며, 이후 신고만 여기에 남습니다.</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button class="btn btn-accent" style="flex:1;min-width:120px" id="md-report-copy" ${reports.length?'':'disabled'}>전체 복사</button><button class="btn btn-outline" style="flex:1;min-width:120px" id="md-report-clear" ${reports.length?'':'disabled'}>전체 삭제</button><button class="btn btn-outline" style="flex:1;min-width:120px" id="md-report-list-close">닫기</button></div><div style="display:flex;flex-direction:column;gap:8px">${rows}</div></div>`;
+    overlay.innerHTML=`<div class="card" style="width:min(640px,100%);max-height:85vh;overflow:auto;margin:0;background:#fff"><div style="font-size:17px;font-weight:900">저장된 문제 신고 · ${reports.length}건</div><div style="font-size:11px;color:#64748B;margin:5px 0 12px">신고는 이 브라우저에 저장되며, Drive 연결 시 다른 기기와 동기화됩니다. 2026-09-18 검수 완료 이전 신고는 자동 정리되며, 이후 신고만 여기에 남습니다.</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button class="btn btn-accent" style="flex:1;min-width:120px" id="md-report-copy" ${reports.length?'':'disabled'}>전체 복사</button><button class="btn btn-outline" style="flex:1;min-width:120px" id="md-report-clear" ${reports.length?'':'disabled'}>전체 삭제</button><button class="btn btn-outline" style="flex:1;min-width:120px" id="md-report-list-close">닫기</button></div><div style="display:flex;flex-direction:column;gap:8px">${rows}</div></div>`;
     document.body.appendChild(overlay);
     overlay.querySelector('#md-report-copy').onclick=copyReports;
     overlay.querySelector('#md-report-clear').onclick=clearReports;
@@ -207,9 +218,12 @@
     const note=String(detail||'').trim();
     if(reason==='직접 입력'&&!note){toast('신고 내용을 입력해 주세요.');return false}
     const snap=collectQuestionSnapshot();
-    const reports=readReports();
-    reports.push({createdAt:new Date().toISOString(),reason,detail:note,...snap});
-    try{localStorage.setItem(REPORTS_KEY,JSON.stringify(reports.slice(-500)))}catch(e){}
+    try{
+      const reports=readReports(true);
+      if(reports.length>=500){toast('신고가 500건에 도달했습니다. 저장된 신고를 전체 복사해 보관한 뒤 정리해 주세요.');return false}
+      reports.push({createdAt:new Date().toISOString(),reason,detail:note,...snap});
+      localStorage.setItem(REPORTS_KEY,JSON.stringify(reports));
+    }catch(e){toast('문제 신고를 저장하지 못했습니다. 입력 내용은 유지됩니다. 내용을 복사해 보관한 뒤 다시 시도해 주세요.');return false}
     toast(`문제 신고 저장됨 · ${reason}`);
     document.getElementById('md-report-modal')?.remove();
     return true;
