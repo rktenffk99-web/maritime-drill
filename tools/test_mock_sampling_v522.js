@@ -99,14 +99,17 @@ try{
   });
 }finally{fs.rmSync(temp,{recursive:true,force:true})}
 
-test('evaluation explanations are blocked before submission, while practice explanations remain',()=>{
+test('all mock exam modes allow requesting the current answer and explanation',()=>{
   const s={currentMode:'past',pastMode:'mock',pastQueue:[{_evaluationMock:true}],pastIdx:0,document:{getElementById:()=>null,readyState:'loading',addEventListener(){}}};s.window=s;vm.createContext(s);
   vm.runInContext(fs.readFileSync(path.join(root,'mock-explanation-controls.js'),'utf8'),s);
-  assert.equal(s.__mdMockExplanationControls.isMockExam(),false);
-  assert.equal(s.__mdMockExplanationControls.currentQuestion(),null);
+  assert.equal(s.__mdMockExplanationControls.isMockExam(),true);
+  assert.equal(s.__mdMockExplanationControls.currentQuestion(),s.pastQueue[0]);
   s.pastQueue=[{_balancedMock:true}];assert.equal(s.__mdMockExplanationControls.isMockExam(),true);
   s.pastQueue=[{_predictiveMock:true}];assert.equal(s.__mdMockExplanationControls.isMockExam(),true);
+  s.pastQueue=[{}];assert.equal(s.__mdMockExplanationControls.isMockExam(),true);
   s.currentMode='past-result';assert.equal(s.__mdMockExplanationControls.isMockExam(),false);
+  assert.equal(s.__mdMockExplanationControls.currentQuestion(),null);
+  s.currentMode='past';s.pastMode='study';assert.equal(s.__mdMockExplanationControls.isMockExam(),false);
 });
 
 if(!process.argv.includes('--synthetic-only')){

@@ -4,7 +4,7 @@ from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from collections import Counter
-import json, os, threading
+import json, os, re, threading
 from playwright.sync_api import sync_playwright
 from browser_navigation_helpers import wait_plan
 
@@ -24,32 +24,83 @@ def configure(page,subjects):
         for field in page.locator(f'input[data-pp-subject="{grade}"]').all():field.set_checked(field.input_value() in subjects)
     page.locator('[onclick="saveNavigatorPassPlanSettings()"]').click();wait_plan(page,tab='mock')
 
+def refresh_and_resume(page):
+    page.reload(wait_until='domcontentloaded',timeout=60000)
+    page.wait_for_function("window.__MD_BOOTED__===true&&typeof resumePastProgress==='function'&&typeof window.__mdMockExplanationControls==='object'")
+    page.evaluate('resumePastProgress()')
+
 try:
   with sync_playwright() as pw:
     browser=pw.chromium.launch(headless=True,executable_path=os.environ.get('MD_BROWSER_EXECUTABLE') or None,args=['--no-sandbox','--disable-dev-shm-usage'])
     context=browser.new_context(viewport={'width':1280,'height':900})
     origin=f'http://127.0.0.1:{server.server_port}/'
     context.route('**/*',lambda r:r.continue_() if r.request.url.startswith(origin) else r.abort())
-    page=context.new_page();page.on('pageerror',lambda e:report['page_errors'].append(str(e)))
+    page=context.new_page();page.set_default_timeout(60000);page.on('pageerror',lambda e:report['page_errors'].append(str(e)))
     page.goto(origin,wait_until='load');page.get_by_role('button',name='동의합니다',exact=True).click()
     page.wait_for_function("hasAgreedTerms()&&!document.getElementById('md-modal-wrap')")
     all_subjects=['항해','운용','법규','영어','상선전문']
     configure(page,all_subjects)
     assert page.locator('button[onclick^="startNavigatorPassPlanMock("]:visible').count()==2
     assert page.locator('button[onclick^="startNavigatorEvaluationMock("]:visible').count()==2
-    # Evaluation mock is score measurement only: no adaptive progress mutation, even on submission.
+    print('evaluation: checking requested answer and explanation controls',flush=True)
+    # Requested answers stay optional; viewed evaluations still show a score but do not enter recent averages.
     eval_before=page.evaluate("""()=>{const p=JSON.parse(localStorage.getItem('md_nav23_pass_progress_v1')||'{}');const keep=v=>v&&(Number(v.attempts)||Number(v.correct)||Number(v.wrong)||Number(v.unsure)||Number(v.masteryReviews)||v.firstPassDate||v.lastDate||v.lastOutcome||v.mastered);const fields=['attempts','correct','wrong','unsure','masteryReviews','firstPassDate','lastDate','lastOutcome','status','mastered','dueDate','lastPracticeMode'];return Object.fromEntries(Object.entries(p).filter(([,v])=>keep(v)).map(([k,v])=>[k,Object.fromEntries(fields.map(f=>[f,v?.[f]??null]))]))}""")
     page.evaluate("(grade)=>startNavigatorEvaluationMock(grade)",'navi2')
-    page.wait_for_function("typeof window.__mdMockExplanationControls==='object'&&!window.__mdMockExplanationControls.isMockExam()")
-    assert page.locator('#md-mock-explanation-toggle').count()==0
-    assert page.locator('#md-mock-explanation-panel').count()==0
+    page.wait_for_function("typeof window.__mdMockExplanationControls==='object'&&window.__mdMockExplanationControls.isMockExam()")
+    page.locator('#md-mock-explanation-toggle').wait_for(state='visible')
+    assert page.locator('#md-mock-explanation-panel').is_hidden()
     assert page.evaluate('pastAnswers.every(answer=>answer===null)')
-    report['cases'].append('evaluation mock cannot reveal an explanation or answer before submission')
     assert page.evaluate("pastQueue.length===125&&pastQueue.every(q=>q._evaluationMock&&q._predictiveMock)")
     assert page.evaluate("pastQueue.map(q=>q['과목'])")==[subject for subject in all_subjects for _ in range(25)]
-    page.evaluate("choosePastAnswer(pastQueue[0]['정답']);pastIdx=pastQueue.length-1;choosePastAnswer((pastQueue[pastIdx]['정답']+1)%4);pastNext()")
+    evaluation_scores_before=page.evaluate("localStorage.getItem('md_evaluation_score_history_v1')")
+    page.evaluate("choosePastAnswer((pastQueue[0]['정답']+1)%4)")
+    selected_before=page.evaluate('pastAnswers.slice()')
+    correct_text=page.evaluate("pastChoiceText(pastQueue[0]['선택지'][pastQueue[0]['정답']])")
+    toggle=page.locator('#md-mock-explanation-toggle')
+    toggle.focus();toggle.press('Space')
+    panel=page.locator('#md-mock-explanation-panel')
+    assert panel.is_visible()
+    assert page.evaluate('pastIdx')==0
+    assert page.evaluate('pastAnswers.slice()')==selected_before
+    toggle.press('Enter')
+    assert panel.is_hidden()
+    assert page.evaluate('pastIdx')==0
+    assert page.evaluate('pastAnswers.slice()')==selected_before
+    toggle.click()
+    assert panel.is_visible()
+    panel_text=re.sub(r'\s+',' ',panel.inner_text()).strip()
+    assert '정답' in panel_text
+    assert re.sub(r'\s+',' ',correct_text).strip() in panel_text
+    assert page.evaluate('pastAnswers.slice()')==selected_before
+    assert page.evaluate('pastQueue[0]._evaluationExplanationViewed===true')
+    page.locator('#md-mock-explanation-toggle').click()
+    assert panel.is_hidden()
+    page.locator('button[onclick="pastNext()"]').click()
+    page.locator('#md-mock-explanation-toggle').wait_for(state='visible')
+    assert page.evaluate('pastIdx')==1
+    assert page.locator('#md-mock-explanation-panel').is_hidden()
+    assert page.evaluate('pastQueue[1]._evaluationExplanationViewed!==true')
+    report['cases'].append('focused explanation controls use Space and Enter without advancing the question or changing the selected answer')
+    report['cases'].append('evaluation answer and explanation open only on request, preserve the selected answer, and reset visibility for the next question')
+    before_resume=page.evaluate('({keys:pastQueue.map(q=>q._planKey),answers:pastAnswers.slice(),idx:pastIdx})')
+    refresh_and_resume(page)
+    page.locator('#md-mock-explanation-toggle').wait_for(state='visible')
+    assert page.evaluate('({keys:pastQueue.map(q=>q._planKey),answers:pastAnswers.slice(),idx:pastIdx})')==before_resume
+    assert page.evaluate('pastQueue[0]._evaluationExplanationViewed===true')
+    assert page.locator('#md-mock-explanation-panel').is_hidden()
+    report['cases'].append('evaluation explanation-viewed status and selected answers survive refresh and resume')
+    print('evaluation: resumed; submitting the fully answered paper',flush=True)
+    # The selected first answer was exercised through the UI; build the remaining
+    # score fixture without re-rendering and re-validating all 125 source rows 124 times.
+    page.evaluate("""()=>{pastAnswers=pastQueue.map((q,i)=>i===0?pastAnswers[0]:q['정답']);pastIdx=pastQueue.length-1;renderPastCard();pastNext()}""")
     page.wait_for_selector('#md-predictive-analysis')
     assert '평가용 모의고사 결과' in page.locator('#app').inner_text()
+    assert '이번 점수 99%' in page.locator('#md-predictive-analysis').inner_text()
+    assert '해설 열람 기록 제외' in page.locator('#md-predictive-analysis').inner_text()
+    assert page.evaluate('pastAnswers.every(answer=>answer!==null)')
+    assert page.evaluate("localStorage.getItem('md_evaluation_score_history_v1')")==evaluation_scores_before
+    print('evaluation: completed score and recent-average exclusion passed',flush=True)
+    report['cases'].append('a fully answered evaluation shows its score while the viewed-explanation paper stays outside recent averages')
     eval_after=page.evaluate("""()=>{const p=JSON.parse(localStorage.getItem('md_nav23_pass_progress_v1')||'{}');const keep=v=>v&&(Number(v.attempts)||Number(v.correct)||Number(v.wrong)||Number(v.unsure)||Number(v.masteryReviews)||v.firstPassDate||v.lastDate||v.lastOutcome||v.mastered);const fields=['attempts','correct','wrong','unsure','masteryReviews','firstPassDate','lastDate','lastOutcome','status','mastered','dueDate','lastPracticeMode'];return Object.fromEntries(Object.entries(p).filter(([,v])=>keep(v)).map(([k,v])=>[k,Object.fromEntries(fields.map(f=>[f,v?.[f]??null]))]))}""")
     assert eval_after==eval_before,(eval_before,eval_after)
     assert page.evaluate("""()=>!Object.values(JSON.parse(localStorage.getItem('md_nav23_pass_progress_v1')||'{}')).some(v=>v&&v.lastPracticeMode==='predictive-mock')""")
@@ -71,9 +122,12 @@ try:
             assert page.locator('#md-mock-explanation-panel').is_hidden()
             page.locator('#md-mock-explanation-toggle').click()
             assert not page.locator('#md-mock-explanation-panel').is_hidden()
-            assert page.locator('#md-mock-explanation-panel').inner_text().strip()
+            practice_text=page.locator('#md-mock-explanation-panel').inner_text()
+            practice_answer=page.evaluate("pastChoiceText(pastQueue[0]['선택지'][pastQueue[0]['정답']])")
+            assert '정답' in practice_text
+            assert re.sub(r'\s+',' ',practice_answer).strip() in re.sub(r'\s+',' ',practice_text)
             assert page.evaluate('pastAnswers.every(answer=>answer===null)')
-            report['cases'].append('practice mock still opens the current explanation without submitting an answer')
+            report['cases'].append('practice mock opens the correct answer and current explanation without submitting an answer')
     report['cases'].append('both grades have 125 valid questions in subject order, drawn across multiple years')
     selected=['항해','법규','영어'];configure(page,selected)
     # Reset only isolated test-browser assembly history, never application progress.
@@ -85,7 +139,9 @@ try:
         other='navi3' if grade=='navi2' else 'navi2'
         other_before=page.evaluate("grade=>JSON.parse(localStorage.getItem('md_mock_exposure_v1')||'null')?.grades?.[grade]||{sequence:0,seen:{},recent:[]}",other)
         for i in range(20):
+            print(f'rotation {grade} {i+1}/20: assembling',flush=True)
             page.evaluate('(grade)=>startNavigatorPassPlanMock(grade)',grade)
+            print(f'rotation {grade} {i+1}/20: checking',flush=True)
             assert page.evaluate("currentMode==='past'&&pastMode==='mock'&&pastQueue.every(mdQuestionUsable)")
             assert page.evaluate("pastQueue.map(q=>q['과목'])")==[s for s in selected for _ in range(25)]
             keys=page.evaluate('pastQueue.map(q=>q._planKey)');assert len(set(keys))==75
@@ -101,7 +157,7 @@ try:
             if i==0:
                 page.evaluate("pastIdx=24;choosePastAnswer(1);pastNext();choosePastAnswer(2)")
                 before=page.evaluate('({keys:pastQueue.map(q=>q._planKey),answers:pastAnswers,idx:pastIdx,exposure:localStorage.getItem("md_mock_exposure_v1")})')
-                page.reload(wait_until='load');page.evaluate('resumePastProgress()')
+                refresh_and_resume(page)
                 assert page.evaluate('({keys:pastQueue.map(q=>q._planKey),answers:pastAnswers,idx:pastIdx,exposure:localStorage.getItem("md_mock_exposure_v1")})')==before
                 assert page.evaluate('pastQueue.every(q=>q._balancedMock)')
                 assert page.locator('[title^="기출 원문 번호:"]').inner_text()=='Q26'

@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="md-build" content="android-single-file">
-<title>Maritime Drill v5.22 · Android</title>
+<title>Maritime Drill v5.23 · Android</title>
 <style>
 
 *{margin:0;padding:0;box-sizing:border-box}
@@ -14673,7 +14673,7 @@ window.MD_DATA["safety2"] = { meta: META, QUESTIONS, IMP, TTS_MAP, SHIP_INFO, NE
 <script>
 
 // ── 앱 버전 (업데이트 시마다 올리기) ──
-const APP_VERSION = '5.22';
+const APP_VERSION = '5.23';
 
 // ── v4.81: 브라우저 저장 실패를 사용자에게 즉시 알리는 공통 저장기 ──
 function showStorageWarning(label, error){
@@ -21759,7 +21759,7 @@ function savePastProgress(){
     if(!safeStorageSet(PAST_PROGRESS_META_KEY,JSON.stringify(meta),'필기 진행 문항'))return;
     pastSavedAnswers=pastAnswers;
   }
-  safeStorageSet(PAST_PROGRESS_KEY,JSON.stringify({id:pastProgressId,idx:pastIdx,answers:pastAnswers,mode:pastMode,startedAt:pastStartedAt,savedAt:Date.now()}),'필기 진행');
+  safeStorageSet(PAST_PROGRESS_KEY,JSON.stringify({id:pastProgressId,idx:pastIdx,answers:pastAnswers,mode:pastMode,startedAt:pastStartedAt,savedAt:Date.now(),evaluationExplanationViewed:pastQueue.some(q=>q&&q._evaluationExplanationViewed===true)}),'필기 진행');
 }
 function getPastProgress(){
   const meta=safeStorageGetJSON(PAST_PROGRESS_META_KEY,null,'필기 진행 문항');
@@ -21795,6 +21795,7 @@ async function resumePastProgress(){
     await ensurePastExplainForYears(meta.refs.map(r=>r.year));
     if(meta.balanced)restored.forEach(q=>{q._balancedMock=true});
     if(meta.evaluation)restored.forEach(q=>{q._evaluationMock=true;q._predictiveMock=true});
+    if(state.evaluationExplanationViewed===true)restored.forEach(q=>{q._evaluationExplanationViewed=true});
     pastQueue=restored;pastAnswers=state.answers;pastIdx=state.idx;pastMode=state.mode;
     // Paused time is excluded from the next displayed session duration.
     pastStartedAt=Date.now()-Math.max(0,state.savedAt-state.startedAt);
@@ -21880,9 +21881,10 @@ function appPrompt(opts,onSubmit){
 window.alert=appAlert;
 </script>
 
-<script src="data-identity.js?v=5.22"></script>
+<script src="data-identity.js?v=5.23"></script>
 
-<script src="scheduler-v522.js?v=5.22"></script>
+<script src="scheduler-v522.js?v=5.23"></script>
+
 <script>
 // ── v5.07: 2·3급 항해사 합격 플랜 / 오늘의 숙제 ──
 // 시험일에서 역산하여 최근 5개년 빈출 → 전체 → 시험 직전 복습 순으로 배정하고,
@@ -23101,11 +23103,11 @@ window.alert=appAlert;
 })();
 
 </script>
-<script src="drive-state-codec.js?v=5.22"></script>
-<script src="keyboard-controls.js?v=5.22"></script>
-<script src="explain-2026-navi3-3.js?v=5.22"></script>
-<script src="explain-2026-navi3-3-english.js?v=5.22"></script>
-<script src="convenience-controls.js?v=5.22"></script>
+<script src="drive-state-codec.js?v=5.23"></script>
+<script src="keyboard-controls.js?v=5.23"></script>
+<script src="explain-2026-navi3-3.js?v=5.23"></script>
+<script src="explain-2026-navi3-3-english.js?v=5.23"></script>
+<script src="convenience-controls.js?v=5.23"></script>
 
 
 
