@@ -14842,6 +14842,17 @@ async function exportAllLearningData(){
   let items;
   try{ items=collectBackupItems(); }
   catch(error){ showStorageWarning('전체 학습 데이터',error); return; }
+  // A quota failure must not leave the current in-memory answers out of a
+  // manual backup. Export uses the existing, importable all-learning format.
+  if(currentMode==='past'&&pastQueue.length){
+    savePastProgress();
+    if(pastProgressMeta){
+      const state=capturePastProgressState();
+      items[PAST_CHECKPOINT_KEY]=JSON.stringify({meta:pastProgressMeta,state});
+      items[PAST_PROGRESS_META_KEY]=JSON.stringify(pastProgressMeta);
+      items[PAST_PROGRESS_KEY]=JSON.stringify(state);
+    }
+  }
   const backup={
     app:'Maritime Drill',
     schemaVersion:BACKUP_SCHEMA_VERSION,
@@ -17472,7 +17483,10 @@ function setPastRunnerVariant(v){
 // v4.38: 그만/다시 시 복귀 — runner 한 종류만 남아 단순화.
 // v4.44: 전 년도 통합 세션(pastAllYears=true)이면 년도 선택 화면으로 복귀.
 function goBackFromPastSession(){
-  savePastProgress();
+  if(currentMode==='past'&&pastQueue.length&&savePastProgress()!==true){
+    showToast('답안을 저장하지 못해 나가기를 중단했습니다. 다시 저장하거나 답안 파일을 백업하세요.',6000);
+    return;
+  }
   currentMode="past-menu";
   if(!pastSubjectId||!pastBaseShort){renderSubjectSelect();return;}
   if(pastReturnView==='pass-plan-predictive-mock'){
@@ -17624,7 +17638,7 @@ function renderPastCard(){
   const marked = isPastMarked(q);  // v4.46: 북마크 상태
   app.innerHTML = `
     <div style="padding-top:20px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
-      <button class="btn btn-outline" style="width:auto;font-size:13px;padding:8px 12px;display:inline-flex;align-items:center;gap:5px" onclick="showConfirm('학습을 중단하시겠습니까?', goBackFromPastSession)">${icon('arrowLeft',14)} 그만</button>
+      <button class="btn btn-outline" style="width:auto;font-size:13px;padding:8px 12px;display:inline-flex;align-items:center;gap:5px" onclick="goBackFromPastSession()">${icon('arrowLeft',14)} 저장하고 나가기</button>
       <div style="display:flex;align-items:center;gap:8px">
         <button onclick="togglePastMark()" title="북마크 (B)" aria-label="북마크"
           style="background:${marked?'#FEF3C7':'transparent'};border:1.5px solid ${marked?'#F59E0B':'#E5E7EB'};border-radius:8px;padding:6px 10px;cursor:pointer;font-size:16px;line-height:1;color:${marked?'#D97706':'#94A3B8'};font-weight:800">
@@ -17635,7 +17649,7 @@ function renderPastCard(){
         </div>
       </div>
     </div>
-    <div role="status" data-past-save-status style="font-size:12px;margin-bottom:10px;color:${progressSaved?'#047857':'#B91C1C'}">${progressSaved?'이 기기에 자동 저장됨 · 인터넷 연결 없이도 답안을 저장합니다.':'답안 저장 실패 · 이 화면을 닫지 말고 저장공간 설정을 확인하세요.'}</div>
+    <div role="status" data-past-save-status style="font-size:12px;margin-bottom:10px;color:${progressSaved?'#047857':'#B91C1C'}">${progressSaved?'이 기기에 자동 저장됨 · 인터넷 연결 없이도 답안을 저장합니다.':'답안 저장 실패 · 이 화면을 닫지 말고 다시 저장하거나 파일로 백업하세요.'}${progressSaved?'':'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button class="btn btn-outline" style="width:auto" onclick="renderPastCard()">다시 저장</button><button class="btn btn-outline" style="width:auto" onclick="exportAllLearningData()">답안 파일 백업</button></div>'}</div>
     <div class="card" style="border-left:3px solid ${gColor}">
       <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
         <span class="tag" style="background:${gColor}20;color:${gColor};margin:0">${q._year}년</span>
@@ -21756,6 +21770,10 @@ const PAST_CHECKPOINT_KEY='md_past_checkpoint_v2';
 let pastSavedAnswers=null;
 let pastProgressId=null;
 let pastProgressMeta=null;
+// mock-recovery-usability-v524
+function capturePastProgressState(){
+  return {id:pastProgressId,idx:pastIdx,answers:pastAnswers,mode:pastMode,startedAt:pastStartedAt,savedAt:Date.now(),evaluationExplanationViewed:pastQueue.some(q=>q&&q._evaluationExplanationViewed===true)};
+}
 function clearPastProgress(){
   safeStorageRemove(PAST_CHECKPOINT_KEY,'필기 답안 체크포인트');
   safeStorageRemove(PAST_PROGRESS_KEY,'필기 진행');safeStorageRemove(PAST_PROGRESS_META_KEY,'필기 진행 문항');
@@ -21767,11 +21785,11 @@ function savePastProgress(){
     pastProgressId=Date.now()+'-'+Math.random().toString(36).slice(2);
     const refs=pastQueue.map(q=>({id:pqid(q),short:q._short||q._gradeShort,year:q._year,session:q['회차'],source:q._source,group:q._n3aGroupId,predictive:q._predictiveMock===true,predictiveReview:q._predictiveReview===true,planKey:q._planKey,planGrade:q._planGrade,predictiveConcept:q._predictiveConcept}));
     const meta={version:1,id:pastProgressId,balanced:pastQueue.every(q=>q._balancedMock===true),evaluation:pastQueue.every(q=>q._evaluationMock===true),refs,subjectId:pastSubjectId,base:pastBaseShort,year:pastYear,session:pastSession,variant:pastVariant,allYears:pastAllYears,returnView:pastReturnView,analysisSubject:naviAnalysisSubjectId,analysisDetail:navi3AnalysisDetail,practiceReturn:navi3PracticeReturn,practiceLabel:navi3PracticeLabel};
-    if(!safeStorageSet(PAST_PROGRESS_META_KEY,JSON.stringify(meta),'필기 진행 문항'))return;
     pastProgressMeta=meta;
+    if(!safeStorageSet(PAST_PROGRESS_META_KEY,JSON.stringify(meta),'필기 진행 문항'))return;
     pastSavedAnswers=pastAnswers;
   }
-  const state={id:pastProgressId,idx:pastIdx,answers:pastAnswers,mode:pastMode,startedAt:pastStartedAt,savedAt:Date.now(),evaluationExplanationViewed:pastQueue.some(q=>q&&q._evaluationExplanationViewed===true)};
+  const state=capturePastProgressState();
   // One atomic write keeps the paper and its answers together across restarts
   // and Drive merges. The two old keys remain compatible with older clients.
   const saved=safeStorageSet(PAST_CHECKPOINT_KEY,JSON.stringify({meta:pastProgressMeta,state}),'필기 답안 체크포인트');
@@ -21798,15 +21816,19 @@ async function confirmPastProgressReplacement(){
     window.mdPastReplaceSaved=()=>{closeModal();finish(true)};
     window.mdPastResumeSaved=()=>{closeModal();finish(false);resumePastProgress()};
     openModal({title:'중단한 시험이 있습니다',sub:`${done}/${saved.meta.refs.length}문제 응답이 저장되어 있습니다.`,closable:false,
-      body:'<p>이어서 풀거나 새 시험을 선택하세요. 새 시험을 시작하면 기존 시험의 답안을 대체합니다.</p>',
-      footer:'<button class="btn btn-outline" onclick="mdPastKeepSaved()">취소</button><button class="btn btn-green" onclick="mdPastResumeSaved()">이어서 풀기</button><button class="btn btn-outline" onclick="mdPastReplaceSaved()">기존 답안 대신 새 시험 시작</button>'});
+      body:'<p>새 시험을 시작하면 기존 시험의 답안을 대체합니다.</p><div style="display:flex;flex-direction:column;gap:10px"><button class="btn btn-green" onclick="mdPastResumeSaved()">이어서 풀기</button><button class="btn btn-outline" onclick="mdPastReplaceSaved()">기존 답안 대신 새 시험 시작</button></div>',
+      footer:'<button class="btn btn-outline" onclick="mdPastKeepSaved()">취소</button>'});
+    document.getElementById('md-modal-wrap')?.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();window.mdPastKeepSaved()}});
   });
 }
 function renderPastResumeCard(subjectId){
   const saved=getPastProgress();if(!saved||(subjectId&&saved.meta.subjectId!==subjectId))return '';
   const done=saved.state.answers.filter(a=>a!==null).length;
   const label=saved.state.mode==='mock'?'모의고사 이어서 풀기':'필기 이어서 풀기';
-  return `<div class="card" data-past-resume style="border-left:3px solid #059669;background:#ECFDF5"><div style="font-weight:800;margin-bottom:8px">${label} · ${done}/${saved.meta.refs.length}문제 응답</div><p style="font-size:12px;margin-bottom:12px;color:var(--textDim)">선택한 답과 중단한 위치를 이 기기에 저장했습니다.</p><button class="btn btn-green" onclick="resumePastProgress()">${label}</button></div>`;
+  const grade=SUBJECTS.find(s=>s.id===saved.meta.subjectId)?.name||'필기시험';
+  const kind=saved.meta.evaluation?'평가용 모의':saved.meta.balanced?'실전 모의':saved.meta.refs.some(r=>r.predictive)?'실전예측 모의':saved.state.mode==='mock'?'모의시험':'기출 학습';
+  const savedTime=Number(saved.state.savedAt)>0?backupDateLabel(new Date(saved.state.savedAt).toISOString()):'저장 시각 정보 없음';
+  return `<div class="card" data-past-resume style="border-left:3px solid #059669;background:#ECFDF5"><div style="font-weight:800;margin-bottom:8px">${label} · ${done}/${saved.meta.refs.length}문제 응답</div><p style="font-size:12px;margin-bottom:12px;color:var(--textDim)">${escapeHtml(grade)} · ${kind}<br>마지막 저장: ${escapeHtml(savedTime)}<br>선택한 답과 중단한 위치를 이 기기에 저장했습니다.</p><button class="btn btn-green" onclick="resumePastProgress()">${label}</button><button class="btn btn-outline" style="margin-top:8px" onclick="exportAllLearningData()">저장된 기록 파일 백업</button></div>`;
 }
 async function resumePastProgress(){
   const saved=getPastProgress();if(!saved){showToast('이어 풀 기록이 없습니다.');return;}
