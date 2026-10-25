@@ -32,7 +32,7 @@ try:
         page.locator('#pp-daily-cap').fill('40');page.locator('[onclick="saveNavigatorPassPlanSettings()"]').click()
         wait_plan(page)
         wait_plan(page, tab='mock')
-        page.locator('''[onclick="startNavigatorPredictiveMock('navi3')"]''').click()
+        page.locator('''[onclick="startNavigatorUnifiedMock('navi3')"]''').click()
         page.wait_for_function("currentMode==='past'||document.getElementById('app').textContent.includes('모의를 시작하지 못했습니다')");assert page.evaluate("currentMode")=='past',page.locator('#app').inner_text();assert page.evaluate("pastQueue.length")==25,page.evaluate("({mode:currentMode,count:pastQueue.length,subjects:pastQueue.map(q=>q['과목'])})")
         first=page.evaluate("pastQueue[0]['정답']")
         page.locator(f'[onclick="choosePastAnswer({first})"]').click()
@@ -47,7 +47,7 @@ try:
         after=page.evaluate("({ids:pastQueue.map(pqid),answers:pastAnswers.slice(),idx:pastIdx})")
         assert before==after
         assert page.evaluate("pastQueue.every(q=>q._predictiveMock&&q._planKey&&q._planGrade==='navi3')")
-        report['cases'].append('predictive mock reload restores exact question order, answers, position and grading identity')
+        report['cases'].append('unified mock reload restores exact question order, answers, position and grading identity')
         for _ in range(23):page.locator('[onclick="pastNext()"]').click()
         page.wait_for_selector('#md-predictive-analysis')
         assert '4점' in page.locator('#md-predictive-analysis').inner_text()
@@ -55,7 +55,7 @@ try:
         assert profile['topics']
         page.evaluate("renderNavigatorPassPlan('navi2')");wait_plan(page)
         wait_plan(page, tab='mock')
-        page.locator('''[onclick="startNavigatorPredictiveMock('navi2')"]''').click();page.wait_for_function("currentMode==='past'||document.getElementById('app').textContent.includes('모의를 시작하지 못했습니다')");assert page.evaluate("currentMode")=='past',page.locator('#app').inner_text();assert page.evaluate("pastQueue.length")==25,page.evaluate("({mode:currentMode,count:pastQueue.length,subjects:pastQueue.map(q=>q['과목'])})")
+        page.locator('''[onclick="startNavigatorUnifiedMock('navi2')"]''').click();page.wait_for_function("currentMode==='past'||document.getElementById('app').textContent.includes('모의를 시작하지 못했습니다')");assert page.evaluate("currentMode")=='past',page.locator('#app').inner_text();assert page.evaluate("pastQueue.length")==25,page.evaluate("({mode:currentMode,count:pastQueue.length,subjects:pastQueue.map(q=>q['과목'])})")
         for _ in range(25):
             answer=page.evaluate("pastQueue[pastIdx]['정답']")
             page.locator(f'[onclick="choosePastAnswer({answer})"]').click();page.locator('[onclick="pastNext()"]').click()
