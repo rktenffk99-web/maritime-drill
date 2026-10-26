@@ -46,9 +46,9 @@ async function test(name,run){await run();passed++;console.log('PASS '+name)}
 (async()=>{
   await test('release patch is idempotent, keeps embedded sources and versions every root script URL',()=>{
     assert.equal(generate(html),html);assert.equal(fs.readFileSync(indexPath,'utf8').replace(/\r\n/g,'\n'),raw);
-    assert.match(html,/const APP_VERSION = '5\.27';/);assert.match(html,/<title>Maritime Drill v5\.27 · Android<\/title>/);
+    assert.match(html,/const APP_VERSION = '5\.28';/);assert.match(html,/<title>Maritime Drill v5\.28 · Android<\/title>/);
     const scripts=[...html.matchAll(/<script\b[^>]*\ssrc=["']([^"']+)["']/g)];assert.ok(scripts.length>=7);
-    for(const [,src] of scripts)assert.equal(new URL(src,'https://local.test/').searchParams.get('v'),'5.27',src);
+    for(const [,src] of scripts)assert.equal(new URL(src,'https://local.test/').searchParams.get('v'),'5.28',src);
     const embedded=value=>[...value.matchAll(/<script\b[^>]*data-bundled-src=["'][^"']+["'][^>]*>/g)].map(m=>m[0]);
     assert.deepEqual(embedded(html),embedded(raw));
   });
@@ -102,6 +102,28 @@ async function test(name,run){await run();passed++;console.log('PASS '+name)}
       assert.ok(fresh.s.pastQueue.every(q=>q[kind]&&!q._evaluationMock));assert.deepEqual(plain(fresh.s.pastAnswers),[1,null]);
     }
   });
+  await test('mock hint use survives restart per question and cannot enter unaided score averages',async()=>{
+    const first=harness();first.s.pastQueue.forEach(q=>{delete q._evaluationMock;q._unifiedMock=true});
+    first.s.pastQueue[1]._mockHintViewed=true;first.s.savePastProgress();
+    assert.deepEqual(plain(first.s.getPastProgress().state.hintedIndices),[1]);
+    const fresh=harness(first.data);fresh.s.pastQueue=[];await fresh.s.resumePastProgress();
+    assert.equal(fresh.s.pastQueue[0]._mockHintViewed,undefined);assert.equal(fresh.s.pastQueue[1]._mockHintViewed,true);
+    assert.deepEqual(plain(fresh.s.pastAnswers),[1,null]);assert.equal(fresh.s.pastIdx,1);
+    vm.runInContext(fs.readFileSync(path.join(root,'predictive-analytics.js'),'utf8'),fresh.s);
+    const answers=fresh.s.pastQueue.map(q=>q['정답']);
+    for(const summarize of [fresh.s.__mdWeakTopicAnalytics.unifiedSummary,fresh.s.__mdWeakTopicAnalytics.evaluationSummary]){
+      const summary=summarize(fresh.s.pastQueue,answers);assert.equal(summary.score,100);assert.equal(summary.explanationViewed,true);assert.equal(summary.recentCount,0);
+    }
+    assert.equal(first.data.has('md_evaluation_score_history_v1'),false);
+  });
+  await test('an undisclosed hint leaves both resume formats unchanged when its atomic save fails',()=>{
+    const h=harness();h.s.savePastProgress();const before=new Map(h.data),write=h.s.safeStorageSet;
+    h.s.safeStorageSet=(key,value)=>key===ATOMIC?false:write(key,value);
+    h.s.pastQueue[0]._mockHintViewed=true;
+    assert.equal(h.s.savePastProgress({requireCheckpoint:true}),false);delete h.s.pastQueue[0]._mockHintViewed;
+    assert.equal(h.data.get(STATE),before.get(STATE));assert.equal(h.data.get(ATOMIC),before.get(ATOMIC));
+    assert.deepEqual(plain(h.s.getPastProgress().state.hintedIndices),[]);
+  });
   await test('an atomic paper survives mismatched metadata from a separate session',async()=>{
     const first=harness();first.s.savePastProgress();const saved=plain(first.s.getPastProgress());
     first.data.set(META,JSON.stringify({...saved.meta,id:'another-device-session'}));
@@ -139,7 +161,7 @@ async function test(name,run){await run();passed++;console.log('PASS '+name)}
   });
   await test('manual backup includes live answers even when the first storage write fails',async()=>{
     const h=harness();h.s.safeStorageSet=()=>false;h.s.pastAnswers=[2,3];let file;
-    Object.assign(h.s,{collectBackupItems:()=>({}),BACKUP_SCHEMA_VERSION:1,APP_VERSION:'5.27',File,
+    Object.assign(h.s,{collectBackupItems:()=>({}),BACKUP_SCHEMA_VERSION:1,APP_VERSION:'5.28',File,
       navigator:{canShare:()=>true,share:async opts=>{file=opts.files[0]}},backupNotice(){},alert:message=>{throw new Error(message)}});
     const start=html.indexOf('async function exportAllLearningData(){'),end=html.indexOf('function validateImportedBackupEntries(',start);
     vm.runInContext(html.slice(start,end),h.s);await h.s.exportAllLearningData();

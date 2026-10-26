@@ -45,7 +45,7 @@ test('unanswered responses affect current score but incomplete or empty papers d
   summary=result(h,[],[],'empty');assert.equal(summary.complete,false);assert.equal(summary.recentCount,0);assert.equal(h.storage.get(SCORE_KEY),before);
 });
 test('explanation assistance, review attempts and legacy papers cannot pollute unified averages',()=>{
-  for(const changes of [{_unifiedExplanationViewed:true},{_evaluationExplanationViewed:true},{_predictiveReview:true},{_evaluationMock:true},{_unifiedMock:false}]){
+  for(const changes of [{_unifiedExplanationViewed:true},{_evaluationExplanationViewed:true},{_mockHintViewed:true},{_predictiveReview:true},{_evaluationMock:true},{_unifiedMock:false}]){
     const h=harness(),rows=paper();Object.assign(rows[0],changes);const summary=result(h,rows,rows.map(()=>0),'ineligible');assert.equal(summary.recentCount,0);assert.equal(h.storage.has(SCORE_KEY),false);
   }
 });
