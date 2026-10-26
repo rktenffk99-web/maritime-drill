@@ -54,7 +54,7 @@
       const key=localStorage.key(i);if(!key.startsWith(PREFIX))continue;
       try{
         const record=read(key.slice(PREFIX.length));
-        if(subjectId&&record.meta.subjectId!==subjectId)continue;
+        if(isDeleted(record.meta.id)||subjectId&&record.meta.subjectId!==subjectId)continue;
         const heads=prune(record.heads),conflict=Object.keys(heads).length>1;
         for(const [headId,head] of Object.entries(heads))if(head.status==='active')out.push({meta:record.meta,state:head.state,clock:head.clock,headId,conflict});
       }catch(error){console.warn('[exam-sessions]',error);}

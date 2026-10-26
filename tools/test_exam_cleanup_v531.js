@@ -45,7 +45,7 @@ function installSync(s){Object.assign(s,{driveSyncOnce(){},driveSyncLoadState(){
  assert.equal(merge({}, {[key]:hinted},{[key]:newer},{},'','').items[key],undefined);
  console.log('PASS explicit reset generation is applied before exam-specific merge');
  reloaded.s.driveSyncLoadState=()=>({itemMeta:{[key]:deleted}});reloaded.s.pastAnswers[2]=1;
- assert.equal(reloaded.s.savePastProgress(),false);assert.equal(reloaded.data.get(key),hinted);
+ assert.equal(reloaded.s.savePastProgress(),false);assert.equal(reloaded.data.get(key),hinted);assert.equal(reloaded.s.getPastProgress(id),null);
  console.log('PASS an open exam cannot silently rewrite its deleted UUID');
  const tab=harness();tab.s.savePastProgress();const tabKey=tab.s.__mdExamSessions.PREFIX+tab.s.pastProgressId,initial=JSON.parse(tab.data.get(tabKey));
  const incoming=clone(initial),latest=clone(initial),template=Object.values(initial.heads)[0];
