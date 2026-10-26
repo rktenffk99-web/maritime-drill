@@ -587,6 +587,23 @@
     };
   }
 
+  async function mdSyncRecreateAggregate(connectionVersion,showNotice,message){
+    // The aggregate is only a cache. Journals discovered by findRemoteFile may
+    // be the only surviving remote copy, including terminal deletion markers.
+    const journal=window.__mdDriveExamJournal;
+    const recovered=journal&&typeof journal.snapshot==='function'?journal.snapshot():{items:{},itemMeta:{}};
+    const local=mdSyncReadLocal();
+    if(!local.state.enabled||connectionVersion!==mdSyncConnectionVersion())return;
+    const merged=mdSyncMergeSnapshots(local.items,recovered.items,local.itemMeta,recovered.itemMeta,
+      local.state.localUpdatedAt||local.state.lastSyncedAt||null,null);
+    const now=driveSyncNowIso(),revision=Math.max(1,(Number(local.state.revision)||0)+1);
+    const payload=mdSyncBuildV2Payload(local.state,merged.items,merged.itemMeta,now,revision);
+    const fileId=await driveSyncCreateRemote(payload);
+    mdSyncFinish(local,merged,fileId,now,revision,showNotice,
+      Object.keys(recovered.items).length||Object.keys(recovered.itemMeta).length
+        ?'Drive에 남아 있던 시험 기록과 삭제 상태를 복원해 동기화했습니다.':message,connectionVersion);
+  }
+
   driveSyncOnce=async function({interactive=false,showNotice=false}={}){
     if(driveSyncBusy) return;
     const state=driveSyncLoadState();
@@ -610,22 +627,19 @@
       let file=await driveSyncFindRemoteFile();
       if(!driveSyncLoadState().enabled||connectionVersion!==mdSyncConnectionVersion())return;
       if(!file){
-        const local=mdSyncReadLocal(),now=driveSyncNowIso();
-        const revision=Math.max(1,(Number(local.state.revision)||0)+1);
-        const payload=mdSyncBuildV2Payload(local.state,local.items,local.itemMeta,now,revision);
-        const fileId=await driveSyncCreateRemote(payload);
-        mdSyncFinish(local,{items:local.items,itemMeta:local.itemMeta},fileId,now,revision,showNotice,
-          '현재 학습 진도를 Google Drive에 처음 저장했습니다.',connectionVersion);
+        await mdSyncRecreateAggregate(connectionVersion,showNotice,'현재 학습 진도를 Google Drive에 처음 저장했습니다.');
         return;
       }
 
       let remote;
       try{remote=await driveSyncDownloadPayload(file.id)}
       catch(error){
-        // Only an explicitly zero-byte legacy file with an empty response is
-        // recoverable. Malformed, unknown or temporarily unreadable files may
-        // contain another device's progress and must never be overwritten.
-        if(!(error&&error.mdEmptyDriveFile===true&&(file.size==='0'||file.size===0)))throw error;
+        // Recreate only a confirmed missing aggregate or an explicitly empty
+        // legacy file. Auth failures, malformed JSON and network errors must
+        // never be mistaken for permission to replace another device's data.
+        const missing=error&&error.status===404;
+        const empty=error&&error.mdEmptyDriveFile===true&&(file.size==='0'||file.size===0);
+        if(!missing&&!empty)throw error;
         // A different device may have completed or created a full file while
         // this download was in flight. Prefer its data and use the normal
         // merge path; never hide an already visible full snapshot by recovery.
@@ -635,14 +649,11 @@
           file=candidate;
           remote=await driveSyncDownloadPayload(file.id);
         }else{
-          const local=mdSyncReadLocal();
-          const now=driveSyncNowIso(),revision=Math.max(1,(Number(local.state.revision)||0)+1);
-          const payload=mdSyncBuildV2Payload(local.state,local.items,local.itemMeta,now,revision);
-          // Create a complete replacement instead of overwriting the old file:
-          // another device could still fill it after the fresh metadata check.
-          const fileId=await driveSyncCreateRemote(payload);
-          mdSyncFinish(local,{items:local.items,itemMeta:local.itemMeta},fileId,now,revision,showNotice,
-            '비어 있던 Drive 동기화 파일을 복구하고 현재 학습 진도를 새 파일에 저장했습니다.',connectionVersion);
+          // The fresh discovery above may contain records absent from the
+          // local device. Merge them before creating and applying the cache.
+          await mdSyncRecreateAggregate(connectionVersion,showNotice,missing
+            ?'없어진 Drive 동기화 파일을 복구하고 현재 학습 진도를 새 파일에 저장했습니다.'
+            :'비어 있던 Drive 동기화 파일을 복구하고 현재 학습 진도를 새 파일에 저장했습니다.');
           return;
         }
       }

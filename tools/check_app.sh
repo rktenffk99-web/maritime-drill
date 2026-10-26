@@ -60,9 +60,12 @@ python tools/patch_keyboard_context.py
 python tools/patch_mock_hint.py
 python tools/patch_backup_restore_safety.py
 python tools/patch_exam_sessions_v530.py
+python tools/patch_exam_restore_v532.py
 node tools/test_exam_sessions_v530.js
 node tools/test_exam_cleanup_v531.js
+node tools/test_exam_restore_v532.js
 node tools/test_drive_exam_journal.js
+node tools/test_drive_journal_recovery_v532.js
 node tools/test_navi2_reviewed.js
 node tools/test_balanced_mock.js
 python tools/test_predictive_mock.py

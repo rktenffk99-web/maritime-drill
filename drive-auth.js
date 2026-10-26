@@ -141,7 +141,8 @@
         }
         if(!response.ok){
           let detail='';try{detail=(await response.json())?.error?.message||''}catch(error){if(timedOut)throw error}
-          throw new Error(detail||`Google Drive 요청 실패 (${response.status})`);
+          const error=new Error(detail||`Google Drive 요청 실패 (${response.status})`);
+          error.status=response.status;throw error;
         }
         // Headers can arrive before a stalled body. Finish receiving it within
         // the same deadline while leaving the original Response consumable.

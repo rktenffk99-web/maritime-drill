@@ -34,7 +34,7 @@ try:
     page.locator('#pp-date-navi2').fill((date.today()+timedelta(days=30)).isoformat())
     for field in page.locator('input[data-pp-subject="navi2"]').all():field.check()
     page.locator('[onclick="saveNavigatorPassPlanSettings()"]').click();wait_plan(page,tab='mock')
-    assert page.evaluate('APP_VERSION')=='5.31'
+    assert page.evaluate('APP_VERSION')=='5.32'
     expected=[]
     for name in ['startNavigatorUnifiedMock','startNavigatorEvaluationMock']:
         page.evaluate('name=>window[name]("navi2")',name)
@@ -94,6 +94,21 @@ try:
     assert any(h['state']['answers'][50]==2 for h in record['heads'].values())
     page.evaluate('() => {Storage.prototype.setItem=window.__realSet}');page.get_by_role('button',name='다시 저장',exact=True).click()
     report['cases'].append('quota failure blocks exit, keeps durable paper, exports 51 live answers, retry saves')
+    # Reproduce explicit undo after its deletion has become a remote tombstone.
+    restored_expected=snapshot(page)
+    page.get_by_role('button',name='저장하고 나가기',exact=True).click();wait_plan(page,tab='mock')
+    page.evaluate("key => {const items=collectBackupItems();delete items[key];writeAutomaticRestorePoint(items,'test-before-exam');restoreAutomaticRestorePoint()}",key)
+    page.get_by_role('button',name='확인',exact=True).click();page.wait_for_load_state('load')
+    page.wait_for_function('id=>getPastProgress(id)===null',arg=restored_expected['id'])
+    deletion=page.evaluate('key=>driveSyncLoadState().itemMeta[key]',key);assert deletion['deleted']
+    page.evaluate('restoreAutomaticRestorePoint()');page.get_by_role('button',name='확인',exact=True).click();page.wait_for_load_state('load')
+    page.wait_for_function('id=>__mdExamSessions.list().some(s=>s.meta.restoredFrom===id)',arg=restored_expected['id'])
+    restored_id=page.evaluate('id=>__mdExamSessions.list().find(s=>s.meta.restoredFrom===id).meta.id',restored_expected['id'])
+    assert restored_id!=restored_expected['id']
+    survived=page.evaluate("({key,deletion,id})=>{const state=driveSyncLoadState();const merged=__mdDriveSyncV2.mergeSnapshots(collectBackupItems(),{},state.itemMeta,{[key]:deletion},'2000-01-01','2099-01-01');return !merged.items[key]&&!!merged.items[__mdExamSessions.PREFIX+id]}",{'key':key,'deletion':deletion,'id':restored_id})
+    assert survived
+    resume(page,restored_id);restored_expected['id']=restored_id;assert snapshot(page)==restored_expected
+    report['cases'].append('explicit undo after deletion restores a fresh exam; stale Drive tombstone cannot delete it; 51 answers, order, cursor and hints retained')
     assert not report['page_errors'],report['page_errors'];report['status']='PASS';context.close()
 except Exception as e:
  report['status']='FAIL';report['error']=str(e);raise

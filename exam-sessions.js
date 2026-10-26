@@ -1,4 +1,4 @@
-// v5.31: one immutable paper per attempt; causal answer versions never mix papers.
+// v5.32: one immutable paper per attempt; causal answer versions never mix papers.
 (function(global){
   'use strict';
   const PREFIX='md_exam_session_v3_', LAST='maritime-drill:last-exam:v3';
@@ -41,6 +41,23 @@
       heads[id]=h;
     }
     return compact({schema:3,meta:left.meta.refs?left.meta:right.meta,heads});
+  }
+  // A user-requested restore is a new attempt, not a stale remote update.
+  // Rekey even when this device has not downloaded the old ID's tombstone yet.
+  // Preserve concurrent answer sheets as separate causal heads, never splice them.
+  function restoreItems(items){
+    const restored={...items};
+    for(const [key,raw] of Object.entries(items)){
+      if(!key.startsWith(PREFIX))continue;
+      const record=JSON.parse(raw);
+      if(!valid(record)||key!==PREFIX+record.meta.id)throw new Error('복구할 시험 저장본의 식별 정보가 올바르지 않습니다.');
+      const heads=Object.values(prune(record.heads)).filter(h=>h.status==='active');
+      if(!heads.length){restored[key]=JSON.stringify(compact(record));continue;}
+      const id=uuid(),meta={...clone(record.meta),id,restoredFrom:record.meta.id,restoredAt:Date.now()},fresh={};
+      for(const head of heads){const branch=uuid();fresh[branch+'_1']={clock:{[branch]:1},status:'active',state:{...clone(head.state),id}};}
+      delete restored[key];restored[PREFIX+id]=JSON.stringify({schema:3,meta,heads:fresh});
+    }
+    return restored;
   }
   function read(id){
     const raw=localStorage.getItem(PREFIX+id);if(!raw)return null;
@@ -177,7 +194,7 @@
     }catch(error){currentMode='past-resume-error';app.innerHTML=`<div class="card"><p>${escapeHtml(error.message)}</p><button class="btn btn-outline" onclick="renderSubjectSelect()">시험 목록으로</button><button class="btn btn-outline" onclick="exportAllLearningData()">기록 파일 백업</button></div>`;}
     finally{loading=false;}
   };
-  global.__mdExamSessions={PREFIX,valid,merge,compact,prune,dominates,list,content,
+  global.__mdExamSessions={PREFIX,valid,merge,compact,prune,dominates,list,content,restoreItems,
     liveItems(){const next=checkpoint();return {[PREFIX+next.record.meta.id]:JSON.stringify(next.record)};}};
   // Reconcile a competing tab's synchronous localStorage write without
   // replacing either tab's in-memory answers. Independent causal heads survive.

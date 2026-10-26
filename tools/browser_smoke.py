@@ -77,10 +77,10 @@ try:
         agree.wait_for(state='visible')
         agree.click()
         page.wait_for_function("hasAgreedTerms() && !document.getElementById('md-modal-wrap')")
-        assert page.evaluate('APP_VERSION') == '5.31'
-        assert 'v5.31' in page.title()
+        assert page.evaluate('APP_VERSION') == '5.32'
+        assert 'v5.32' in page.title()
         assert page.evaluate("typeof window.__mdMockExplanationControls==='object'")
-        report['cases'].append('v5.31 startup and auxiliary scripts loaded')
+        report['cases'].append('v5.32 startup and auxiliary scripts loaded')
         page.evaluate("renderNavigatorPassPlan('navi3')")
         wait_plan(page, configure=True)
         target = (date.today() + timedelta(days=30)).isoformat()

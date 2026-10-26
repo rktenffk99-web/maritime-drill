@@ -107,6 +107,15 @@ let count=0;async function test(name,fn){await fn();count++;console.log('PASS '+
     const h=harness();h.save();h.s.fetch=async()=>{throw new Error('offline')};await assert.rejects(h.s.driveSyncFetch('/mock'),/offline/);assert.ok(h.s.driveSyncHasToken());
     h.s.fetch=async()=>new Response(null,{status:401});await assert.rejects(h.s.driveSyncFetch('/mock'),/갱신/);assert.equal(h.s.driveSyncHasToken(),false);assert.equal(h.timers.size,0);
   });
+  await test('HTTP 404 remains distinguishable from permission errors and network failures',async()=>{
+    for(const status of [403,404,500]){
+      const h=harness();h.save();h.s.fetch=async()=>new Response(JSON.stringify({error:{message:'provider detail'}}),{status});
+      await assert.rejects(h.s.driveSyncFetch('https://www.googleapis.com/drive/v3/files/example'),error=>error.status===status&&error.message==='provider detail');
+      assert.equal(h.s.driveSyncHasToken(),true);
+    }
+    const h=harness();h.save();h.s.fetch=async()=>{throw new Error('network failure')};
+    await assert.rejects(h.s.driveSyncFetch('https://www.googleapis.com/drive/v3/files/example'),error=>error.status===undefined);
+  });
   await test('network timeout releases a stalled fetch and preserves authentication',async()=>{
     const h=harness();h.save();h.s.fetch=(url,{signal})=>new Promise((resolve,reject)=>signal.addEventListener('abort',()=>reject(Object.assign(new Error('aborted'),{name:'AbortError'}))));
     const p=h.s.driveSyncFetch('/mock');[...h.timers.values()].find(t=>t.ms===20000).fn();await assert.rejects(p,/응답이 늦어/);assert.ok(h.s.driveSyncHasToken());assert.equal(h.timers.size,0);

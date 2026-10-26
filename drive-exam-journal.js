@@ -4,7 +4,7 @@
   'use strict';
   const sessions=global.__mdExamSessions;if(!sessions)return;
   const MARKER='maritime-drill-exam-v3',cache=new Map(),known=new Set();
-  let discovered={},deletions={};
+  let discovered={},deletions={},discoveryVersion=null;
   const generation=()=>global.__mdDriveAuthGeneration?.()||0;
   const check=version=>{if(generation()!==version)throw new Error('Google 연결이 변경되어 시험 동기화를 중단했습니다.');};
   const originalFind=driveSyncFindRemoteFile,originalDownload=driveSyncDownloadPayload;
@@ -40,7 +40,7 @@
       pageToken=data.nextPageToken||'';
     }while(pageToken);
     for(const key of Object.keys(removed)){delete items[key];known.add(key+'|deleted');}
-    check(version);discovered=items;deletions=removed;
+    check(version);discovered=items;deletions=removed;discoveryVersion=version;
   }
   async function post(identity,bodyPayload,version){
     check(version);if(known.has(identity))return;
@@ -76,5 +76,11 @@
   };
   driveSyncCreateRemote=async function(payload){await publish(payload);return originalCreate(payload);};
   driveSyncUploadRemote=async function(id,payload){await publish(payload);return originalUpload(id,payload);};
-  global.__mdDriveExamJournal={discover,publish};
+  global.__mdDriveExamJournal={discover,publish,
+    snapshot(){
+      if(discoveryVersion===null)throw new Error('Drive 시험 기록 확인이 아직 끝나지 않았습니다.');
+      check(discoveryVersion);
+      return {items:{...discovered},itemMeta:JSON.parse(JSON.stringify(deletions))};
+    }
+  };
 })(window);
