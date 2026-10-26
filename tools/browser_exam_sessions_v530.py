@@ -34,6 +34,7 @@ try:
     page.locator('#pp-date-navi2').fill((date.today()+timedelta(days=30)).isoformat())
     for field in page.locator('input[data-pp-subject="navi2"]').all():field.check()
     page.locator('[onclick="saveNavigatorPassPlanSettings()"]').click();wait_plan(page,tab='mock')
+    assert page.evaluate('APP_VERSION')=='5.31'
     expected=[]
     for name in ['startNavigatorUnifiedMock','startNavigatorEvaluationMock']:
         page.evaluate('name=>window[name]("navi2")',name)
@@ -44,6 +45,10 @@ try:
             page.locator('[onclick="pastNext()"]').click()
             if i==25:context.set_offline(True)
         expected.append(snapshot(page));assert expected[-1]['idx']==50
+        before=page.evaluate("localStorage.getItem(__mdExamSessions.PREFIX+pastProgressId)")
+        page.evaluate('() => {for(let i=0;i<20;i++)savePastProgress()}')
+        assert page.evaluate("localStorage.getItem(__mdExamSessions.PREFIX+pastProgressId)")==before
+        report['cases'].append(name+': 20 unchanged saves retain identical stored bytes and version')
         assert '자동 저장됨' in page.locator('[data-past-save-status]').inner_text()
         context.close();context,page=launch()
         resume(page,expected[-1]['id']);assert snapshot(page)==expected[-1]
@@ -58,10 +63,17 @@ try:
     report['cases'].append('switch between two independent papers and restore each exact paper, answers and cursor')
     page.screenshot(path=str(OUT/'v530-independent-exams.png'),full_page=True)
     # Grade the evaluation paper: exactly fifty correct, seventy-five unanswered.
-    resume(page,expected[1]['id']);page.evaluate('renderPastResult()')
+    resume(page,expected[1]['id'])
+    active_size=page.evaluate('localStorage.getItem(__mdExamSessions.PREFIX+pastProgressId).length')
+    page.evaluate('renderPastResult()')
     page.wait_for_function("currentMode==='past-result'")
     assert '50 / 125' in page.locator('#app').inner_text()
     assert page.evaluate('id=>getPastProgress(id)===null',expected[1]['id'])
+    completed=page.evaluate('id=>localStorage.getItem(__mdExamSessions.PREFIX+id)',expected[1]['id'])
+    record=json.loads(completed);assert set(record['meta'])=={'id'}
+    assert all(set(h['state'])=={'id','savedAt'} for h in record['heads'].values())
+    assert len(completed)<active_size/20
+    report['cases'].append('completed exam removes full questions/answers and shrinks by over 95%')
     assert page.evaluate('id=>getPastProgress(id)!==null',expected[0]['id'])
     page.evaluate('renderSubjectSelect()');resume(page,expected[0]['id']);assert snapshot(page)==expected[0]
     report['cases'].append('grading yields 50/125; completes only submitted paper; other paper retains all answers')

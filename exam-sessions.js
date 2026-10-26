@@ -1,4 +1,4 @@
-// v5.30: one immutable paper per attempt; causal answer versions never mix papers.
+// v5.31: one immutable paper per attempt; causal answer versions never mix papers.
 (function(global){
   'use strict';
   const PREFIX='md_exam_session_v3_', LAST='maritime-drill:last-exam:v3';
@@ -10,32 +10,43 @@
   function dominates(a,b){return Object.keys(b).every(k=>(a[k]||0)>=b[k])&&Object.keys(a).some(k=>a[k]>(b[k]||0));}
   function valid(record){
     if(!record||record.schema!==3||!record.meta||!validId(record.meta.id)||!record.heads)return false;
-    const refs=record.meta.refs;
-    if(!Array.isArray(refs)||!refs.length||refs.some(r=>!r||typeof r.id!=='string'||typeof r.content!=='string'))return false;
-    return Object.entries(record.heads).length>0&&Object.entries(record.heads).every(([id,h])=>
+    const refs=record.meta.refs,entries=Object.entries(record.heads);
+    const full=Array.isArray(refs)&&refs.length>0&&refs.every(r=>r&&typeof r.id==='string'&&typeof r.content==='string');
+    if(!full&&!(Object.keys(record.meta).length===1&&entries.every(([,h])=>h?.status==='completed')))return false;
+    return entries.length>0&&entries.every(([id,h])=>
       validId(id)&&h&&h.clock&&Object.keys(h.clock).length>0&&Object.entries(h.clock).every(([k,n])=>validId(k)&&Number.isSafeInteger(n)&&n>0)&&
-      ['active','completed'].includes(h.status)&&h.state&&h.state.id===record.meta.id&&['study','mock'].includes(h.state.mode)&&
+      h.state&&h.state.id===record.meta.id&&Number.isFinite(h.state.savedAt)&&
+      (h.status==='completed'||h.status==='active'&&full&&['study','mock'].includes(h.state.mode)&&
       Array.isArray(h.state.answers)&&h.state.answers.length===refs.length&&h.state.answers.every(a=>a===null||Number.isInteger(a)&&a>=0&&a<4)&&
-      Number.isInteger(h.state.idx)&&h.state.idx>=0&&h.state.idx<=refs.length&&Number.isFinite(h.state.savedAt));
+      Number.isInteger(h.state.idx)&&h.state.idx>=0&&h.state.idx<=refs.length));
+  }
+  // A completion is a causal tombstone, not a resumable answer sheet. Keep
+  // the full paper only while a concurrent active branch still needs it.
+  function compact(record){
+    const heads=prune(record.heads);
+    for(const [id,h] of Object.entries(heads))if(h.status==='completed')heads[id]={clock:h.clock,status:h.status,state:{id:record.meta.id,savedAt:h.state.savedAt}};
+    const meta=Object.values(heads).some(h=>h.status==='active')?record.meta:{id:record.meta.id};
+    return {schema:3,meta,heads};
   }
   function prune(heads){
     const entries=Object.entries(heads);
     return Object.fromEntries(entries.filter(([,h])=>!entries.some(([,other])=>dominates(other.clock,h.clock))).sort(([a],[b])=>a.localeCompare(b)));
   }
   function merge(left,right){
-    if(!valid(left)||!valid(right)||stable(left.meta)!==stable(right.meta))throw new Error('시험 식별 정보가 다른 저장본입니다. 자동 병합을 중단했습니다.');
+    if(!valid(left)||!valid(right)||left.meta.id!==right.meta.id||left.meta.refs&&right.meta.refs&&stable(left.meta)!==stable(right.meta))throw new Error('시험 식별 정보가 다른 저장본입니다. 자동 병합을 중단했습니다.');
+    left=compact(left);right=compact(right);
     const heads={...left.heads};
     for(const [id,h] of Object.entries(right.heads)){
       if(heads[id]&&stable(heads[id])!==stable(h))throw new Error('같은 답안 버전의 내용이 다릅니다. 자동 병합을 중단했습니다.');
       heads[id]=h;
     }
-    return {schema:3,meta:left.meta,heads:prune(heads)};
+    return compact({schema:3,meta:left.meta.refs?left.meta:right.meta,heads});
   }
   function read(id){
     const raw=localStorage.getItem(PREFIX+id);if(!raw)return null;
     const value=JSON.parse(raw);
     if(!valid(value)||value.meta.id!==id)throw new Error('시험 저장본을 확인할 수 없습니다. 파일 백업 후 확인해 주세요.');
-    return value;
+    return compact(value);
   }
   function list(subjectId){
     const out=[];
@@ -58,24 +69,40 @@
     const refs=pastQueue.map(q=>({id:pqid(q),short:q._short||q._gradeShort,year:q._year,session:q['회차'],content:content(q),source:q._source,group:q._n3aGroupId,predictive:q._predictiveMock===true,predictiveReview:q._predictiveReview===true,planKey:q._planKey,planGrade:q._planGrade,predictiveConcept:q._predictiveConcept}));
     return clone({version:3,id,createdAt:Date.now(),unified:pastQueue.every(q=>q._unifiedMock===true),targeted:pastQueue.every(q=>q._targetedPractice===true),balanced:pastQueue.every(q=>q._balancedMock===true),evaluation:pastQueue.every(q=>q._evaluationMock===true),refs,subjectId:pastSubjectId,base:pastBaseShort,year:pastYear,session:pastSession,variant:pastVariant,allYears:pastAllYears,returnView:pastReturnView,analysisSubject:naviAnalysisSubjectId,analysisDetail:navi3AnalysisDetail,practiceReturn:navi3PracticeReturn,practiceLabel:navi3PracticeLabel});
   }
+  function isDeleted(id){
+    const codec=global.__mdDriveStateCodec;
+    const state=codec?.loadForKey?codec.loadForKey(PREFIX+id):typeof driveSyncLoadState==='function'?driveSyncLoadState():null;
+    return state?.itemMeta?.[PREFIX+id]?.deleted===true;
+  }
+  // Timestamps advance even on a redraw. They must not generate a new answer
+  // version; elapsed time is checkpointed with the next meaningful change.
+  function semantic(state){const {savedAt,startedAt,...rest}=state;return stable(rest);}
   function checkpoint(status='active'){
     if(!active||active.queue!==pastQueue){
       active={meta:makeMeta(),answers:pastAnswers,queue:pastQueue,clock:{}};
       pastProgressId=active.meta.id;pastProgressMeta=active.meta;pastSavedAnswers=pastAnswers;
     }
+    if(isDeleted(active.meta.id))throw new Error('삭제된 시험입니다. 시험 목록에서 새 시험을 시작해 주세요.');
     const state=clone(capturePastProgressState());state.id=active.meta.id;
+    const prior=read(active.meta.id),previous=prior?.heads[active.headId];
+    if(previous?.status===status&&semantic(previous.state)===semantic(state))return {record:prior,clock:previous.clock,headId:active.headId};
+    if(active.pending?.status===status&&active.pending.signature===semantic(state)){
+      const next=active.pending.next;
+      return {...next,record:prior?merge(prior,next.record):next.record};
+    }
     const clock={...active.clock,[writer]:++sequence},headId=writer+'_'+sequence;
     const record={schema:3,meta:active.meta,heads:{[headId]:{clock,status,state}}};
-    const prior=read(active.meta.id);
-    return {record:prior?merge(prior,record):record,clock,headId};
+    const next={record:prior?merge(prior,record):compact(record),clock,headId};
+    active.pending={status,signature:semantic(state),next};return next;
   }
   savePastProgress=function(){
     if(currentMode!=='past'||!pastQueue.length||loading)return false;
     try{
       const next=checkpoint();
-      if(!safeStorageSet(PREFIX+active.meta.id,JSON.stringify(next.record),'시험별 답안'))return false;
+      const key=PREFIX+active.meta.id,raw=JSON.stringify(next.record);
+      if(localStorage.getItem(key)!==raw&&!safeStorageSet(key,raw,'시험별 답안'))return false;
       knownLocal.set(PREFIX+active.meta.id,next.record);
-      active.clock=next.clock;active.headId=next.headId;
+      active.clock=next.clock;active.headId=next.headId;active.pending=null;
       try{localStorage.setItem(LAST,active.meta.id)}catch(_){}
       return true;
     }catch(error){showStorageWarning('시험별 답안',error);return false;}
@@ -150,19 +177,29 @@
     }catch(error){currentMode='past-resume-error';app.innerHTML=`<div class="card"><p>${escapeHtml(error.message)}</p><button class="btn btn-outline" onclick="renderSubjectSelect()">시험 목록으로</button><button class="btn btn-outline" onclick="exportAllLearningData()">기록 파일 백업</button></div>`;}
     finally{loading=false;}
   };
-  global.__mdExamSessions={PREFIX,valid,merge,prune,dominates,list,content,
+  global.__mdExamSessions={PREFIX,valid,merge,compact,prune,dominates,list,content,
     liveItems(){const next=checkpoint();return {[PREFIX+next.record.meta.id]:JSON.stringify(next.record)};}};
   // Reconcile a competing tab's synchronous localStorage write without
   // replacing either tab's in-memory answers. Independent causal heads survive.
   global.addEventListener('storage',event=>{
-    if(event.storageArea!==localStorage||!event.newValue||!knownLocal.has(event.key))return;
+    if(event.storageArea!==localStorage||!knownLocal.has(event.key))return;
+    if(!event.newValue){knownLocal.delete(event.key);return;}
     try{
-      const incoming=JSON.parse(event.newValue),merged=merge(knownLocal.get(event.key),incoming);
+      if(isDeleted(event.key.slice(PREFIX.length)))return;
+      const current=localStorage.getItem(event.key);if(!current)return;
+      const incoming=JSON.parse(event.newValue),merged=merge(merge(knownLocal.get(event.key),incoming),JSON.parse(current));
       knownLocal.set(event.key,merged);
       const raw=JSON.stringify(merged);
       if(localStorage.getItem(event.key)!==raw)safeStorageSet(event.key,raw,'다른 탭 답안 보존');
     }catch(error){showStorageWarning('다른 탭 답안 보존',error);}
   });
+  // Upgrade old completed envelopes without touching active answers.
+  for(let i=0;i<localStorage.length;i++){
+    const key=localStorage.key(i);if(!key.startsWith(PREFIX))continue;
+    try{const record=read(key.slice(PREFIX.length)),raw=JSON.stringify(record);
+      if(raw!==localStorage.getItem(key))safeStorageSet(key,raw,'완료 시험 정리');
+    }catch(error){console.warn('[exam-sessions]',error);}
+  }
   // The boot screen was rendered before extension scripts loaded.
   if(typeof renderSubjectSelect==='function'&&currentMode!=='past')renderSubjectSelect();
 })(window);

@@ -41,4 +41,27 @@ function client(){
  fail=true;await assert.rejects(a.driveSyncUploadRemote('aggregate',pending),/offline/);assert.deepEqual(files.get('aggregate'),prior);
  fail=false;await a.driveSyncUploadRemote('aggregate',pending);
  console.log('PASS journal failure blocks aggregate write; retry succeeds without deleting local answers');
+ // Redraws and exports must not create extra immutable files.
+ const repeat=posts;for(let i=0;i<10;i++){a.savePastProgress();await a.driveSyncUploadRemote('aggregate',{items:a.__mdExamSessions.liveItems()});}
+ assert.equal(posts,repeat);
+ console.log('PASS repeated unchanged saves and backups create zero extra Drive files');
+ const key=Object.keys(pending.items)[0],deleted={items:{},itemMeta:{[key]:{updatedAt:'2026-10-27T00:00:00Z',deleted:true,fields:{}}}};
+ fail=true;const beforeDelete=clone(files.get('aggregate'));await assert.rejects(a.driveSyncUploadRemote('aggregate',deleted),/offline/);assert.deepEqual(files.get('aggregate'),beforeDelete);
+ fail=false;await a.driveSyncUploadRemote('aggregate',deleted);
+ // An offline device overwrites the aggregate with its old active exam and no
+ // deletion metadata. A brand-new runtime must recover the journal tombstone.
+ await b.driveSyncUploadRemote('aggregate',pending);
+ const fresh=client();await fresh.driveSyncFindRemoteFile();const after=await fresh.driveSyncDownloadPayload('aggregate');
+ assert.equal(after.items[key],undefined);assert.equal(after.itemMeta[key].deleted,true);
+ const deletedPosts=posts;await fresh.driveSyncUploadRemote('aggregate',after);assert.equal(posts,deletedPosts);
+ console.log('PASS durable deletion survives stale aggregate overwrite, fresh runtime, pagination and retry without duplicate markers');
+ b.clearPastProgress();const complete={items:{}};
+ for(let i=0;i<b.localStorage.length;i++){const k=b.localStorage.key(i);if(k.startsWith(b.__mdExamSessions.PREFIX))complete.items[k]=b.localStorage.getItem(k);}
+ await b.driveSyncUploadRemote('aggregate',complete);
+ const completion=files.get('journal-'+next);const record=JSON.parse(Object.values(completion.items)[0]);
+ assert.equal(record.meta.refs,undefined);assert.equal(Object.values(record.heads)[0].state.answers,undefined);
+ await fresh.driveSyncFindRemoteFile();const final=await fresh.driveSyncDownloadPayload('aggregate');
+ const completedKey=Object.keys(complete.items)[0];assert.equal(JSON.parse(final.items[completedKey]).meta.refs,undefined);
+ assert.equal(final.items[key],undefined);
+ console.log('PASS compact completion journals merge with old full-paper files without restoring answers or deleted exams');
 })().catch(e=>{console.error(e);process.exitCode=1});

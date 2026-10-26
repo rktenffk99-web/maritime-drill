@@ -2,13 +2,14 @@
 const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict'),{randomUUID}=require('crypto');
 const source=fs.readFileSync('exam-sessions.js','utf8');
 function harness(data=new Map()){
+ const events={};
  const rows=Array.from({length:125},(_,i)=>({'과목':'법규','번호':i+1,'문제':'question '+i,'선택지':['a','b','c','d'],'정답':i%4}));
  const s={console,Date,Math,JSON,Map,Set,crypto:{randomUUID},currentMode:'past',pastQueue:rows.map(q=>({...q,_short:'navi2',_year:2026,'회차':1})),pastAnswers:Array(125).fill(null),pastIdx:0,pastMode:'mock',pastStartedAt:Date.now(),pastSubjectId:'navi2',pastBaseShort:'navi2',pastYear:2026,pastSession:1,pastVariant:'상선',pastAllYears:false,pastReturnView:null,naviAnalysisSubjectId:'navi2',navi3AnalysisDetail:null,navi3PracticeReturn:null,navi3PracticeLabel:null,pastProgressId:null,pastProgressMeta:null,pastSavedAnswers:null,app:{innerHTML:''},SUBJECTS:[{id:'navi2',name:'2급'}],
  savePastProgress(){},getPastProgress(){},confirmPastProgressReplacement(){},clearPastProgress(){},renderPastResumeCard(){},resumePastProgress(){},
  safeStorageSet(k,v){data.set(k,v);return true},showStorageWarning(){},showToast(){},escapeHtml:String,backupDateLabel:String,renderPastLoading(){},ensurePastDataForSubject:async()=>{},ensurePastExplainForYears:async()=>{},ensureNavi3FrequencyData:async()=>{},n3aActivateGrade(){},mdQuestionUsable:()=>true,baseFromShort:x=>x,getPastExam:()=>({questions:rows}),pqid:q=>[q._year,q._short,q['회차'],q['과목'],q['번호']].join('|'),
- localStorage:{get length(){return data.size},key:i=>[...data.keys()][i],getItem:k=>data.get(k)||null,setItem:(k,v)=>data.set(k,v)},addEventListener(){}};
+ localStorage:{get length(){return data.size},key:i=>[...data.keys()][i],getItem:k=>data.get(k)||null,setItem:(k,v)=>data.set(k,v)},addEventListener(name,handler){events[name]=handler}};
  s.capturePastProgressState=()=>({id:s.pastProgressId,idx:s.pastIdx,answers:s.pastAnswers,mode:s.pastMode,startedAt:s.pastStartedAt,savedAt:Date.now(),hintedIndices:s.pastQueue.flatMap((q,i)=>q._mockHintViewed?[i]:[])});
- s.renderPastCard=()=>s.savePastProgress();s.window=s;vm.createContext(s);vm.runInContext(source,s);return {s,data,rows};
+ s.renderPastCard=()=>s.savePastProgress();s.window=s;vm.createContext(s);vm.runInContext(source,s);return {s,data,rows,events};
 }
 const plain=x=>JSON.parse(JSON.stringify(x));
 if(require.main===module)(async()=>{

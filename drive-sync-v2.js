@@ -446,14 +446,11 @@
       const remoteHas=Object.prototype.hasOwnProperty.call(remoteItems||{},key);
       const lm=mdSyncNormalizeKeyMeta((localMetaMap||{})[key]);
       const rm=mdSyncNormalizeKeyMeta((remoteMetaMap||{})[key]);
-      // Exam envelopes have immutable papers and causal, whole-answer heads.
-      // Generic recursive field merging would splice papers/answer versions.
-      const exams=window.__mdExamSessions;
-      if(exams&&key.startsWith(exams.PREFIX)){
-        const left=localHas?JSON.parse(localItems[key]):null,right=remoteHas?JSON.parse(remoteItems[key]):null;
-        if(left&&!exams.valid(left)||right&&!exams.valid(right))throw new Error('시험 저장본 검증 실패');
-        if(left||right)items[key]=JSON.stringify(left&&right?exams.merge(left,right):left||right);
-        itemMeta[key]=mdSyncMergeKeyMeta(lm,rm,localFallback,remoteFallback);
+      // Attempt UUIDs are never reused. Explicit deletion is terminal, even
+      // against an offline writer or an immutable journal with a newer clock.
+      const examKey=window.__mdExamSessions&&key.startsWith(window.__mdExamSessions.PREFIX);
+      if(examKey&&(lm.deleted===true||rm.deleted===true)){
+        itemMeta[key]=lm.deleted&&rm.deleted?mdSyncMergeKeyMeta(lm,rm,localFallback,remoteFallback):lm.deleted?lm:rm;
         continue;
       }
       const generationOrder=mdSyncCompareGenerations(lm,rm);
@@ -463,6 +460,16 @@
         const newer=generationOrder>0?lm:rm,has=generationOrder>0?localHas:remoteHas;
         itemMeta[key]=newer;
         if(has)items[key]=generationOrder>0?localItems[key]:remoteItems[key];
+        continue;
+      }
+      // Exam envelopes have immutable papers and causal, whole-answer heads.
+      // Generic recursive field merging would splice papers/answer versions.
+      const exams=window.__mdExamSessions;
+      if(exams&&key.startsWith(exams.PREFIX)){
+        const left=localHas?JSON.parse(localItems[key]):null,right=remoteHas?JSON.parse(remoteItems[key]):null;
+        if(left&&!exams.valid(left)||right&&!exams.valid(right))throw new Error('시험 저장본 검증 실패');
+        if(left||right)items[key]=JSON.stringify(left&&right?exams.merge(left,right):exams.compact(left||right));
+        itemMeta[key]=mdSyncMergeKeyMeta(lm,rm,localFallback,remoteFallback);
         continue;
       }
       const mergedMeta=mdSyncMergeKeyMeta(lm,rm,localFallback,remoteFallback);
