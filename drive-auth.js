@@ -124,24 +124,30 @@
       const headers=new Headers(options.headers||{});
       headers.set('Authorization','Bearer '+token.access_token);
       const controller=new AbortController();
-      const timeout=setTimeout(()=>controller.abort(),20000);
-      let response;
-      try{response=await fetch(url,Object.assign({},options,{headers,signal:controller.signal}))}
+      let timedOut=false;
+      const timeout=setTimeout(()=>{timedOut=true;controller.abort()},20000);
+      try{
+        const response=await fetch(url,Object.assign({},options,{headers,signal:controller.signal}));
+        if(response.status===401){
+          controller.abort();
+          const latest=driveSyncLoadSessionToken();
+          if(attempt===0&&latest&&latest.access_token!==token.access_token)continue;
+          driveSyncClearSessionToken(token.access_token);driveSyncRefreshPanel();
+          throw new Error('Google Drive 연결 갱신이 필요합니다.');
+        }
+        if(!response.ok){
+          let detail='';try{detail=(await response.json())?.error?.message||''}catch(error){if(timedOut)throw error}
+          throw new Error(detail||`Google Drive 요청 실패 (${response.status})`);
+        }
+        // Headers can arrive before a stalled body. Finish receiving it within
+        // the same deadline while leaving the original Response consumable.
+        await response.clone().arrayBuffer();
+        return response;
+      }
       catch(error){
-        if(error&&error.name==='AbortError')throw new Error('Drive 응답이 늦어 중단했습니다. 연결되면 자동으로 다시 시도합니다.');
+        if(timedOut||error&&error.name==='AbortError')throw new Error('Drive 응답이 늦어 중단했습니다. 연결되면 자동으로 다시 시도합니다.');
         throw error;
       }finally{clearTimeout(timeout)}
-      if(response.status===401){
-        const latest=driveSyncLoadSessionToken();
-        if(attempt===0&&latest&&latest.access_token!==token.access_token)continue;
-        driveSyncClearSessionToken(token.access_token);driveSyncRefreshPanel();
-        throw new Error('Google Drive 연결 갱신이 필요합니다.');
-      }
-      if(!response.ok){
-        let detail='';try{detail=(await response.json())?.error?.message||''}catch(e){}
-        throw new Error(detail||`Google Drive 요청 실패 (${response.status})`);
-      }
-      return response;
     }
   };
   window.connectGoogleDriveSync=async function(){

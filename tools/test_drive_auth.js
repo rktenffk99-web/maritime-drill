@@ -24,7 +24,7 @@ function harness(options={}){
     alert:m=>notices.push(m),backupNotice:m=>notices.push(m),__mdDailyStorage:{migrateLocal(){}},
     google:{accounts:{oauth2:{initTokenClient(config){oauthConfig=config;return {requestAccessToken(o){prompts.push(o)}}},
       hasGrantedAllScopes(response,scope){return (response.scope||'').split(' ').includes(scope)},revoke(){revokes++}}}},
-    fetch:async()=>{network++;return {status:200,ok:true,json:async()=>({})}},
+    fetch:async()=>{network++;return new Response('{}')},
   };
   s.window=s;vm.createContext(s);vm.runInContext(managed,s);vm.runInContext(base,s);
   s.driveSyncOnce=async()=>{syncs++};vm.runInContext(patch,s);
@@ -90,17 +90,79 @@ let count=0;async function test(name,fn){await fn();count++;console.log('PASS '+
     h.s.sessionStorage.fail=true;h.save('memory');assert.equal(h.s.driveSyncLoadSessionToken().access_token,'memory');
   });
   await test('401 for an old request reuses a newer token instead of deleting it',async()=>{
-    const h=harness();h.save('old');let n=0;
-    h.s.fetch=async()=>{n++;if(n===1){h.save('new');return {status:401,ok:false}}return {status:200,ok:true}};
-    await h.s.driveSyncFetch('/mock');assert.equal(n,2);assert.equal(h.s.driveSyncLoadSessionToken().access_token,'new');
+    const h=harness();h.save('old');let n=0;const requests=[];
+    h.s.fetch=async(url,options)=>{requests.push(options);n++;if(n===1){h.save('new');return new Response(null,{status:401})}return new Response('{"ok":true}')};
+    const response=await h.s.driveSyncFetch('/mock');assert.equal(n,2);assert.equal(h.s.driveSyncLoadSessionToken().access_token,'new');
+    assert.equal(requests[0].signal.aborted,true);assert.equal(requests[1].signal.aborted,false);
+    assert.equal(requests[1].headers.get('Authorization'),'Bearer new');assert.deepEqual(await response.json(),{ok:true});assert.equal(h.timers.size,0);
   });
   await test('401 invalidates current token; ordinary network failures keep it',async()=>{
     const h=harness();h.save();h.s.fetch=async()=>{throw new Error('offline')};await assert.rejects(h.s.driveSyncFetch('/mock'),/offline/);assert.ok(h.s.driveSyncHasToken());
-    h.s.fetch=async()=>({status:401,ok:false});await assert.rejects(h.s.driveSyncFetch('/mock'),/갱신/);assert.equal(h.s.driveSyncHasToken(),false);
+    h.s.fetch=async()=>new Response(null,{status:401});await assert.rejects(h.s.driveSyncFetch('/mock'),/갱신/);assert.equal(h.s.driveSyncHasToken(),false);assert.equal(h.timers.size,0);
   });
   await test('network timeout releases a stalled fetch and preserves authentication',async()=>{
     const h=harness();h.save();h.s.fetch=(url,{signal})=>new Promise((resolve,reject)=>signal.addEventListener('abort',()=>reject(Object.assign(new Error('aborted'),{name:'AbortError'}))));
-    const p=h.s.driveSyncFetch('/mock');[...h.timers.values()].find(t=>t.ms===20000).fn();await assert.rejects(p,/응답이 늦어/);assert.ok(h.s.driveSyncHasToken());
+    const p=h.s.driveSyncFetch('/mock');[...h.timers.values()].find(t=>t.ms===20000).fn();await assert.rejects(p,/응답이 늦어/);assert.ok(h.s.driveSyncHasToken());assert.equal(h.timers.size,0);
+  });
+  await test('successful native responses keep their status, headers and one-shot body consumption',async()=>{
+    const h=harness();h.save();let original;
+    h.s.fetch=async()=>original=new Response('{"value":"항해"}',{status:201,headers:{'X-Test':'retained'}});
+    const response=await h.s.driveSyncFetch('/mock');
+    assert.equal(response,original);assert.equal(response.status,201);assert.equal(response.headers.get('X-Test'),'retained');
+    assert.equal(response.bodyUsed,false);assert.equal(h.timers.size,0);assert.deepEqual(await response.json(),{value:'항해'});
+    assert.equal(response.bodyUsed,true);await assert.rejects(response.text(),TypeError);
+  });
+  await test('headers and body share one deadline and a stalled body preserves authentication',async()=>{
+    const h=harness();h.save();let signal,started,aborts=0;
+    const headers=new Promise(resolve=>started=resolve);
+    h.s.fetch=async(url,options)=>{
+      signal=options.signal;
+      const response=new Response(new ReadableStream({start(controller){
+        controller.enqueue(new TextEncoder().encode('{"partial":'));
+        signal.addEventListener('abort',()=>{aborts++;controller.error(new DOMException('aborted','AbortError'))});
+      }}));started();return response;
+    };
+    const pending=h.s.driveSyncFetch('/mock');await headers;await Promise.resolve();
+    const timers=[...h.timers.values()].filter(t=>t.ms===20000);assert.equal(timers.length,1);timers[0].fn();
+    await assert.rejects(pending,/응답이 늦어/);assert.equal(signal.aborted,true);assert.equal(aborts,1);
+    assert.equal(h.timers.size,0);assert.ok(h.s.driveSyncHasToken());
+  });
+  await test('HTTP error bodies use the same timeout and clean up on parsed or malformed errors',async()=>{
+    const h=harness();h.save();
+    for(const [body,message] of [['{"error":{"message":"quota reached"}}',/quota reached/],['{bad',/요청 실패 \(500\)/]]){
+      h.s.fetch=async()=>new Response(body,{status:500});await assert.rejects(h.s.driveSyncFetch('/mock'),message);assert.equal(h.timers.size,0);
+    }
+    let started;const headers=new Promise(resolve=>started=resolve);
+    h.s.fetch=async(url,{signal})=>{
+      const response=new Response(new ReadableStream({start(controller){signal.addEventListener('abort',()=>controller.error(new DOMException('aborted','AbortError')))}}),{status:500});
+      started();return response;
+    };
+    const pending=h.s.driveSyncFetch('/mock');await headers;await Promise.resolve();
+    [...h.timers.values()].find(t=>t.ms===20000).fn();await assert.rejects(pending,/응답이 늦어/);
+    assert.equal(h.timers.size,0);assert.ok(h.s.driveSyncHasToken());
+  });
+  await test('malformed successful JSON rejects through the native parser without leaving a timer',async()=>{
+    const h=harness();h.save();h.s.fetch=async()=>new Response('{bad');
+    const response=await h.s.driveSyncFetch('/mock');assert.equal(h.timers.size,0);
+    await assert.rejects(response.json(),SyntaxError);assert.equal(h.timers.size,0);assert.ok(h.s.driveSyncHasToken());
+  });
+  await test('a stalled media body releases the real sync busy flag without modifying learning data',async()=>{
+    const h=harness();h.enable();h.save();h.s.localStorage.setItem('md_progress','{"q1":{"correct":1}}');
+    vm.runInContext(fs.readFileSync(path.join(root,'daily-storage.js'),'utf8'),h.s);
+    vm.runInContext(fs.readFileSync(path.join(root,'drive-sync-v2.js'),'utf8'),h.s);
+    const before=Object.fromEntries(h.s.localStorage.data);let started,signal;
+    const mediaHeaders=new Promise(resolve=>started=resolve);
+    h.s.fetch=async(url,options)=>{
+      if(!url.includes('alt=media'))return new Response(JSON.stringify({files:[{id:'file-1',name:h.run('DRIVE_SYNC_FILE'),size:'123',modifiedTime:'2026-09-21T00:00:00Z'}]}));
+      signal=options.signal;
+      const response=new Response(new ReadableStream({start(controller){signal.addEventListener('abort',()=>controller.error(new DOMException('aborted','AbortError')))}}));
+      started();return response;
+    };
+    const pending=h.s.driveSyncOnce({showNotice:true});
+    await Promise.race([mediaHeaders,pending.then(()=>{throw new Error('Sync ended before media download: '+h.run('driveSyncLastError'))})]);await Promise.resolve();
+    assert.equal(h.run('driveSyncBusy'),true);[...h.timers.values()].find(t=>t.ms===20000).fn();await pending;
+    assert.equal(signal.aborted,true);assert.equal(h.run('driveSyncBusy'),false);assert.match(h.run('driveSyncLastError'),/응답이 늦어/);
+    assert.equal(h.timers.size,0);assert.ok(h.s.driveSyncHasToken());assert.deepEqual(Object.fromEntries(h.s.localStorage.data),before);
   });
   await test('metadata storage events cannot create cross-tab sync ping-pong',()=>{
     const h=harness();h.enable();h.save();h.emit('DOMContentLoaded');const before=h.counts.syncs;
