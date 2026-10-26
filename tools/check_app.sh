@@ -71,6 +71,7 @@ node tools/test_problem_report_storage.js
 node tools/test_problem_report_ui.js
 node tools/test_reported_content_fixes.js
 node tools/test_reported_lazy_content.js
+node tools/test_reported_content_cache.js
 node tools/test_equation_glyph_normalizer.js
 node tools/test_pdf_footer_cleanup.js
 node tools/test_mock_result_pager.js

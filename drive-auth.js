@@ -10,6 +10,10 @@
   const originalRefresh=driveSyncRefreshPanel;
   const originalStatus=driveSyncPanelStatus;
   const originalManaged=isManagedStorageKey;
+  function authState(){
+    const codec=window.__mdDriveStateCodec;
+    return codec&&typeof codec.loadHeader==='function'?codec.loadHeader():driveSyncLoadState();
+  }
   isManagedStorageKey=function(key){
     return key!==TOKEN_KEY&&!String(key).startsWith('md_drive_sync_token')&&originalManaged(key);
   };
@@ -178,7 +182,7 @@
   };
   driveSyncPanelStatus=function(){
     if(authPromise)return {label:'Google 연결 확인 중…',tone:'#2563EB'};
-    const state=driveSyncLoadState();
+    const state=authState();
     if(state.enabled&&!navigator.onLine)return {label:'오프라인 · 동기화 대기',tone:'#D97706'};
     if(state.enabled&&!driveSyncHasToken())return {label:'연결 갱신 필요 · 동기화 일시 중지',tone:'#D97706'};
     return originalStatus();
@@ -186,7 +190,7 @@
   function refreshBanner(){
     if(!document.body)return;
     let banner=document.getElementById('md-drive-auth-banner');
-    const needed=driveSyncLoadState().enabled&&!driveSyncHasToken()&&navigator.onLine;
+    const needed=authState().enabled&&!driveSyncHasToken()&&navigator.onLine;
     if(!needed){if(banner)banner.remove();return}
     if(!banner){
       banner=document.createElement('div');banner.id='md-drive-auth-banner';
@@ -198,7 +202,8 @@
       button.onclick=()=>connectGoogleDriveSync();banner.append(text,button);document.body.prepend(banner);
     }
     const button=banner.querySelector('button');button.disabled=!!authPromise;
-    button.textContent=authPromise?'Google 확인 중…':'연결 갱신';
+    const label=authPromise?'Google 확인 중…':'연결 갱신';
+    if(button.textContent!==label)button.textContent=label;
   }
   driveSyncRefreshPanel=function(){
     originalRefresh();
@@ -209,7 +214,7 @@
   function tick(){
     driveSyncRefreshPanel();
     if(document.visibilityState!=='visible')return;
-    const state=driveSyncLoadState();
+    const state=authState();
     if(state.enabled&&driveSyncHasToken()&&navigator.onLine)driveSyncOnce({interactive:false});
   }
   function init(){
@@ -228,7 +233,7 @@
           try{if(!!JSON.parse(event.oldValue||'null')?.enabled===!!JSON.parse(event.newValue||'null')?.enabled)return}catch(e){}
         }
         if(event.key===TOKEN_KEY||event.key===null){memoryToken=null;memoryOnly=false;remove(sessionStorage,DRIVE_SYNC_SESSION_TOKEN_KEY)}
-        if(!driveSyncLoadState().enabled){generation++;if(cancelAuth)cancelAuth()}
+        if(!authState().enabled){generation++;if(cancelAuth)cancelAuth()}
         driveSyncLastError='';tick();
       }
     });

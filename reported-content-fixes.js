@@ -707,6 +707,27 @@
     return changed;
   }
 
+  // Source papers are read repeatedly while a single answer is rendered. Keep
+  // their corrected contents, not just their identity: lazy loads and in-place
+  // text/choice repairs must still invalidate this cache immediately.
+  const repairedSnapshots=new WeakMap();
+  function rememberRepairedSnapshot(value){
+    try{
+      const snapshot=JSON.stringify(value);
+      if(typeof snapshot==='string'){repairedSnapshots.set(value,snapshot);return;}
+    }catch(error){ /* Cyclic/non-JSON data still uses the full repair traversal. */ }
+    repairedSnapshots.delete(value);
+  }
+  function patchObjectIfChanged(value){
+    if(!value||typeof value!=='object')return value;
+    let snapshot;
+    try{snapshot=JSON.stringify(value);}catch(error){return patchObject(value);}
+    if(typeof snapshot==='string'&&repairedSnapshots.get(value)===snapshot)return value;
+    patchObject(value);
+    rememberRepairedSnapshot(value);
+    return value;
+  }
+
   function patchObject(value,seen){
     if(!value||typeof value!=='object')return value;
     const visited=seen||new WeakSet();
@@ -717,6 +738,7 @@
         if(typeof value[i]==='string')value[i]=fixString(value[i]);
         else patchObject(value[i],visited);
       }
+      if(repairedSnapshots.has(value))rememberRepairedSnapshot(value);
       return value;
     }
     for(const key of Object.keys(value)){
@@ -726,6 +748,9 @@
     }
     patchPdfFooterArtifact(value);
     patchVerifiedFormulaQuestion(value);
+    // The public patchObject API always repairs, including an explicit repair
+    // after a caller changed an already-cached paper in place.
+    if(repairedSnapshots.has(value))rememberRepairedSnapshot(value);
     return value;
   }
 
@@ -768,9 +793,9 @@
   }
 
   function patchKnownData(){
-    if(global.MD_NAVI_FREQUENCY)patchObject(global.MD_NAVI_FREQUENCY);
-    if(global.MD_DATA)patchObject(global.MD_DATA);
-    if(global.MD_PAST)patchObject(global.MD_PAST);
+    if(global.MD_NAVI_FREQUENCY)patchObjectIfChanged(global.MD_NAVI_FREQUENCY);
+    if(global.MD_DATA)patchObjectIfChanged(global.MD_DATA);
+    if(global.MD_PAST)patchObjectIfChanged(global.MD_PAST);
   }
 
   function installFrequencyHook(){
@@ -778,7 +803,7 @@
     if(typeof original!=='function'||original.__mdReportedTextFix)return;
     async function wrappedEnsureNavi3FrequencyData(){
       const result=await original.apply(this,arguments);
-      patchObject(result);patchKnownData();return result;
+      patchObjectIfChanged(result);patchKnownData();return result;
     }
     wrappedEnsureNavi3FrequencyData.__mdReportedTextFix=true;
     wrappedEnsureNavi3FrequencyData.__mdReportedTextFixOriginal=original;
@@ -790,7 +815,7 @@
     if(typeof original!=='function'||original.__mdReportedTextFix)return;
     function wrappedGetPastExam(){
       const result=original.apply(this,arguments);
-      patchObject(result);return result;
+      patchObjectIfChanged(result);return result;
     }
     wrappedGetPastExam.__mdReportedTextFix=true;
     wrappedGetPastExam.__mdReportedTextFixOriginal=original;
@@ -805,7 +830,7 @@
       // Ordinary past-paper selection reads MD_PAST through list helpers,
       // bypassing getPastExam. Patch after every lazy load, before the caller
       // can copy those questions into its study/mock queue.
-      patchObject(result);
+      patchObjectIfChanged(result);
       return result;
     }
     wrappedEnsurePastDataForSubject.__mdReportedTextFix=true;

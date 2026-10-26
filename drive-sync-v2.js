@@ -135,7 +135,9 @@
   }
   function mdSyncTouchKey(key,oldRaw,newRaw,deleted){
     if(driveSyncApplyingRemote) return;
-    const state=driveSyncLoadState();
+    const codec=window.__mdDriveStateCodec;
+    const perKey=codec&&typeof codec.loadForKey==='function'&&typeof codec.saveForKey==='function';
+    const state=perKey?codec.loadForKey(key):driveSyncLoadState();
     const now=driveSyncNowIso();
     const itemMeta=mdSyncIsPlainObject(state.itemMeta)?Object.assign({},state.itemMeta):{};
     const keyMeta=mdSyncNormalizeKeyMeta(itemMeta[key]);
@@ -157,7 +159,7 @@
     state.itemMeta=itemMeta;
     state.localUpdatedAt=now;
     state.revision=(Number(state.revision)||0)+1;
-    driveSyncSaveState(state);
+    if(perKey)codec.saveForKey(state,key);else driveSyncSaveState(state);
     driveSyncRefreshPanel();
   }
   function mdSyncResetKey(key,value,label){
