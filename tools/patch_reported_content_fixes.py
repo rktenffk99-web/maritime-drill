@@ -23,16 +23,21 @@ if choice_marker not in text:
     replacement = (
         "function pastChoiceText(value){\n"
         "  " + choice_marker + "\n"
-        "  if(window.__mdReportedContentFixes&&window.__mdReportedContentFixes.fixString)"
-        " value=window.__mdReportedContentFixes.fixString(value);"
+        "  if(window.__mdReportedContentFixes&&window.__mdReportedContentFixes.fixChoiceText)"
+        " value=window.__mdReportedContentFixes.fixChoiceText(value);"
     )
     text, count = re.subn(r"function pastChoiceText\(value\)\{", replacement, text, count=1)
     if count != 1:
         raise SystemExit("pastChoiceText renderer hook not found")
 
+text = text.replace(
+    "if(window.__mdReportedContentFixes&&window.__mdReportedContentFixes.fixString) value=window.__mdReportedContentFixes.fixString(value);",
+    "if(window.__mdReportedContentFixes&&window.__mdReportedContentFixes.fixChoiceText) value=window.__mdReportedContentFixes.fixChoiceText(value);",
+)
+
 # Idempotently remove any earlier embedded copy.
 text = re.sub(
-    r'\n?<script data-bundled-src="reported-content-fixes\.js">.*?</script>\s*',
+    r'\n*<script data-bundled-src="reported-content-fixes\.js">.*?</script>\s*',
     '\n',
     text,
     flags=re.S,

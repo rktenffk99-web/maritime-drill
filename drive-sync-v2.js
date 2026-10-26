@@ -305,7 +305,36 @@
     rows.sort((a,b)=>time(a.entry)-time(b.entry)||(a.key===b.key?0:a.key>b.key?1:-1));
     return rows.slice(-20).map(row=>row.entry);
   }
-  function mdSyncMergeNode(localValue,remoteValue,pathParts,localMeta,remoteMeta,localFallback,remoteFallback){
+  function mdSyncMergeScoreHistory(local,remote){
+    const rows=new Map();
+    const time=row=>mdSyncValueTimestamp(row,null);
+    for(const row of [...local,...remote]){
+      const id=mdSyncIsPlainObject(row)&&row.id!==undefined&&row.id!==null&&String(row.id)
+        ?'run:'+String(row.id):'legacy:'+mdSyncStable(row);
+      const previous=rows.get(id);
+      if(!rows.has(id)||time(row)>time(previous)||(time(row)===time(previous)&&mdSyncStable(row)>mdSyncStable(previous)))rows.set(id,row);
+    }
+    // The UI retains ten runs per grade/subject scope. Merge immutable run IDs
+    // before applying that bound so one device cannot erase the other's scores.
+    return [...rows.values()].sort((a,b)=>time(b)-time(a)||(mdSyncStable(a)>mdSyncStable(b)?-1:mdSyncStable(a)<mdSyncStable(b)?1:0)).slice(0,10);
+  }
+  function mdSyncMergeReports(local,remote){
+    const rows=new Map();
+    for(const report of [...local,...remote]){
+      // Older reports have no ID. Equal full contents identify the same saved
+      // entry; different notes at the same timestamp must both be retained.
+      const id=mdSyncStable(report);
+      if(!rows.has(id))rows.set(id,report);
+    }
+    const time=report=>{
+      const value=report&&report.createdAt,n=typeof value==='number'?value:Date.parse(value||'');
+      return Number.isFinite(n)?n:0;
+    };
+    // The reporting UI stores oldest first. Its input limit is not permission
+    // to truncate distinct reports received from another device.
+    return [...rows.entries()].sort(([a,left],[b,right])=>time(left)-time(right)||(a<b?-1:a>b?1:0)).map(([id])=>JSON.parse(id));
+  }
+  function mdSyncMergeNode(localValue,remoteValue,pathParts,localMeta,remoteMeta,localFallback,remoteFallback,storageKey){
     if(mdSyncSame(localValue,remoteValue)) return localValue;
     const path=mdSyncPath(pathParts);
     const localDeletion=mdSyncPathRecord(localMeta,path),remoteDeletion=mdSyncPathRecord(remoteMeta,path);
@@ -313,6 +342,21 @@
     // fields or lifetime counters from a snapshot preceding that deletion.
     if(localDeletion&&localDeletion.deleted&&mdSyncRecordTime(localDeletion)>mdSyncBranchTime(remoteMeta,path,remoteValue,remoteFallback))return localValue;
     if(remoteDeletion&&remoteDeletion.deleted&&mdSyncRecordTime(remoteDeletion)>mdSyncBranchTime(localMeta,path,localValue,localFallback))return remoteValue;
+    if(storageKey==='md_evaluation_score_history_v1'&&pathParts.length===1&&Array.isArray(localValue)&&Array.isArray(remoteValue)){
+      return mdSyncMergeScoreHistory(localValue,remoteValue);
+    }
+    if(storageKey==='md_past_history_v1'&&pathParts.length===1&&mdSyncIsPlainObject(localValue)&&mdSyncIsPlainObject(remoteValue)){
+      // This correct/total pair describes the latest sitting, not cumulative
+      // learning counters. Keep the sitting intact, including a lower score.
+      const lt=mdSyncValueTimestamp(localValue,null),rt=mdSyncValueTimestamp(remoteValue,null);
+      const latest=lt!==rt?(lt>rt?localValue:remoteValue):mdSyncChoose(localValue,remoteValue,path,localMeta,remoteMeta,localFallback,remoteFallback,pathParts);
+      const result={...latest};
+      const best=[localValue.best,remoteValue.best].filter(v=>typeof v==='number'&&Number.isFinite(v)&&v>=0&&v<=1);
+      const tries=[mdSyncCounterNumber(localValue.tries),mdSyncCounterNumber(remoteValue.tries)].filter(v=>v!==null);
+      if(best.length)result.best=Math.max(...best);
+      if(tries.length)result.tries=Math.max(...tries);
+      return result;
+    }
     if(pathParts[pathParts.length-1]==='recentOutcomes'&&Array.isArray(localValue)&&Array.isArray(remoteValue)){
       return mdSyncMergeRecentOutcomes(localValue,remoteValue,mdSyncChoose(localValue,remoteValue,path,localMeta,remoteMeta,localFallback,remoteFallback,pathParts));
     }
@@ -327,7 +371,7 @@
         const remoteHas=Object.prototype.hasOwnProperty.call(remoteValue,key);
         const lr=mdSyncPathRecord(localMeta,childPath),rr=mdSyncPathRecord(remoteMeta,childPath);
         if(localHas&&remoteHas){
-          out[key]=mdSyncMergeNode(localValue[key],remoteValue[key],childParts,localMeta,remoteMeta,localObjectFallback,remoteObjectFallback);
+          out[key]=mdSyncMergeNode(localValue[key],remoteValue[key],childParts,localMeta,remoteMeta,localObjectFallback,remoteObjectFallback,storageKey);
         }else if(localHas){
           if(rr&&rr.deleted&&mdSyncRecordTime(rr,remoteObjectFallback)>=mdSyncBranchTime(localMeta,childPath,localValue[key],localObjectFallback)) continue;
           out[key]=localValue[key];
@@ -419,8 +463,10 @@
         const lp=mdSyncParse(localItems[key]),rp=mdSyncParse(remoteItems[key]);
         if(mdSyncIsFocusHistoryKey(key)&&lp.json&&rp.json&&Array.isArray(lp.value)&&Array.isArray(rp.value)){
           items[key]=JSON.stringify(mdSyncMergeHistory(lp.value,rp.value,lm,rm,mergedMeta));
+        }else if(key==='md_problem_reports_v1'&&lp.json&&rp.json&&Array.isArray(lp.value)&&Array.isArray(rp.value)){
+          items[key]=JSON.stringify(mdSyncMergeReports(lp.value,rp.value));
         }else if(lp.json&&rp.json&&mdSyncIsPlainObject(lp.value)&&mdSyncIsPlainObject(rp.value)){
-          const merged=mdSyncMergeNode(lp.value,rp.value,[],lm,rm,localFallback,remoteFallback);
+          const merged=mdSyncMergeNode(lp.value,rp.value,[],lm,rm,localFallback,remoteFallback,key);
           items[key]=JSON.stringify(merged);
         }else{
           items[key]=mdSyncChoose(localItems[key],remoteItems[key],'',lm,rm,localFallback,remoteFallback,[]);
@@ -476,7 +522,7 @@
   }
   function mdSyncStudyActive(){
     return typeof currentMode==='string' &&
-      ['study','mock','focus','past','review','pass-plan-session'].includes(currentMode);
+      ['study','mock','focus','past','review','visual','pass-plan-session'].includes(currentMode);
   }
   function mdSyncConnectionVersion(){
     return typeof window.__mdDriveAuthGeneration==='function'?window.__mdDriveAuthGeneration():0;

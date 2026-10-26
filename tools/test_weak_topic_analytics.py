@@ -21,7 +21,7 @@ for needle in [
     "function reinforcement(rows)",
     "실전예측 모의 결과",
     "md_evaluation_score_history_v1",
-    "function evaluationSummary(queue,answers)",
+    "function evaluationSummary(queue,answers,persist=true)",
     "동일 과목 구성 최근 ${evaluation.recentCount}회 평균",
     "미완료라 이번 기록 제외",
     "const weak=rows.filter(r=>(Number(r.wrong)||0)>0)",

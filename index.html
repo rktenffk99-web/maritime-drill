@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="md-build" content="android-single-file">
-<title>Maritime Drill v5.25 · Android</title>
+<title>Maritime Drill v5.26 · Android</title>
 <style>
 
 *{margin:0;padding:0;box-sizing:border-box}
@@ -14673,7 +14673,7 @@ window.MD_DATA["safety2"] = { meta: META, QUESTIONS, IMP, TTS_MAP, SHIP_INFO, NE
 <script>
 
 // ── 앱 버전 (업데이트 시마다 올리기) ──
-const APP_VERSION = '5.25';
+const APP_VERSION = '5.26';
 
 // ── v4.81: 브라우저 저장 실패를 사용자에게 즉시 알리는 공통 저장기 ──
 function showStorageWarning(label, error){
@@ -16961,13 +16961,15 @@ function recordPastSession(baseShort, year, session, correct, total, mode){
   const h = loadPastHistory();
   const key = pastHistKey(baseShort, year, session);
   const prev = h[key];
+  const resultId=typeof pastResultId!=='undefined'&&pastResultId?String(pastResultId):null;
+  if(resultId&&prev&&prev.resultId===resultId)return true;
   const rate = correct/total;
   h[key] = {
-    correct, total, mode, at: Date.now(),
+    correct, total, mode, at: Date.now(),resultId,
     best: prev ? Math.max(prev.best||0, rate) : rate,
     tries: (prev?prev.tries:0)+1,
   };
-  savePastHistory(h);
+  return savePastHistory(h);
 }
 function getPastSessionHistory(baseShort, year, session){
   return loadPastHistory()[pastHistKey(baseShort, year, session)] || null;
@@ -17619,7 +17621,7 @@ function mdGuardPastQueue(){
 }
 function pastChoiceText(value){
   /* md-reported-choice-normalize */
-  if(window.__mdReportedContentFixes&&window.__mdReportedContentFixes.fixString) value=window.__mdReportedContentFixes.fixString(value);
+  if(window.__mdReportedContentFixes&&window.__mdReportedContentFixes.fixChoiceText) value=window.__mdReportedContentFixes.fixChoiceText(value);
   return String(value==null?'':value).replace(/^\s*[㉮㉯㉰㉱㉴㉵]\s*/, '').trim();
 }
 
@@ -17755,11 +17757,64 @@ window.stepPastResultReview=function(delta){
   window.showPastResultReview((Number(state.index)||0)+(Number(delta)||0));
 };
 
+// mock-submission-transaction-v526: rollback all result keys, including sync metadata.
+let mdPastSubmissionRecovery=null;
+function mdRestorePastSubmission(snapshot){
+  const hasSync=typeof driveSyncApplyingRemote!=='undefined';
+  const wasApplying=hasSync?driveSyncApplyingRemote:false;
+  if(hasSync)driveSyncApplyingRemote=true;
+  try{
+    // Restore shrinking values first; the old snapshot can fit even when a growing key cannot fit yet.
+    const values=new Map([...snapshot.values,['md_drive_sync_state_v1',snapshot.sync]]);
+    const operations=[...values].map(([key,value])=>({key,value,before:localStorage.getItem(key)}));
+    operations.sort((a,b)=>(a.value===null?-Infinity:a.value.length-(a.before||'').length)-(b.value===null?-Infinity:b.value.length-(b.before||'').length));
+    for(const {key,value,before} of operations){
+      if(value===before)continue;
+      if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value);
+    }
+    return [...snapshot.values].every(([key,value])=>localStorage.getItem(key)===value)&&localStorage.getItem('md_drive_sync_state_v1')===snapshot.sync;
+  }catch(error){console.warn('[mock-submit] result rollback failed',error);return false}
+  finally{if(hasSync)driveSyncApplyingRemote=wasApplying}
+}
+function mdCommitPastSubmission(action){
+  // Never replay an old rollback after the user has made other changes.
+  if(mdPastSubmissionRecovery)return false;
+  const originalSet=safeStorageSet,originalRemove=safeStorageRemove;
+  let snapshot,failed=false;
+  try{snapshot={values:new Map(),sync:localStorage.getItem('md_drive_sync_state_v1')}}catch(error){return false}
+  const remember=key=>{if(!snapshot.values.has(key))snapshot.values.set(key,localStorage.getItem(key))};
+  safeStorageSet=function(key,value,label){
+    try{
+      remember(key);
+      if(failed||originalSet(key,value,label)!==true)throw new Error('채점 기록 저장 실패: '+(label||key));
+      return true;
+    }catch(error){failed=true;throw error}
+  };
+  safeStorageRemove=function(key,label){
+    try{
+      remember(key);
+      if(failed||originalRemove(key,label)!==true)throw new Error('채점 기록 정리 실패: '+(label||key));
+      return true;
+    }catch(error){failed=true;throw error}
+  };
+  try{action();if(failed)throw new Error('채점 기록 저장 실패');return true}
+  catch(error){
+    mdPastSubmissionRecovery=snapshot;
+    if(mdRestorePastSubmission(snapshot))mdPastSubmissionRecovery=null;
+    console.warn('[mock-submit] submission kept for retry',error);
+    return false;
+  }finally{safeStorageSet=originalSet;safeStorageRemove=originalRemove}
+}
+
 function renderPastResult(){
   if(currentMode!=='past')return;
-  currentMode='past-result';
+  // mock-submission-save-guard-v526: retain the live answers and last checkpoint on failure.
+  if(savePastProgress()!==true){
+    showToast('답안을 저장하지 못해 제출을 중단했습니다. 다시 저장하거나 답안 파일을 백업하세요.',6000);
+    if(pastIdx>=0&&pastIdx<pastQueue.length)renderPastCard();
+    return;
+  }
   pastResultId=pastProgressId;
-  clearPastProgress();
   const total = pastQueue.length;
   const isNavi3Practice = pastReturnView === 'navi3-practice';
   const isPredictiveMock = pastReturnView === 'pass-plan-predictive-mock' || pastQueue.some(q=>q&&q._predictiveMock);
@@ -17777,17 +17832,28 @@ function renderPastResult(){
     else wrongs.push({q, i, ans: pastAnswers[i]});
   });
   const pct = total ? Math.round(100*correct/total) : 0;
-  // v4.46: 오답 자동 누적 + 정답은 오답노트에서 자동 제거 + 풀이 기록 저장 (단일 회차만)
-  wrongs.forEach(({q,ans}) => {if(!q._evaluationMock)addPastWrong(q, ans)});
-  pastQueue.forEach((q,i)=>{
-    if(!q._evaluationMock&&pastAnswers[i] === q['정답']) removePastWrong(pqid(q));
+  const committed=mdCommitPastSubmission(()=>{
+    wrongs.forEach(({q,ans}) => {if(!q._evaluationMock)addPastWrong(q, ans)});
+    pastQueue.forEach((q,i)=>{
+      if(!q._evaluationMock&&pastAnswers[i] === q['정답']) removePastWrong(pqid(q));
+    });
+    if(isPredictiveMock&&typeof window.commitNavigatorPredictiveMockResult==='function'){
+      if(window.commitNavigatorPredictiveMockResult(pastQueue,pastAnswers)===false)throw new Error('학습 진도 저장 실패');
+    }
+    if(!pastAllYears && !pastReturnView && pastBaseShort && pastYear && pastSession){
+      if(recordPastSession(pastBaseShort, pastYear, pastSession, correct, total, pastMode)===false)throw new Error('기출 풀이 기록 저장 실패');
+    }
+    const analytics=window.__mdWeakTopicAnalytics;
+    if(analytics&&typeof analytics.persistResult==='function')analytics.persistResult(pastQueue,pastAnswers);
+    // Deleting the paper is the final transaction step, after every result is durable.
+    clearPastProgress();
   });
-  if(isPredictiveMock&&typeof window.commitNavigatorPredictiveMockResult==='function'){
-    window.commitNavigatorPredictiveMockResult(pastQueue,pastAnswers);
+  if(!committed){
+    showToast(mdPastSubmissionRecovery?'일부 채점 기록을 복구하지 못했습니다. 답안 파일을 백업한 뒤 새로고침하여 다시 제출하세요.':'채점 기록을 저장하지 못해 제출을 중단했습니다. 답안을 보존했습니다. 다시 제출하거나 파일로 백업하세요.',6000);
+    if(pastIdx>=0&&pastIdx<pastQueue.length)renderPastCard();
+    return;
   }
-  if(!pastAllYears && !pastReturnView && pastBaseShort && pastYear && pastSession){
-    recordPastSession(pastBaseShort, pastYear, pastSession, correct, total, pastMode);
-  }
+  currentMode='past-result';
   const elapsed = Math.floor((Date.now()-pastStartedAt)/1000);
   const mm = Math.floor(elapsed/60), ss = elapsed%60;
   const s = SUBJECTS.find(x=>x.id===pastSubjectId);
@@ -21944,9 +22010,9 @@ function appPrompt(opts,onSubmit){
 window.alert=appAlert;
 </script>
 
-<script src="data-identity.js?v=5.25"></script>
+<script src="data-identity.js?v=5.26"></script>
 
-<script src="scheduler-v522.js?v=5.25"></script>
+<script src="scheduler-v522.js?v=5.26"></script>
 
 <script>
 // ── v5.07: 2·3급 항해사 합격 플랜 / 오늘의 숙제 ──
@@ -22734,7 +22800,11 @@ window.alert=appAlert;
       if(!q||!q._predictiveMock||q._predictiveReview||q._evaluationMock||!q._planKey)return;
       const answer=answers&&answers[i]; // mock-unanswered-neutral-v1
       if(answer===null||answer===undefined)return;
-      const r=ppProgressFor(progress,q._planKey);window.__mdLearningIntegrity.initializeCounters(r);r.lastPracticeMode='predictive-mock';
+      const r=ppProgressFor(progress,q._planKey);
+      const commitId=String((typeof pastResultId!=='undefined'&&pastResultId)||(typeof pastProgressId!=='undefined'&&pastProgressId)||'');
+      if(commitId&&r.lastMockCommitId===commitId)return;
+      if(commitId)r.lastMockCommitId=commitId;
+      window.__mdLearningIntegrity.initializeCounters(r);r.lastPracticeMode='predictive-mock';
       if(answer===q['정답']){ppAppendReviewEvidence(r,'correct',today,'predictive-mock',ppMockEvidenceId(q));window.__mdLearningIntegrity.appendOutcome(r,'correct',false);return;}
       r.attempts=(r.attempts||0)+1;r.wrong=(r.wrong||0)+1;r.lastDate=today;r.lastOutcome='wrong';
       r.status='weak';r.mastered=false;r.recoveryStartDate=today;r.sameDayFirstCorrectDate=null;r.sameDayConfirmedDate=null;r.lastWrongDate=today;r.todayWrongReviewDate=null;r.dueDate=today;
@@ -22748,7 +22818,7 @@ window.alert=appAlert;
       ppSavePredictiveHistory(gradeId,keys);
       ppSavePredictiveFingerprintHistory(gradeId,rows);
     }
-    ppSaveProgress(progress);
+    if(!ppSaveProgress(progress))return false;
     const daily=ppLoadDaily(),checkpoint=ppLoadPassSessionCheckpoint();
     if(checkpoint&&Array.isArray(checkpoint.queueKeys)&&checkpoint.queueKeys.length){
       if(daily[today]){
@@ -22757,7 +22827,7 @@ window.alert=appAlert;
         daily[today].pendingMockReview=daily[today].pendingMockReviewKeys.length>0;
       }
     }else delete daily[today];
-    ppSaveDaily(daily);
+    return ppSaveDaily(daily);
   };
 
   const PP_EVALUATION_EXPOSURE_KEY='md_evaluation_mock_exposure_v1'; // evaluation-mock-v1
@@ -23182,27 +23252,11 @@ window.alert=appAlert;
 })();
 
 </script>
-<script src="drive-state-codec.js?v=5.25"></script>
-<script src="keyboard-controls.js?v=5.25"></script>
-<script src="explain-2026-navi3-3.js?v=5.25"></script>
-<script src="explain-2026-navi3-3-english.js?v=5.25"></script>
-<script src="convenience-controls.js?v=5.25"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<script src="drive-state-codec.js?v=5.26"></script>
+<script src="keyboard-controls.js?v=5.26"></script>
+<script src="explain-2026-navi3-3.js?v=5.26"></script>
+<script src="explain-2026-navi3-3-english.js?v=5.26"></script>
+<script src="convenience-controls.js?v=5.26"></script>
 
 <script data-bundled-src="reported-content-fixes.js">
 // Maritime Drill reported content text corrections
@@ -23321,6 +23375,13 @@ window.alert=appAlert;
   function stripPdfFooterArtifact(value){
     const source=String(value==null?'':value);
     return source.replace(PDF_FOOTER_SUFFIX_RE,'').trimEnd();
+  }
+
+  // A saved/cloned question can outlive its source object, and homework can
+  // display the original last choice in any position. Normalize at the choice
+  // renderer as well, without applying page-number stripping to arbitrary text.
+  function fixChoiceText(value){
+    return stripPdfFooterArtifact(fixString(value));
   }
 
   function patchPdfFooterArtifact(obj){
@@ -23997,6 +24058,22 @@ window.alert=appAlert;
     global.getPastExam=wrappedGetPastExam;
   }
 
+  function installPastDataLoadHook(){
+    const original=global.ensurePastDataForSubject;
+    if(typeof original!=='function'||original.__mdReportedTextFix)return;
+    async function wrappedEnsurePastDataForSubject(){
+      const result=await original.apply(this,arguments);
+      // Ordinary past-paper selection reads MD_PAST through list helpers,
+      // bypassing getPastExam. Patch after every lazy load, before the caller
+      // can copy those questions into its study/mock queue.
+      patchObject(result);
+      return result;
+    }
+    wrappedEnsurePastDataForSubject.__mdReportedTextFix=true;
+    wrappedEnsurePastDataForSubject.__mdReportedTextFixOriginal=original;
+    global.ensurePastDataForSubject=wrappedEnsurePastDataForSubject;
+  }
+
   function patchDom(root){
     if(!root||typeof document==='undefined'||!document.createTreeWalker)return;
     const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
@@ -24011,6 +24088,7 @@ window.alert=appAlert;
     patchKnownData();
     installFrequencyHook();
     installPastExamHook();
+    installPastDataLoadHook();
     const root=document.getElementById('app')||document.body;
     if(!root)return;
     patchDom(root);
@@ -24035,9 +24113,10 @@ window.alert=appAlert;
   patchKnownData();
   installFrequencyHook();
   installPastExamHook();
+  installPastDataLoadHook();
 
   global.__mdReportedContentFixes={
-    fixString,normalizeEquationGlyphs,normalizeFormulaArtifacts,patchObject,patchKnownData,
+    fixString,fixChoiceText,normalizeEquationGlyphs,normalizeFormulaArtifacts,patchObject,patchKnownData,
     patchVerifiedFormulaQuestion,patchPdfFooterArtifact,stripPdfFooterArtifact,
     auditKnownData,collectBrokenGlyphs,replacements:REPLACEMENTS,
     equationCharMap:EQUATION_CHAR_MAP
