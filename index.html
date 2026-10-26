@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="md-build" content="android-single-file">
-<title>Maritime Drill v5.29 · Android</title>
+<title>Maritime Drill v5.30 · Android</title>
 <style>
 
 *{margin:0;padding:0;box-sizing:border-box}
@@ -14673,7 +14673,7 @@ window.MD_DATA["safety2"] = { meta: META, QUESTIONS, IMP, TTS_MAP, SHIP_INFO, NE
 <script>
 
 // ── 앱 버전 (업데이트 시마다 올리기) ──
-const APP_VERSION = '5.29';
+const APP_VERSION = '5.30';
 
 // ── v4.81: 브라우저 저장 실패를 사용자에게 즉시 알리는 공통 저장기 ──
 function showStorageWarning(label, error){
@@ -14890,7 +14890,9 @@ async function exportAllLearningData(){
   // manual backup. Export uses the existing, importable all-learning format.
   if(currentMode==='past'&&pastQueue.length){
     savePastProgress();
-    if(pastProgressMeta){
+    if(window.__mdExamSessions){
+      Object.assign(items,window.__mdExamSessions.liveItems());
+    }else if(pastProgressMeta){
       const state=capturePastProgressState();
       items[PAST_CHECKPOINT_KEY]=JSON.stringify({meta:pastProgressMeta,state});
       items[PAST_PROGRESS_META_KEY]=JSON.stringify(pastProgressMeta);
@@ -15260,6 +15262,7 @@ async function driveSyncFetch(url,options={}){
 async function driveSyncFindRemoteFile(){
   const params=new URLSearchParams({
     spaces:'appDataFolder',
+    q:"trashed = false and name = '"+DRIVE_SYNC_FILE.replace(/'/g,"\\'")+"'",
     pageSize:'100',
     fields:'files(id,name,modifiedTime,size)'
   });
@@ -22069,9 +22072,9 @@ function appPrompt(opts,onSubmit){
 window.alert=appAlert;
 </script>
 
-<script src="data-identity.js?v=5.29"></script>
+<script src="data-identity.js?v=5.30"></script>
 
-<script src="scheduler-v522.js?v=5.29"></script>
+<script src="scheduler-v522.js?v=5.30"></script>
 
 <script>
 // ── v5.07: 2·3급 항해사 합격 플랜 / 오늘의 숙제 ──
@@ -23311,11 +23314,11 @@ window.alert=appAlert;
 })();
 
 </script>
-<script src="drive-state-codec.js?v=5.29"></script>
-<script src="keyboard-controls.js?v=5.29"></script>
-<script src="explain-2026-navi3-3.js?v=5.29"></script>
-<script src="explain-2026-navi3-3-english.js?v=5.29"></script>
-<script src="convenience-controls.js?v=5.29"></script>
+<script src="drive-state-codec.js?v=5.30"></script>
+<script src="keyboard-controls.js?v=5.30"></script>
+<script src="explain-2026-navi3-3.js?v=5.30"></script>
+<script src="explain-2026-navi3-3-english.js?v=5.30"></script>
+<script src="convenience-controls.js?v=5.30"></script>
 
 <script data-bundled-src="reported-content-fixes.js">
 // Maritime Drill reported content text corrections
@@ -24213,5 +24216,7 @@ window.alert=appAlert;
 })(window);
 
 </script>
+<script src="exam-sessions.js?v=5.30"></script>
+<script src="drive-exam-journal.js?v=5.30"></script>
 </body>
 </html>
