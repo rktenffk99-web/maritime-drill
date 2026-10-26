@@ -2,6 +2,7 @@
 // 1-4 / A-D: choose an answer
 // Enter / Numpad Enter / Space / Right Arrow: next question
 // Left Arrow: previous question
+// 0 / Numpad 0: toggle a written mock-exam hint
 (function(){
   'use strict';
 
@@ -32,6 +33,13 @@
     if(['md-modal-wrap','_confirmDialog','md-report-modal','md-report-list-modal'].some(id=>document.getElementById(id))) return;
     try{
       if(typeof currentMode==='undefined') return;
+      if(currentMode==='past'&&typeof pastMode!=='undefined'&&pastMode==='mock'&&!event.shiftKey&&
+         (event.key==='0'||event.code==='Digit0'||event.code==='Numpad0')){
+        if(typeof window.__mdMockHintControls?.toggle!=='function')return;
+        event.preventDefault();event.stopImmediatePropagation();
+        if(!event.repeat)window.__mdMockHintControls.toggle();
+        return;
+      }
       // Ordinary past-paper sessions retain their existing keys; Space also advances.
       if(currentMode==='past' && (event.code==='Space'||event.key===' ')){
         event.preventDefault();event.stopImmediatePropagation();
@@ -93,6 +101,7 @@ mdLoadAuxScript('reported-content-fixes.js');
 mdLoadAuxScript('weak-topic-classifier.js');
 mdLoadAuxScript('balanced-mock.js');
 mdLoadAuxScript('mock-explanation-controls.js');
+mdLoadAuxScript('mock-hint-controls.js');
 
 // Add subject/topic result analytics and persist weak-topic reinforcement targets.
 mdLoadAuxScript('predictive-analytics.js');

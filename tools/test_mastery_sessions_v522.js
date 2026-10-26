@@ -87,6 +87,11 @@ async function test(name,fn){await fn();passed++;console.log('PASS '+name)}
  await test('same-day legacy checkpoint remains valid across both policy upgrades',()=>{
   date('2026-10-22');const {s,data}=harness();data.set(C,JSON.stringify({version:2,date:day,dedupePolicy:'near-duplicate-v1',subjectBalancePolicy:'coverage-even-v2',queueKeys:['navi2|old'],nextIndex:0,answers:[0]}));assert.equal(s.__test.load().queueKeys[0],'navi2|old');assert.ok(data.has(C));
  });
+ await test('hint-assisted correct mock answers remain unsure evidence after submission',()=>{
+  date('2026-10-22');const {s}=harness(),question=q();s.__test.setup([question]);
+  s.commitNavigatorPredictiveMockResult([{...question,_predictiveMock:true,_mockHintViewed:true}],[0]);
+  const record=rec(s);assert.equal(record.correct,1);assert.equal(record.unsure,1);assert.equal(record.recentOutcomes.at(-1).outcome,'unsure');assert.equal(record.mastered,false);
+ });
  await test('mock wrong evidence keeps active assignment and queues separate follow-up',()=>{
   date('2026-10-22');const {s,data}=harness(),question=q();s.__test.setup([question]);s.__test.save(0);data.set(D,JSON.stringify({[day]:{keys:['navi2|q'],signature:'old'}}));const checkpoint=data.get(C);s.commitNavigatorPredictiveMockResult([{...q('navi2|newwrong'),_predictiveMock:true}],[1]);
   assert.deepEqual(JSON.parse(data.get(D))[day].keys,['navi2|q']);assert.deepEqual(JSON.parse(data.get(D))[day].pendingMockReviewKeys,['navi2|newwrong']);assert.equal(data.get(C),checkpoint);assert.equal(rec(s,'navi2|newwrong').reviewStage,0);

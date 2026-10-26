@@ -57,6 +57,7 @@ python tools/patch_mock_answer_access.py
 python tools/patch_mock_submission_safety.py
 python tools/patch_past_variant_navigation.py
 python tools/patch_keyboard_context.py
+python tools/patch_mock_hint.py
 python tools/patch_backup_restore_safety.py
 node tools/test_navi2_reviewed.js
 node tools/test_balanced_mock.js
