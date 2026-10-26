@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="md-build" content="android-single-file">
-<title>Maritime Drill v5.26 · Android</title>
+<title>Maritime Drill v5.27 · Android</title>
 <style>
 
 *{margin:0;padding:0;box-sizing:border-box}
@@ -14673,7 +14673,7 @@ window.MD_DATA["safety2"] = { meta: META, QUESTIONS, IMP, TTS_MAP, SHIP_INFO, NE
 <script>
 
 // ── 앱 버전 (업데이트 시마다 올리기) ──
-const APP_VERSION = '5.26';
+const APP_VERSION = '5.27';
 
 // ── v4.81: 브라우저 저장 실패를 사용자에게 즉시 알리는 공통 저장기 ──
 function showStorageWarning(label, error){
@@ -14769,7 +14769,13 @@ function isBackupPayload(backup){
 }
 function validBackupEntries(backup){
   if(!isBackupPayload(backup)) return [];
-  return Object.entries(backup.items).filter(([key,value])=>isManagedStorageKey(key)&&typeof value==='string');
+  const entries=[];
+  for(const [key,value] of Object.entries(backup.items)){
+    if(!isManagedStorageKey(key))continue;
+    if(typeof value!=='string')throw new Error('백업 저장 항목 형식이 올바르지 않습니다: '+key);
+    entries.push([key,value]);
+  }
+  return entries;
 }
 function backupDateLabel(value){
   if(!value) return '날짜 정보 없음';
@@ -14805,8 +14811,10 @@ function readAutomaticRestorePoint(){
 }
 function applyBackupEntries(entries,label){
   let restored=0;
-  for(const [key,value] of entries){
-    if(safeStorageSet(key,value,label||'백업 복원')) restored++;
+  // Shrinking a later key can make room for an earlier growing replacement.
+  const ordered=entries.map(([key,value])=>({key,value,delta:value.length-(localStorage.getItem(key)||'').length})).sort((a,b)=>a.delta-b.delta);
+  for(const {key,value} of ordered){
+    if(localStorage.getItem(key)===value||safeStorageSet(key,value,label||'백업 복원'))restored++;
   }
   return restored;
 }
@@ -14821,21 +14829,57 @@ function applyBackupSnapshot(entries,label){
   for(const key of currentKeys){ if(safeStorageRemove(key,label||'자동 복구')) removed++; }
   return {restored:applyBackupEntries(entries,label||'자동 복구'),removed};
 }
+// backup-restore-transaction-v527
+function restoreRawBackupValues(values){
+  const hasSync=typeof driveSyncApplyingRemote!=='undefined',previous=hasSync?driveSyncApplyingRemote:false;
+  if(hasSync)driveSyncApplyingRemote=true;
+  try{
+    const operations=[...values].map(([key,value])=>({key,value,before:localStorage.getItem(key)}));
+    operations.sort((a,b)=>(a.value===null?-Infinity:a.value.length-(a.before||'').length)-(b.value===null?-Infinity:b.value.length-(b.before||'').length));
+    for(const {key,value,before} of operations){
+      if(value===before)continue;
+      if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value);
+    }
+    return [...values].every(([key,value])=>localStorage.getItem(key)===value);
+  }catch(error){console.warn('[backup] rollback incomplete',error);return false}
+  finally{if(hasSync)driveSyncApplyingRemote=previous}
+}
+function prepareExactBackupItems(entries){
+  // An exact restore must also repair a corrupted current container shape.
+  let items=Object.fromEntries(validateImportedBackupEntries(entries,{}));
+  if(window.__mdDailyStorage)items=window.__mdDailyStorage.compactItems(items);
+  const api=window.__mdDriveSyncV2;
+  // The storage hook promotes legacy history identities. Verify that same shape.
+  if(api)for(const [key,raw] of Object.entries(items))if(/^md_focus_history_/.test(key)){
+    const rows=JSON.parse(raw);
+    items[key]=JSON.stringify(rows.map(row=>typeof row.sessionId==='string'&&row.sessionId?row:{...row,sessionId:api.historySessionId(row)}));
+  }
+  return items;
+}
 function restoreAutomaticRestorePoint(){
   const point=readAutomaticRestorePoint();
-  if(!point){ alert('되돌릴 자동 복구 지점이 없습니다.'); return; }
-  const entries=validBackupEntries(point);
+  if(!point){alert('되돌릴 자동 복구 지점이 없습니다.');return}
+  let entries;
+  try{entries=validBackupEntries(point);prepareExactBackupItems(entries)}
+  catch(error){alert('복구 지점을 확인하지 못했습니다: '+(error.message||error));return}
   showConfirm(`${backupDateLabel(point.exportedAt)}에 저장한 가져오기 전 상태(${entries.length}개)로 되돌릴까요?\n현재 상태도 다시 자동 저장되어 한 번 더 되돌릴 수 있습니다.`,()=>{
-    let currentItems;
-    try{ currentItems=collectBackupItems(); }
-    catch(error){ showStorageWarning('현재 학습 데이터',error); return; }
-    if(!writeAutomaticRestorePoint(currentItems,'before-restore-point')){
-      alert('현재 상태를 안전하게 저장하지 못해 되돌리기를 취소했습니다.');
-      return;
+    let before,target,values;
+    try{
+      before=collectBackupItems();target=prepareExactBackupItems(entries);
+      values=new Map([...new Set([...Object.keys(before),...Object.keys(target),RESTORE_POINT_KEY,'md_drive_sync_state_v1'])].map(key=>[key,localStorage.getItem(key)]));
+    }catch(error){alert('복구 준비에 실패했습니다: '+(error.message||error));return}
+    if(!writeAutomaticRestorePoint(before,'before-restore-point')){
+      alert('현재 상태를 안전하게 저장하지 못해 되돌리기를 취소했습니다.');return;
     }
-    const result=applyBackupSnapshot(entries,'자동 복구');
-    alert(`이전 상태로 되돌렸습니다. ${result.restored}개 복원 · ${result.removed}개 정리 후 앱을 다시 불러옵니다.`);
-    location.reload();
+    try{
+      const result=applyBackupSnapshot(Object.entries(target),'자동 복구'),actual=collectBackupItems();
+      if(Object.keys(actual).length!==Object.keys(target).length||Object.entries(target).some(([key,value])=>actual[key]!==value))throw new Error('일부 저장 항목을 복원하지 못했습니다.');
+      alert(`이전 상태로 되돌렸습니다. ${result.restored}개 복원 · ${result.removed}개 정리 후 앱을 다시 불러옵니다.`);
+      location.reload();
+    }catch(error){
+      const recovered=restoreRawBackupValues(values);
+      alert('자동 복구를 완료하지 못했습니다: '+(error.message||error)+(recovered?' 복구 시도 전 기록을 그대로 보존했습니다.':' 일부 기록의 되돌리기에도 실패했습니다. 이 화면을 닫지 말고 전체 백업 파일을 저장하세요.'));
+    }
   });
 }
 async function exportAllLearningData(){
@@ -14924,12 +14968,18 @@ function validateImportedBackupEntries(entries,before){
       }
     }
   };
+  const objectKeys=new Set(['md_nav23_pass_progress_v1','md_nav23_pass_plan_v1','md_nav23_pass_daily_v1','md_past_wrongs_v1','md_past_marks_v1','md_past_history_v1','md_past_progress_v1','md_past_progress_meta_v1','md_past_checkpoint_v2','md_pass_plan_session_checkpoint_v2','md_evaluation_score_history_v1','md_predictive_mock_history_v2','md_predictive_mock_fingerprint_history_v1','md_weak_topic_profile_v1','md_evaluation_mock_exposure_v1','md_mock_exposure_v1']);
   for(const [key,raw] of entries){
-    let value,prior;try{value=JSON.parse(raw)}catch(e){
-      if(/^md_state_|^md_focus_history_|^md_nav23_pass_progress_v1$/.test(key))throw new Error('백업 학습 데이터 형식이 올바르지 않습니다: '+key);
-      normalized.push([key,raw]);
-      continue;
+    let value,prior;try{prior=JSON.parse(before[key])}catch(e){}
+    const wantsObject=objectKeys.has(key)||/^md_state_/.test(key),wantsArray=key==='md_problem_reports_v1'||key==='md_predictive_mock_history_v1'||/^md_focus_history_/.test(key);
+    try{value=JSON.parse(raw)}catch(e){
+      if(wantsObject||wantsArray||object(prior)||Array.isArray(prior))throw new Error('백업 학습 데이터 형식이 올바르지 않습니다: '+key);
+      normalized.push([key,raw]);continue;
     }
+    if((wantsObject&&!object(value))||(wantsArray&&!Array.isArray(value)))throw new Error('백업 저장 항목 형식이 올바르지 않습니다: '+key);
+    if((object(prior)&&!object(value))||(Array.isArray(prior)&&!Array.isArray(value)))throw new Error('기존 기록과 백업의 데이터 형식이 다릅니다: '+key);
+    if(key==='md_problem_reports_v1'&&value.some(row=>!object(row)||(row.tags!==undefined&&!Array.isArray(row.tags))))throw new Error('백업 문제 신고 형식이 올바르지 않습니다.');
+    if((key==='md_past_wrongs_v1'||key==='md_past_marks_v1')&&Object.values(value).some(row=>!object(row)||!object(row.q)||!Array.isArray(row.q['선택지'])))throw new Error('백업 오답·북마크 문항 형식이 올바르지 않습니다.');
     if(/^md_state_/.test(key)){
       if(!object(value)||!object(value.boxes)||Object.values(value.boxes).some(row=>!object(row)))throw new Error('백업 문제별 학습 기록을 확인할 수 없습니다: '+key);
       for(const [id,row] of Object.entries(value.boxes))normalizeBox(row,key+'.boxes.'+id);
@@ -17150,7 +17200,7 @@ function renderPastYearPick(subjectId, baseShort){
   // v4.45: 현재 exam 풀에 실제 존재하는 variant로 동적 필터 구성 (navi: 상선/어선, engi5: 일반/국내한정)
   const vc = getVariantChoices(exams);
   const showVariantFilter = vc.choices.length > 0;
-  if(!showVariantFilter) pastYearPickVariant = 'all';
+  if(!showVariantFilter||!vc.choices.includes(pastYearPickVariant)) pastYearPickVariant = 'all';
   const curV = pastYearPickVariant || 'all';
   // 년도별 집계 (변종 합산)
   const years = new Map();
@@ -17216,7 +17266,7 @@ function renderPastYearPick(subjectId, baseShort){
     </div>
     <div class="card" style="border-left:3px solid ${gColor}">
       <div style="font-size:14px;font-weight:800;color:var(--text);margin-bottom:4px">년도 선택 랜덤</div>
-      <div style="font-size:11px;color:var(--textDim);margin-bottom:12px">원하는 년도만 골라서 랜덤 출제</div>
+      <div style="font-size:11px;color:var(--textDim);margin-bottom:12px">원하는 년도만 골라서 랜덤 출제 · 현재 구분: ${curV==='all'?'전체':escapeHtml(curV)}</div>
       <div id="past-yearcheck-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px">
         ${yearList.map(([y,b])=>{
           return `<label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid #E5E7EB;border-radius:8px;cursor:pointer;background:#fff">
@@ -17263,7 +17313,8 @@ async function startPastYearPickSession(mode){
   mode = mode || 'study';
   const years = [...document.querySelectorAll('.past-year-check:checked')].map(cb => parseInt(cb.value));
   if(!years.length){ showToast('년도를 1개 이상 선택해주세요.'); return; }
-  const exams = getPastExamsByBase(pastBaseShort, pastVariant||'all')
+  const curV = pastYearPickVariant || 'all'; // past-variant-navigation-v527
+  const exams = getPastExamsByBase(pastBaseShort, curV)
     .filter(p => years.includes(p.meta.year));
   if(!exams.length){ showToast('해당 년도의 데이터가 없습니다.'); return; }
   const pool = [];
@@ -17291,6 +17342,7 @@ async function startPastYearPickSession(mode){
   }
   renderPastLoading('선택한 년도의 해설을 불러오는 중입니다');
   await ensurePastExplainForYears(years);
+  pastVariant=curV;
   pastAllYears=true;pastYear=null;pastSession=null;pastReturnView=null;
   pastQueue = finalPool;
   pastIdx = 0;
@@ -17332,6 +17384,7 @@ async function startPastAllYearsSession(mode){
   if(!pool.length){ showToast('해당 조건의 문제가 없습니다.'); return; }
   renderPastLoading('전체 년도 해설을 불러오는 중입니다');
   await ensurePastExplainForYears(exams.map(p=>p.meta.year));
+  pastVariant=curV;
   pastQueue = pool;
   pastIdx = 0;
   pastAnswers = new Array(pool.length).fill(null);
@@ -17414,7 +17467,7 @@ function renderPastRunner(subjectId, baseShort, year, session){
   // v4.45: 동적 variant 선택지 (navi: 상선/어선, engi5: 일반/국내한정)
   const vc = getVariantChoices(examsAll);
   const showVariantFilter = vc.choices.length > 0;
-  if(!showVariantFilter) pastVariant = 'all';
+  if(!showVariantFilter||!vc.choices.includes(pastVariant)) pastVariant = 'all';
   const curV = pastVariant || 'all';
   // 현재 필터에 맞는 exams 만
   const exams = examsAll.filter(p => variantMatches(p.meta.gradeShort, curV));
@@ -21599,10 +21652,13 @@ function speakReview(qid){
 
 // ── 스페이스바 제어 ──
 document.addEventListener('keydown',function(e){
+  // keyboard-context-v527: dialogs and native controls own their keyboard input.
+  if(e.defaultPrevented||e.isComposing||e.ctrlKey||e.metaKey||e.altKey||e.repeat)return;
+  if((e.key==='Enter'||e.code==='NumpadEnter'||e.code==='Space'||e.key===' ')&&e.target?.closest?.('button,a[href],summary,[role="button"]'))return;
   // 입력 포커스(타이핑 답안 작성 등) / 모달 열린 상태에선 단축키 무시
   const tag = (e.target && e.target.tagName) || '';
   const isInputFocus = /^(INPUT|TEXTAREA|SELECT)$/.test(tag) || (e.target && e.target.isContentEditable);
-  const modalOpen = !!document.getElementById('md-modal-wrap') || !!document.getElementById('_confirmDialog');
+  const modalOpen = ['md-modal-wrap','_confirmDialog','md-report-modal','md-report-list-modal'].some(id=>document.getElementById(id));
 
   // ── study / mock / focus 모드 단축키 (v4.58: 키보드 네비게이션 추가) ──
   if((currentMode==='study'||currentMode==='mock'||currentMode==='focus') && queue && queue.length){
@@ -22010,9 +22066,9 @@ function appPrompt(opts,onSubmit){
 window.alert=appAlert;
 </script>
 
-<script src="data-identity.js?v=5.26"></script>
+<script src="data-identity.js?v=5.27"></script>
 
-<script src="scheduler-v522.js?v=5.26"></script>
+<script src="scheduler-v522.js?v=5.27"></script>
 
 <script>
 // ── v5.07: 2·3급 항해사 합격 플랜 / 오늘의 숙제 ──
@@ -23252,11 +23308,11 @@ window.alert=appAlert;
 })();
 
 </script>
-<script src="drive-state-codec.js?v=5.26"></script>
-<script src="keyboard-controls.js?v=5.26"></script>
-<script src="explain-2026-navi3-3.js?v=5.26"></script>
-<script src="explain-2026-navi3-3-english.js?v=5.26"></script>
-<script src="convenience-controls.js?v=5.26"></script>
+<script src="drive-state-codec.js?v=5.27"></script>
+<script src="keyboard-controls.js?v=5.27"></script>
+<script src="explain-2026-navi3-3.js?v=5.27"></script>
+<script src="explain-2026-navi3-3-english.js?v=5.27"></script>
+<script src="convenience-controls.js?v=5.27"></script>
 
 <script data-bundled-src="reported-content-fixes.js">
 // Maritime Drill reported content text corrections

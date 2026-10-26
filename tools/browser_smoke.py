@@ -18,6 +18,51 @@ class QuietHandler(SimpleHTTPRequestHandler):
 server = ThreadingHTTPServer(('127.0.0.1', 0), partial(QuietHandler, directory=str(ROOT)))
 threading.Thread(target=server.serve_forever, daemon=True).start()
 report = {'cases': [], 'page_errors': [], 'google_login_tested': False}
+
+
+def check_mock_keyboard_context(page):
+    def snapshot():
+        return page.evaluate('({idx:pastIdx,answers:pastAnswers.slice(),ids:pastQueue.map(pqid)})')
+
+    before = snapshot()
+    for key in ('Enter', 'Space'):
+        # A focused settings control owns Enter/Space; neither key may advance the paper.
+        page.locator('#md-settings-button').focus()
+        page.keyboard.press(key)
+        page.locator('#md-modal-wrap').wait_for(state='visible')
+        assert snapshot() == before, f'{key} on settings changed the paper'
+        page.locator('#md-report-settings button').click()
+        page.locator('#md-report-list-modal').wait_for(state='visible')
+        assert page.locator('#md-modal-wrap').count() == 0
+        for blocked in ('1', 'Enter', 'Space', 'ArrowRight'):
+            page.locator('#md-report-list-modal > .card').focus()
+            page.keyboard.press(blocked)
+            assert snapshot() == before, f'{blocked} leaked through the report list'
+        page.locator('#md-report-list-close').click()
+
+    page.locator('#md-report-btn').click()
+    page.locator('#md-report-modal').wait_for(state='visible')
+    for blocked in ('1', 'Enter', 'Space', 'ArrowRight'):
+        page.locator('#md-report-modal > .card').focus()
+        page.keyboard.press(blocked)
+        assert snapshot() == before, f'{blocked} leaked through the report dialog'
+    page.locator('#md-report-cancel').click()
+    assert page.evaluate("document.activeElement?.id==='md-report-btn'")
+    report['cases'].append('focused settings uses native Enter/Space; settings opens report history; report dialogs isolate answer/navigation keys')
+
+    for key in ('Enter', 'Space'):
+        page.locator('[onclick="goBackFromPastSession()"]').focus()
+        page.keyboard.press(key)
+        wait_plan(page, tab='mock')
+        assert page.evaluate('currentMode') == 'pass-plan'
+        saved = page.evaluate('getPastProgress().state')
+        assert saved['idx'] == before['idx'] and saved['answers'] == before['answers']
+        page.locator('[data-past-resume] [onclick="resumePastProgress()"]').click()
+        page.wait_for_function("currentMode==='past'")
+        assert snapshot() == before, f'{key} on save-and-exit did not preserve the paper'
+    report['cases'].append('focused save-and-exit uses native Enter/Space and resumes the exact paper without advancing')
+
+
 try:
     with sync_playwright() as pw:
         browser = pw.chromium.launch(headless=True, executable_path=os.environ.get('MD_BROWSER_EXECUTABLE') or None, args=['--no-sandbox','--disable-dev-shm-usage'])
@@ -32,10 +77,10 @@ try:
         agree.wait_for(state='visible')
         agree.click()
         page.wait_for_function("hasAgreedTerms() && !document.getElementById('md-modal-wrap')")
-        assert page.evaluate('APP_VERSION') == '5.26'
-        assert 'v5.26' in page.title()
+        assert page.evaluate('APP_VERSION') == '5.27'
+        assert 'v5.27' in page.title()
         assert page.evaluate("typeof window.__mdMockExplanationControls==='object'")
-        report['cases'].append('v5.26 startup and auxiliary scripts loaded')
+        report['cases'].append('v5.27 startup and auxiliary scripts loaded')
         page.evaluate("renderNavigatorPassPlan('navi3')")
         wait_plan(page, configure=True)
         target = (date.today() + timedelta(days=30)).isoformat()
@@ -54,6 +99,8 @@ try:
             assert page.evaluate('pastQueue.length') == 25
             answer = page.evaluate("pastQueue[0]['정답']")
             page.locator(f'[onclick="choosePastAnswer({answer})"]').click()
+            if grade == 'navi2':
+                check_mock_keyboard_context(page)
             # Use real Next/Submit controls: mock mode permits unanswered items.
             for _ in range(25):
                 page.locator('[onclick="pastNext()"]').click()

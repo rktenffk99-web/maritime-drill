@@ -87,7 +87,13 @@ try:
         page.locator('#md-modal-wrap .md-modal-close').click()
         page.locator('#md-settings-button').focus()
         page.keyboard.press('Space')
-        assert not page.locator('#md-modal-wrap').count()
+        page.locator('#md-modal-wrap').wait_for(state='visible')
+        assert page.evaluate("localStorage.getItem('md_pass_plan_session_checkpoint_v2')")==checkpoint
+        page.locator('#md-modal-wrap .md-modal-close').click()
+        # Native controls own Space. Move focus to the persistent app surface
+        # before exercising the study shortcut and its repeated-answer guard.
+        page.locator('#app').evaluate('(el)=>{el.tabIndex=-1;el.focus()}')
+        page.keyboard.press('Space')
         assert page.evaluate("JSON.parse(localStorage.getItem('md_pass_plan_session_checkpoint_v2')).nextIndex")==1
         record=page.evaluate('(key)=>window.__mdPassProgressStorage.hydrate(JSON.parse(localStorage.getItem("md_nav23_pass_progress_v1")))[key]',key)
         assert record['lastOutcome']=='sure' and record['correct']>=1 and not record['mastered'],record
@@ -95,7 +101,7 @@ try:
         assert page.evaluate("JSON.parse(localStorage.getItem('md_pass_plan_session_checkpoint_v2')).nextIndex")==1
         page.keyboard.press('ArrowLeft');page.keyboard.press('Space')
         assert page.evaluate('(key)=>window.__mdPassProgressStorage.hydrate(JSON.parse(localStorage.getItem("md_nav23_pass_progress_v1")))[key]',key)==record
-        report['cases'].append('no self-rating; Space advances a legacy checkpoint exactly once, cannot skip unanswered homework or activate a focused settings button; modal keys preserve progress')
+        report['cases'].append('no self-rating; focused settings Space opens its modal without changing progress; app-focused Space advances a legacy checkpoint exactly once, cannot skip unanswered homework, and revisiting cannot double-count it')
         page.evaluate('resetNavigatorPassPlanProgress()');page.get_by_role('button',name='확인',exact=True).click()
         wait_plan(page)
         assert page.evaluate("localStorage.getItem('md_pass_plan_session_checkpoint_v2')")==None
