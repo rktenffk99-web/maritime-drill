@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="md-build" content="android-single-file">
-<title>Maritime Drill v5.28 · Android</title>
+<title>Maritime Drill v5.29 · Android</title>
 <style>
 
 *{margin:0;padding:0;box-sizing:border-box}
@@ -14673,7 +14673,7 @@ window.MD_DATA["safety2"] = { meta: META, QUESTIONS, IMP, TTS_MAP, SHIP_INFO, NE
 <script>
 
 // ── 앱 버전 (업데이트 시마다 올리기) ──
-const APP_VERSION = '5.28';
+const APP_VERSION = '5.29';
 
 // ── v4.81: 브라우저 저장 실패를 사용자에게 즉시 알리는 공통 저장기 ──
 function showStorageWarning(label, error){
@@ -22069,9 +22069,9 @@ function appPrompt(opts,onSubmit){
 window.alert=appAlert;
 </script>
 
-<script src="data-identity.js?v=5.28"></script>
+<script src="data-identity.js?v=5.29"></script>
 
-<script src="scheduler-v522.js?v=5.28"></script>
+<script src="scheduler-v522.js?v=5.29"></script>
 
 <script>
 // ── v5.07: 2·3급 항해사 합격 플랜 / 오늘의 숙제 ──
@@ -23311,11 +23311,11 @@ window.alert=appAlert;
 })();
 
 </script>
-<script src="drive-state-codec.js?v=5.28"></script>
-<script src="keyboard-controls.js?v=5.28"></script>
-<script src="explain-2026-navi3-3.js?v=5.28"></script>
-<script src="explain-2026-navi3-3-english.js?v=5.28"></script>
-<script src="convenience-controls.js?v=5.28"></script>
+<script src="drive-state-codec.js?v=5.29"></script>
+<script src="keyboard-controls.js?v=5.29"></script>
+<script src="explain-2026-navi3-3.js?v=5.29"></script>
+<script src="explain-2026-navi3-3-english.js?v=5.29"></script>
+<script src="convenience-controls.js?v=5.29"></script>
 
 <script data-bundled-src="reported-content-fixes.js">
 // Maritime Drill reported content text corrections
@@ -24027,6 +24027,27 @@ window.alert=appAlert;
     return changed;
   }
 
+  // Source papers are read repeatedly while a single answer is rendered. Keep
+  // their corrected contents, not just their identity: lazy loads and in-place
+  // text/choice repairs must still invalidate this cache immediately.
+  const repairedSnapshots=new WeakMap();
+  function rememberRepairedSnapshot(value){
+    try{
+      const snapshot=JSON.stringify(value);
+      if(typeof snapshot==='string'){repairedSnapshots.set(value,snapshot);return;}
+    }catch(error){ /* Cyclic/non-JSON data still uses the full repair traversal. */ }
+    repairedSnapshots.delete(value);
+  }
+  function patchObjectIfChanged(value){
+    if(!value||typeof value!=='object')return value;
+    let snapshot;
+    try{snapshot=JSON.stringify(value);}catch(error){return patchObject(value);}
+    if(typeof snapshot==='string'&&repairedSnapshots.get(value)===snapshot)return value;
+    patchObject(value);
+    rememberRepairedSnapshot(value);
+    return value;
+  }
+
   function patchObject(value,seen){
     if(!value||typeof value!=='object')return value;
     const visited=seen||new WeakSet();
@@ -24037,6 +24058,7 @@ window.alert=appAlert;
         if(typeof value[i]==='string')value[i]=fixString(value[i]);
         else patchObject(value[i],visited);
       }
+      if(repairedSnapshots.has(value))rememberRepairedSnapshot(value);
       return value;
     }
     for(const key of Object.keys(value)){
@@ -24046,6 +24068,9 @@ window.alert=appAlert;
     }
     patchPdfFooterArtifact(value);
     patchVerifiedFormulaQuestion(value);
+    // The public patchObject API always repairs, including an explicit repair
+    // after a caller changed an already-cached paper in place.
+    if(repairedSnapshots.has(value))rememberRepairedSnapshot(value);
     return value;
   }
 
@@ -24088,9 +24113,9 @@ window.alert=appAlert;
   }
 
   function patchKnownData(){
-    if(global.MD_NAVI_FREQUENCY)patchObject(global.MD_NAVI_FREQUENCY);
-    if(global.MD_DATA)patchObject(global.MD_DATA);
-    if(global.MD_PAST)patchObject(global.MD_PAST);
+    if(global.MD_NAVI_FREQUENCY)patchObjectIfChanged(global.MD_NAVI_FREQUENCY);
+    if(global.MD_DATA)patchObjectIfChanged(global.MD_DATA);
+    if(global.MD_PAST)patchObjectIfChanged(global.MD_PAST);
   }
 
   function installFrequencyHook(){
@@ -24098,7 +24123,7 @@ window.alert=appAlert;
     if(typeof original!=='function'||original.__mdReportedTextFix)return;
     async function wrappedEnsureNavi3FrequencyData(){
       const result=await original.apply(this,arguments);
-      patchObject(result);patchKnownData();return result;
+      patchObjectIfChanged(result);patchKnownData();return result;
     }
     wrappedEnsureNavi3FrequencyData.__mdReportedTextFix=true;
     wrappedEnsureNavi3FrequencyData.__mdReportedTextFixOriginal=original;
@@ -24110,7 +24135,7 @@ window.alert=appAlert;
     if(typeof original!=='function'||original.__mdReportedTextFix)return;
     function wrappedGetPastExam(){
       const result=original.apply(this,arguments);
-      patchObject(result);return result;
+      patchObjectIfChanged(result);return result;
     }
     wrappedGetPastExam.__mdReportedTextFix=true;
     wrappedGetPastExam.__mdReportedTextFixOriginal=original;
@@ -24125,7 +24150,7 @@ window.alert=appAlert;
       // Ordinary past-paper selection reads MD_PAST through list helpers,
       // bypassing getPastExam. Patch after every lazy load, before the caller
       // can copy those questions into its study/mock queue.
-      patchObject(result);
+      patchObjectIfChanged(result);
       return result;
     }
     wrappedEnsurePastDataForSubject.__mdReportedTextFix=true;
