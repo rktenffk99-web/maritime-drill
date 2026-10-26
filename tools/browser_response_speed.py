@@ -96,7 +96,7 @@ try:
               finally {
                 (window.__responseFunctions[name] ||= []).push(performance.now()-started);
                 if(name==='savePastProgress' && currentMode==='past') {
-                  const saved=JSON.parse(localStorage.getItem('md_past_checkpoint_v2'));
+                  const saved=getPastProgress(pastProgressId);
                   if(saved?.state.idx!==pastIdx ||
                     JSON.stringify(saved?.state.answers)!==JSON.stringify(pastAnswers) ||
                     JSON.stringify(saved?.state.hintedIndices)!==JSON.stringify(
@@ -119,7 +119,7 @@ try:
                 # Every action must already be saved, without waiting for a
                 # timer, blur, navigation, or a background network connection.
                 assert page.evaluate("""() => {
-                  const saved=JSON.parse(localStorage.getItem('md_past_checkpoint_v2'));
+                  const saved=getPastProgress(pastProgressId);
                   return saved.state.idx===pastIdx &&
                     JSON.stringify(saved.state.answers)===JSON.stringify(pastAnswers) &&
                     JSON.stringify(saved.state.hintedIndices)===JSON.stringify(

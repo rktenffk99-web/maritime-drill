@@ -7,6 +7,7 @@ import re
 FIND_AND_DOWNLOAD = '''async function driveSyncFindRemoteFile(){
   const params=new URLSearchParams({
     spaces:'appDataFolder',
+    q:"trashed = false and name = '"+DRIVE_SYNC_FILE.replace(/'/g,"\\\\'")+"'",
     pageSize:'100',
     fields:'files(id,name,modifiedTime,size)'
   });

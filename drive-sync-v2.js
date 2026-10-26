@@ -446,6 +446,16 @@
       const remoteHas=Object.prototype.hasOwnProperty.call(remoteItems||{},key);
       const lm=mdSyncNormalizeKeyMeta((localMetaMap||{})[key]);
       const rm=mdSyncNormalizeKeyMeta((remoteMetaMap||{})[key]);
+      // Exam envelopes have immutable papers and causal, whole-answer heads.
+      // Generic recursive field merging would splice papers/answer versions.
+      const exams=window.__mdExamSessions;
+      if(exams&&key.startsWith(exams.PREFIX)){
+        const left=localHas?JSON.parse(localItems[key]):null,right=remoteHas?JSON.parse(remoteItems[key]):null;
+        if(left&&!exams.valid(left)||right&&!exams.valid(right))throw new Error('시험 저장본 검증 실패');
+        if(left||right)items[key]=JSON.stringify(left&&right?exams.merge(left,right):left||right);
+        itemMeta[key]=mdSyncMergeKeyMeta(lm,rm,localFallback,remoteFallback);
+        continue;
+      }
       const generationOrder=mdSyncCompareGenerations(lm,rm);
       if(generationOrder){
         // An offline old-generation client may keep editing, but its clocks
@@ -524,7 +534,7 @@
   }
   function mdSyncStudyActive(){
     return typeof currentMode==='string' &&
-      ['study','mock','focus','past','review','visual','pass-plan-session'].includes(currentMode);
+      ['study','mock','focus','past','past-loading','review','visual','pass-plan-session'].includes(currentMode);
   }
   function mdSyncConnectionVersion(){
     return typeof window.__mdDriveAuthGeneration==='function'?window.__mdDriveAuthGeneration():0;

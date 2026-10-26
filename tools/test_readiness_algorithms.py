@@ -71,7 +71,7 @@ for forbidden in ['ppLoadProgress','ppWeakTopicBoost','ppPredictiveWeight','last
 assert "q&&(q._predictiveReview||q._evaluationMock)" in analytics
 
 # Version bump makes clients refresh the changed runtime.
-assert "const APP_VERSION = '5.29';" in html
-assert '<title>Maritime Drill v5.29 · Android</title>' in html
+assert "const APP_VERSION = '5.30';" in html
+assert '<title>Maritime Drill v5.30 · Android</title>' in html
 
 print('exam-readiness algorithm checks: PASS')

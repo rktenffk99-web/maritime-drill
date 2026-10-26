@@ -114,7 +114,7 @@ try:
         context.close()
         print('unified: browser closed offline, reopening saved paper', flush=True)
         context, page = launch()
-        resume = page.locator('[data-past-resume] button[onclick="resumePastProgress()"]')
+        resume = page.locator('[data-past-resume] button[onclick^="resumePastProgress("]').first
         resume.wait_for(state='visible')
         assert '50/125' in page.locator('[data-past-resume]').inner_text()
         assert page.locator('#app').evaluate("el=>el.firstElementChild.hasAttribute('data-past-resume')")
@@ -128,14 +128,15 @@ try:
         page.get_by_role('button', name='저장하고 나가기', exact=True).click()
         wait_plan(page, tab='mock')
         page.get_by_role('button', name='모의시험 시작', exact=True).click()
-        page.get_by_role('button', name='취소', exact=True).click()
-        assert page.evaluate('getPastProgress().state.idx') == 50
-        page.locator('[data-past-resume] button[onclick="resumePastProgress()"]')\
-            .click()
+        page.wait_for_function("currentMode==='past'&&pastIdx===0")
+        page.get_by_role('button', name='저장하고 나가기', exact=True).click()
+        wait_plan(page, tab='mock')
+        assert page.evaluate('__mdExamSessions.list().some(s=>s.state.idx===50)')
+        page.locator('[data-past-resume]').filter(has_text='50/125').locator('button').click()
         page.wait_for_function("currentMode==='past'&&pastIdx===50")
         assert snapshot(page) == expected
         assert_no_live_explanation(page)
-        report['cases'].append('pause and cancel-new-exam keep all answers and the no-help examination mode')
+        report['cases'].append('pause and independent-new-exam keep all answers and the no-help examination mode')
 
         # The first 50 answers exercised real controls. Complete the remaining
         # known-correct fixture without spending another 75 full renders.
@@ -188,7 +189,6 @@ try:
         page.get_by_role('button', name='저장하고 나가기', exact=True).click()
         wait_plan(page, tab='mock')
         page.get_by_role('button', name='모의시험 시작', exact=True).click()
-        page.get_by_role('button', name='기존 답안 대신 새 시험 시작', exact=True).click()
         page.wait_for_function("currentMode==='past'&&pastQueue.length===125&&pastQueue.every(q=>q._unifiedMock)")
         hint_button = page.locator('#md-mock-hint-toggle')
         hint_panel = page.locator('#md-mock-hint-panel')
@@ -274,7 +274,7 @@ try:
         hinted_expected = snapshot(page)
         page.reload(wait_until='load', timeout=60000)
         page.wait_for_function('window.__MD_BOOTED__===true')
-        resume = page.locator('[data-past-resume] button[onclick="resumePastProgress()"]')
+        resume = page.locator('[data-past-resume] button[onclick^="resumePastProgress("]').first
         resume.wait_for(state='visible')
         assert page.evaluate('getPastProgress().state.hintedIndices') == [0]
         resume.click()

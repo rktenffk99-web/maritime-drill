@@ -57,7 +57,7 @@ def check_mock_keyboard_context(page):
         assert page.evaluate('currentMode') == 'pass-plan'
         saved = page.evaluate('getPastProgress().state')
         assert saved['idx'] == before['idx'] and saved['answers'] == before['answers']
-        page.locator('[data-past-resume] [onclick="resumePastProgress()"]').click()
+        page.locator('[data-past-resume] [onclick^="resumePastProgress("]').click()
         page.wait_for_function("currentMode==='past'")
         assert snapshot() == before, f'{key} on save-and-exit did not preserve the paper'
     report['cases'].append('focused save-and-exit uses native Enter/Space and resumes the exact paper without advancing')
@@ -77,10 +77,10 @@ try:
         agree.wait_for(state='visible')
         agree.click()
         page.wait_for_function("hasAgreedTerms() && !document.getElementById('md-modal-wrap')")
-        assert page.evaluate('APP_VERSION') == '5.29'
-        assert 'v5.29' in page.title()
+        assert page.evaluate('APP_VERSION') == '5.30'
+        assert 'v5.30' in page.title()
         assert page.evaluate("typeof window.__mdMockExplanationControls==='object'")
-        report['cases'].append('v5.29 startup and auxiliary scripts loaded')
+        report['cases'].append('v5.30 startup and auxiliary scripts loaded')
         page.evaluate("renderNavigatorPassPlan('navi3')")
         wait_plan(page, configure=True)
         target = (date.today() + timedelta(days=30)).isoformat()
