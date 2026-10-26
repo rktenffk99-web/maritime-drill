@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="md-build" content="android-single-file">
-<title>Maritime Drill v5.31 · Android</title>
+<title>Maritime Drill v5.32 · Android</title>
 <style>
 
 *{margin:0;padding:0;box-sizing:border-box}
@@ -14673,7 +14673,7 @@ window.MD_DATA["safety2"] = { meta: META, QUESTIONS, IMP, TTS_MAP, SHIP_INFO, NE
 <script>
 
 // ── 앱 버전 (업데이트 시마다 올리기) ──
-const APP_VERSION = '5.31';
+const APP_VERSION = '5.32';
 
 // ── v4.81: 브라우저 저장 실패를 사용자에게 즉시 알리는 공통 저장기 ──
 function showStorageWarning(label, error){
@@ -14844,9 +14844,10 @@ function restoreRawBackupValues(values){
   }catch(error){console.warn('[backup] rollback incomplete',error);return false}
   finally{if(hasSync)driveSyncApplyingRemote=previous}
 }
-function prepareExactBackupItems(entries){
+function prepareExactBackupItems(entries,restoreExams=false){
   // An exact restore must also repair a corrupted current container shape.
   let items=Object.fromEntries(validateImportedBackupEntries(entries,{}));
+  if(restoreExams&&window.__mdExamSessions)items=window.__mdExamSessions.restoreItems(items);
   if(window.__mdDailyStorage)items=window.__mdDailyStorage.compactItems(items);
   const api=window.__mdDriveSyncV2;
   // The storage hook promotes legacy history identities. Verify that same shape.
@@ -14865,7 +14866,7 @@ function restoreAutomaticRestorePoint(){
   showConfirm(`${backupDateLabel(point.exportedAt)}에 저장한 가져오기 전 상태(${entries.length}개)로 되돌릴까요?\n현재 상태도 다시 자동 저장되어 한 번 더 되돌릴 수 있습니다.`,()=>{
     let before,target,values;
     try{
-      before=collectBackupItems();target=prepareExactBackupItems(entries);
+      before=collectBackupItems();target=prepareExactBackupItems(entries,true);
       values=new Map([...new Set([...Object.keys(before),...Object.keys(target),RESTORE_POINT_KEY,'md_drive_sync_state_v1'])].map(key=>[key,localStorage.getItem(key)]));
     }catch(error){alert('복구 준비에 실패했습니다: '+(error.message||error));return}
     if(!writeAutomaticRestorePoint(before,'before-restore-point')){
@@ -14874,7 +14875,7 @@ function restoreAutomaticRestorePoint(){
     try{
       const result=applyBackupSnapshot(Object.entries(target),'자동 복구'),actual=collectBackupItems();
       if(Object.keys(actual).length!==Object.keys(target).length||Object.entries(target).some(([key,value])=>actual[key]!==value))throw new Error('일부 저장 항목을 복원하지 못했습니다.');
-      alert(`이전 상태로 되돌렸습니다. ${result.restored}개 복원 · ${result.removed}개 정리 후 앱을 다시 불러옵니다.`);
+      alert(`이전 상태로 되돌렸습니다. ${result.restored}개 복원 · ${result.removed}개 정리 후 앱을 다시 불러옵니다. 진행 중 시험은 새 시험 번호로 복구됩니다.`);
       location.reload();
     }catch(error){
       const recovered=restoreRawBackupValues(values);
@@ -15015,7 +15016,8 @@ function mergeImportedBackupEntries(entries,backup){
   const before=collectBackupItems(),state=driveSyncLoadState();
   const normalizedEntries=validateImportedBackupEntries(entries,before);
   const stateRaw=localStorage.getItem(DRIVE_SYNC_STATE_KEY);
-  const imported=Object.fromEntries(normalizedEntries);
+  let imported=Object.fromEntries(normalizedEntries);
+  if(window.__mdExamSessions)imported=window.__mdExamSessions.restoreItems(imported);
   const merged=api.mergeSnapshots(before,imported,state.itemMeta||{},{},state.localUpdatedAt||driveSyncNowIso(),backup.exportedAt||'1970-01-01T00:00:00.000Z');
   // Match the storage hook's canonical legacy identities before checking writes.
   for(const [key,raw] of Object.entries(merged.items)){
@@ -15071,7 +15073,7 @@ function importAllLearningData(){
           }
           try{
             const restored=mergeImportedBackupEntries(entries,backup);
-            alert(`학습 데이터 ${restored}개를 기존 기록과 병합했습니다. 앱을 다시 불러옵니다.`);
+            alert(`학습 데이터 ${restored}개를 기존 기록과 병합했습니다. 진행 중 시험은 새 시험 번호로 복구됩니다. 앱을 다시 불러옵니다.`);
             location.reload();
           }catch(error){alert('백업 병합을 완료하지 못했습니다: '+(error.message||error));}
         });
@@ -22072,9 +22074,9 @@ function appPrompt(opts,onSubmit){
 window.alert=appAlert;
 </script>
 
-<script src="data-identity.js?v=5.31"></script>
+<script src="data-identity.js?v=5.32"></script>
 
-<script src="scheduler-v522.js?v=5.31"></script>
+<script src="scheduler-v522.js?v=5.32"></script>
 
 <script>
 // ── v5.07: 2·3급 항해사 합격 플랜 / 오늘의 숙제 ──
@@ -23314,11 +23316,11 @@ window.alert=appAlert;
 })();
 
 </script>
-<script src="drive-state-codec.js?v=5.31"></script>
-<script src="keyboard-controls.js?v=5.31"></script>
-<script src="explain-2026-navi3-3.js?v=5.31"></script>
-<script src="explain-2026-navi3-3-english.js?v=5.31"></script>
-<script src="convenience-controls.js?v=5.31"></script>
+<script src="drive-state-codec.js?v=5.32"></script>
+<script src="keyboard-controls.js?v=5.32"></script>
+<script src="explain-2026-navi3-3.js?v=5.32"></script>
+<script src="explain-2026-navi3-3-english.js?v=5.32"></script>
+<script src="convenience-controls.js?v=5.32"></script>
 
 <script data-bundled-src="reported-content-fixes.js">
 // Maritime Drill reported content text corrections
@@ -24216,7 +24218,7 @@ window.alert=appAlert;
 })(window);
 
 </script>
-<script src="exam-sessions.js?v=5.31"></script>
-<script src="drive-exam-journal.js?v=5.31"></script>
+<script src="exam-sessions.js?v=5.32"></script>
+<script src="drive-exam-journal.js?v=5.32"></script>
 </body>
 </html>
