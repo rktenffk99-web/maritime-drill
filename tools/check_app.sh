@@ -61,9 +61,13 @@ python tools/patch_mock_hint.py
 python tools/patch_backup_restore_safety.py
 python tools/patch_exam_sessions_v530.py
 python tools/patch_exam_restore_v532.py
+python tools/patch_homework_checkpoint_v533.py
 node tools/test_exam_sessions_v530.js
 node tools/test_exam_cleanup_v531.js
 node tools/test_exam_restore_v532.js
+node tools/test_exam_validation_v533.js
+node tools/test_homework_checkpoint_v533.js
+node tools/test_drive_audit_v533.js
 node tools/test_drive_exam_journal.js
 node tools/test_drive_journal_recovery_v532.js
 node tools/test_navi2_reviewed.js

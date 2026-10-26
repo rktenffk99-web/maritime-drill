@@ -19,7 +19,7 @@ function harness(options={}){
     Date:class extends Date{static now(){return now}},Headers,AbortController,URLSearchParams,
     document:{body:null,readyState:'loading',visibilityState:'visible',getElementById:id=>id==='md-drive-sync-status'?status:null,
       addEventListener(name,fn){(listeners[name]||=[]).push(fn)},querySelector:()=>null},
-    addEventListener(name,fn){(listeners[name]||=[]).push(fn)},navigator:{onLine:true},console:{warn(){}},
+    addEventListener(name,fn){(listeners[name]||=[]).push(fn)},navigator:{onLine:true,locks:{request:async(name,run)=>run({name})}},console:{warn(){}},
     setInterval(fn){interval=fn;return 1},clearInterval(){},setTimeout(fn,ms){const id={};timers.set(id,{fn,ms});return id},clearTimeout(id){timers.delete(id)},
     alert:m=>notices.push(m),backupNotice:m=>notices.push(m),__mdDailyStorage:{migrateLocal(){}},
     google:{accounts:{oauth2:{initTokenClient(config){oauthConfig=config;return {requestAccessToken(o){prompts.push(o)}}},
@@ -96,12 +96,33 @@ let count=0;async function test(name,fn){await fn();count++;console.log('PASS '+
     const h=harness();h.s.localStorage.fail=true;h.save();assert.equal(h.s.driveSyncLoadSessionToken().access_token,'test-token');assert.ok(h.s.sessionStorage.getItem(LEGACY));
     h.s.sessionStorage.fail=true;h.save('memory');assert.equal(h.s.driveSyncLoadSessionToken().access_token,'memory');
   });
-  await test('401 for an old request reuses a newer token instead of deleting it',async()=>{
+  await test('401 for an old request never retries its payload with a replacement credential',async()=>{
     const h=harness();h.save('old');let n=0;const requests=[];
     h.s.fetch=async(url,options)=>{requests.push(options);n++;if(n===1){h.save('new');return new Response(null,{status:401})}return new Response('{"ok":true}')};
-    const response=await h.s.driveSyncFetch('/mock');assert.equal(n,2);assert.equal(h.s.driveSyncLoadSessionToken().access_token,'new');
-    assert.equal(requests[0].signal.aborted,true);assert.equal(requests[1].signal.aborted,false);
-    assert.equal(requests[1].headers.get('Authorization'),'Bearer new');assert.deepEqual(await response.json(),{ok:true});assert.equal(h.timers.size,0);
+    await assert.rejects(h.s.driveSyncFetch('/mock',{method:'POST',body:'old account payload'}),/연결 정보가 변경/);
+    assert.equal(n,1);assert.equal(h.s.driveSyncLoadSessionToken().access_token,'new');assert.equal(requests[0].signal.aborted,true);assert.equal(h.timers.size,0);
+    const response=await h.s.driveSyncFetch('/fresh-discovery');assert.equal(n,2);assert.equal(requests[1].headers.get('Authorization'),'Bearer new');assert.deepEqual(await response.json(),{ok:true});
+  });
+  await test('credential epochs change on replacement and expiry without invalidating an unchanged token',()=>{
+    const h=harness(),initial=h.s.__mdDriveAuthGeneration();h.save('first');const first=h.s.__mdDriveAuthGeneration();assert.ok(first>initial);
+    h.save('first');assert.equal(h.s.__mdDriveAuthGeneration(),first);h.save('second');const second=h.s.__mdDriveAuthGeneration();assert.ok(second>first);
+    h.advance(3600000);assert.ok(h.s.__mdDriveAuthGeneration()>second);assert.equal(h.s.driveSyncHasToken(),false);
+  });
+  await test('cross-tab replacement is observed even before its storage event is delivered',()=>{
+    const h=harness();h.enable();h.save('first');h.emit('DOMContentLoaded');const epoch=h.s.__mdDriveAuthGeneration();
+    h.s.localStorage.setItem(TOKEN,JSON.stringify({access_token:'other-account',expiresAt:h.run('Date.now()')+3600000}));
+    assert.ok(h.s.__mdDriveAuthGeneration()>epoch);const changed=h.s.__mdDriveAuthGeneration();
+    h.emit('storage',{key:TOKEN,newValue:h.s.localStorage.getItem(TOKEN)});assert.equal(h.s.__mdDriveAuthGeneration(),changed);
+    assert.equal(h.s.driveSyncLoadSessionToken().access_token,'other-account');
+  });
+  await test('a successful response from a replaced credential is rejected before the caller can apply it',async()=>{
+    const h=harness();h.save('first');let calls=0;
+    h.s.fetch=async()=>{calls++;h.save('replacement');return new Response('{"oldAccountData":true}')};
+    await assert.rejects(h.s.driveSyncFetch('/mock'),/연결 정보가 변경/);assert.equal(calls,1);assert.equal(h.s.driveSyncLoadSessionToken().access_token,'replacement');assert.equal(h.timers.size,0);
+  });
+  await test('first interactive login still enables sync after its own credential epoch changes',async()=>{
+    const h=harness(),before=h.s.__mdDriveAuthGeneration(),pending=h.s.connectGoogleDriveSync();h.respond();await pending;
+    assert.ok(h.s.__mdDriveAuthGeneration()>before);assert.equal(h.s.driveSyncLoadState().enabled,true);assert.equal(h.counts.syncs,1);
   });
   await test('401 invalidates current token; ordinary network failures keep it',async()=>{
     const h=harness();h.save();h.s.fetch=async()=>{throw new Error('offline')};await assert.rejects(h.s.driveSyncFetch('/mock'),/offline/);assert.ok(h.s.driveSyncHasToken());

@@ -56,7 +56,9 @@ assert 'rec.sameDayConfirmedDate=today;' not in rbody, 'tail must not claim a se
 choose=re.search(r"window\.nextNavigatorPassPlanQuestion=function\(\)\{(.*?)\n  \};",src,re.S)
 assert choose, 'choose function missing'
 body=choose.group(1)
-assert body.index('ppCommitOutcome') < body.index('ppScheduleSameDayRecheck') < body.index('ppSavePassSessionCheckpoint'), 'recheck scheduling order is unsafe'
+# The first checkpoint now durably saves the pending answer before scoring;
+# the final one must still persist the queue after scheduling its recheck.
+assert body.index('ppSavePassSessionCheckpoint') < body.index('ppCommitOutcome') < body.index('ppScheduleSameDayRecheck') < body.rindex('ppSavePassSessionCheckpoint'), 'recheck scheduling order is unsafe'
 
 # The saved queue must be restored BEFORE today's adaptive assignment is rebuilt.
 # This is the regression that previously sent a user from roughly 36/110 back to 3/110.

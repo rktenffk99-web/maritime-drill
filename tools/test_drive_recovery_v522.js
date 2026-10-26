@@ -13,15 +13,16 @@ function harness(options={}){
     setItem(key,value){this.data.set(String(key),String(value))}
     removeItem(key){this.data.delete(String(key))}
   }
-  const storage=new Storage(),files=options.files||new Map(),requests=[],calls={create:0,upload:0,apply:0,reload:0,list:0};
+  const storage=options.storage||new Storage(),files=options.files||new Map(),requests=[],calls={create:0,upload:0,deviceCreate:0,deviceUpload:0,apply:0,reload:0,list:0};
+  const snapshotFiles=files.snapshotFiles||(files.snapshotFiles=new Map());
   let now=Date.parse('2026-10-22T00:00:00Z'),serial=0;
   const iso=()=>new Date(++now).toISOString();
   const load=()=>JSON.parse(storage.getItem(STATE));
   const save=state=>{storage.setItem(STATE,JSON.stringify(state));return true};
   const collect=()=>Object.fromEntries([...storage.data].filter(([key])=>key!==STATE&&key.startsWith('md_')));
   storage.setItem(KEY,JSON.stringify({q1:{correct:3,note:'항해 학습 기록'}}));
-  storage.setItem(STATE,JSON.stringify({enabled:true,deviceId:'device-a',revision:1,localUpdatedAt:iso(),itemMeta:{}}));
-  const h={options,files,storage,requests,calls,load,save,collect,
+  storage.setItem(STATE,JSON.stringify({enabled:true,deviceId:options.deviceId||options.devicePrefix||'device-a',revision:1,localUpdatedAt:iso(),itemMeta:{}}));
+  const h={options,files,snapshotFiles,storage,requests,calls,load,save,collect,
     addFile(id,body,size){const file={id,name:'maritime-drill-sync.json',modifiedTime:iso(),body};if(size!==undefined)file.size=size;files.set(id,file);return file},
     write(id){const value=JSON.parse(storage.getItem(KEY));value[id]={correct:1};storage.setItem(KEY,JSON.stringify(value))},
     async sync(){await s.driveSyncOnce({showNotice:true})},
@@ -29,7 +30,7 @@ function harness(options={}){
     payload(){return {app:'Maritime Drill',updatedAt:iso(),revision:1,items:copy(collect()),itemMeta:{}}}
   };
   const response=value=>({json:async()=>copy(value)});
-  const s={window:null,Storage,localStorage:storage,navigator:{onLine:true},currentMode:'home',
+  const s={window:null,Storage,localStorage:storage,navigator:{onLine:true,locks:options.locks||{request:async(name,run)=>run({name})}},currentMode:'home',
     console:{warn(){}},Date,JSON,Math,Object,Array,Set,Map,URLSearchParams,encodeURIComponent,
     location:{reload(){calls.reload++}},driveSyncOnce(){},driveSyncInstallStorageHooks(){},
     driveSyncLoadState:load,driveSyncSaveState:save,driveSyncRefreshPanel(){},driveSyncNowIso:iso,
@@ -43,7 +44,6 @@ function harness(options={}){
     async driveSyncFetch(url,request={}){
       requests.push({url,...request});
       if(request.method==='POST'){
-        calls.create++;
         assert.match(url,/\/upload\/drive\/v3\/files\?uploadType=multipart/);
         assert.match(request.headers['Content-Type'],/^multipart\/related; boundary=/);
         const boundary=request.headers['Content-Type'].split('boundary=')[1];
@@ -52,29 +52,42 @@ function harness(options={}){
         assert.equal(parts.length,2,'one metadata part and one complete payload part');
         const json=part=>JSON.parse(part.slice(part.indexOf('\r\n\r\n')+4).trim());
         const metadata=json(parts[0]),payload=json(parts[1]);
-        assert.equal(metadata.name,s.DRIVE_SYNC_FILE);assert.deepEqual(metadata.parents,['appDataFolder']);
+        assert.deepEqual(metadata.parents,['appDataFolder']);
+        if(metadata.appProperties?.kind==='maritime-drill-device-v1'){
+          calls.deviceCreate++;
+          if(options.onDeviceCreate)await options.onDeviceCreate(h);
+          if(options.deviceCreateFails)throw new Error('device snapshot create failed');
+          const id='device-'+metadata.appProperties.deviceId+'-'+(++serial),body=JSON.stringify(payload);
+          snapshotFiles.set(id,{...metadata,id,modifiedTime:iso(),size:String(Buffer.byteLength(body)),body});
+          if(options.lostDeviceResponse)throw new Error('device snapshot response lost');
+          return response({id});
+        }
+        calls.create++;assert.equal(metadata.name,s.DRIVE_SYNC_FILE);
         assert.equal(payload.app,'Maritime Drill');
         if(options.onCreate)await options.onCreate(h);
         if(options.createFails)throw new Error('create network failure');
-        const file=h.addFile('created-'+(options.devicePrefix?options.devicePrefix+'-':'')+(++serial),JSON.stringify(payload),String(Buffer.byteLength(JSON.stringify(payload))));
+        const file=h.addFile('created-'+(options.devicePrefix?options.devicePrefix+'-':'')+calls.create,JSON.stringify(payload),String(Buffer.byteLength(JSON.stringify(payload))));
         if(options.lostCreateResponse)throw new Error('response lost after successful create');
         return response({id:file.id,modifiedTime:file.modifiedTime});
       }
       if(request.method==='PATCH'){
-        calls.upload++;
         const id=decodeURIComponent(new URL(url).pathname.split('/').pop());
-        const file=files.get(id);assert.ok(file,'upload target exists');
+        const file=files.get(id)||snapshotFiles.get(id);assert.ok(file,'upload target exists');
+        if(snapshotFiles.has(id)){
+          calls.deviceUpload++;if(options.onDeviceUpload)await options.onDeviceUpload(h);
+          if(options.deviceUploadFails)throw new Error('device snapshot upload failed');
+        }else{calls.upload++;if(options.onUpload)await options.onUpload(h)}
         file.body=request.body;file.size=String(Buffer.byteLength(file.body));file.modifiedTime=iso();
         return response({id,modifiedTime:file.modifiedTime});
       }
       if(url.includes('alt=media')){
-        const id=decodeURIComponent(new URL(url).pathname.split('/').pop()),file=files.get(id),body=file.body;
+        const id=decodeURIComponent(new URL(url).pathname.split('/').pop()),file=files.get(id)||snapshotFiles.get(id),body=file.body;
         if(options.downloadFails)throw new Error('download network failure');
         if(options.onDownload)await options.onDownload(h);
         return {text:async()=>body,json:async()=>JSON.parse(body)};
       }
       calls.list++;if(options.onList)await options.onList(h,calls.list);
-      const listed=[...files.values()].map(({body,...file})=>file);if(options.reverseListing)listed.reverse();
+      const listed=[...files.values(),...snapshotFiles.values()].map(({body,...file})=>file);if(options.reverseListing)listed.reverse();
       return response({files:listed});
     }
   };

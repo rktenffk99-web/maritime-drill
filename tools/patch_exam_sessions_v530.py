@@ -6,7 +6,7 @@ p=root/'index.html'
 s=p.read_text(encoding='utf-8-sig')
 for name in ('exam-sessions.js','drive-exam-journal.js'):
     s=re.sub(r'<script src="'+re.escape(name)+r'\?v=[^"]+"></script>\n?', '', s)
-    s=s.replace('</body>',f'<script src="{name}?v=5.32"></script>\n</body>',1)
+    s=s.replace('</body>',f'<script src="{name}?v=5.33"></script>\n</body>',1)
 old='''    if(pastProgressMeta){
       const state=capturePastProgressState();'''
 new='''    if(window.__mdExamSessions){
@@ -17,4 +17,4 @@ if new not in s:
     assert old in s
     s=s.replace(old,new,1)
 p.write_text(s,encoding='utf-8')
-print('exam session v5.32 integration ready')
+print('exam session v5.33 integration ready')

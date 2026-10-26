@@ -9,6 +9,38 @@ function fixture(){
  const api=exam.s.__mdExamSessions,key=api.PREFIX+exam.s.pastProgressId,raw=exam.data.get(key);
  h.s.__mdExamSessions=api;return {h,api,key,raw,record:JSON.parse(raw)};
 }
+function liveBackupFixture({legacy=false}={}){
+ const h=backupHarness(),exam=examHarness(),s=h.s,events={};
+ for(const [key,value]of Object.entries(exam.s))if(!(key in s)&&!['window','__mdExamSessions'].includes(key))s[key]=value;
+ s.currentMode='past';s.crypto=exam.s.crypto;
+ s.addEventListener=(name,callback)=>events[name]=callback;
+ s.document={visibilityState:'hidden',addEventListener:(name,callback)=>events[name]=callback};
+ s.capturePastProgressState=()=>({id:s.pastProgressId,idx:s.pastIdx,answers:s.pastAnswers,mode:s.pastMode,startedAt:s.pastStartedAt,savedAt:Date.now(),hintedIndices:s.pastQueue.flatMap((q,i)=>q._mockHintViewed?[i]:[])});
+ s.renderPastCard=()=>s.savePastProgress();
+ vm.runInContext(fs.readFileSync(path.join(__dirname,'..','exam-sessions.js'),'utf8'),s);
+ s.pastIdx=50;s.pastAnswers=Array.from({length:125},(_,i)=>i<50?i%4:null);assert.equal(s.savePastProgress(),true);
+ const key=s.__mdExamSessions.PREFIX+s.pastProgressId,raw=s.localStorage.getItem(key);
+ const app=fs.readFileSync(path.join(__dirname,'..','index.html'),'utf8');
+ const importStart=app.indexOf('function importAllLearningData(){'),importEnd=app.indexOf('// ── v5.08:',importStart);
+ let importCode=app.slice(importStart,importEnd);if(legacy)importCode=importCode.replace("currentMode='backup-reloading'; // backup-reload-autosave-guard-v533",'// legacy active mode retained');
+ vm.runInContext(importCode,s);
+ const nav=fs.readFileSync(path.join(__dirname,'..','app-navigation.js'),'utf8');
+ const start=nav.indexOf('  // Homework checkpoints follow'),end=nav.indexOf('  mountToolbar();',start);assert.ok(start>=0&&end>start);vm.runInContext(nav.slice(start,end),s);
+ let savedAfterApply,saveResults=[];
+ s.location.reload=()=>{
+  h.calls.reload++;savedAfterApply=h.stored();
+  events.pagehide();events.visibilitychange();events.offline();
+  saveResults.push(s.savePastProgress());
+ };
+ function importItems(items){
+  const payload=JSON.stringify({app:'Maritime Drill',appVersion:'5.32',exportedAt:'2026-10-20T00:00:00Z',items});
+  const input={files:[{size:payload.length}],click(){this.onchange()}};
+  s.document.createElement=()=>input;
+  s.FileReader=class{readAsText(){this.result=payload;this.onload()}};
+  s.importAllLearningData();
+ }
+ return {...h,key,raw,events,importItems,get savedAfterApply(){return savedAfterApply},get saveResults(){return saveResults}};
+}
 (async()=>{
  const {h,api,key,raw,record}=fixture();h.write(key,JSON.parse(raw));h.point({md_other:'1'});h.s.restoreAutomaticRestorePoint();
  const deletion=clone(h.s.driveSyncLoadState().itemMeta[key]);assert.equal(deletion.deleted,true);
@@ -44,4 +76,30 @@ function fixture(){
   assert.throws(()=>broken.h.s.mergeImportedBackupEntries([[key,value]],{exportedAt:'2099-01-01'}));assert.deepEqual(broken.h.stored(),prior);
  }
  console.log('PASS malformed or mismatched exam backups cannot alter data through restore or import');
+ const legacy=liveBackupFixture({legacy:true});legacy.s.pastAnswers[50]=2;
+ legacy.importItems({md_external:'"restored"'});
+ assert.equal(legacy.calls.reload,1);assert.notEqual(legacy.stored()[legacy.key],legacy.savedAfterApply[legacy.key]);
+ console.log('PASS pre-fix reproduction: import reload lifecycle rewrites the verified snapshot with stale live answers');
+ const live=liveBackupFixture();live.s.pastAnswers[50]=2;live.importItems({[live.key]:live.raw,md_external:'"restored"'});
+ assert.equal(live.calls.reload,1);assert.equal(live.s.currentMode,'backup-reloading');assert.deepEqual(live.stored(),live.savedAfterApply);assert.deepEqual(live.saveResults,[false]);
+ live.s.__mdHomeworkPersistence={checkpoint:()=>false};let unloadBlocked=false;live.events.beforeunload({preventDefault(){unloadBlocked=true}});assert.equal(unloadBlocked,false);
+ const restoredKeys=Object.keys(live.savedAfterApply).filter(k=>k.startsWith(live.s.__mdExamSessions.PREFIX));assert.equal(restoredKeys.length,2);
+ assert.ok(restoredKeys.every(k=>Object.values(JSON.parse(live.savedAfterApply[k]).heads).every(head=>head.status==='active')));
+ assert.equal(live.s.driveSyncLoadState().itemMeta[live.key].deleted,false);
+ console.log('PASS successful import suspends pagehide/visibility/offline/direct autosaves without completing either exam or changing sync metadata');
+ const undoLive=liveBackupFixture();undoLive.point({[undoLive.key]:undoLive.raw});undoLive.s.pastAnswers[50]=2;undoLive.s.restoreAutomaticRestorePoint();
+ assert.equal(undoLive.calls.reload,1);assert.equal(undoLive.s.currentMode,'backup-reloading');assert.deepEqual(undoLive.stored(),undoLive.savedAfterApply);assert.deepEqual(undoLive.saveResults,[false]);
+ assert.equal(undoLive.stored()[undoLive.key],undefined);assert.equal(undoLive.s.driveSyncLoadState().itemMeta[undoLive.key].deleted,true);
+ const restoredUndo=Object.keys(undoLive.stored()).find(k=>k.startsWith(undoLive.s.__mdExamSessions.PREFIX));assert.ok(restoredUndo);assert.notEqual(restoredUndo,undoLive.key);assert.ok(Object.values(JSON.parse(undoLive.stored()[restoredUndo]).heads).every(head=>head.status==='active'));
+ console.log('PASS successful automatic restore keeps the new active exam and old tombstone intact during reload');
+ for(const operation of ['restore','import']){
+  const failed=liveBackupFixture();failed.s.pastAnswers[50]=2;failed.failures.set=k=>k==='md_fail';
+  if(operation==='restore'){failed.point({md_fail:'1'});failed.s.restoreAutomaticRestorePoint();}else failed.importItems({md_fail:'1'});
+  assert.equal(failed.calls.reload,0);assert.equal(failed.s.currentMode,'past');assert.equal(failed.s.pastAnswers[50],2);failed.failures.set=null;assert.equal(failed.s.savePastProgress(),true);
+  assert.equal(Object.values(JSON.parse(failed.stored()[failed.key]).heads)[0].state.answers[50],2);
+ }
+ console.log('PASS failed restore/import keeps the original active mode and permits saving retained live answers');
+ const reloadFailure=liveBackupFixture();reloadFailure.point({md_external:'"restored"'});const beforeReloadFailure=reloadFailure.stored();reloadFailure.s.location.reload=()=>{throw Error('reload blocked')};reloadFailure.s.restoreAutomaticRestorePoint();
+ assert.equal(reloadFailure.s.currentMode,'past');assert.deepEqual(reloadFailure.stored(),beforeReloadFailure);assert.equal(reloadFailure.s.savePastProgress(),true);
+ console.log('PASS reload exception restores the previous active mode and rolls back the restore transaction');
 })().catch(error=>{console.error(error);process.exitCode=1});

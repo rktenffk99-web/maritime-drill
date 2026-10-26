@@ -7,18 +7,22 @@
   const uuid=()=>global.crypto.randomUUID();
   const writer=uuid(),knownLocal=new Map();let sequence=0,active=null,loading=false;
   const validId=id=>typeof id==='string'&&/^[a-zA-Z0-9_-]{1,100}$/.test(id);
+  const object=value=>value!==null&&typeof value==='object'&&!Array.isArray(value);
+  const validTime=value=>Number.isFinite(value)&&Number.isFinite(new Date(value).getTime());
   function dominates(a,b){return Object.keys(b).every(k=>(a[k]||0)>=b[k])&&Object.keys(a).some(k=>a[k]>(b[k]||0));}
   function valid(record){
-    if(!record||record.schema!==3||!record.meta||!validId(record.meta.id)||!record.heads)return false;
-    const refs=record.meta.refs,entries=Object.entries(record.heads);
-    const full=Array.isArray(refs)&&refs.length>0&&refs.every(r=>r&&typeof r.id==='string'&&typeof r.content==='string');
-    if(!full&&!(Object.keys(record.meta).length===1&&entries.every(([,h])=>h?.status==='completed')))return false;
-    return entries.length>0&&entries.every(([id,h])=>
-      validId(id)&&h&&h.clock&&Object.keys(h.clock).length>0&&Object.entries(h.clock).every(([k,n])=>validId(k)&&Number.isSafeInteger(n)&&n>0)&&
-      h.state&&h.state.id===record.meta.id&&Number.isFinite(h.state.savedAt)&&
-      (h.status==='completed'||h.status==='active'&&full&&['study','mock'].includes(h.state.mode)&&
-      Array.isArray(h.state.answers)&&h.state.answers.length===refs.length&&h.state.answers.every(a=>a===null||Number.isInteger(a)&&a>=0&&a<4)&&
-      Number.isInteger(h.state.idx)&&h.state.idx>=0&&h.state.idx<=refs.length));
+    try{
+      if(!object(record)||record.schema!==3||!object(record.meta)||!validId(record.meta.id)||!object(record.heads))return false;
+      const refs=record.meta.refs,entries=Object.entries(record.heads);
+      const full=Array.isArray(refs)&&refs.length>0&&refs.every(r=>object(r)&&typeof r.id==='string'&&typeof r.content==='string');
+      if(!full&&!(Object.keys(record.meta).length===1&&entries.every(([,h])=>h?.status==='completed')))return false;
+      return entries.length>0&&entries.every(([id,h])=>
+        validId(id)&&object(h)&&object(h.clock)&&Object.keys(h.clock).length>0&&Object.entries(h.clock).every(([k,n])=>validId(k)&&Number.isSafeInteger(n)&&n>0)&&
+        object(h.state)&&h.state.id===record.meta.id&&validTime(h.state.savedAt)&&
+        (h.status==='completed'||h.status==='active'&&full&&validTime(record.meta.createdAt)&&validTime(h.state.startedAt)&&['study','mock'].includes(h.state.mode)&&
+        Array.isArray(h.state.answers)&&h.state.answers.length===refs.length&&h.state.answers.every(a=>a===null||Number.isInteger(a)&&a>=0&&a<4)&&
+        Number.isInteger(h.state.idx)&&h.state.idx>=0&&h.state.idx<=refs.length));
+    }catch(_){return false;}
   }
   // A completion is a causal tombstone, not a resumable answer sheet. Keep
   // the full paper only while a concurrent active branch still needs it.

@@ -191,7 +191,20 @@
   syncQuestionScreenLayout();
   // Answers are saved synchronously on selection; these also checkpoint the
   // cursor when Android backgrounds the browser or connectivity changes.
-  const checkpoint=()=>{if(typeof currentMode!=='undefined'&&currentMode==='past')savePastProgress()};
+  // Homework checkpoints follow the same navigation and background lifecycle.
+  const homework=()=>window.__mdHomeworkPersistence;
+  for(const name of ['renderSubjectSelect','pickPrepType','renderHome','renderPastHome','renderPastWrongsList','renderPastMarksList']){
+    const original=window[name];if(typeof original!=='function')continue;
+    window[name]=function(...args){if(homework()&&homework().beforeLeave()===false)return;return original.apply(this,args);};
+  }
+  const checkpoint=()=>{
+    if(typeof currentMode!=='undefined'&&currentMode==='past')savePastProgress();
+    if(homework())homework().checkpoint();
+  };
+  window.addEventListener('beforeunload',event=>{
+    if(typeof currentMode!=='undefined'&&currentMode==='backup-reloading')return;
+    if(homework()&&homework().checkpoint()===false){event.preventDefault();event.returnValue='';}
+  });
   window.addEventListener('pagehide',checkpoint);
   window.addEventListener('offline',checkpoint);
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')checkpoint()});

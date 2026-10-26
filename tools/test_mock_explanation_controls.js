@@ -31,7 +31,7 @@ function harness(extra={}){
   const s={console:{warn(){}},currentMode:'past',pastMode:'mock',pastIdx:0,pastStartedAt:1,pastAnswers:[null],
     pastQueue:[{'정답':0,'선택지':['첫 번째 답','두 번째 답'],'해설':'문항 해설',_planKey:'q1'}],
     document:{getElementById:id=>nodes.get(id)||null,querySelector:()=>next,createElement:element,readyState:'loading',addEventListener(){}},
-    savePastProgress(){saved.push({answers:s.pastAnswers.slice(),viewed:s.pastQueue.some(q=>q._evaluationExplanationViewed===true)})},...extra};
+    savePastProgress(options){saved.push({answers:s.pastAnswers.slice(),viewed:s.pastQueue.some(q=>q._evaluationExplanationViewed===true),options});return true},...extra};
   s.window=s;vm.createContext(s);vm.runInContext(source,s);const api=s.__mdMockExplanationControls;
   return {s,saved,nodes,api,mount(){api.mount()},click(){nodes.get(BUTTON).click()},get panel(){return nodes.get(PANEL)},get button(){return nodes.get(BUTTON)}};
 }
@@ -57,6 +57,31 @@ test('evaluation help is remembered once without changing an already selected an
   const h=harness();h.s.pastQueue[0]._evaluationMock=true;h.s.pastAnswers[0]=1;h.mount();h.click();
   assert.equal(h.s.pastQueue[0]._evaluationExplanationViewed,true);assert.deepEqual(h.s.pastAnswers,[1]);assert.equal(h.saved.length,1);assert.equal(h.saved[0].viewed,true);
   h.click();assert.equal(h.panel.hidden,true);assert.equal(h.panel.innerHTML,'');h.click();assert.equal(h.saved.length,1);
+});
+test('evaluation solutions stay hidden when the help marker cannot be saved and disclose only after retry succeeds',()=>{
+  const notices=[];let canSave=false,calls=0;
+  const h=harness({showToast:message=>notices.push(message),savePastProgress(options){calls++;assert.equal(options.requireCheckpoint,true);return canSave}});
+  h.s.pastQueue[0]._evaluationMock=true;h.s.pastAnswers[0]=1;h.mount();h.click();
+  assert.equal(h.panel.hidden,true);assert.equal(h.panel.innerHTML,'');assert.equal(h.button.attributes['aria-expanded'],'false');
+  assert.equal(h.button.textContent,'정답·해설 보기');assert.equal(h.s.pastQueue[0]._evaluationExplanationViewed,undefined);
+  assert.deepEqual(h.s.pastAnswers,[1]);assert.equal(calls,1);assert.match(notices[0],/저장하지 못했습니다/);
+  canSave=true;h.click();assert.equal(h.panel.hidden,false);assert.match(h.panel.innerHTML,/정답: ㉮/);
+  assert.equal(h.s.pastQueue[0]._evaluationExplanationViewed,true);assert.equal(calls,2);
+  h.click();h.click();assert.equal(calls,2);assert.deepEqual(h.s.pastAnswers,[1]);
+});
+test('missing or throwing checkpoint writers cannot expose evaluation answers',()=>{
+  for(const savePastProgress of [undefined,()=>{throw new Error('storage blocked')}]){
+    const h=harness({savePastProgress});h.s.pastQueue[0]._evaluationMock=true;h.mount();
+    assert.doesNotThrow(()=>h.click());assert.equal(h.panel.hidden,true);assert.equal(h.panel.innerHTML,'');
+    assert.equal(h.s.pastQueue[0]._evaluationExplanationViewed,undefined);
+  }
+});
+test('already persisted help and unscored practice remain readable without another storage write',()=>{
+  for(const priorHelp of [false,true]){
+    const h=harness({savePastProgress(){throw new Error('must not rewrite a recorded marker')}});
+    if(priorHelp){h.s.pastQueue[0]._evaluationMock=true;h.s.pastQueue[0]._evaluationExplanationViewed=true}
+    h.mount();h.click();assert.equal(h.panel.hidden,false);assert.match(h.panel.innerHTML,/정답: ㉮/);
+  }
 });
 test('new questions and new papers start closed even when the same question appears again',()=>{
   const h=harness();h.mount();h.click();h.s.pastQueue.push({...h.s.pastQueue[0]});h.s.pastIdx=1;h.mount();assert.equal(h.panel.hidden,true);

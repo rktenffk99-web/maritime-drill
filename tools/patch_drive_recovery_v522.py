@@ -5,21 +5,32 @@ import re
 
 
 FIND_AND_DOWNLOAD = '''async function driveSyncFindRemoteFile(){
+  const matches=[],snapshots=[];let pageToken='';
+  do{
   const params=new URLSearchParams({
     spaces:'appDataFolder',
-    q:"trashed = false and name = '"+DRIVE_SYNC_FILE.replace(/'/g,"\\\\'")+"'",
+    q:"trashed = false and (name = '"+DRIVE_SYNC_FILE.replace(/'/g,"\\\\'")+"' or appProperties has { key='kind' and value='maritime-drill-device-v1' })",
     pageSize:'100',
-    fields:'files(id,name,modifiedTime,size)'
+    fields:'nextPageToken,files(id,name,modifiedTime,size,appProperties)',
+    ...(pageToken?{pageToken}:{})
   });
   const res=await driveSyncFetch('https://www.googleapis.com/drive/v3/files?'+params.toString());
   const data=await res.json();
   const files=Array.isArray(data.files)?data.files:[];
-  const matches=files.filter(f=>f&&f.name===DRIVE_SYNC_FILE);
+  matches.push(...files.filter(f=>f&&typeof f.id==='string'&&f.name===DRIVE_SYNC_FILE));
+  snapshots.push(...files.filter(f=>f&&typeof f.id==='string'&&f.appProperties?.kind==='maritime-drill-device-v1'));
+  pageToken=data.nextPageToken||'';
+  }while(pageToken);
   const empty=file=>file.size==='0'||file.size===0;
   // v5.22: an interrupted legacy creation must not hide an existing full file.
   matches.sort((a,b)=>Number(empty(a))-Number(empty(b))||String(b.modifiedTime||'').localeCompare(String(a.modifiedTime||''))||String(a.id||'').localeCompare(String(b.id||'')));
-  return matches[0]||null;
+  snapshots.sort((a,b)=>Number(empty(a))-Number(empty(b))||String(b.modifiedTime||'').localeCompare(String(a.modifiedTime||''))||String(a.id).localeCompare(String(b.id)));
+  window.__mdDriveDeviceSnapshots.files=snapshots;
+  const aggregate=matches.find(file=>!empty(file));
+  const primary=aggregate||snapshots.find(file=>!empty(file))||matches[0]||snapshots[0];
+  return primary?{...primary,candidates:[...matches,...snapshots],aggregateFileId:aggregate?.id||null}:null;
 }
+window.__mdDriveDeviceSnapshots={kind:'maritime-drill-device-v1',files:[]};
 async function driveSyncDownloadPayload(fileId){
   const res=await driveSyncFetch('https://www.googleapis.com/drive/v3/files/'+encodeURIComponent(fileId)+'?alt=media');
   const raw=await res.text();

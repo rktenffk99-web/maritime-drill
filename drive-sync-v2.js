@@ -587,6 +587,83 @@
     };
   }
 
+  function mdSyncValidateRemote(payload){
+    if(!payload||payload.app!=='Maritime Drill'||!mdSyncIsPlainObject(payload.items))throw new Error('Drive의 동기화 파일 형식이 올바르지 않습니다.');
+    const entries=Object.entries(payload.items).filter(([key])=>isManagedStorageKey(key));
+    if(entries.some(([,raw])=>typeof raw!=='string'))throw new Error('Drive 저장 항목 형식이 올바르지 않습니다.');
+    // Use the same structured-record checks as file imports before either a
+    // remote upload or local replacement. Malformed data is not an empty backup.
+    const normalized=typeof validateImportedBackupEntries==='function'
+      ?validateImportedBackupEntries(entries,collectBackupItems()):entries;
+    const items=Object.fromEntries(normalized),exams=window.__mdExamSessions;
+    if(exams)for(const [key,raw] of Object.entries(items))if(key.startsWith(exams.PREFIX)){
+      const record=JSON.parse(raw);
+      if(!exams.valid(record)||key!==exams.PREFIX+record.meta.id)throw new Error('Drive 시험 저장본의 식별 정보가 올바르지 않습니다.');
+    }
+    return {...payload,items};
+  }
+  function mdSyncRemoteMetadata(payload,file){
+    const metadata={...payload.itemMeta},fallback=payload.updatedAt||file.modifiedTime;
+    // Different duplicate files have different legacy clocks. Preserve each
+    // source's fallback per key instead of assigning the newest file's time.
+    if(fallback)for(const key of Object.keys(payload.items)){
+      if(!metadata[key]?.updatedAt)metadata[key]={...mdSyncNormalizeKeyMeta(metadata[key]),updatedAt:fallback};
+    }
+    return metadata;
+  }
+  async function mdSyncMergeRemoteCandidates(file,primary,connectionVersion){
+    file.downloaded=new Map([[file.id,primary]]);
+    const candidates=Array.isArray(file.candidates)?file.candidates:[];
+    const extras=candidates.filter(candidate=>candidate.id!==file.id&&candidate.size!=='0'&&candidate.size!==0);
+    if(!extras.length)return primary;
+    let merged={items:primary.items,itemMeta:mdSyncRemoteMetadata(primary,file)},revision=Number(primary.revision)||0;
+    const seen=new Set([file.id]);
+    for(const candidate of extras){
+      if(seen.has(candidate.id))continue;seen.add(candidate.id);
+      if(!driveSyncLoadState().enabled||connectionVersion!==mdSyncConnectionVersion())throw new Error('Google 연결이 변경되어 동기화를 중단했습니다.');
+      let payload;
+      try{payload=await driveSyncDownloadPayload(candidate.id)}
+      catch(error){if(error&&error.status===404)continue;throw error}
+      if(!driveSyncLoadState().enabled||connectionVersion!==mdSyncConnectionVersion())throw new Error('Google 연결이 변경되어 동기화를 중단했습니다.');
+      payload=mdSyncValidateRemote(payload);file.downloaded.set(candidate.id,payload);
+      merged=mdSyncMergeSnapshots(merged.items,payload.items,merged.itemMeta,mdSyncRemoteMetadata(payload,candidate),null,null);
+      revision=Math.max(revision,Number(payload.revision)||0);
+    }
+    return {...primary,...merged,revision};
+  }
+
+  function mdSyncCheckConnection(version){
+    if(!driveSyncLoadState().enabled||version!==mdSyncConnectionVersion())throw new Error('Google 연결이 변경되어 동기화를 중단했습니다.');
+  }
+  async function mdSyncPreserveDevice(payload,file,connectionVersion){
+    const protocol=window.__mdDriveDeviceSnapshots;if(!protocol)return;
+    const deviceId=payload.deviceId;
+    if(typeof deviceId!=='string'||!deviceId)throw new Error('이 기기의 동기화 식별 정보를 확인하지 못했습니다.');
+    mdSyncCheckConnection(connectionVersion);
+    const own=protocol.files.find(candidate=>candidate.appProperties?.deviceId===deviceId);
+    if(own){
+      let previous=file?.downloaded?.get(own.id);
+      if(!previous)previous=mdSyncValidateRemote(await driveSyncDownloadPayload(own.id));
+      mdSyncCheckConnection(connectionVersion);
+      if(mdSyncContentSignature(previous.items,previous.itemMeta)===mdSyncContentSignature(payload.items,payload.itemMeta))return;
+      // Only this device can write this file. A Web Lock serializes its tabs.
+      await driveSyncFetch('https://www.googleapis.com/upload/drive/v3/files/'+encodeURIComponent(own.id)+'?uploadType=media&fields=id',{
+        method:'PATCH',headers:{'Content-Type':'application/json;charset=UTF-8'},body:JSON.stringify(payload)
+      });
+    }else{
+      const metadata={name:'maritime-drill-device-'+deviceId+'.json',parents:['appDataFolder'],mimeType:'application/json',appProperties:{kind:protocol.kind,deviceId}};
+      const content=JSON.stringify(payload);let boundary;
+      do{boundary='md_device_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2)}while(content.includes(boundary));
+      const body=['--'+boundary,'Content-Type: application/json; charset=UTF-8','',JSON.stringify(metadata),
+        '--'+boundary,'Content-Type: application/json; charset=UTF-8','',content,'--'+boundary+'--',''].join('\r\n');
+      const response=await driveSyncFetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id',{
+        method:'POST',headers:{'Content-Type':'multipart/related; boundary='+boundary},body
+      });
+      const created=await response.json();if(!created.id)throw new Error('기기별 Drive 기록 저장에 실패했습니다.');
+    }
+    mdSyncCheckConnection(connectionVersion);
+  }
+
   async function mdSyncRecreateAggregate(connectionVersion,showNotice,message){
     // The aggregate is only a cache. Journals discovered by findRemoteFile may
     // be the only surviving remote copy, including terminal deletion markers.
@@ -597,7 +674,9 @@
     const merged=mdSyncMergeSnapshots(local.items,recovered.items,local.itemMeta,recovered.itemMeta,
       local.state.localUpdatedAt||local.state.lastSyncedAt||null,null);
     const now=driveSyncNowIso(),revision=Math.max(1,(Number(local.state.revision)||0)+1);
+    if(window.__mdDriveDeviceSnapshots)merged.itemMeta=mdSyncRemoteMetadata({...merged,updatedAt:now},{});
     const payload=mdSyncBuildV2Payload(local.state,merged.items,merged.itemMeta,now,revision);
+    await mdSyncPreserveDevice(payload,null,connectionVersion);
     const fileId=await driveSyncCreateRemote(payload);
     mdSyncFinish(local,merged,fileId,now,revision,showNotice,
       Object.keys(recovered.items).length||Object.keys(recovered.itemMeta).length
@@ -615,6 +694,9 @@
     }
     driveSyncBusy=true;driveSyncLastError='';driveSyncRefreshPanel();
     try{
+      const waitingVersion=mdSyncConnectionVersion();
+      const run=async()=>{
+      if(waitingVersion!==mdSyncConnectionVersion()||!driveSyncLoadState().enabled&&!interactive)return;
       if(!driveSyncHasToken()){
         if(!interactive) throw new Error('Google Drive 연결 갱신이 필요합니다.');
         await driveSyncRequestToken(true);
@@ -657,6 +739,8 @@
           return;
         }
       }
+      const canonicalRemote=mdSyncValidateRemote(remote);
+      remote=await mdSyncMergeRemoteCandidates(file,canonicalRemote,connectionVersion);
       // Do not use a snapshot taken before this await: the learner may have
       // answered more questions while the download was in flight.
       const local=mdSyncReadLocal();
@@ -666,14 +750,21 @@
       const localFallback=local.state.localUpdatedAt||local.state.lastSyncedAt||null;
       const remoteFallback=remote.updatedAt||file.modifiedTime||null;
       const merged=mdSyncMergeSnapshots(local.items,remoteItems,local.itemMeta,remoteMeta,localFallback,remoteFallback);
+      if(window.__mdDriveDeviceSnapshots)merged.itemMeta=mdSyncRemoteMetadata({...merged,updatedAt:remoteFallback||localFallback},{});
       const localChanged=local.signature!==mdSyncContentSignature(merged.items,merged.itemMeta);
-      const remoteChanged=mdSyncContentSignature(remoteItems,remoteMeta)!==mdSyncContentSignature(merged.items,merged.itemMeta);
+      const remoteChanged=mdSyncContentSignature(canonicalRemote.items,canonicalRemote.itemMeta)!==mdSyncContentSignature(merged.items,merged.itemMeta);
       let revision=Math.max(Number(local.state.revision)||0,Number(remote.revision)||0);
       let remoteUpdatedAt=remote.updatedAt||file.modifiedTime||local.state.remoteUpdatedAt||null;
-      if(remoteChanged){
-        const now=driveSyncNowIso();revision++;
-        const payload=mdSyncBuildV2Payload(local.state,merged.items,merged.itemMeta,now,revision);
-        const meta=await driveSyncUploadRemote(file.id,payload);
+      let aggregateFileId=window.__mdDriveDeviceSnapshots?file.aggregateFileId:file.id;
+      const now=driveSyncNowIso();if(remoteChanged||!aggregateFileId)revision++;
+      const payload=mdSyncBuildV2Payload(local.state,merged.items,merged.itemMeta,now,revision);
+      // A shared aggregate PATCH can race with another device. Preserve this
+      // complete merge in one stable file per device before reporting success.
+      await mdSyncPreserveDevice(payload,file,connectionVersion);
+      if(!aggregateFileId){
+        aggregateFileId=await driveSyncCreateRemote(payload);remoteUpdatedAt=now;
+      }else if(remoteChanged){
+        const meta=await driveSyncUploadRemote(aggregateFileId,payload);
         remoteUpdatedAt=(meta&&meta.modifiedTime)||now;
       }
       // Applying incoming data BEFORE uploading would leave the running UI
@@ -684,7 +775,12 @@
         :localChanged?'다른 기기의 변경 내용을 이 기기에 병합했습니다.'
         :remoteChanged?'이 기기의 변경 내용을 Google Drive에 병합했습니다.'
         :'Google Drive와 진도가 이미 같습니다.';
-      mdSyncFinish(local,merged,file.id,remoteUpdatedAt,revision,showNotice,message,connectionVersion);
+      mdSyncFinish(local,merged,aggregateFileId,remoteUpdatedAt,revision,showNotice,message,connectionVersion);
+      };
+      if(window.__mdDriveDeviceSnapshots){
+        if(!navigator.locks||typeof navigator.locks.request!=='function')throw new Error('이 브라우저는 안전한 기기간 동기화를 지원하지 않습니다. 최신 Chrome 또는 Firefox에서 연결하세요. 기기 내 저장은 유지됩니다.');
+        await navigator.locks.request('maritime-drill-drive-sync',run);
+      }else await run();
     }catch(error){
       const msg=(error&&error.message)||String(error);
       driveSyncLastError=msg;

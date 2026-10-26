@@ -5,8 +5,11 @@
   // Deliberately outside md_: even older clients must never back up this key.
   const TOKEN_KEY='maritime-drill:drive-auth:v1';
   let memoryToken=null,memoryOnly=false,gisPromise=null,authPromise=null,cancelAuth=null;
-  let generation=0,initialized=false;
-  window.__mdDriveAuthGeneration=()=>generation;
+  // Login cancellation and credential replacement have different lifetimes:
+  // a successful OAuth response must not cancel its own connect operation,
+  // but it must invalidate every request started with the previous token.
+  let generation=0,credentialGeneration=0,observedCredential=null,initialized=false;
+  window.__mdDriveAuthGeneration=()=>{driveSyncLoadSessionToken();return generation+credentialGeneration;};
   const originalRefresh=driveSyncRefreshPanel;
   const originalStatus=driveSyncPanelStatus;
   const originalManaged=isManagedStorageKey;
@@ -23,8 +26,12 @@
     return !!token&&typeof token.access_token==='string'&&token.access_token.length>0&&
       Number.isFinite(Number(token.expiresAt))&&Date.now()<Number(token.expiresAt);
   }
+  function observeCredential(token){
+    const credential=valid(token)?token.access_token:null;
+    if(credential!==observedCredential){observedCredential=credential;credentialGeneration++;}
+  }
   function persist(token){
-    memoryToken=token;
+    memoryToken=token;observeCredential(token);
     try{localStorage.setItem(TOKEN_KEY,JSON.stringify(token));memoryOnly=false;return true}catch(e){
       memoryOnly=true;
       try{sessionStorage.setItem(DRIVE_SYNC_SESSION_TOKEN_KEY,JSON.stringify(token))}catch(e){}
@@ -40,6 +47,7 @@
     const legacy=read(sessionStorage,DRIVE_SYNC_SESSION_TOKEN_KEY);
     if(!memoryToken&&valid(legacy))persist(legacy);
     if(valid(read(localStorage,TOKEN_KEY))||!valid(legacy))remove(sessionStorage,DRIVE_SYNC_SESSION_TOKEN_KEY);
+    observeCredential(memoryToken);
     return memoryToken;
   };
   driveSyncSaveSessionToken=function(response){
@@ -56,6 +64,7 @@
     memoryToken=null;memoryOnly=false;
     remove(localStorage,TOKEN_KEY);
     remove(sessionStorage,DRIVE_SYNC_SESSION_TOKEN_KEY);
+    observeCredential(null);
   };
   const gisReady=()=>!!(globalThis.google&&google.accounts&&google.accounts.oauth2);
   driveSyncLoadGIS=function(){
@@ -122,7 +131,8 @@
     return pending;
   };
   driveSyncFetch=async function(url,options={}){
-    for(let attempt=0;attempt<2;attempt++){
+    const requestGeneration=window.__mdDriveAuthGeneration();
+    {
       const token=driveSyncLoadSessionToken();
       if(!token)throw new Error('Google Drive 연결 갱신이 필요합니다.');
       const headers=new Headers(options.headers||{});
@@ -130,12 +140,20 @@
       const controller=new AbortController();
       let timedOut=false;
       const timeout=setTimeout(()=>{timedOut=true;controller.abort()},20000);
+      const checkConnection=()=>{
+        if(requestGeneration!==window.__mdDriveAuthGeneration()){
+          controller.abort();
+          throw new Error('Google 연결 정보가 변경되어 진행 중인 요청을 중단했습니다. 다시 동기화하세요.');
+        }
+      };
       try{
+        checkConnection();
         const response=await fetch(url,Object.assign({},options,{headers,signal:controller.signal}));
+        checkConnection();
         if(response.status===401){
           controller.abort();
-          const latest=driveSyncLoadSessionToken();
-          if(attempt===0&&latest&&latest.access_token!==token.access_token)continue;
+          // A new token may belong to a different account. Never resend an old
+          // account's file or payload with that token; restart discovery first.
           driveSyncClearSessionToken(token.access_token);driveSyncRefreshPanel();
           throw new Error('Google Drive 연결 갱신이 필요합니다.');
         }
@@ -147,6 +165,7 @@
         // Headers can arrive before a stalled body. Finish receiving it within
         // the same deadline while leaving the original Response consumable.
         await response.clone().arrayBuffer();
+        checkConnection();
         return response;
       }
       catch(error){

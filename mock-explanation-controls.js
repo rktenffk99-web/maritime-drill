@@ -43,9 +43,16 @@
     return `<div class="md-mock-correct-answer" style="padding:12px;margin-bottom:12px;border-radius:9px;background:#ECFDF5;color:#065F46"><b>정답: ${esc(['㉮','㉯','㉰','㉱'][correct]||String(correct+1))}</b><div style="margin-top:5px;line-height:1.65;white-space:pre-wrap">${esc(choice)}</div></div>`;
   }
   function recordEvaluationHelp(q){
-    if(q._evaluationExplanationViewed===true||!pastQueue.some(row=>row&&row._evaluationMock))return;
+    if(q._evaluationExplanationViewed===true||!pastQueue.some(row=>row&&row._evaluationMock))return true;
     q._evaluationExplanationViewed=true;
-    if(typeof savePastProgress==='function')savePastProgress();
+    try{
+      if(typeof savePastProgress!=='function'||savePastProgress({requireCheckpoint:true})!==true)throw new Error('explanation checkpoint unavailable');
+      return true;
+    }catch(error){
+      delete q._evaluationExplanationViewed;
+      if(typeof showToast==='function')showToast('해설 사용 기록을 저장하지 못했습니다. 다시 저장한 뒤 시도하세요.',5000);
+      return false;
+    }
   }
   function explanationHTML(q){
     try{
@@ -61,11 +68,13 @@
   function renderPanel(shell,q){
     const button=shell.querySelector('#'+BUTTON_ID),panel=shell.querySelector('#'+PANEL_ID);
     if(!button||!panel)return;
+    // Once the answer is disclosed it cannot be taken back. Persist the help
+    // marker first so a forced close cannot restore an apparently unaided exam.
+    if(expanded&&!recordEvaluationHelp(q))expanded=false;
     button.setAttribute('aria-expanded',String(expanded));
     button.textContent=expanded?'정답·해설 닫기':'정답·해설 보기';
     panel.hidden=!expanded;
     if(expanded){
-      recordEvaluationHelp(q);
       panel.innerHTML=answerHTML(q)+explanationHTML(q);
       panel.querySelectorAll('details').forEach(el=>{el.open=true});
     }else panel.innerHTML='';
