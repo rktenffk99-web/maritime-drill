@@ -1,4 +1,4 @@
-// Local-only encoding for Drive clocks. Runtime state and remote payloads use
+// Local-only encoding for Drive clocks. Full sync state and remote payloads use
 // the original expanded shape; learning records are never stored in this key.
 (function(global){
   'use strict';
@@ -15,7 +15,7 @@
     if(at!==bt)return at>bt?a:b;
     return stable(a)>=stable(b)?a:b;
   }
-  function decodeFields(fields){
+  function decodeFields(fields,validateOnly=false){
     if(!plain(fields)||!own(fields,MARKER))return fields;
     const value=fields[MARKER];
     if(!Array.isArray(value)||value.length!==3)throw new Error('Invalid local Drive clock encoding');
@@ -24,16 +24,18 @@
     const entries=[];
     for(const row of rows){
       if(!Array.isArray(row)||(row.length!==2&&row.length!==3&&row.length!==4)||!Array.isArray(row[0])||row[0].some(n=>!Number.isInteger(n)||n<0||n>=segments.length))throw new Error('Invalid local Drive clock path');
-      const path=row[0].map(n=>segments[n]).join('/');
-      if(row.length===2)entries.push([path,row[1]]);
+      if(row.length===2){
+        if(!validateOnly)entries.push([row[0].map(n=>segments[n]).join('/'),row[1]]);
+      }
       else{
         if(!Number.isInteger(row[1])||row[1]<0||row[1]>=times.length||(row[2]!==0&&row[2]!==1))throw new Error('Invalid local Drive clock record');
         if(row.length===4){
           if(!Array.isArray(row[3])||row[3].some(n=>!Number.isInteger(n)||n<0||n>=segments.length))throw new Error('Invalid local Drive clock leaf');
-          for(const leaf of row[3])entries.push([row[0].concat(leaf).map(n=>segments[n]).join('/'),{updatedAt:times[row[1]],deleted:row[2]===1}]);
-        }else entries.push([path,{updatedAt:times[row[1]],deleted:row[2]===1}]);
+          if(!validateOnly)for(const leaf of row[3])entries.push([row[0].concat(leaf).map(n=>segments[n]).join('/'),{updatedAt:times[row[1]],deleted:row[2]===1}]);
+        }else if(!validateOnly)entries.push([row[0].map(n=>segments[n]).join('/'),{updatedAt:times[row[1]],deleted:row[2]===1}]);
       }
     }
+    if(validateOnly)return fields;
     const expanded=Object.fromEntries(entries);
     // An already-open older tab may append raw paths without understanding the
     // packed entry. Preserve those writes using the same clock/tie rule.
@@ -74,26 +76,54 @@
     });
     return changed?{...state,itemMeta:Object.fromEntries(entries)}:state;
   }
+  function validateState(state){
+    if(plain(state)&&plain(state.itemMeta))for(const meta of Object.values(state.itemMeta)){
+      if(plain(meta)&&own(meta,'fields'))decodeFields(meta.fields,true);
+    }
+    return state;
+  }
+  function transformKey(state,key,transform){
+    if(!plain(state)||!plain(state.itemMeta)||!own(state.itemMeta,key))return state;
+    const meta=state.itemMeta[key];
+    if(!plain(meta)||!own(meta,'fields'))return state;
+    const fields=transform(meta.fields);
+    return fields===meta.fields?state:{...state,itemMeta:{...state.itemMeta,[key]:{...meta,fields}}};
+  }
   const decode=state=>transformState(state,decodeFields),encode=state=>transformState(state,encodeFields);
   const api={encode,decode,encodeFields,decodeFields,MARKER};
   global.__mdDriveStateCodec=api;
   if(typeof driveSyncLoadState!=='function'||typeof driveSyncSaveState!=='function')return;
   const originalLoad=driveSyncLoadState,originalSave=driveSyncSaveState;
   let readBlocked=false;
-  driveSyncLoadState=function(){
+  function loadState(transform){
     const state=originalLoad();
-    try{const expanded=decode(state);readBlocked=false;return expanded}
+    try{const result=transform(state);readBlocked=false;return result}
     catch(error){
       readBlocked=true;
       driveSyncLastError='Drive 동기화 상태를 읽지 못했습니다. 기존 기록을 보존했습니다.';
       console.warn('[drive-state-codec] local clocks could not be decoded',error);
       return {...state,enabled:false,itemMeta:{},[BLOCKED]:true};
     }
-  };
+  }
+  driveSyncLoadState=function(){return loadState(decode)};
   driveSyncSaveState=function(state){
     if(readBlocked||state&&state[BLOCKED])return false;
     try{return originalSave(encode(state))}
     catch(error){console.warn('[drive-state-codec] local clocks could not be encoded',error);return false}
+  };
+  // A local answer only changes one key's clocks. Keep other keys packed in
+  // storage, while still checking every packed record before permitting a write.
+  // Each read starts from localStorage so another tab's writes remain visible.
+  api.loadForKey=key=>loadState(state=>transformKey(validateState(state),key,decodeFields));
+  api.saveForKey=function(state,key){
+    if(readBlocked||state&&state[BLOCKED])return false;
+    try{return originalSave(transformKey(validateState(state),key,encodeFields))}
+    catch(error){console.warn('[drive-state-codec] local key clocks could not be encoded',error);return false}
+  };
+  // Status checks do not need field clocks. Never pass this header to a saver.
+  api.loadHeader=function(){
+    const {itemMeta,...header}=loadState(validateState);
+    return header;
   };
   api.migrateLocal=function(){
     try{

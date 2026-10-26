@@ -46,9 +46,9 @@ async function test(name,run){await run();passed++;console.log('PASS '+name)}
 (async()=>{
   await test('release patch is idempotent, keeps embedded sources and versions every root script URL',()=>{
     assert.equal(generate(html),html);assert.equal(fs.readFileSync(indexPath,'utf8').replace(/\r\n/g,'\n'),raw);
-    assert.match(html,/const APP_VERSION = '5\.28';/);assert.match(html,/<title>Maritime Drill v5\.28 · Android<\/title>/);
+    assert.match(html,/const APP_VERSION = '5\.29';/);assert.match(html,/<title>Maritime Drill v5\.29 · Android<\/title>/);
     const scripts=[...html.matchAll(/<script\b[^>]*\ssrc=["']([^"']+)["']/g)];assert.ok(scripts.length>=7);
-    for(const [,src] of scripts)assert.equal(new URL(src,'https://local.test/').searchParams.get('v'),'5.28',src);
+    for(const [,src] of scripts)assert.equal(new URL(src,'https://local.test/').searchParams.get('v'),'5.29',src);
     const embedded=value=>[...value.matchAll(/<script\b[^>]*data-bundled-src=["'][^"']+["'][^>]*>/g)].map(m=>m[0]);
     assert.deepEqual(embedded(html),embedded(raw));
   });
@@ -161,7 +161,7 @@ async function test(name,run){await run();passed++;console.log('PASS '+name)}
   });
   await test('manual backup includes live answers even when the first storage write fails',async()=>{
     const h=harness();h.s.safeStorageSet=()=>false;h.s.pastAnswers=[2,3];let file;
-    Object.assign(h.s,{collectBackupItems:()=>({}),BACKUP_SCHEMA_VERSION:1,APP_VERSION:'5.28',File,
+    Object.assign(h.s,{collectBackupItems:()=>({}),BACKUP_SCHEMA_VERSION:1,APP_VERSION:'5.29',File,
       navigator:{canShare:()=>true,share:async opts=>{file=opts.files[0]}},backupNotice(){},alert:message=>{throw new Error(message)}});
     const start=html.indexOf('async function exportAllLearningData(){'),end=html.indexOf('function validateImportedBackupEntries(',start);
     vm.runInContext(html.slice(start,end),h.s);await h.s.exportAllLearningData();

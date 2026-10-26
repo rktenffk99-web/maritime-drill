@@ -60,6 +60,13 @@ let count=0;async function test(name,fn){await fn();count++;console.log('PASS '+
     const h=harness();h.enable();h.save();h.emit('DOMContentLoaded');h.advance(3600000);const before=h.counts.syncs;h.poll();
     assert.match(h.status.textContent,/일시 중지/);assert.equal(h.prompts.length,0);assert.equal(h.counts.syncs,before);
   });
+  await test('answer-screen banner and polling read codec headers without expanding field clocks',()=>{
+    const h=harness();let headers=0,enabled=false;h.s.document.body={};h.s.document.getElementById=()=>null;
+    h.s.__mdDriveStateCodec={loadHeader(){headers++;return {enabled}}};h.s.driveSyncLoadState=()=>{throw new Error('answer-screen status must not fully decode state')};
+    h.s.driveSyncRefreshPanel();h.emit('DOMContentLoaded');h.poll();assert.ok(headers>=5);assert.equal(h.counts.syncs,0);
+    enabled=true;h.save();h.poll();assert.equal(h.counts.syncs,1);h.s.navigator.onLine=false;h.poll();assert.equal(h.counts.syncs,1);assert.match(h.s.driveSyncPanelStatus().label,/오프라인/);
+    enabled=false;h.emit('storage',{key:STATE,oldValue:'{"enabled":true}',newValue:'{"enabled":false}'});assert.equal(h.counts.syncs,1);assert.equal(h.prompts.length,0);
+  });
   await test('renewal is synchronous with the click, does not force chooser, and coalesces requests',async()=>{
     const h=harness();const p=h.s.driveSyncRequestToken(true),q=h.s.driveSyncRequestToken(true);
     assert.equal(h.prompts.length,1);assert.equal(h.prompts[0].prompt,'');assert.equal(p,q);h.respond();await p;assert.ok(h.s.driveSyncHasToken());

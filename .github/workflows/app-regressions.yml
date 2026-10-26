@@ -32,6 +32,7 @@ jobs:
           - browser_smoke.py
           - browser_mock_recovery.py
           - browser_unified_mock.py
+          - browser_response_speed.py
           - browser_integrity.py
           - browser_daily_storage.py
           - browser_drive_auth.py
