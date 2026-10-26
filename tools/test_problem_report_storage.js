@@ -6,6 +6,7 @@ function harness(raw='[]'){
   const data=new Map([[key,raw]]),messages=[],removed=[];
   const sandbox={REPORTS_KEY:key,RESOLVED_REPORTS_CUTOFF:'2026-09-18T00:41:10.000Z',Date,JSON,Number,
     toast:message=>messages.push(message),collectQuestionSnapshot:()=>({question:'문제',tags:['2급'],counter:'문제 1/10'}),
+    closeReportDialog:id=>removed.push(id),addReportButton(){},
     document:{getElementById:id=>({remove(){removed.push(id)}})},window:{confirm:()=>true},
     localStorage:{getItem:k=>data.get(k)??null,setItem:(k,v)=>data.set(k,v),removeItem:k=>data.delete(k)}};
   vm.createContext(sandbox);

@@ -115,10 +115,37 @@
     }
   }
 
+  function closeReportDialog(id){
+    const overlay=typeof id==='string'?document.getElementById(id):id;
+    if(!overlay)return;
+    const previous=overlay._mdPreviousFocus;
+    overlay.remove();
+    const target=previous&&document.contains(previous)?previous:(document.getElementById('md-report-btn')||document.getElementById('md-settings-button'));
+    target?.focus();
+  }
+  function prepareReportDialog(overlay,titleId){
+    overlay._mdPreviousFocus=document.activeElement;
+    const dialog=overlay.querySelector('.card')||overlay;
+    dialog.setAttribute('role','dialog');dialog.setAttribute('aria-modal','true');
+    dialog.setAttribute('aria-labelledby',titleId);dialog.setAttribute('tabindex','-1');
+    const focusable=()=>[...dialog.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])')].filter(el=>!el.disabled&&el.getClientRects().length>0);
+    overlay.addEventListener('keydown',event=>{
+      if(event.key==='Escape'){
+        event.preventDefault();event.stopPropagation();closeReportDialog(overlay);return;
+      }
+      if(event.key!=='Tab')return;
+      const items=focusable(),first=items[0],last=items[items.length-1];
+      if(!items.length){event.preventDefault();dialog.focus();return;}
+      if(document.activeElement===dialog||!dialog.contains(document.activeElement)||(event.shiftKey&&document.activeElement===first)||(!event.shiftKey&&document.activeElement===last)){
+        event.preventDefault();(event.shiftKey?last:first).focus();
+      }
+    });
+    (focusable()[0]||dialog).focus();
+  }
   function findQuestionCounter(root){
     if(!root)return null;
-    const exact=/^(?:실전예측|모의|문제)\s*\d+\s*\/\s*\d+$/;
-    const loose=/(?:실전예측|모의|문제)\s*\d+\s*\/\s*\d+/;
+    const exact=/^(?:실전예측|실전|모의|문제)\s*\d+\s*\/\s*\d+$/;
+    const loose=/(?:실전예측|실전|모의|문제)\s*\d+\s*\/\s*\d+/;
     const nodes=[...root.querySelectorAll('div,span')];
     return nodes.find(el=>el.children.length===0&&exact.test((el.textContent||'').trim()))
       ||nodes.find(el=>(el.textContent||'').trim().length<80&&loose.test((el.textContent||'').trim()))
@@ -126,8 +153,9 @@
   }
   function collectQuestionSnapshot(){
     const root=appRoot();
+    if(!root)return {counter:'',tags:[],question:''};
     const counterEl=findQuestionCounter(root);
-    const counter=counterEl?(counterEl.textContent||'').trim():(((root.textContent||'').match(/(?:실전예측|모의|문제)\s*\d+\s*\/\s*\d+/)||[''])[0]);
+    const counter=(((counterEl?.textContent||root.textContent||'').match(/(?:실전예측|실전|모의|문제)\s*\d+\s*\/\s*\d+/)||[''])[0]);
     const card=root.querySelector('.card');
     const tags=card?[...card.querySelectorAll('.tag')].map(x=>x.textContent.trim()).filter(Boolean):[];
     let question='';
@@ -165,10 +193,14 @@
       return kept;
     }catch(e){if(strict)throw e;return []}
   }
+  function reportTagText(tags){
+    if(typeof tags==='string')return tags;
+    return Array.isArray(tags)?tags.filter(tag=>typeof tag==='string'||typeof tag==='number').map(String).join(' · '):'';
+  }
   function formatReports(reports){
     return reports.map((r,i)=>{
       const detail=String(r.detail||'').trim();
-      return `#${i+1} ${r.reason||'신고'}\n시각: ${r.createdAt||''}\n표시: ${(r.tags||[]).join(' · ')} ${r.counter||''}\n문제: ${r.question||''}${detail?`\n신고내용: ${detail}`:''}`;
+      return `#${i+1} ${r.reason||'신고'}\n시각: ${r.createdAt||''}\n표시: ${reportTagText(r.tags)} ${r.counter||''}\n문제: ${r.question||''}${detail?`\n신고내용: ${detail}`:''}`;
     }).join('\n\n');
   }
   async function copyReports(){
@@ -191,24 +223,25 @@
       }else localStorage.removeItem(REPORTS_KEY);
     }catch(e){toast('신고를 삭제하지 못했습니다. 기존 신고는 그대로 남아 있습니다.');return false}
     document.getElementById('md-report-list-btn')?.remove();
-    document.getElementById('md-report-list-modal')?.remove();
+    closeReportDialog('md-report-list-modal');
     toast(`문제 신고 ${reports.length}건을 삭제했습니다.`);
   }
   function openReportListModal(){
-    document.getElementById('md-report-list-modal')?.remove();
+    closeReportDialog('md-report-list-modal');
     const reports=readReports();
     const overlay=document.createElement('div');overlay.id='md-report-list-modal';
     overlay.style.cssText='position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:10000;display:flex;align-items:center;justify-content:center;padding:18px';
     const rows=reports.length?reports.slice().reverse().map((r,ri)=>{
       const detail=String(r.detail||'').trim();
-      return `<div style="padding:10px;border:1px solid #E2E8F0;border-radius:9px;background:#F8FAFC"><div style="font-size:12px;font-weight:900">${escapeText(r.reason||'신고')} · #${reports.length-ri}</div><div style="font-size:10px;color:#64748B;margin-top:3px">${escapeText((r.tags||[]).join(' · '))} ${escapeText(r.counter||'')}</div><div style="font-size:12px;line-height:1.55;margin-top:6px">${escapeText(r.question||'문제 문구 없음')}</div>${detail?`<div style="font-size:12px;line-height:1.55;margin-top:7px;padding:8px;border-radius:7px;background:#FFF;border:1px solid #E2E8F0"><b>신고 내용</b><br>${escapeText(detail)}</div>`:''}</div>`;
+      return `<div style="padding:10px;border:1px solid #E2E8F0;border-radius:9px;background:#F8FAFC"><div style="font-size:12px;font-weight:900">${escapeText(r.reason||'신고')} · #${reports.length-ri}</div><div style="font-size:10px;color:#64748B;margin-top:3px">${escapeText(reportTagText(r.tags))} ${escapeText(r.counter||'')}</div><div style="font-size:12px;line-height:1.55;margin-top:6px">${escapeText(r.question||'문제 문구 없음')}</div>${detail?`<div style="font-size:12px;line-height:1.55;margin-top:7px;padding:8px;border-radius:7px;background:#FFF;border:1px solid #E2E8F0"><b>신고 내용</b><br>${escapeText(detail)}</div>`:''}</div>`;
     }).join(''):'<div style="padding:18px;text-align:center;color:#64748B">저장된 문제 신고가 없습니다.</div>';
-    overlay.innerHTML=`<div class="card" style="width:min(640px,100%);max-height:85vh;overflow:auto;margin:0;background:#fff"><div style="font-size:17px;font-weight:900">저장된 문제 신고 · ${reports.length}건</div><div style="font-size:11px;color:#64748B;margin:5px 0 12px">신고는 이 브라우저에 저장되며, Drive 연결 시 다른 기기와 동기화됩니다. 2026-09-18 검수 완료 이전 신고는 자동 정리되며, 이후 신고만 여기에 남습니다.</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button class="btn btn-accent" style="flex:1;min-width:120px" id="md-report-copy" ${reports.length?'':'disabled'}>전체 복사</button><button class="btn btn-outline" style="flex:1;min-width:120px" id="md-report-clear" ${reports.length?'':'disabled'}>전체 삭제</button><button class="btn btn-outline" style="flex:1;min-width:120px" id="md-report-list-close">닫기</button></div><div style="display:flex;flex-direction:column;gap:8px">${rows}</div></div>`;
+    overlay.innerHTML=`<div class="card" style="width:min(640px,100%);max-height:85vh;overflow:auto;margin:0;background:#fff"><div id="md-report-list-title" style="font-size:17px;font-weight:900">저장된 문제 신고 · ${reports.length}건</div><div style="font-size:11px;color:#64748B;margin:5px 0 12px">신고는 이 브라우저에 저장되며, Drive 연결 시 다른 기기와 동기화됩니다. 2026-09-18 검수 완료 이전 신고는 자동 정리되며, 이후 신고만 여기에 남습니다.</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button class="btn btn-accent" style="flex:1;min-width:120px" id="md-report-copy" ${reports.length?'':'disabled'}>전체 복사</button><button class="btn btn-outline" style="flex:1;min-width:120px" id="md-report-clear" ${reports.length?'':'disabled'}>전체 삭제</button><button class="btn btn-outline" style="flex:1;min-width:120px" id="md-report-list-close">닫기</button></div><div style="display:flex;flex-direction:column;gap:8px">${rows}</div></div>`;
     document.body.appendChild(overlay);
     overlay.querySelector('#md-report-copy').onclick=copyReports;
     overlay.querySelector('#md-report-clear').onclick=clearReports;
-    overlay.querySelector('#md-report-list-close').onclick=()=>overlay.remove();
-    overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove()});
+    overlay.querySelector('#md-report-list-close').onclick=()=>closeReportDialog(overlay);
+    overlay.addEventListener('click',e=>{if(e.target===overlay)closeReportDialog(overlay)});
+    prepareReportDialog(overlay,'md-report-list-title');
   }
   window.openMaritimeProblemReports=openReportListModal;
   window.copyMaritimeProblemReports=copyReports;
@@ -225,15 +258,16 @@
       localStorage.setItem(REPORTS_KEY,JSON.stringify(reports));
     }catch(e){toast('문제 신고를 저장하지 못했습니다. 입력 내용은 유지됩니다. 내용을 복사해 보관한 뒤 다시 시도해 주세요.');return false}
     toast(`문제 신고 저장됨 · ${reason}`);
-    document.getElementById('md-report-modal')?.remove();
+    closeReportDialog('md-report-modal');
+    addReportButton();
     return true;
   }
   function openReportModal(){
-    document.getElementById('md-report-modal')?.remove();
+    closeReportDialog('md-report-modal');
     const count=readReports().length;
     const overlay=document.createElement('div');overlay.id='md-report-modal';
     overlay.style.cssText='position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
-    overlay.innerHTML=`<div class="card" style="width:min(420px,100%);margin:0;background:#fff"><div style="font-weight:900;font-size:17px;margin-bottom:12px">문제 신고</div><div style="font-size:12px;color:var(--textDim);margin-bottom:12px">현재 문제를 이 브라우저에 저장합니다. 유형을 바로 선택하거나 직접 내용을 입력할 수 있습니다.</div><div id="md-report-actions" style="display:flex;flex-direction:column;gap:8px"></div><div id="md-report-custom" style="display:none;margin-top:10px"><textarea id="md-report-detail" maxlength="500" rows="4" placeholder="어떤 점이 이상한지 직접 입력해 주세요. 예: 보기 3번 문장이 잘린 것 같음" style="width:100%;box-sizing:border-box;resize:vertical;padding:10px;border:1px solid #CBD5E1;border-radius:9px;font:inherit;line-height:1.5"></textarea><div style="display:flex;justify-content:space-between;gap:8px;align-items:center;margin-top:5px"><span id="md-report-detail-count" style="font-size:10px;color:#64748B">0/500</span><button class="btn btn-accent" id="md-report-custom-save" style="min-width:110px">내용 저장</button></div></div><button class="btn btn-outline" style="width:100%;margin-top:10px" id="md-report-list">저장된 신고 ${count}건 보기</button><button class="btn btn-outline" style="width:100%;margin-top:8px" id="md-report-cancel">취소</button></div>`;
+    overlay.innerHTML=`<div class="card" style="width:min(420px,100%);max-height:85vh;overflow:auto;margin:0;background:#fff"><div id="md-report-title" style="font-weight:900;font-size:17px;margin-bottom:12px">문제 신고</div><div style="font-size:12px;color:var(--textDim);margin-bottom:12px">현재 문제를 이 브라우저에 저장합니다. 유형을 바로 선택하거나 직접 내용을 입력할 수 있습니다.</div><div id="md-report-actions" style="display:flex;flex-direction:column;gap:8px"></div><div id="md-report-custom" style="display:none;margin-top:10px"><textarea id="md-report-detail" aria-label="신고 내용" maxlength="500" rows="4" placeholder="어떤 점이 이상한지 직접 입력해 주세요. 예: 보기 3번 문장이 잘린 것 같음" style="width:100%;box-sizing:border-box;resize:vertical;padding:10px;border:1px solid #CBD5E1;border-radius:9px;font:inherit;line-height:1.5"></textarea><div style="display:flex;justify-content:space-between;gap:8px;align-items:center;margin-top:5px"><span id="md-report-detail-count" style="font-size:10px;color:#64748B">0/500</span><button class="btn btn-accent" id="md-report-custom-save" style="min-width:110px">내용 저장</button></div></div><button class="btn btn-outline" style="width:100%;margin-top:10px" id="md-report-list">저장된 신고 ${count}건 보기</button><button class="btn btn-outline" style="width:100%;margin-top:8px" id="md-report-cancel">취소</button></div>`;
     document.body.appendChild(overlay);
     const actions=overlay.querySelector('#md-report-actions');
     ['정답 이상','해설 이상','오타/깨짐'].forEach(reason=>{const b=document.createElement('button');b.className='btn btn-outline';b.style.width='100%';b.textContent=reason;b.onclick=()=>saveReport(reason);actions.appendChild(b)});
@@ -243,25 +277,35 @@
     detail.addEventListener('input',()=>{countEl.textContent=`${detail.value.length}/500`});
     detail.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();save.click()}});
     save.onclick=()=>saveReport('직접 입력',detail.value);
-    overlay.querySelector('#md-report-list').onclick=()=>{overlay.remove();openReportListModal()};
-    overlay.querySelector('#md-report-cancel').onclick=()=>overlay.remove();
-    overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove()});
+    overlay.querySelector('#md-report-list').onclick=()=>{closeReportDialog(overlay);openReportListModal()};
+    overlay.querySelector('#md-report-cancel').onclick=()=>closeReportDialog(overlay);
+    overlay.addEventListener('click',e=>{if(e.target===overlay)closeReportDialog(overlay)});
+    prepareReportDialog(overlay,'md-report-title');
   }
   function addReportButton(){
-    const root=appRoot();if(!root||!inQuestionSession()||document.getElementById('md-report-btn'))return;
-    const counter=findQuestionCounter(root);
-    const b=document.createElement('button');b.id='md-report-btn';b.className='btn btn-outline';
-    b.style.cssText='width:auto;padding:8px 10px;font-size:12px;margin-left:6px';b.textContent='문제 신고';b.onclick=openReportModal;
-    const count=readReports().length;
-    const list=count?document.createElement('button'):null;
-    if(list){list.id='md-report-list-btn';list.className='btn btn-outline';list.style.cssText='width:auto;padding:8px 10px;font-size:12px;margin-left:4px';list.textContent=`신고 ${count}`;list.onclick=openReportListModal}
-    if(counter&&counter.parentElement){
-      counter.parentElement.appendChild(b);if(list)counter.parentElement.appendChild(list);
-    }else{
-      const card=root.querySelector('.card');if(!card)return;
-      const row=document.createElement('div');row.id='md-report-row';row.style.cssText='display:flex;justify-content:flex-end;align-items:center;margin:0 0 8px';
-      row.appendChild(b);if(list)row.appendChild(list);card.parentNode.insertBefore(row,card);
+    const root=appRoot();if(!root||!inQuestionSession())return;
+    let b=document.getElementById('md-report-btn');
+    if(!b){
+      const counter=findQuestionCounter(root),card=root.querySelector('.card');
+      if(!counter?.parentElement&&!card)return;
+      b=document.createElement('button');b.id='md-report-btn';b.className='btn btn-outline';
+      b.style.cssText='width:auto;padding:8px 10px;font-size:12px;margin-left:6px';b.textContent='문제 신고';b.onclick=openReportModal;
+      if(counter?.parentElement)counter.parentElement.appendChild(b);
+      else{
+        const row=document.createElement('div');row.id='md-report-row';row.style.cssText='display:flex;justify-content:flex-end;align-items:center;margin:0 0 8px';
+        row.appendChild(b);card.parentNode.insertBefore(row,card);
+      }
     }
+    const count=readReports().length;
+    let list=document.getElementById('md-report-list-btn');
+    if(!count){list?.remove();return;}
+    if(!list){
+      list=document.createElement('button');list.id='md-report-list-btn';list.className='btn btn-outline';
+      list.style.cssText='width:auto;padding:8px 10px;font-size:12px;margin-left:4px';list.onclick=openReportListModal;
+      b.insertAdjacentElement('afterend',list);
+    }
+    const label=`신고 ${count}`;
+    if(list.textContent!==label)list.textContent=label;
   }
 
   async function requestWakeLock(){

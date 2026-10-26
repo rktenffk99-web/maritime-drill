@@ -5,7 +5,7 @@ src=Path('convenience-controls.js').read_text(encoding='utf-8')
 required=[
     'function questionChoiceButtons(root)',
     'function inQuestionSession()',
-    '실전예측|모의|문제',
+    '실전예측|실전|모의|문제',
     'function findQuestionCounter(root)',
     'function addReportButton()',
     'inQuestionSession()',
