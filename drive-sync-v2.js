@@ -109,7 +109,11 @@
     if(keys.length<=SYNC_V2_MAX_FIELD_META) return fields||{};
     keys.sort((a,b)=>mdSyncRecordTime(fields[b])-mdSyncRecordTime(fields[a]));
     const kept={};
-    for(const key of keys.slice(0,SYNC_V2_MAX_FIELD_META)) kept[key]=fields[key];
+    // The root clock is the baseline for unchanged leaves. Dropping it makes
+    // an unrelated newer answer look like a rewrite of every old question.
+    const root=Object.prototype.hasOwnProperty.call(fields,'');
+    if(root)kept['']=fields[''];
+    for(const key of keys.filter(key=>!root||key!=='').slice(0,SYNC_V2_MAX_FIELD_META-(root?1:0))) kept[key]=fields[key];
     return kept;
   }
   function mdSyncDiff(oldValue,newValue,path,fields,now){
@@ -141,6 +145,12 @@
     const now=driveSyncNowIso();
     const itemMeta=mdSyncIsPlainObject(state.itemMeta)?Object.assign({},state.itemMeta):{};
     const keyMeta=mdSyncNormalizeKeyMeta(itemMeta[key]);
+    if(!deleted&&oldRaw!==null&&!Object.prototype.hasOwnProperty.call(keyMeta.fields,'')){
+      // A legacy/imported key may have no per-field clocks yet. Retain its
+      // pre-edit baseline before this answer advances the key's timestamp.
+      const baseline=keyMeta.updatedAt||state.lastSyncedAt||state.localUpdatedAt||new Date(0).toISOString();
+      keyMeta.fields['']=mdSyncNewRecord(baseline,false);
+    }
     keyMeta.updatedAt=now;
     keyMeta.deleted=!!deleted;
     if(deleted){
@@ -159,8 +169,11 @@
     state.itemMeta=itemMeta;
     state.localUpdatedAt=now;
     state.revision=(Number(state.revision)||0)+1;
-    if(perKey)codec.saveForKey(state,key);else driveSyncSaveState(state);
-    driveSyncRefreshPanel();
+    const saved=perKey?codec.saveForKey(state,key):driveSyncSaveState(state);
+    if(saved===false)throw new Error('학습 변경 시각을 저장하지 못했습니다. 저장 공간을 확인하고 다시 시도하세요.');
+    // A display failure must not turn a completed storage transaction into a
+    // value rollback with already committed metadata.
+    try{driveSyncRefreshPanel()}catch(error){console.warn('[sync-v2] panel refresh failed',error)}
   }
   function mdSyncResetKey(key,value,label){
     const k=String(key),raw=String(value);
@@ -201,7 +214,13 @@
         if(this===localStorage && k!==DRIVE_SYNC_STATE_KEY && isManagedStorageKey(k) && oldValue!==String(nextValue)){
           mdSyncTouchKey(k,oldValue,String(nextValue),false);
         }
-      }catch(e){console.warn('[sync-v2] change metadata failed',e)}
+      }catch(error){
+        // Saving the value without its clock lets a stale cloud field win.
+        // Roll back and let the caller's existing save-failure UI handle retry.
+        if(oldValue===null)driveSyncOriginalRemoveItem.call(this,k);
+        else driveSyncOriginalSetItem.call(this,k,oldValue);
+        throw error;
+      }
       return result;
     };
     Storage.prototype.removeItem=function(key){
@@ -213,7 +232,10 @@
         if(this===localStorage && k!==DRIVE_SYNC_STATE_KEY && isManagedStorageKey(k) && oldValue!==null){
           mdSyncTouchKey(k,oldValue,null,true);
         }
-      }catch(e){console.warn('[sync-v2] deletion metadata failed',e)}
+      }catch(error){
+        if(oldValue!==null)driveSyncOriginalSetItem.call(this,k,oldValue);
+        throw error;
+      }
       return result;
     };
   };
@@ -230,8 +252,16 @@
     return meta&&meta.fields&&meta.fields[path]||null;
   }
   function mdSyncPathTime(meta,path,fallback){
+    // Atomic checkpoints and scalar keys compare the whole-key clock; the
+    // root field clock below is only a baseline for unchanged descendants.
+    if(path==='')return mdSyncRecordTime(meta,fallback);
     const record=mdSyncPathRecord(meta,path);
     if(record) return mdSyncRecordTime(record,fallback);
+    const ancestors=path.split('/');
+    while(ancestors.length){
+      ancestors.pop();const parent=mdSyncPathRecord(meta,ancestors.join('/'));
+      if(parent&&!parent.deleted)return mdSyncRecordTime(parent,fallback);
+    }
     return mdSyncRecordTime(meta,fallback);
   }
   function mdSyncBranchTime(meta,path,value,fallback){
@@ -524,11 +554,20 @@
     try{
       applyBackupSnapshot(Object.entries(merged.items),'Drive 병합 동기화');
       if(mdSyncStable(collectBackupItems())!==mdSyncStable(merged.items)){
-        applyBackupSnapshot(Object.entries(before),'Drive 병합 실패 복구');
         throw new Error('병합 저장에 실패했습니다. 자동 복구 지점을 확인하세요.');
       }
+      // Values and their clocks are one transaction. Do not leave new remote
+      // values in a live UI whose metadata and in-memory state are still old.
+      if(!driveSyncSaveState(state))throw new Error('동기화 상태를 저장하지 못했습니다.');
+    }catch(error){
+      let restored=false;
+      try{
+        applyBackupSnapshot(Object.entries(before),'Drive 병합 실패 복구');
+        restored=mdSyncStable(collectBackupItems())===mdSyncStable(before);
+      }catch(rollbackError){console.warn('[sync-v2] rollback failed',rollbackError)}
+      if(!restored)throw new Error('동기화 실패 후 일부 기록을 복구하지 못했습니다. 자동 복구 지점을 확인하세요. '+((error&&error.message)||error));
+      throw error;
     }finally{driveSyncApplyingRemote=false}
-    state.itemMeta=merged.itemMeta;
   }
 
   // v5.10: capture only AFTER downloads, and never apply a stale snapshot
@@ -555,7 +594,6 @@
     const itemsChanged=mdSyncStable(latest.items)!==mdSyncStable(merged.items);
     const pending=changedDuringRequest || (itemsChanged&&mdSyncStudyActive());
     if(!pending){
-      if(itemsChanged)mdSyncApplyMerged(merged,current);
       current.itemMeta=merged.itemMeta;
       current.lastSyncedAt=driveSyncNowIso();
       current.localUpdatedAt=remoteUpdatedAt||current.localUpdatedAt;
@@ -565,7 +603,8 @@
     current.remoteFileId=fileId;
     current.remoteUpdatedAt=remoteUpdatedAt||current.remoteUpdatedAt;
     current.revision=Math.max(Number(current.revision)||0,Number(revision)||0);
-    if(!driveSyncSaveState(current))throw new Error('동기화 상태를 저장하지 못했습니다.');
+    if(itemsChanged&&!pending)mdSyncApplyMerged(merged,current);
+    else if(!driveSyncSaveState(current))throw new Error('동기화 상태를 저장하지 못했습니다.');
     if(showNotice)backupNotice(pending
       ?'새 학습 기록 또는 진행 중인 학습을 유지했습니다. 다음 동기화에서 병합을 다시 확인합니다.'
       :message);

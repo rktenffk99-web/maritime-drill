@@ -62,11 +62,17 @@ python tools/patch_backup_restore_safety.py
 python tools/patch_exam_sessions_v530.py
 python tools/patch_exam_restore_v532.py
 python tools/patch_homework_checkpoint_v533.py
+python tools/patch_homework_rotation_v535.py
+python tools/patch_exam_start_guard_v535.py
+# Older generators add script URLs; stamp the release only after all integration.
+python tools/patch_mock_answer_access.py
 node tools/test_exam_sessions_v530.js
 node tools/test_exam_cleanup_v531.js
 node tools/test_exam_restore_v532.js
 node tools/test_exam_validation_v533.js
 node tools/test_homework_checkpoint_v533.js
+node tools/test_homework_rotation_v535.js
+node tools/test_exam_start_guard_v535.js
 node tools/test_drive_audit_v533.js
 node tools/test_drive_exam_journal.js
 node tools/test_drive_journal_recovery_v532.js
@@ -108,6 +114,7 @@ node tools/test_daily_storage.js
 python tools/test_daily_cap_checkpoint.py
 node tools/test_drive_sync_v2.js
 node tools/test_sync_races.js
+node tools/test_sync_storage_clocks.js
 node tools/test_backup_restore_safety.js
 node tools/test_drive_auth.js
 node tools/test_analytics_regressions.js

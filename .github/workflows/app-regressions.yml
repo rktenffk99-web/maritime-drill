@@ -39,6 +39,9 @@ jobs:
           - browser_menu_cleanup.py
           - browser_mock_subject_order.py
           - browser_balanced_mock.py
+          - browser_exam_sessions_v530.py
+          - browser_app_audit_v533.py
+          - browser_exam_start_guard_v535.py
     steps:
       - uses: actions/checkout@v5
       - uses: actions/download-artifact@v4
