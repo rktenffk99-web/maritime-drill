@@ -4,6 +4,13 @@ from pathlib import Path
 path = Path(__file__).resolve().parents[1] / 'index.html'
 text = path.read_text(encoding='utf-8-sig')
 
+# The old generator documents v5.28 hint UI. In the released v5.34 app,
+# pressing 0 opens a persisted full explanation instead, so do not reinsert
+# obsolete hint copy if the validation script is run against a modern build.
+if "const APP_VERSION = '5.34'" in text and "<b>0</b> 해설 열기·닫기" in text:
+    print('v5.34 explanation controls already integrated')
+    raise SystemExit(0)
+
 
 def replace_once(old, new):
     global text

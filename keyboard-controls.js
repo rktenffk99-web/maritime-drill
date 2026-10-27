@@ -2,7 +2,7 @@
 // 1-4 / A-D: choose an answer
 // Enter / Numpad Enter / Space / Right Arrow: next question
 // Left Arrow: previous question
-// 0 / Numpad 0: toggle a written mock-exam hint
+// 0 / Numpad 0: show/hide the current mock-exam answer and explanation
 (function(){
   'use strict';
 
@@ -35,9 +35,9 @@
       if(typeof currentMode==='undefined') return;
       if(currentMode==='past'&&typeof pastMode!=='undefined'&&pastMode==='mock'&&!event.shiftKey&&
          (event.key==='0'||event.code==='Digit0'||event.code==='Numpad0')){
-        if(typeof window.__mdMockHintControls?.toggle!=='function')return;
+        if(typeof window.__mdMockExplanationControls?.toggle!=='function')return;
         event.preventDefault();event.stopImmediatePropagation();
-        if(!event.repeat)window.__mdMockHintControls.toggle();
+        if(!event.repeat)window.__mdMockExplanationControls.toggle();
         return;
       }
       // Ordinary past-paper sessions retain their existing keys; Space also advances.
@@ -101,7 +101,6 @@ mdLoadAuxScript('reported-content-fixes.js');
 mdLoadAuxScript('weak-topic-classifier.js');
 mdLoadAuxScript('balanced-mock.js');
 mdLoadAuxScript('mock-explanation-controls.js');
-mdLoadAuxScript('mock-hint-controls.js');
 
 // Add subject/topic result analytics and persist weak-topic reinforcement targets.
 mdLoadAuxScript('predictive-analytics.js');

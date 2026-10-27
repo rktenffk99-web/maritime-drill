@@ -1,4 +1,4 @@
-"""Persist assisted evaluation sessions and publish the final v5.33 script URLs."""
+"""Persist assisted evaluation sessions and version all released script URLs."""
 from pathlib import Path
 import argparse
 import re
@@ -6,7 +6,7 @@ import sys
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '5.33'
+VERSION = '5.34'
 
 
 def patch_html(text: str) -> str:
@@ -28,6 +28,14 @@ def patch_html(text: str) -> str:
         "    if(meta.evaluation)restored.forEach(q=>{q._evaluationMock=true;q._predictiveMock=true});\n",
         "    if(meta.evaluation)restored.forEach(q=>{q._evaluationMock=true;q._predictiveMock=true});\n"
         "    if(state.evaluationExplanationViewed===true)restored.forEach(q=>{q._evaluationExplanationViewed=true});\n",
+    )
+    replace_once(
+        '0 키 또는 힌트 버튼으로 풀이 도움을 볼 수 있습니다. 정답·전체 해설은 제출 후 확인합니다.',
+        '원할 때 0 키 또는 해설 버튼으로 정답·전체 해설을 확인할 수 있습니다. 확인한 시험은 최근 실력 평균에서 제외됩니다.',
+    )
+    replace_once(
+        "단축키: <b>1~4</b> 답 선택${pastMode==='mock'?' · <b>0</b> 힌트':''}",
+        "단축키: <b>1~4</b> 답 선택${pastMode==='mock'?' · <b>0</b> 해설 열기·닫기':''}",
     )
     text, count = re.subn(r"const APP_VERSION = '[^']+';", f"const APP_VERSION = '{VERSION}';", text, count=1)
     if count != 1:
@@ -69,7 +77,7 @@ def main() -> None:
         target = args.output or args.input
         if target != args.input or patched != original:
             target.write_text(patched, encoding='utf-8')
-        print('mock answer access state and v5.33 release patch applied')
+        print(f'mock answer access state and v{VERSION} release patch applied')
 
 
 if __name__ == '__main__':

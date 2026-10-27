@@ -17,7 +17,7 @@ function harness(mode,modal=null){
     renderHintAction:()=>calls.push('hint'),togglePastMark:()=>calls.push('bookmark'),
     setAnswerCollapse:()=>calls.push('collapse'),prevCard:()=>calls.push('previous'),skipCard:()=>calls.push('skip')};
   s.window={chooseNavigatorPassPlanAnswer(){},nextNavigatorPassPlanQuestion:()=>calls.push('next'),prevNavigatorPassPlanQuestion:()=>calls.push('previous'),
-    __mdMockHintControls:{toggle(){calls.push('mock-hint');return true}}};
+    __mdMockExplanationControls:{toggle(){calls.push('mock-explanation');return true}}};
   vm.createContext(s);vm.runInContext(external,s);vm.runInContext(inline,s);
   return {s,calls,press(key,code=key,options={}){
     let stopped=false;
@@ -53,10 +53,10 @@ const study=harness('study');study.press(' ','Space');assert.deepEqual(study.cal
 for(const [key,code] of [['0','Digit0'],['0','Numpad0'],['0','']]){
   const h=harness('past'),beforeAnswers=h.s.pastAnswers.slice();
   const event=h.press(key,code);
-  assert.deepEqual(h.calls,['mock-hint'],`${code||'key fallback'} opens the written-mock hint exactly once`);
-  assert.equal(event.defaultPrevented,true,'handled hint shortcuts suppress their native action');
-  assert.deepEqual(h.s.pastAnswers,beforeAnswers,'a hint shortcut must not choose an answer');
-  assert.equal(h.s.pastIdx,0,'a hint shortcut must not advance the paper');cases++;
+  assert.deepEqual(h.calls,['mock-explanation'],`${code||'key fallback'} toggles the written-mock explanation exactly once`);
+  assert.equal(event.defaultPrevented,true,'handled explanation shortcuts suppress their native action');
+  assert.deepEqual(h.s.pastAnswers,beforeAnswers,'an explanation shortcut must not choose an answer');
+  assert.equal(h.s.pastIdx,0,'an explanation shortcut must not advance the paper');cases++;
 }
 for(const options of [
   {repeat:true},{defaultPrevented:true},{isComposing:true},{ctrlKey:true},{metaKey:true},{altKey:true},{shiftKey:true},
@@ -64,16 +64,16 @@ for(const options of [
   {target:{tagName:'DIV',isContentEditable:true,closest:()=>null}}
 ]){
   const h=harness('past');h.press('0','Digit0',options);h.press('0','Numpad0',options);
-  assert.deepEqual(h.calls,[],'zero must not expose a hint while editing, modified, repeated or already handled');cases++;
+  assert.deepEqual(h.calls,[],'zero must not expose an explanation while editing, modified, repeated or already handled');cases++;
 }
 const shiftedZero=harness('past');shiftedZero.press(')','Digit0',{shiftKey:true});
-assert.deepEqual(shiftedZero.calls,[],'Shift+0 is punctuation, not a hint request');cases++;
+assert.deepEqual(shiftedZero.calls,[],'Shift+0 is punctuation, not an explanation request');cases++;
 for(const mode of ['pass-plan-session','study','mock','focus','review','past-result','pass-plan']){
   const h=harness(mode);h.press('0','Digit0');h.press('0','Numpad0');
-  assert.deepEqual(h.calls,[],mode+' must not invoke a written-mock hint');cases++;
+  assert.deepEqual(h.calls,[],mode+' must not invoke a written-mock explanation');cases++;
 }
 const pastStudy=harness('past');pastStudy.s.pastMode='study';pastStudy.press('0','Digit0');
 assert.deepEqual(pastStudy.calls,[],'ordinary past-paper study retains its existing controls');cases++;
 const focusedChoice=harness('past');focusedChoice.press('0','Digit0',{target:{tagName:'BUTTON',closest:()=>({})}});
-assert.deepEqual(focusedChoice.calls,['mock-hint'],'zero still opens a hint after an answer button receives focus');cases++;
+assert.deepEqual(focusedChoice.calls,['mock-explanation'],'zero still opens an explanation after an answer button receives focus');cases++;
 console.log(`keyboard context regressions: PASS (${cases} cases)`);

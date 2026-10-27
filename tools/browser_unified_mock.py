@@ -38,10 +38,9 @@ def snapshot(page):
 
 
 def assert_no_live_explanation(page):
-    # Check both the normal mount and its explicit re-entry: a hidden button
-    # alone would be insufficient if the observer could recreate it later.
+    # All mock exams offer an optional explanation, but none starts disclosed.
     page.evaluate('window.__mdMockExplanationControls.mount()')
-    assert page.locator('#md-mock-explanation-toggle:visible').count() == 0
+    assert page.locator('#md-mock-explanation-toggle:visible').count() == 1
     assert page.locator('#md-mock-explanation-panel:visible').count() == 0
     assert page.locator('.md-mock-correct-answer:visible').count() == 0
 
@@ -185,92 +184,60 @@ try:
         assert page.evaluate("localStorage.getItem('md_evaluation_score_history_v1')") == scores_after
         report['cases'].append('targeted practice lives in review, permits explanations and leaves the unified score history unchanged')
 
-        # A separate assisted paper must leave the independent 99-point score
-        # above intact. Use the real controls for hints, pause and recovery.
+        # A separate explanation-assisted paper must leave the independent
+        # 99-point score above intact, including after pause and recovery.
         page.get_by_role('button', name='저장하고 나가기', exact=True).click()
         wait_plan(page, tab='mock')
         page.get_by_role('button', name='모의시험 시작', exact=True).click()
         page.wait_for_function("currentMode==='past'&&pastQueue.length===125&&pastQueue.every(q=>q._unifiedMock)")
-        hint_button = page.locator('#md-mock-hint-toggle')
-        hint_panel = page.locator('#md-mock-hint-panel')
+        hint_button = page.locator('#md-mock-explanation-toggle')
+        hint_panel = page.locator('#md-mock-explanation-panel')
         hint_button.wait_for(state='visible')
-        assert hint_button.inner_text() == '힌트 보기 (0)'
+        assert hint_button.inner_text() == '해설 보기 (0)'
         assert hint_panel.is_hidden()
         assert_no_live_explanation(page)
-
-        # Exercise extraction in the browser's real DOM parser. The two-letter
-        # answer fixture reproduces a real source explanation, rather than
-        # merely checking that the full solution panel remains hidden.
-        extraction = page.evaluate("""() => {
-          const original=getExplain;
-          try {
-            getExplain=()=>({html:'━━ 용어 정리 ━━• 부력의 작용선: 선박이 기울었을 때 부심에서 연직 위 방향으로 뻗는 선. 이 선이 원래 중심선과 만나는 점이 경심임.<br>━━ 정답 해설 ━━정답은 경심입니다.'});
-            const shortAnswer=window.__mdMockHintControls.hintFor({
-              '문제':'선박이 기울어지기 전 선체의 중심선과 경사 후 부력의 작용선과의 교점은?',
-              '과목':'운용','선택지':['경심','부심','무게중심','부면심'],'정답':0});
-            getExplain=()=>({html:'━━ 용어 정리 ━━• 자차: 선체 때문에 나침반 방위가 달라지는 오차.<br>━━ 정답 해설 ━━FULL_SOLUTION_ONLY: 정답은 선체자기.<br>━━ 핵심 암기 ━━ANSWER_MEMORY_ONLY'});
-            const sections=window.__mdMockHintControls.hintFor({
-              '문제':'컴퍼스 자차가 발생하는 원인은?','과목':'항해',
-              '선택지':['선체자기','기온','기압','습도'],'정답':0});
-            getExplain=()=>({'용어':{
-              '부심':'배가 밀어낸 물의 부력이 작용하는 중심점.',
-              '흘수':'선박이 물에 잠긴 깊이를 나타내는 값.',
-              '경심':'기울어진 선박의 부력 작용선을 비교할 때 사용하는 점.'}});
-            const stemTerms=window.__mdMockHintControls.hintFor({
-              '문제':'흘수의 정의를 고르세요.','과목':'운용',
-              '선택지':['수면과 선저 사이의 거리','부심','경심','무게중심'],'정답':0});
-            return {shortAnswer,sections,stemTerms};
-          } finally {getExplain=original}
-        }""")
-        assert extraction['shortAnswer']['terms'] == [], extraction['shortAnswer']
-        assert '경심' not in json.dumps(extraction['shortAnswer'], ensure_ascii=False)
-        assert [term['term'] for term in extraction['sections']['terms']] == ['자차']
-        assert 'FULL_SOLUTION_ONLY' not in json.dumps(extraction['sections'], ensure_ascii=False)
-        assert 'ANSWER_MEMORY_ONLY' not in json.dumps(extraction['sections'], ensure_ascii=False)
-        assert [term['term'] for term in extraction['stemTerms']['terms']] == ['흘수']
-        report['cases'].append('real DOM hint extraction rejects a two-character direct answer, full-solution and memorisation sections, and terms appearing only in choices')
 
         choice = page.evaluate("pastQueue[0]['정답']")
         page.locator(f'[onclick="choosePastAnswer({choice})"]').click()
         before_hint = snapshot(page)
-        hint_storage = page.evaluate("[PAST_CHECKPOINT_KEY,PAST_PROGRESS_KEY,PAST_PROGRESS_META_KEY].map(key=>localStorage.getItem(key))")
+        hint_storage = page.evaluate("localStorage.getItem(__mdExamSessions.PREFIX+pastProgressId)")
         page.evaluate("window.__mdHintTestOriginalSavePastProgress=savePastProgress;savePastProgress=()=>false")
         try:
             page.keyboard.press('0')
-            assert hint_panel.is_hidden(), 'a first hint must stay closed when its usage record cannot be saved'
-            assert hint_button.inner_text() == '힌트 보기 (0)'
+            assert hint_panel.is_hidden(), 'the explanation must stay closed when its usage record cannot be saved'
+            assert hint_button.inner_text() == '해설 보기 (0)'
             assert page.evaluate('pastQueue[0]._mockHintViewed!==true')
             assert snapshot(page) == before_hint
-            assert page.evaluate("[PAST_CHECKPOINT_KEY,PAST_PROGRESS_KEY,PAST_PROGRESS_META_KEY].map(key=>localStorage.getItem(key))") == hint_storage
+            assert page.evaluate("localStorage.getItem(__mdExamSessions.PREFIX+pastProgressId)") == hint_storage
         finally:
             page.evaluate("savePastProgress=window.__mdHintTestOriginalSavePastProgress;delete window.__mdHintTestOriginalSavePastProgress")
-        report['cases'].append('a failed first hint save leaves the panel closed, assistance flag absent, answers intact and all saved paper formats unchanged')
+        report['cases'].append('failed checkpoint keeps the full solution closed with unchanged answers and durable paper')
         page.wait_for_function("!document.getElementById('_appToast')||document.getElementById('_appToast').style.opacity==='0'")
         page.keyboard.press('0')
         hint_panel.wait_for(state='visible')
-        assert hint_button.inner_text() == '힌트 닫기 (0)'
-        assert hint_panel.inner_text().strip(), 'a requested hint must contain useful text'
-        assert snapshot(page) == before_hint, 'viewing a hint must preserve the selected answer, cursor and learning'
+        assert hint_button.inner_text() == '해설 닫기 (0)'
+        assert '정답' in hint_panel.inner_text(), 'requested explanation must reveal the actual answer'
+        assert snapshot(page) == before_hint, 'viewing an explanation must preserve the selected answer, cursor and learning'
         assert page.evaluate('pastQueue[0]._mockHintViewed===true')
+        assert page.evaluate('pastQueue[0]._unifiedExplanationViewed===true')
         assert page.evaluate('getPastProgress().state.hintedIndices') == [0]
-        assert_no_live_explanation(page)
-        page.screenshot(path=str(OUT / 'unified-mock-hint.png'), full_page=True)
+        page.screenshot(path=str(OUT / 'unified-mock-explanation.png'), full_page=True)
 
         page.keyboard.press('0')
         hint_panel.wait_for(state='hidden')
-        assert hint_button.inner_text() == '힌트 보기 (0)'
-        assert page.evaluate('getPastProgress().state.hintedIndices') == [0], 'closing a hint must not erase assistance'
+        assert hint_button.inner_text() == '해설 보기 (0)'
+        assert page.evaluate('getPastProgress().state.hintedIndices') == [0], 'closing an explanation must not erase assistance'
         page.keyboard.press('Numpad0')
         hint_panel.wait_for(state='visible')
         assert snapshot(page) == before_hint
         page.locator('[onclick="pastNext()"]').click()
         page.wait_for_function('pastIdx===1')
         hint_button.wait_for(state='visible')
-        assert hint_panel.is_hidden(), 'the next question must start with its hint closed'
-        assert hint_button.inner_text() == '힌트 보기 (0)'
+        assert hint_panel.is_hidden(), 'the next question must start with its explanation closed'
+        assert hint_button.inner_text() == '해설 보기 (0)'
         assert page.evaluate('pastQueue.map((q,i)=>q._mockHintViewed===true?i:-1).filter(i=>i>=0)') == [0]
         assert_no_live_explanation(page)
-        report['cases'].append('0 and Numpad0 toggle a useful hint without solutions, answer changes or learning writes; moving to the next question closes it')
+        report['cases'].append('0 and Numpad0 toggle the answer and full explanation without answer or learning changes; next question starts closed')
 
         hinted_expected = snapshot(page)
         page.reload(wait_until='load', timeout=60000)
@@ -287,10 +254,10 @@ try:
         page.locator('[onclick="pastIdx--;renderPastCard()"]').click()
         page.wait_for_function('pastIdx===0')
         hint_button.wait_for(state='visible')
-        assert hint_panel.is_hidden(), 'a previously assisted question must not reveal its hint automatically on resume'
+        assert hint_panel.is_hidden(), 'a previously assisted question must not reveal its explanation automatically on resume'
         assert page.evaluate('pastQueue[0]._mockHintViewed===true')
         assert_no_live_explanation(page)
-        report['cases'].append('refresh and resume preserve the exact paper, chosen answer and hinted question indices while all hint panels start closed')
+        report['cases'].append('refresh and resume preserve the exact paper, answer and assisted question indices; solutions start closed')
 
         # Fill the remaining fixture with correct answers. Assistance must
         # exclude this 100-point paper from independent score averages even
@@ -301,13 +268,13 @@ try:
         assert '125 / 125' in page.locator('#app').inner_text()
         summary = page.evaluate('window.__mdWeakTopicAnalytics.unifiedSummary(pastQueue,pastAnswers,false)')
         assert summary['score'] == 100 and summary['complete'], summary
-        assert summary['explanationViewed'], 'a restored hint-assisted paper must remain marked as assisted'
+        assert summary['explanationViewed'], 'a restored explanation-assisted paper must remain marked as assisted'
         assert summary['recentCount'] == 1 and summary['recentAverage'] == 99, summary
         assert '제외' in page.locator('[data-unified-score-summary]').inner_text()
         assert page.evaluate("localStorage.getItem('md_evaluation_score_history_v1')") == scores_after
-        assert page.locator('#md-mock-hint-toggle:visible').count() == 0
-        assert page.locator('#md-mock-hint-panel:visible').count() == 0
-        report['cases'].append('a completed hint-assisted 100-point paper is excluded from recent averages after recovery; the original independent 99-point result and legacy histories remain unchanged')
+        assert page.locator('#md-mock-explanation-toggle:visible').count() == 0
+        assert page.locator('#md-mock-explanation-panel:visible').count() == 0
+        report['cases'].append('completed explanation-assisted 100-point paper excluded from recent averages after recovery; prior scores preserved')
         assert not report['page_errors'], report['page_errors']
         context.close()
         report['status'] = 'PASS'
