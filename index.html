@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="md-build" content="android-single-file">
-<title>Maritime Drill v5.33 · Android</title>
+<title>Maritime Drill v5.34 · Android</title>
 <style>
 
 *{margin:0;padding:0;box-sizing:border-box}
@@ -14673,7 +14673,7 @@ window.MD_DATA["safety2"] = { meta: META, QUESTIONS, IMP, TTS_MAP, SHIP_INFO, NE
 <script>
 
 // ── 앱 버전 (업데이트 시마다 올리기) ──
-const APP_VERSION = '5.33';
+const APP_VERSION = '5.34';
 
 // ── v4.81: 브라우저 저장 실패를 사용자에게 즉시 알리는 공통 저장기 ──
 function showStorageWarning(label, error){
@@ -17725,7 +17725,7 @@ function renderPastCard(){
       </div>
     </div>
     <div role="status" data-past-save-status style="font-size:12px;margin-bottom:10px;color:${progressSaved?'#047857':'#B91C1C'}">${progressSaved?'이 기기에 자동 저장됨 · 인터넷 연결 없이도 답안을 저장합니다.':'답안 저장 실패 · 이 화면을 닫지 말고 다시 저장하거나 파일로 백업하세요.'}${progressSaved?'':'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button class="btn btn-outline" style="width:auto" onclick="renderPastCard()">다시 저장</button><button class="btn btn-outline" style="width:auto" onclick="exportAllLearningData()">답안 파일 백업</button></div>'}</div>
-    ${q._unifiedMock&&pastMode==='mock'?'<p style="font-size:12px;color:#475569;margin:6px 0 12px">0 키 또는 힌트 버튼으로 풀이 도움을 볼 수 있습니다. 정답·전체 해설은 제출 후 확인합니다.</p>':''}
+    ${q._unifiedMock&&pastMode==='mock'?'<p style="font-size:12px;color:#475569;margin:6px 0 12px">원할 때 0 키 또는 해설 버튼으로 정답·전체 해설을 확인할 수 있습니다. 확인한 시험은 최근 실력 평균에서 제외됩니다.</p>':''}
     <div class="card" style="border-left:3px solid ${gColor}">
       <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
         <span class="tag" style="background:${gColor}20;color:${gColor};margin:0">${q._year}년</span>
@@ -17763,7 +17763,7 @@ function renderPastCard(){
       ${(selected!==null || pastMode==='mock')?`<button class="btn btn-accent" style="flex:2" onclick="pastNext()">${pastIdx+1===pastQueue.length?'제출':'다음 '+icon('arrowRight',14)}</button>`:`<button class="btn btn-outline" style="flex:2;opacity:0.5" disabled>답을 선택하세요</button>`}
     </div>
     <div style="margin-top:10px;text-align:center;font-size:11px;color:var(--textMuted)">
-      단축키: <b>1~4</b> 답 선택${pastMode==='mock'?' · <b>0</b> 힌트':''} · <b>Enter</b>/<b>→</b> 다음 · <b>←</b> 이전 · <b>B</b> 북마크
+      단축키: <b>1~4</b> 답 선택${pastMode==='mock'?' · <b>0</b> 해설 열기·닫기':''} · <b>Enter</b>/<b>→</b> 다음 · <b>←</b> 이전 · <b>B</b> 북마크
     </div>
   `;
 }
@@ -22089,9 +22089,9 @@ function appPrompt(opts,onSubmit){
 window.alert=appAlert;
 </script>
 
-<script src="data-identity.js?v=5.33"></script>
+<script src="data-identity.js?v=5.34"></script>
 
-<script src="scheduler-v522.js?v=5.33"></script>
+<script src="scheduler-v522.js?v=5.34"></script>
 
 <script>
 // ── v5.07: 2·3급 항해사 합격 플랜 / 오늘의 숙제 ──
@@ -23368,11 +23368,11 @@ window.alert=appAlert;
 })();
 
 </script>
-<script src="drive-state-codec.js?v=5.33"></script>
-<script src="keyboard-controls.js?v=5.33"></script>
-<script src="explain-2026-navi3-3.js?v=5.33"></script>
-<script src="explain-2026-navi3-3-english.js?v=5.33"></script>
-<script src="convenience-controls.js?v=5.33"></script>
+<script src="drive-state-codec.js?v=5.34"></script>
+<script src="keyboard-controls.js?v=5.34"></script>
+<script src="explain-2026-navi3-3.js?v=5.34"></script>
+<script src="explain-2026-navi3-3-english.js?v=5.34"></script>
+<script src="convenience-controls.js?v=5.34"></script>
 
 <script data-bundled-src="reported-content-fixes.js">
 // Maritime Drill reported content text corrections
@@ -24270,7 +24270,7 @@ window.alert=appAlert;
 })(window);
 
 </script>
-<script src="exam-sessions.js?v=5.33"></script>
-<script src="drive-exam-journal.js?v=5.33"></script>
+<script src="exam-sessions.js?v=5.34"></script>
+<script src="drive-exam-journal.js?v=5.34"></script>
 </body>
 </html>
