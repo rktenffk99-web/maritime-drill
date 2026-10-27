@@ -61,8 +61,14 @@ try:
         page.locator('[onclick="startNavigatorPassPlanToday()"]').click();page.wait_for_function("currentMode==='pass-plan-session'")
         page.locator('[onclick="chooseNavigatorPassPlanAnswer(0)"]').click()
         page.locator('[onclick="nextNavigatorPassPlanQuestion()"]').click()
-        saved=page.evaluate("({progress:localStorage.getItem('md_nav23_pass_progress_v1'),checkpoint:localStorage.getItem('md_pass_plan_session_checkpoint_v2')})")
+        before_exit=page.evaluate("({progress:localStorage.getItem('md_nav23_pass_progress_v1'),checkpoint:localStorage.getItem('md_pass_plan_session_checkpoint_v2')})")
         page.evaluate("renderNavigatorPassPlan('navi3')")
+        # Leaving the session flushes its checkpoint and legitimately refreshes
+        # savedAt. Capture the migration baseline after that completed save.
+        saved=page.evaluate("({progress:localStorage.getItem('md_nav23_pass_progress_v1'),checkpoint:localStorage.getItem('md_pass_plan_session_checkpoint_v2')})")
+        assert saved['progress']==before_exit['progress']
+        before_checkpoint=json.loads(before_exit['checkpoint']);saved_checkpoint=json.loads(saved['checkpoint'])
+        assert {k:v for k,v in saved_checkpoint.items() if k!='savedAt'}=={k:v for k,v in before_checkpoint.items() if k!='savedAt'}
         legacy=page.evaluate("""()=>{
           const k='md_nav23_pass_daily_v1',fixture=__dailyStorageFixture(),raw=JSON.stringify({[fixture.today]:fixture.assignment});
           const point={app:'Maritime Drill',schemaVersion:1,exportedAt:'2026-09-20T03:00:00Z',reason:'before-sync',items:{...collectBackupItems(),[k]:raw}};
