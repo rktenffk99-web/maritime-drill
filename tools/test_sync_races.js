@@ -91,6 +91,33 @@ async function test(name,fn){await fn();count++;console.log('PASS '+name)}
   await test('partial storage write is detected and rolls back to the pre-merge snapshot',async()=>{
     const h=harness({applyFails:true});h.remote.items.md_remote_only='"remote"';const before=h.collect();await h.sync();assert.deepEqual(h.collect(),before);assert.equal(h.calls.reload,0);assert.match(h.sandbox.driveSyncLastError,/병합 저장에 실패/);
   });
+  await test('final metadata save failure rolls back applied remote values and retries cleanly',async()=>{
+    const h=harness();h.remote.items.md_remote_only='"remote"';
+    const before=h.collect(),state=h.storage.getItem(STATE),save=h.sandbox.driveSyncSaveState;
+    h.sandbox.driveSyncSaveState=()=>false;await h.sync();
+    assert.deepEqual(h.collect(),before);assert.equal(h.storage.getItem(STATE),state);assert.equal(h.calls.reload,0);assert.equal(h.calls.apply,2);
+    assert.match(h.sandbox.driveSyncLastError,/동기화 상태를 저장하지 못/);assert.deepEqual(h.restorePoint,before);
+    h.sandbox.driveSyncSaveState=save;await h.sync();
+    assert.equal(h.sandbox.driveSyncLastError,'');assert.equal(h.storage.getItem('md_remote_only'),'"remote"');assert.equal(h.calls.reload,1);
+  });
+  await test('an exception midway through remote application restores values and original metadata',async()=>{
+    const h=harness();h.remote.items.md_remote_only='"remote"';
+    const before=h.collect(),state=h.storage.getItem(STATE),apply=h.sandbox.applyBackupSnapshot;let fail=true;
+    h.sandbox.applyBackupSnapshot=entries=>{
+      if(fail){fail=false;h.storage.setItem(KEY,'{"partial":true}');throw new Error('partial apply exception')}
+      return apply(entries);
+    };
+    await h.sync();assert.deepEqual(h.collect(),before);assert.equal(h.storage.getItem(STATE),state);assert.equal(h.calls.reload,0);
+    assert.match(h.sandbox.driveSyncLastError,/partial apply exception/);assert.equal(h.sandbox.driveSyncApplyingRemote,false);
+  });
+  await test('incomplete rollback reports recovery failure and retains the automatic restore point',async()=>{
+    const h=harness();h.remote.items.md_remote_only='"remote"';
+    const before=h.collect(),state=h.storage.getItem(STATE),apply=h.sandbox.applyBackupSnapshot;let applications=0;
+    h.sandbox.applyBackupSnapshot=entries=>{if(++applications===1)return apply(entries);return {restored:0,removed:0}};
+    h.sandbox.driveSyncSaveState=()=>false;await h.sync();
+    assert.match(h.sandbox.driveSyncLastError,/일부 기록을 복구하지 못/);assert.deepEqual(h.restorePoint,before);
+    assert.equal(h.storage.getItem(STATE),state);assert.equal(h.calls.reload,0);assert.equal(h.sandbox.driveSyncApplyingRemote,false);
+  });
   await test('offline sync never calls the network or changes progress',async()=>{
     const h=harness({online:false});const before=h.collect();await h.sync();assert.equal(h.calls.find,0);assert.deepEqual(h.collect(),before);
   });

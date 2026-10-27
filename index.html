@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="md-build" content="android-single-file">
-<title>Maritime Drill v5.34 · Android</title>
+<title>Maritime Drill v5.35 · Android</title>
 <style>
 
 *{margin:0;padding:0;box-sizing:border-box}
@@ -14673,7 +14673,7 @@ window.MD_DATA["safety2"] = { meta: META, QUESTIONS, IMP, TTS_MAP, SHIP_INFO, NE
 <script>
 
 // ── 앱 버전 (업데이트 시마다 올리기) ──
-const APP_VERSION = '5.34';
+const APP_VERSION = '5.35';
 
 // ── v4.81: 브라우저 저장 실패를 사용자에게 즉시 알리는 공통 저장기 ──
 function showStorageWarning(label, error){
@@ -22089,9 +22089,9 @@ function appPrompt(opts,onSubmit){
 window.alert=appAlert;
 </script>
 
-<script src="data-identity.js?v=5.34"></script>
+<script src="data-identity.js?v=5.35"></script>
 
-<script src="scheduler-v522.js?v=5.34"></script>
+<script src="scheduler-v522.js?v=5.35"></script>
 
 <script>
 // ── v5.07: 2·3급 항해사 합격 플랜 / 오늘의 숙제 ──
@@ -22162,7 +22162,7 @@ window.alert=appAlert;
   }
   window.retryNavigatorPassPlanSave=function(){
     if(currentMode!=='pass-plan-session')return false;
-    const saved=ppSavePassSessionCheckpoint(planSessionIdx);renderNavigatorPassPlanCard();return saved;
+    const saved=ppFlushTodayAnswer();renderNavigatorPassPlanCard();return saved;
   };
   window.__mdHomeworkPersistence={
     beforeLeave(){
@@ -22620,10 +22620,11 @@ window.alert=appAlert;
     return future?`<span style="display:block;font-size:11px;font-weight:600;color:#7c3aed;margin-top:2px">재확인 예정 ${future}문제</span>`:'';
   }
 
+  // homework-recheck-persistence-v535: null means a required schedule write failed.
   function ppScheduleSameDayRecheck(q){ // spaced-recheck-tail-v2
     if(planSessionKind!=='today'||!q||!q._planKey)return false;
     const today=ppDateKey(new Date()),r=ppProgressFor(ppLoadProgress(),q._planKey);
-    if(r.sameDayConfirmedDate===today||r.sameDayFirstCorrectDate!==today||r.lastOutcome!=='sure')return false;
+    if(r.sameDayConfirmedDate===today||ppNextDayPending(r,today)||r.sameDayFirstCorrectDate!==today||r.lastOutcome!=='sure')return false;
     if(planSessionQueue.slice(planSessionIdx+1).some(x=>x&&x._planKey===q._planKey))return false;
 
     const minimumGap=15;
@@ -22633,7 +22634,12 @@ window.alert=appAlert;
       if(rec.sameDayFirstCorrectDate===today&&!rec.sameDayConfirmedDate){
         rec.status='provisional';rec.mastered=false;rec.sameDayConfirmedDate=null;
         rec.recoveryStartDate=null;rec.dueDate=ppReviewDueDate(today,1,ppExamDay(ppLoadPlan(),q._planGrade));rec.lateSessionNextDayRecheck=true;rec.nextDayRecheckScheduledDate=today;
-        progress[q._planKey]=rec;ppSaveProgress(progress);
+        progress[q._planKey]=rec;
+        if(!ppSaveProgress(progress)){
+          ppCheckpointSaveFailed=true;
+          showToast('다음 날 재확인 일정을 저장하지 못했습니다. 현재 문제에서 저장을 다시 시도하세요.',6000);
+          return null;
+        }
       }
       return false;
     }
@@ -23194,8 +23200,10 @@ window.alert=appAlert;
     if(Number.isInteger(answer)&&answer>=0&&answer<q['선택지'].length&&!planSessionCommitted.has(planSessionIdx)){
       const confidence=answer===q['정답']?'sure':'wrong';planSessionConfidence[planSessionIdx]=confidence;
       if(!ppCommitOutcome(q,answer,confidence))return false;
-      planSessionCommitted.add(planSessionIdx);if(confidence==='sure')ppScheduleSameDayRecheck(q);
+      planSessionCommitted.add(planSessionIdx);
     }
+    // A prior attempt may already be scored while its deferred recheck still needs saving.
+    if(Number.isInteger(answer)&&answer===q['정답']&&ppScheduleSameDayRecheck(q)===null)return false;
     return ppSavePassSessionCheckpoint(planSessionIdx);
   }
   function ppInitializeReviewSchedule(r){
@@ -23332,8 +23340,8 @@ window.alert=appAlert;
     if(!planSessionCommitted.has(planSessionIdx)){
       planSessionConfidence[planSessionIdx]=confidence;
       if(!ppCommitOutcome(q,answer,confidence))return;planSessionCommitted.add(planSessionIdx);
-      if(confidence==='sure')ppScheduleSameDayRecheck(q);
     }
+    if(confidence==='sure'&&ppScheduleSameDayRecheck(q)===null){renderNavigatorPassPlanCard();return;}
     const nextIndex=planSessionIdx+1;
     if(!ppSavePassSessionCheckpoint(nextIndex)){renderNavigatorPassPlanCard();return;}
     planSessionIdx=nextIndex;
@@ -23368,11 +23376,11 @@ window.alert=appAlert;
 })();
 
 </script>
-<script src="drive-state-codec.js?v=5.34"></script>
-<script src="keyboard-controls.js?v=5.34"></script>
-<script src="explain-2026-navi3-3.js?v=5.34"></script>
-<script src="explain-2026-navi3-3-english.js?v=5.34"></script>
-<script src="convenience-controls.js?v=5.34"></script>
+<script src="drive-state-codec.js?v=5.35"></script>
+<script src="keyboard-controls.js?v=5.35"></script>
+<script src="explain-2026-navi3-3.js?v=5.35"></script>
+<script src="explain-2026-navi3-3-english.js?v=5.35"></script>
+<script src="convenience-controls.js?v=5.35"></script>
 
 <script data-bundled-src="reported-content-fixes.js">
 // Maritime Drill reported content text corrections
@@ -24270,7 +24278,8 @@ window.alert=appAlert;
 })(window);
 
 </script>
-<script src="exam-sessions.js?v=5.34"></script>
-<script src="drive-exam-journal.js?v=5.34"></script>
+<script src="exam-sessions.js?v=5.35"></script>
+<script src="drive-exam-journal.js?v=5.35"></script>
+<script src="exam-start-guard.js?v=5.35"></script>
 </body>
 </html>

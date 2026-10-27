@@ -13,7 +13,7 @@ required=[
     "planSessionQueue.splice(insertAt,0,copy);",
     "planSessionAnswers.splice(insertAt,0,null);",
     "planSessionConfidence.splice(insertAt,0,null);",
-    "if(confidence==='sure')ppScheduleSameDayRecheck(q);",
+    "if(confidence==='sure'&&ppScheduleSameDayRecheck(q)===null){renderNavigatorPassPlanCard();return;}",
     "const checkpoint=ppLoadPassSessionCheckpoint();",
     "const checkpointKeys=checkpoint.queueKeys.slice();",
     "const uniqueKeys=[...new Set(checkpointKeys)];",
@@ -46,6 +46,9 @@ for needle in [
     'rec.sameDayConfirmedDate=null;',
     'rec.lateSessionNextDayRecheck=true;rec.nextDayRecheckScheduledDate=today;',
     'rec.dueDate=ppReviewDueDate(today,1,ppExamDay(ppLoadPlan(),q._planGrade));',
+    'if(!ppSaveProgress(progress)){',
+    'ppCheckpointSaveFailed=true;',
+    'return null;',
     'const desiredGap=Math.max(minimumGap,Math.min(delay,remainingBase));',
 ]:
     assert needle in rbody, f'missing actual recheck policy: {needle}'
@@ -59,6 +62,10 @@ body=choose.group(1)
 # The first checkpoint now durably saves the pending answer before scoring;
 # the final one must still persist the queue after scheduling its recheck.
 assert body.index('ppSavePassSessionCheckpoint') < body.index('ppCommitOutcome') < body.index('ppScheduleSameDayRecheck') < body.rindex('ppSavePassSessionCheckpoint'), 'recheck scheduling order is unsafe'
+# A failed deferred-recheck write must stop before advancing or clearing the
+# checkpoint. Retrying must also reach scheduling after the answer was scored.
+assert body.index("if(confidence==='sure'&&ppScheduleSameDayRecheck(q)===null)") < body.index('const nextIndex=planSessionIdx+1;'), 'failed recheck save can advance the question'
+assert "if(!ppCommitOutcome(q,answer,confidence))return;planSessionCommitted.add(planSessionIdx);\n    }\n    if(confidence==='sure'&&ppScheduleSameDayRecheck(q)===null)" in body, 'already-scored answer cannot retry its failed recheck schedule'
 
 # The saved queue must be restored BEFORE today's adaptive assignment is rebuilt.
 # This is the regression that previously sent a user from roughly 36/110 back to 3/110.
@@ -83,5 +90,6 @@ subprocess.run(['node','--check',name],check=True)
 # Real transition tests cover retained first answers, separate drill checkpoints,
 # next-day pending state and policy-upgrade restoration on the final artifact.
 subprocess.run(['node','tools/test_mastery_sessions_v522.js','--final'],check=True)
+subprocess.run(['node','tools/test_homework_rotation_v535.js'],check=True)
 
 print('recovery/recheck checks passed: checkpoint queue is authoritative and lost checkpoints recover from attempted-today progress')

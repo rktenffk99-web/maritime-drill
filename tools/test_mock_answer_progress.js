@@ -46,9 +46,9 @@ async function test(name,run){await run();passed++;console.log('PASS '+name)}
 (async()=>{
   await test('release patch is idempotent, keeps embedded sources and versions every root script URL',()=>{
     assert.equal(generate(html),html);assert.equal(fs.readFileSync(indexPath,'utf8').replace(/\r\n/g,'\n'),raw);
-    assert.match(html,/const APP_VERSION = '5\.34';/);assert.match(html,/<title>Maritime Drill v5\.34 · Android<\/title>/);
+    assert.match(html,/const APP_VERSION = '5\.35';/);assert.match(html,/<title>Maritime Drill v5\.35 · Android<\/title>/);
     const scripts=[...html.matchAll(/<script\b[^>]*\ssrc=["']([^"']+)["']/g)];assert.ok(scripts.length>=7);
-    for(const [,src] of scripts)assert.equal(new URL(src,'https://local.test/').searchParams.get('v'),'5.34',src);
+    for(const [,src] of scripts)assert.equal(new URL(src,'https://local.test/').searchParams.get('v'),'5.35',src);
     const embedded=value=>[...value.matchAll(/<script\b[^>]*data-bundled-src=["'][^"']+["'][^>]*>/g)].map(m=>m[0]);
     assert.deepEqual(embedded(html),embedded(raw));
   });

@@ -48,7 +48,7 @@ def open_page(context, first_run=False):
     if first_run:
         page.get_by_role('button', name='동의합니다', exact=True).click()
         page.wait_for_function("hasAgreedTerms() && !document.getElementById('md-modal-wrap')")
-    assert page.evaluate('APP_VERSION') == '5.34'
+    assert page.evaluate('APP_VERSION') == '5.35'
     return page
 
 

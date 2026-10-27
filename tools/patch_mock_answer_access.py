@@ -6,7 +6,7 @@ import sys
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '5.34'
+VERSION = '5.35'
 
 
 def patch_html(text: str) -> str:
