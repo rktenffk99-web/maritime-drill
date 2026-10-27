@@ -31,17 +31,20 @@ function harness(extra={}){
   const s={console:{warn(){}},currentMode:'past',pastMode:'mock',pastIdx:0,pastStartedAt:1,pastAnswers:[null],
     pastQueue:[{'정답':0,'선택지':['첫 번째 답','두 번째 답'],'해설':'문항 해설',_planKey:'q1'}],
     document:{getElementById:id=>nodes.get(id)||null,querySelector:()=>next,createElement:element,readyState:'loading',addEventListener(){}},
-    savePastProgress(options){saved.push({answers:s.pastAnswers.slice(),viewed:s.pastQueue.some(q=>q._evaluationExplanationViewed===true),options});return true},...extra};
+    savePastProgress(options){saved.push({answers:s.pastAnswers.slice(),viewed:s.pastQueue.some(q=>q._mockHintViewed===true),options});return true},...extra};
   s.window=s;vm.createContext(s);vm.runInContext(source,s);const api=s.__mdMockExplanationControls;
   return {s,saved,nodes,api,mount(){api.mount()},click(){nodes.get(BUTTON).click()},get panel(){return nodes.get(PANEL)},get button(){return nodes.get(BUTTON)}};
 }
 let passed=0;
 function test(name,fn){fn();passed++;console.log('PASS '+name)}
-test('legacy mocks and targeted practice can explicitly reveal the correct choice before answering',()=>{
-  for(const flag of [null,'_balancedMock','_predictiveMock','_evaluationMock']){
+test('every mock type can explicitly reveal the correct choice before answering',()=>{
+  for(const flag of [null,'_balancedMock','_predictiveMock','_evaluationMock','_unifiedMock']){
     const h=harness();if(flag)h.s.pastQueue[0][flag]=true;h.mount();
-    assert.equal(h.panel.hidden,true);assert.equal(h.panel.innerHTML,'');assert.equal(h.button.textContent,'정답·해설 보기');
+    assert.equal(h.panel.hidden,true);assert.equal(h.panel.innerHTML,'');assert.equal(h.button.textContent,'해설 보기 (0)');
     h.click();assert.equal(h.panel.hidden,false);assert.match(h.panel.innerHTML,/정답: ㉮/);assert.match(h.panel.innerHTML,/첫 번째 답/);assert.match(h.panel.innerHTML,/문항 해설/);
+    assert.equal(h.s.pastQueue[0]._mockHintViewed,true,'help must be recorded before disclosure');
+    assert.equal(h.saved.length,1,'all mock types checkpoint assistance exactly once');
+    assert.equal(h.saved[0].viewed,true);
     assert.deepEqual(h.s.pastAnswers,[null]);
   }
 });
@@ -55,7 +58,7 @@ test('answer and fallback explanation text are escaped',()=>{
 });
 test('evaluation help is remembered once without changing an already selected answer',()=>{
   const h=harness();h.s.pastQueue[0]._evaluationMock=true;h.s.pastAnswers[0]=1;h.mount();h.click();
-  assert.equal(h.s.pastQueue[0]._evaluationExplanationViewed,true);assert.deepEqual(h.s.pastAnswers,[1]);assert.equal(h.saved.length,1);assert.equal(h.saved[0].viewed,true);
+  assert.equal(h.s.pastQueue[0]._evaluationExplanationViewed,true);assert.equal(h.s.pastQueue[0]._mockHintViewed,true);assert.deepEqual(h.s.pastAnswers,[1]);assert.equal(h.saved.length,1);assert.equal(h.saved[0].viewed,true);
   h.click();assert.equal(h.panel.hidden,true);assert.equal(h.panel.innerHTML,'');h.click();assert.equal(h.saved.length,1);
 });
 test('evaluation solutions stay hidden when the help marker cannot be saved and disclose only after retry succeeds',()=>{
@@ -63,7 +66,7 @@ test('evaluation solutions stay hidden when the help marker cannot be saved and 
   const h=harness({showToast:message=>notices.push(message),savePastProgress(options){calls++;assert.equal(options.requireCheckpoint,true);return canSave}});
   h.s.pastQueue[0]._evaluationMock=true;h.s.pastAnswers[0]=1;h.mount();h.click();
   assert.equal(h.panel.hidden,true);assert.equal(h.panel.innerHTML,'');assert.equal(h.button.attributes['aria-expanded'],'false');
-  assert.equal(h.button.textContent,'정답·해설 보기');assert.equal(h.s.pastQueue[0]._evaluationExplanationViewed,undefined);
+  assert.equal(h.button.textContent,'해설 보기 (0)');assert.equal(h.s.pastQueue[0]._evaluationExplanationViewed,undefined);assert.equal(h.s.pastQueue[0]._mockHintViewed,undefined);
   assert.deepEqual(h.s.pastAnswers,[1]);assert.equal(calls,1);assert.match(notices[0],/저장하지 못했습니다/);
   canSave=true;h.click();assert.equal(h.panel.hidden,false);assert.match(h.panel.innerHTML,/정답: ㉮/);
   assert.equal(h.s.pastQueue[0]._evaluationExplanationViewed,true);assert.equal(calls,2);
@@ -73,13 +76,20 @@ test('missing or throwing checkpoint writers cannot expose evaluation answers',(
   for(const savePastProgress of [undefined,()=>{throw new Error('storage blocked')}]){
     const h=harness({savePastProgress});h.s.pastQueue[0]._evaluationMock=true;h.mount();
     assert.doesNotThrow(()=>h.click());assert.equal(h.panel.hidden,true);assert.equal(h.panel.innerHTML,'');
-    assert.equal(h.s.pastQueue[0]._evaluationExplanationViewed,undefined);
+    assert.equal(h.s.pastQueue[0]._evaluationExplanationViewed,undefined);assert.equal(h.s.pastQueue[0]._mockHintViewed,undefined);
   }
 });
-test('already persisted help and unscored practice remain readable without another storage write',()=>{
-  for(const priorHelp of [false,true]){
+test('all exam types require durable help before disclosure',()=>{
+  for(const flag of [null,'_unifiedMock','_balancedMock','_evaluationMock']){
+    const h=harness({savePastProgress:()=>false});if(flag)h.s.pastQueue[0][flag]=true;
+    h.mount();h.click();assert.equal(h.panel.hidden,true);assert.equal(h.panel.innerHTML,'');
+    assert.equal(h.s.pastQueue[0]._mockHintViewed,undefined);
+  }
+});
+test('previously recorded assistance remains readable without another storage write',()=>{
+  for(const priorHelp of ['_mockHintViewed','_evaluationExplanationViewed','_unifiedExplanationViewed']){
     const h=harness({savePastProgress(){throw new Error('must not rewrite a recorded marker')}});
-    if(priorHelp){h.s.pastQueue[0]._evaluationMock=true;h.s.pastQueue[0]._evaluationExplanationViewed=true}
+    h.s.pastQueue[0][priorHelp]=true;
     h.mount();h.click();assert.equal(h.panel.hidden,false);assert.match(h.panel.innerHTML,/정답: ㉮/);
   }
 });
@@ -109,9 +119,10 @@ test('focused reveal buttons keep Enter and Space activation instead of navigati
   }
   handler({key:' ',code:'Space',target:{tagName:'DIV'},preventDefault(){},stopImmediatePropagation(){}});assert.equal(advanced,1);
 });
-test('unified exams never reveal solutions and remove an old practice shell',()=>{
-  const h=harness();h.mount();h.click();assert.ok(h.nodes.has(SHELL));
-  h.s.pastQueue[0]._unifiedMock=true;h.mount();assert.equal(h.api.isMockExam(),false);assert.equal(h.nodes.size,0);
-  h.s.pastQueue[0]._unifiedMock=false;h.s.pastQueue[0]._targetedPractice=true;h.mount();assert.ok(h.button);
+test('unified exam marks assistance before opening and allows explicit toggle by shortcut API',()=>{
+  const h=harness();h.s.pastQueue[0]._unifiedMock=true;h.mount();assert.equal(h.api.isMockExam(),true);
+  assert.equal(h.api.toggle(),true);assert.equal(h.s.pastQueue[0]._unifiedExplanationViewed,true);
+  assert.equal(h.panel.hidden,false);assert.equal(h.button.textContent,'해설 닫기 (0)');
+  assert.equal(h.api.toggle(),true);assert.equal(h.panel.hidden,true);assert.equal(h.saved.length,1);
 });
 console.log(`mock in-exam answer and explanation controls: PASS (${passed} behavior cases)`);
