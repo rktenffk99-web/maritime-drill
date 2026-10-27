@@ -34,7 +34,7 @@ try:
     page.locator('#pp-date-navi2').fill((date.today()+timedelta(days=30)).isoformat())
     for field in page.locator('input[data-pp-subject="navi2"]').all():field.check()
     page.locator('[onclick="saveNavigatorPassPlanSettings()"]').click();wait_plan(page,tab='mock')
-    assert page.evaluate('APP_VERSION')=='5.33'
+    assert page.evaluate('APP_VERSION')=='5.34'
     expected=[]
     for name in ['startNavigatorUnifiedMock','startNavigatorEvaluationMock']:
         page.evaluate('name=>window[name]("navi2")',name)
