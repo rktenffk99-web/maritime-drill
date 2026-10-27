@@ -82,7 +82,7 @@ try:
             return ((value^(value>>>14))>>>0)/4294967296;};
         }""")
         page.get_by_role('button', name='모의시험 시작', exact=True).click()
-        page.wait_for_function("currentMode==='past'&&pastQueue.length===125&&window.__mdMockHintControls")
+        page.wait_for_function("currentMode==='past'&&pastQueue.length===125&&window.__mdMockExplanationControls")
         report['paper_keys'] = page.evaluate('pastQueue.map(q=>q._planKey)')
         print('response: 125-question paper ready', flush=True)
         page.evaluate("""() => {
