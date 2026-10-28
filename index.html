@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="md-build" content="android-single-file">
-<title>Maritime Drill v5.35 · Android</title>
+<title>Maritime Drill v5.36 · Android</title>
 <style>
 
 *{margin:0;padding:0;box-sizing:border-box}
@@ -79,6 +79,10 @@ select{width:100%;padding:10px 12px;background:var(--surface2);color:var(--text)
 .hint-box{background:var(--amberDim);border:1px solid #FCD34D;border-radius:12px;padding:24px;margin-bottom:16px;box-shadow:0 1px 3px rgba(217,119,6,0.10)}
 .review-answer{border-top:1px solid var(--border);padding-top:14px;margin-top:16px}
 .btn-outline,.btn-outline-dim{border-width:1.5px}
+.md-exam-resume-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.md-exam-resume-heading b{flex:1;min-width:0}
+.md-exam-delete{display:flex;align-items:center;justify-content:center;flex:0 0 40px;width:40px;height:40px;border:1px solid #FECACA;border-radius:10px;background:#FEF2F2;color:#B91C1C;font-size:25px;line-height:1;cursor:pointer}
+.md-exam-delete:hover,.md-exam-delete:focus-visible{background:#FEE2E2;border-color:#F87171;outline:2px solid #FCA5A5;outline-offset:2px}
 
 /* ── v4.8: Splash, Hero, BETA, Group Cards ── */
 #splash{position:fixed;inset:0;background:linear-gradient(160deg,#1E3A8A 0%,#1E40AF 50%,#0EA5E9 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;z-index:9999;transition:opacity .5s ease}
@@ -14673,7 +14677,7 @@ window.MD_DATA["safety2"] = { meta: META, QUESTIONS, IMP, TTS_MAP, SHIP_INFO, NE
 <script>
 
 // ── 앱 버전 (업데이트 시마다 올리기) ──
-const APP_VERSION = '5.35';
+const APP_VERSION = '5.36';
 
 // ── v4.81: 브라우저 저장 실패를 사용자에게 즉시 알리는 공통 저장기 ──
 function showStorageWarning(label, error){
@@ -22089,9 +22093,9 @@ function appPrompt(opts,onSubmit){
 window.alert=appAlert;
 </script>
 
-<script src="data-identity.js?v=5.35"></script>
+<script src="data-identity.js?v=5.36"></script>
 
-<script src="scheduler-v522.js?v=5.35"></script>
+<script src="scheduler-v522.js?v=5.36"></script>
 
 <script>
 // ── v5.07: 2·3급 항해사 합격 플랜 / 오늘의 숙제 ──
@@ -23376,11 +23380,11 @@ window.alert=appAlert;
 })();
 
 </script>
-<script src="drive-state-codec.js?v=5.35"></script>
-<script src="keyboard-controls.js?v=5.35"></script>
-<script src="explain-2026-navi3-3.js?v=5.35"></script>
-<script src="explain-2026-navi3-3-english.js?v=5.35"></script>
-<script src="convenience-controls.js?v=5.35"></script>
+<script src="drive-state-codec.js?v=5.36"></script>
+<script src="keyboard-controls.js?v=5.36"></script>
+<script src="explain-2026-navi3-3.js?v=5.36"></script>
+<script src="explain-2026-navi3-3-english.js?v=5.36"></script>
+<script src="convenience-controls.js?v=5.36"></script>
 
 <script data-bundled-src="reported-content-fixes.js">
 // Maritime Drill reported content text corrections
@@ -24278,8 +24282,8 @@ window.alert=appAlert;
 })(window);
 
 </script>
-<script src="exam-sessions.js?v=5.35"></script>
-<script src="drive-exam-journal.js?v=5.35"></script>
-<script src="exam-start-guard.js?v=5.35"></script>
+<script src="exam-sessions.js?v=5.36"></script>
+<script src="drive-exam-journal.js?v=5.36"></script>
+<script src="exam-start-guard.js?v=5.36"></script>
 </body>
 </html>
