@@ -68,6 +68,7 @@ python tools/patch_exam_start_guard_v535.py
 python tools/patch_mock_answer_access.py
 node tools/test_exam_sessions_v530.js
 node tools/test_exam_cleanup_v531.js
+node tools/test_exam_deletion_v536.js
 node tools/test_exam_restore_v532.js
 node tools/test_exam_validation_v533.js
 node tools/test_homework_checkpoint_v533.js

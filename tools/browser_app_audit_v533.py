@@ -48,7 +48,7 @@ def open_page(context, first_run=False):
     if first_run:
         page.get_by_role('button', name='동의합니다', exact=True).click()
         page.wait_for_function("hasAgreedTerms() && !document.getElementById('md-modal-wrap')")
-    assert page.evaluate('APP_VERSION') == '5.35'
+    assert page.evaluate('APP_VERSION') == '5.36'
     return page
 
 
@@ -172,7 +172,7 @@ def help_state(page):
 
 def resume_evaluation(context, exam_id):
     page = open_page(context)
-    page.locator(f'[data-past-resume="{exam_id}"] button').click()
+    page.locator(f'[data-past-resume="{exam_id}"] button[onclick^="resumePastProgress("]').click()
     page.wait_for_function("currentMode === 'past'")
     return page
 

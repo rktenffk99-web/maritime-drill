@@ -77,7 +77,7 @@ try:
         agree.wait_for(state='visible')
         agree.click()
         page.wait_for_function("hasAgreedTerms() && !document.getElementById('md-modal-wrap')")
-        assert page.evaluate('APP_VERSION') == '5.35'
+        assert page.evaluate('APP_VERSION') == '5.36'
         assert 'v5.35' in page.title()
         assert page.evaluate("typeof window.__mdMockExplanationControls==='object'")
         report['cases'].append('v5.35 startup and auxiliary scripts loaded')

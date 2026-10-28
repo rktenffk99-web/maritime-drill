@@ -18,7 +18,7 @@ report={'cases':[],'page_errors':[]}
 def snapshot(page):
     return page.evaluate('''() => ({id:pastProgressId,questions:pastQueue.map(q=>[pqid(q),q['문제'],q['선택지'],q['정답'],q._mockHintViewed===true]),answers:pastAnswers.slice(),idx:pastIdx})''')
 def resume(page,id):
-    page.locator(f'[data-past-resume="{id}"] button').click()
+    page.locator(f'[data-past-resume="{id}"] button[onclick^="resumePastProgress("]').click()
     page.wait_for_function("id=>currentMode==='past'&&pastProgressId===id",arg=id)
 try:
  with TemporaryDirectory(prefix='md-v530-') as profile,sync_playwright() as pw:
@@ -34,7 +34,7 @@ try:
     page.locator('#pp-date-navi2').fill((date.today()+timedelta(days=30)).isoformat())
     for field in page.locator('input[data-pp-subject="navi2"]').all():field.check()
     page.locator('[onclick="saveNavigatorPassPlanSettings()"]').click();wait_plan(page,tab='mock')
-    assert page.evaluate('APP_VERSION')=='5.35'
+    assert page.evaluate('APP_VERSION')=='5.36'
     expected=[]
     for name in ['startNavigatorUnifiedMock','startNavigatorEvaluationMock']:
         page.evaluate('name=>window[name]("navi2")',name)

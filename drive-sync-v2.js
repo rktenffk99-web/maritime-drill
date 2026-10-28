@@ -7,6 +7,7 @@
   if(typeof driveSyncOnce!=='function' || typeof driveSyncLoadState!=='function' || typeof isManagedStorageKey!=='function') return;
 
   const SYNC_V2_MAX_FIELD_META=30000;
+  const EXAM_DELETE_PREFIX='maritime-drill:deleted-exam:v3:';
 
   function mdSyncIsPlainObject(value){
     return !!value && typeof value==='object' && !Array.isArray(value);
@@ -137,14 +138,64 @@
     }
     fields[mdSyncPath(path)]=mdSyncNewRecord(now,false);
   }
+  function mdSyncIsExamKey(key){
+    return !!window.__mdExamSessions&&key.startsWith(window.__mdExamSessions.PREFIX);
+  }
+  function mdSyncExamDeletionKey(key){
+    if(!mdSyncIsExamKey(key))return null;
+    const id=key.slice(window.__mdExamSessions.PREFIX.length);
+    return /^[a-zA-Z0-9_-]{1,100}$/.test(id)?EXAM_DELETE_PREFIX+id:null;
+  }
+  function mdSyncHasExamDeletion(key){
+    const marker=mdSyncExamDeletionKey(key);
+    return marker!==null&&localStorage.getItem(marker)!==null;
+  }
+  function mdSyncLocalExamDeletions(){
+    const exams=window.__mdExamSessions,deleted={};if(!exams)return deleted;
+    for(let i=0;i<localStorage.length;i++){
+      const key=localStorage.key(i);if(!key?.startsWith(EXAM_DELETE_PREFIX))continue;
+      const id=key.slice(EXAM_DELETE_PREFIX.length);if(!/^[a-zA-Z0-9_-]{1,100}$/.test(id))continue;
+      const raw=localStorage.getItem(key);
+      deleted[exams.PREFIX+id]={updatedAt:Number.isFinite(Date.parse(raw))?raw:new Date(0).toISOString(),deleted:true,fields:{},history:{}};
+    }
+    return deleted;
+  }
+  function mdSyncRememberExamDeletion(key,meta){
+    const marker=mdSyncExamDeletionKey(key);if(!marker)throw new Error('시험 삭제 식별 정보가 올바르지 않습니다.');
+    if(localStorage.getItem(marker)!==null)return;
+    const now=Number.isFinite(Date.parse(meta?.updatedAt))?meta.updatedAt:driveSyncNowIso();
+    // This per-ID marker is the deletion commit. Ordinary answer/state writes
+    // and full managed snapshots never replace it. Do not remove it on retry.
+    driveSyncOriginalSetItem.call(localStorage,marker,now);
+    if(localStorage.getItem(marker)===null)throw new Error('시험 삭제 상태를 저장하지 못했습니다.');
+  }
+  function mdSyncDeletedExamError(){
+    const error=new Error('다른 탭 또는 기기에서 삭제된 시험입니다. 시험 목록에서 새 시험을 시작해 주세요.');
+    error.mdDeletedExam=true;return error;
+  }
+  function mdSyncDeleteExam(key){
+    const raw=localStorage.getItem(key);
+    mdSyncRememberExamDeletion(key,{updatedAt:driveSyncNowIso()});
+    // Once the marker is durable the logical deletion is complete. Cleanup or
+    // the shared metadata mirror cannot undo it; snapshot reads use the marker.
+    try{driveSyncOriginalRemoveItem.call(localStorage,key)}catch(error){console.warn('[sync-v2] deleted exam cleanup',error)}
+    try{mdSyncTouchKey(key,raw,null,true)}catch(error){console.warn('[sync-v2] deletion metadata mirror',error)}
+    return true;
+  }
   function mdSyncTouchKey(key,oldRaw,newRaw,deleted){
-    if(driveSyncApplyingRemote) return;
+    const examKey=mdSyncIsExamKey(key);
+    if(driveSyncApplyingRemote&&!examKey) return;
     const codec=window.__mdDriveStateCodec;
     const perKey=codec&&typeof codec.loadForKey==='function'&&typeof codec.saveForKey==='function';
     const state=perKey?codec.loadForKey(key):driveSyncLoadState();
     const now=driveSyncNowIso();
     const itemMeta=mdSyncIsPlainObject(state.itemMeta)?Object.assign({},state.itemMeta):{};
     const keyMeta=mdSyncNormalizeKeyMeta(itemMeta[key]);
+    // A different tab can delete this attempt after its checkpoint was read.
+    // Recheck at the storage boundary and never turn its terminal tombstone
+    // back into an ordinary update, including an identical-value write.
+    if(examKey&&!deleted&&(keyMeta.deleted===true||mdSyncHasExamDeletion(key)))throw mdSyncDeletedExamError();
+    if(driveSyncApplyingRemote||!deleted&&oldRaw===newRaw)return;
     if(!deleted&&oldRaw!==null&&!Object.prototype.hasOwnProperty.call(keyMeta.fields,'')){
       // A legacy/imported key may have no per-field clocks yet. Retain its
       // pre-edit baseline before this answer advances the key's timestamp.
@@ -171,6 +222,9 @@
     state.revision=(Number(state.revision)||0)+1;
     const saved=perKey?codec.saveForKey(state,key):driveSyncSaveState(state);
     if(saved===false)throw new Error('학습 변경 시각을 저장하지 못했습니다. 저장 공간을 확인하고 다시 시도하세요.');
+    // A deletion may commit after the metadata read but before this save. Its
+    // independent marker survives that stale state write and wins immediately.
+    if(examKey&&!deleted&&mdSyncHasExamDeletion(key))throw mdSyncDeletedExamError();
     // A display failure must not turn a completed storage transaction into a
     // value rollback with already committed metadata.
     try{driveSyncRefreshPanel()}catch(error){console.warn('[sync-v2] panel refresh failed',error)}
@@ -211,13 +265,15 @@
       const nextValue=this===localStorage?mdSyncNormalizeHistoryWrite(k,oldValue,String(value)):value;
       const result=driveSyncOriginalSetItem.call(this,key,nextValue);
       try{
-        if(this===localStorage && k!==DRIVE_SYNC_STATE_KEY && isManagedStorageKey(k) && oldValue!==String(nextValue)){
+        if(this===localStorage && k!==DRIVE_SYNC_STATE_KEY && isManagedStorageKey(k) && (oldValue!==String(nextValue)||mdSyncIsExamKey(k))){
           mdSyncTouchKey(k,oldValue,String(nextValue),false);
         }
       }catch(error){
         // Saving the value without its clock lets a stale cloud field win.
         // Roll back and let the caller's existing save-failure UI handle retry.
-        if(oldValue===null)driveSyncOriginalRemoveItem.call(this,k);
+        // A stale pre-delete value is not a rollback target for a deleted
+        // attempt. Leave its tombstone intact and discard the stale write.
+        if(error.mdDeletedExam||oldValue===null)driveSyncOriginalRemoveItem.call(this,k);
         else driveSyncOriginalSetItem.call(this,k,oldValue);
         throw error;
       }
@@ -575,7 +631,9 @@
   // so a reload cannot interrupt an unsaved answer or stale in-memory session.
   function mdSyncReadLocal(){
     const state=driveSyncLoadState(),items=collectBackupItems();
-    const itemMeta=mdSyncIsPlainObject(state.itemMeta)?state.itemMeta:{};
+    const itemMeta={...(mdSyncIsPlainObject(state.itemMeta)?state.itemMeta:{}),...mdSyncLocalExamDeletions()};
+    for(const key of Object.keys(itemMeta))if(mdSyncIsExamKey(key)&&itemMeta[key]?.deleted===true)delete items[key];
+    state.itemMeta=itemMeta;
     return {state,items,itemMeta,signature:mdSyncContentSignature(items,itemMeta)};
   }
   function mdSyncStudyActive(){
@@ -594,6 +652,11 @@
     const itemsChanged=mdSyncStable(latest.items)!==mdSyncStable(merged.items);
     const pending=changedDuringRequest || (itemsChanged&&mdSyncStudyActive());
     if(!pending){
+      // Persist accepted remote deletions independently before replacing the
+      // shared state. A stale tab cannot erase a downloaded tombstone either.
+      for(const [key,meta] of Object.entries(merged.itemMeta||{})){
+        if(mdSyncIsExamKey(key)&&meta?.deleted===true)mdSyncRememberExamDeletion(key,meta);
+      }
       current.itemMeta=merged.itemMeta;
       current.lastSyncedAt=driveSyncNowIso();
       current.localUpdatedAt=remoteUpdatedAt||current.localUpdatedAt;
@@ -832,5 +895,6 @@
     }
   };
 
-  window.__mdDriveSyncV2={mergeSnapshots:mdSyncMergeSnapshots,diff:mdSyncDiff,stable:mdSyncStable,resetKey:mdSyncResetKey,historySessionId:mdSyncHistorySessionId};
+  window.__mdDriveSyncV2={mergeSnapshots:mdSyncMergeSnapshots,diff:mdSyncDiff,stable:mdSyncStable,resetKey:mdSyncResetKey,historySessionId:mdSyncHistorySessionId,
+    deleteExam:mdSyncDeleteExam,isExamDeleted:mdSyncHasExamDeletion,localExamDeletions:mdSyncLocalExamDeletions};
 })();

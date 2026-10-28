@@ -91,6 +91,7 @@
     return clone({version:3,id,createdAt:Date.now(),unified:pastQueue.every(q=>q._unifiedMock===true),targeted:pastQueue.every(q=>q._targetedPractice===true),balanced:pastQueue.every(q=>q._balancedMock===true),evaluation:pastQueue.every(q=>q._evaluationMock===true),refs,subjectId:pastSubjectId,base:pastBaseShort,year:pastYear,session:pastSession,variant:pastVariant,allYears:pastAllYears,returnView:pastReturnView,analysisSubject:naviAnalysisSubjectId,analysisDetail:navi3AnalysisDetail,practiceReturn:navi3PracticeReturn,practiceLabel:navi3PracticeLabel});
   }
   function isDeleted(id){
+    if(global.__mdDriveSyncV2?.isExamDeleted?.(PREFIX+id))return true;
     const codec=global.__mdDriveStateCodec;
     const state=codec?.loadForKey?codec.loadForKey(PREFIX+id):typeof driveSyncLoadState==='function'?driveSyncLoadState():null;
     return state?.itemMeta?.[PREFIX+id]?.deleted===true;
@@ -156,8 +157,43 @@
       const {meta,state,headId}=saved,done=state.answers.filter(a=>a!==null).length;
       const grade=SUBJECTS.find(s=>s.id===meta.subjectId)?.name||meta.subjectId;
       const detail=meta.year?`${meta.year}년 ${meta.session||''}회 · ${meta.variant||''}`:`${meta.variant||''} · 여러 회차`;
-      return `<div class="card" data-past-resume="${meta.id}" data-exam-head="${headId}" style="border-left:3px solid #059669"><b>${escapeHtml(grade)} · ${kind(meta)} · ${done}/${meta.refs.length}문제</b><p style="font-size:12px;color:var(--textDim)">${escapeHtml(detail)}<br>시험 ${meta.id.slice(0,8)} · 시작 ${escapeHtml(backupDateLabel(new Date(meta.createdAt).toISOString()))}<br>중단 위치 ${Math.min(state.idx+1,meta.refs.length)}번 · 저장 ${escapeHtml(backupDateLabel(new Date(state.savedAt).toISOString()))}${saved.conflict?'<br><strong>다른 기기의 답안과 충돌하여 두 버전을 각각 보존했습니다.</strong>':''}</p><button class="btn btn-green" onclick="resumePastProgress('${meta.id}','${headId}')">${state.mode==='mock'?'모의고사 이어서 풀기':'필기 이어서 풀기'}</button></div>`;
+      return `<div class="card" data-past-resume="${meta.id}" data-exam-head="${headId}" style="border-left:3px solid #059669"><div class="md-exam-resume-heading"><b>${escapeHtml(grade)} · ${kind(meta)} · ${done}/${meta.refs.length}문제</b><button type="button" class="md-exam-delete" aria-label="${escapeHtml(grade)} 저장된 시험 삭제" title="저장된 시험 삭제" onclick="deletePastProgress('${meta.id}')">&times;</button></div><p style="font-size:12px;color:var(--textDim)">${escapeHtml(detail)}<br>시험 ${meta.id.slice(0,8)} · 시작 ${escapeHtml(backupDateLabel(new Date(meta.createdAt).toISOString()))}<br>중단 위치 ${Math.min(state.idx+1,meta.refs.length)}번 · 저장 ${escapeHtml(backupDateLabel(new Date(state.savedAt).toISOString()))}${saved.conflict?'<br><strong>다른 기기의 답안과 충돌하여 두 버전을 각각 보존했습니다.</strong>':''}</p><button class="btn btn-green" onclick="resumePastProgress('${meta.id}','${headId}')">${state.mode==='mock'?'모의고사 이어서 풀기':'필기 이어서 풀기'}</button></div>`;
     }).join('');
+  };
+  global.deletePastProgress=function(id){
+    if(!validId(id))return false;
+    const saved=list().filter(item=>item.meta.id===id);
+    if(!saved.length){showToast('선택한 저장본이 없습니다. 목록을 새로고침해 주세요.');return false;}
+    if(active?.meta.id===id&&currentMode==='past'){
+      showToast('현재 풀고 있는 시험은 먼저 시험 목록으로 나온 뒤 삭제해 주세요.');return false;
+    }
+    const meta=saved[0].meta,grade=SUBJECTS.find(s=>s.id===meta.subjectId)?.name||meta.subjectId;
+    const extra=saved.length>1?'\n다른 기기에서 저장한 같은 시험의 답안 버전도 함께 삭제됩니다.':'';
+    if(typeof global.confirm!=='function'||!global.confirm(`${grade} · ${kind(meta)}의 이어풀기 기록을 삭제할까요?\n저장된 답안과 진행 위치가 목록에서 사라지며, 즉시 실행 취소할 수 없습니다. 이미 제출한 성적·오답 기록은 유지됩니다.\nGoogle Drive에 연결하면 삭제 상태도 동기화됩니다.${extra}`))return false;
+    const key=PREFIX+id;
+    try{
+      // Commit an independent per-ID marker before removing the answer sheet.
+      // A stale tab's shared sync-state write cannot erase this deletion.
+      if(typeof driveSyncOriginalRemoveItem!=='function'||typeof global.__mdDriveSyncV2?.deleteExam!=='function')throw new Error('저장소 동기화 준비가 끝나지 않았습니다. 잠시 후 다시 시도해 주세요.');
+      global.__mdDriveSyncV2.deleteExam(key);
+      if(!isDeleted(id))throw new Error('시험 삭제 상태를 안전하게 기록하지 못했습니다.');
+    }catch(error){showStorageWarning('저장된 시험 삭제',error);return false;}
+    knownLocal.delete(key);
+    if(active?.meta.id===id){active=null;pastSavedAnswers=null;pastProgressId=null;pastProgressMeta=null;}
+    try{if(localStorage.getItem(LAST)===id)localStorage.removeItem(LAST);}catch(error){console.warn('[exam-sessions] last selection',error);}
+    try{
+      if(typeof document!=='undefined')for(const card of document.querySelectorAll('[data-past-resume]')){
+        if(card.getAttribute('data-past-resume')===id)card.remove();
+      }
+    }catch(error){console.warn('[exam-sessions] delete card render',error);}
+    showToast('저장된 시험을 삭제했습니다. Drive 연결 시 삭제 상태도 동기화됩니다.');
+    try{
+      if(typeof driveSyncLoadState==='function'&&driveSyncLoadState().enabled&&
+        typeof driveSyncHasToken==='function'&&driveSyncHasToken()&&typeof driveSyncOnce==='function'){
+        Promise.resolve().then(()=>driveSyncOnce({interactive:false,showNotice:false})).catch(error=>console.warn('[exam-sessions] sync deletion',error));
+      }
+    }catch(error){console.warn('[exam-sessions] sync deletion trigger',error);}
+    return true;
   };
   resumePastProgress=async function(id,headId){
     if(loading)return;
@@ -167,6 +203,7 @@
     if(!saved){showToast('선택한 저장본이 변경되었습니다. 목록을 새로고침해 주세요.');return;}
     if(currentMode==='past'&&active&&savePastProgress()!==true)return;
     loading=true;currentMode='past-loading';renderPastLoading('선택한 시험의 문제와 답안을 복원합니다');
+    let committed=false;
     try{
       const {meta,state}=saved;
       for(const subject of new Set(meta.refs.map(r=>baseFromShort(r.short))))await ensurePastDataForSubject(subject);
@@ -184,8 +221,15 @@
         return {...q,_source:r.source,_n3aGroupId:r.group,_predictiveMock:r.predictive,_predictiveReview:r.predictiveReview,_planKey:r.planKey,_planGrade:r.planGrade,_predictiveConcept:r.predictiveConcept,_balancedMock:meta.balanced,_unifiedMock:meta.unified,_targetedPractice:meta.targeted,_evaluationMock:meta.evaluation};
       });
       if(state.answers.some((a,i)=>a!==null&&a>=restored[i]['선택지'].length))throw new Error('저장된 답안을 확인할 수 없습니다.');
-      if(meta.analysisSubject)n3aActivateGrade(meta.analysisSubject);
       if(meta.returnView?.startsWith('navi3'))await ensureNavi3FrequencyData(meta.analysisSubject);
+      // Loading yields to other tabs and navigation. Commit only the exact
+      // answer version selected before loading, while this view still owns it.
+      if(currentMode!=='past-loading')return;
+      const latest=getPastProgress(meta.id,saved.headId);
+      if(!latest||stable(latest.meta)!==stable(meta)||stable(latest.state)!==stable(state)||stable(latest.clock)!==stable(saved.clock)){
+        throw new Error('선택한 시험이 로딩 중 삭제되거나 변경되었습니다. 시험 목록에서 저장본을 다시 선택해 주세요.');
+      }
+      if(meta.analysisSubject)n3aActivateGrade(meta.analysisSubject);
       if(state.evaluationExplanationViewed)restored.forEach(q=>{q._evaluationExplanationViewed=true});
       for(const i of state.hintedIndices||[])if(restored[i])restored[i]._mockHintViewed=true;
       pastQueue=restored;pastAnswers=state.answers.slice();pastIdx=Math.min(state.idx,restored.length-1);pastMode=state.mode;
@@ -194,8 +238,11 @@
       navi3AnalysisDetail=meta.analysisDetail;navi3PracticeReturn=meta.practiceReturn;navi3PracticeLabel=meta.practiceLabel;
       pastSavedAnswers=pastAnswers;pastProgressId=meta.id;pastProgressMeta=meta;
       active={meta,answers:pastAnswers,queue:pastQueue,clock:{...saved.clock},headId:saved.headId};
-      loading=false;currentMode='past';renderPastCard();
-    }catch(error){currentMode='past-resume-error';app.innerHTML=`<div class="card"><p>${escapeHtml(error.message)}</p><button class="btn btn-outline" onclick="renderSubjectSelect()">시험 목록으로</button><button class="btn btn-outline" onclick="exportAllLearningData()">기록 파일 백업</button></div>`;}
+      loading=false;currentMode='past';committed=true;renderPastCard();
+    }catch(error){
+      if(currentMode!=='past-loading'&&!(committed&&currentMode==='past'))return;
+      currentMode='past-resume-error';app.innerHTML=`<div class="card"><p>${escapeHtml(error.message)}</p><button class="btn btn-outline" onclick="renderSubjectSelect()">시험 목록으로</button><button class="btn btn-outline" onclick="exportAllLearningData()">기록 파일 백업</button></div>`;
+    }
     finally{loading=false;}
   };
   global.__mdExamSessions={PREFIX,valid,merge,compact,prune,dominates,list,content,restoreItems,

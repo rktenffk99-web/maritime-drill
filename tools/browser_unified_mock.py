@@ -132,7 +132,7 @@ try:
         wait_plan(page, tab='mock')
         assert page.evaluate('__mdExamSessions.list().some(s=>s.state.idx===50)')
         expected['exposure'] = page.evaluate("localStorage.getItem('md_mock_exposure_v1')")
-        page.locator('[data-past-resume]').filter(has_text='50/125').locator('button').click()
+        page.locator('[data-past-resume]').filter(has_text='50/125').locator('button[onclick^="resumePastProgress("]').click()
         page.wait_for_function("currentMode==='past'&&pastIdx===50")
         assert snapshot(page) == expected
         assert_no_live_explanation(page)

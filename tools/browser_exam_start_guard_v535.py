@@ -79,7 +79,7 @@ try:
         page.get_by_role('button', name='시험 목록으로', exact=True).click()
         page.wait_for_function("currentMode==='select'")
         page.evaluate('()=>{ensurePastExplainForYears=window.__testOriginalExplain}')
-        page.locator('[data-past-resume] button').first.click()
+        page.locator('[data-past-resume] button[onclick^="resumePastProgress("]').first.click()
         page.wait_for_function("currentMode==='past'&&!__mdExamStartGuard.isPending()")
         assert page.evaluate('__mdExamSessions.list().length') == 1
         report['cases'].append('rejected download displays escaped error and usable menu action; existing paper survives and resumes')
