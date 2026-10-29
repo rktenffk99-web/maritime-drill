@@ -16202,11 +16202,12 @@ function getVariantChoices(exams){
 function getPastExamsForSubject(subjectId){
   if(!window.MD_PAST) return [];
   const shorts = PAST_GRADE_MAP[subjectId] || [subjectId];
-  return Object.values(window.MD_PAST).filter(p => p.meta && shorts.includes(p.meta.gradeShort));
+  return Object.values(window.MD_PAST).filter(p => p.meta && shorts.includes(p.meta.gradeShort) && (subjectId !== 'navi2' || p.meta.gradeShort === 'navi2' || p.meta.gradeShort === 'navi2d')); // navi2-merchant-only-v537
 }
 // v4.34: base(예: 'navi3')에 속한 모든 변종(navi3+navi3e) 시험 반환
 function getPastExamsByBase(baseShort, variant){
   if(!window.MD_PAST) return [];
+  if(baseShort === 'navi2') variant = '상선'; // navi2-merchant-only-v537
   return Object.values(window.MD_PAST).filter(p => {
     if(!p.meta) return false;
     if(baseFromShort(p.meta.gradeShort) !== baseShort) return false;
