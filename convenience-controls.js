@@ -388,10 +388,92 @@
     firstCard.insertAdjacentElement('afterend',section);
   }
 
+  // Explanation readability for navigator 2/3 written questions.
+  // Keep the stored answers, HTML emphasis and review history untouched.
+  const MD_READABLE_EXPLAIN_HEADING=/^(?:왜 정답인가\??|오답(?:인 이유| 분석| 보기)?|핵심 암기|핵심 정리|핵심 포인트|용어 정리|풀이(?: 과정)?|정답 해설|오답 해설)$/;
+
+  function mdInstallReadabilityStyles(){
+    if(document.getElementById('md-explain-readability-style'))return;
+    const css=document.createElement('style');
+    css.id='md-explain-readability-style';
+    css.textContent=[
+      '.md-readable-explanation-body{font-size:15px!important;line-height:1.85!important;word-break:keep-all;overflow-wrap:anywhere}',
+      '.md-readable-explanation-body p,.md-readable-explanation-body li,.md-readable-explanation-body div{line-height:inherit}',
+      '.md-readable-explanation-body p+p{margin-top:12px}',
+      '.md-readable-explanation-body .md-readable-bullet-gap{display:block;height:9px;line-height:0}',
+      '@media(max-width:600px){.md-readable-explanation-body{font-size:14px!important;line-height:1.8!important}}'
+    ].join('\n');
+    document.head.appendChild(css);
+  }
+
+  function mdFormatExplanationText(body){
+    // A single imported paragraph may contain many "•" items with inline
+    // coloured/strong spans. Split *text nodes* so the original markup remains.
+    const walker=document.createTreeWalker(body,4);
+    const nodes=[];
+    let node;
+    while((node=walker.nextNode())){
+      if(!/[•\n]|[.!?](?=[가-힣])/.test(node.nodeValue||''))continue;
+      if(node.parentElement&&node.parentElement.closest('code,pre,script,style,textarea'))continue;
+      nodes.push(node);
+    }
+    const bulletBlocks=new WeakSet();
+    for(const textNode of nodes){
+      const block=textNode.parentElement?.closest('p,li,div')||body;
+      const value=textNode.nodeValue.replace(/([.!?])(?=[가-힣])/g,'$1 ');
+      const parts=value.split(/(•|\r?\n)/g);
+      if(parts.length===1){textNode.nodeValue=value;continue}
+      const fragment=document.createDocumentFragment();
+      let before='';
+      for(const part of parts){
+        if(part==='•'){
+          // Do not create an extra blank row for a bullet already in its own
+          // paragraph/list item. Add separation only within the same block.
+          if(bulletBlocks.has(block)||before.trim()){
+            const spacer=document.createElement('span');
+            spacer.className='md-readable-bullet-gap';
+            spacer.setAttribute('aria-hidden','true');
+            fragment.appendChild(spacer);
+          }
+          bulletBlocks.add(block);
+          fragment.appendChild(document.createTextNode('• '));
+          before='';
+        }else if(part==='\n'||part==='\r\n'){
+          fragment.appendChild(document.createElement('br'));
+          before='';
+        }else if(part){
+          fragment.appendChild(document.createTextNode(part));
+          before+=part;
+        }
+      }
+      textNode.replaceWith(fragment);
+    }
+  }
+
+  function mdImproveExplanationReadability(){
+    const root=appRoot();if(!root)return;
+    mdInstallReadabilityStyles();
+    for(const el of root.querySelectorAll('div,span,b,strong,h3,h4,h5,p')){
+      if(el.children.length||!MD_READABLE_EXPLAIN_HEADING.test((el.textContent||'').trim()))continue;
+      // Works for either <header>title</header><div>body</div> or a
+      // styled title wrapper containing a single strong/span child.
+      let body=el.nextElementSibling;
+      if(!body||!body.textContent?.trim()){
+        const wrapper=el.parentElement;
+        if(wrapper&&wrapper.children.length<=3)body=wrapper.nextElementSibling;
+      }
+      if(!body||!body.textContent?.trim()||body.dataset.mdReadableExplanation==='1')continue;
+      if(body.matches('button,input,select,summary'))continue;
+      body.dataset.mdReadableExplanation='1';
+      body.classList.add('md-readable-explanation-body');
+      mdFormatExplanationText(body);
+    }
+  }
+
   let queued=false;
   function enhance(){
     if(queued)return;queued=true;
-    requestAnimationFrame(()=>{queued=false;addResumeBanner();applyExplanationMode();addReportButton();enhanceTodayResult();syncWakeLock()});
+    requestAnimationFrame(()=>{queued=false;addResumeBanner();applyExplanationMode();mdImproveExplanationReadability();addReportButton();enhanceTodayResult();syncWakeLock()});
   }
   new MutationObserver(enhance).observe(document.documentElement,{childList:true,subtree:true});
   document.addEventListener('visibilitychange',enhance);
