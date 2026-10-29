@@ -1,0 +1,14 @@
+name: Quick past-paper UI diagnostic
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/quick-past-check.yml'
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: python tools/inspect_past_ui.py
