@@ -2,6 +2,7 @@
 # Rebuild in the legacy order, then run regressions against the FINAL artifact.
 set -euo pipefail
 cd "$(dirname "$0")/.."
+python tools/inspect_past_ui.py
 python tools/patch_mock_recovery_v524.py
 python tools/patch_unified_mock_v525.py
 # Historical generators replace whole functions and are incompatible with a
