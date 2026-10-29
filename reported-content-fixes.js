@@ -707,6 +707,30 @@
     return changed;
   }
 
+  // Three 2025 first-session SMCP questions lost PDF underline metadata.
+  // Preserve their original stem, choices, answer key and identity. Expose
+  // the answerable target phrase visibly instead of bypassing the guard.
+  function patchVerifiedUnderlineTarget(obj){
+    const q=getQuestionText(obj);
+    if(!q||!/\bunderlined\b/i.test(q)||/\[(?:밑줄|대상)\s*:/.test(q))return false;
+    if(obj['과목']!=='영어')return false;
+    const number=Number(obj['번호']);
+    const choices=getChoices(obj);
+    if(!choices||choices.length!==4)return false;
+    let term='';
+    if(number===5&&q.includes('Is danger imminent?')&&q.includes('No, danger is not imminent.')&&choices.some(v=>String(v).includes('likely to happen very soon'))){
+      term='imminent';
+    }else if(number===7&&q.includes('Vessel is not suited for the pilot ladder.')&&choices.some(v=>String(v).trim()==='suitable')){
+      term='suited';
+    }else if(number===3&&q.includes('You are required to comply with traffic regulations.')&&q.includes('Fairway speed is 6 knots.')){
+      term='Fairway speed';
+    }
+    if(!term)return false;
+    setQuestionText(obj,q+'\n[밑줄: '+term+']');
+    obj._underlineText=term;
+    return true;
+  }
+
   // Source papers are read repeatedly while a single answer is rendered. Keep
   // their corrected contents, not just their identity: lazy loads and in-place
   // text/choice repairs must still invalidate this cache immediately.
@@ -748,6 +772,7 @@
     }
     patchPdfFooterArtifact(value);
     patchVerifiedFormulaQuestion(value);
+    patchVerifiedUnderlineTarget(value);
     // The public patchObject API always repairs, including an explicit repair
     // after a caller changed an already-cached paper in place.
     if(repairedSnapshots.has(value))rememberRepairedSnapshot(value);
