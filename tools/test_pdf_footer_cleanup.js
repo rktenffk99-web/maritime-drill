@@ -71,4 +71,19 @@ assert.ok(before>=1000,`expected large corpus of PDF footer artifacts, got ${bef
 assert.equal(nonLastBefore,0,'PDF footer suffix unexpectedly appears outside final choice');
 assert.equal(after,0,'PDF footer artifacts remain after normalization');
 
+
+// Audit 2025 first-session bank totals independently of the question UI.
+// Keep all original records: identifying excluded illustration questions
+// does not authorize inventing their missing figures or altering answers.
+vm.runInContext(fs.readFileSync('learning-integrity.js','utf8'),sandbox,{filename:'learning-integrity.js'});
+for(const grade of ['navi2','navi3']){
+  const id='2025-'+grade+'-1';
+  const exam=sandbox.window.MD_PAST?.[id];
+  if(!exam){console.log('PAPER_COUNT_AUDIT '+JSON.stringify({id,missingBank:true}));continue}
+  const issues=exam.questions.filter(q=>sandbox.window.__mdLearningIntegrity.contentIssue(q));
+  const counts=Object.fromEntries([...new Set(exam.questions.map(q=>q['과목']))].map(subject=>[subject,exam.questions.filter(q=>q['과목']===subject).length]));
+  const missing=issues.map(q=>({subject:q['과목'],number:q['번호'],issue:sandbox.window.__mdLearningIntegrity.contentIssue(q),stem:String(q['문제']||'').slice(0,130)}));
+  console.log('PAPER_COUNT_AUDIT '+JSON.stringify({id,total:exam.questions.length,usable:exam.questions.length-issues.length,counts,missing}));
+}
+
 console.log('PDF footer cleanup: PASS '+JSON.stringify({before,after,gradeBefore}));
