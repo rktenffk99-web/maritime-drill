@@ -390,7 +390,7 @@
 
   // Explanation readability for navigator 2/3 written questions.
   // Keep the stored answers, HTML emphasis and review history untouched.
-  const MD_READABLE_EXPLAIN_HEADING=/^(?:왜 정답인가\??|오답(?:인 이유| 분석| 보기)?|핵심 암기|핵심 정리|핵심 포인트|용어 정리|풀이(?: 과정)?|정답 해설|오답 해설)$/;
+  const MD_READABLE_EXPLAIN_HEADING=/^(?:보기\s*해석|선택지\s*해석|문장\s*해석|왜 정답인가\??|정답인 이유|오답(?:인 이유| 분석| 보기)?|핵심 암기|핵심 정리|핵심 포인트|용어 정리|풀이(?: 과정)?|정답 해설|오답 해설)$/;
 
   function mdInstallReadabilityStyles(){
     if(document.getElementById('md-explain-readability-style'))return;
@@ -450,20 +450,28 @@
     }
   }
 
+  function mdFindExplanationBody(header){
+    // Titles can be text nodes in a header, or strong/span elements nested
+    // inside a styled header. Look for a populated sibling at either level.
+    for(let node=header,depth=0;node&&depth<4;node=node.parentElement,depth++){
+      let candidate=node.nextElementSibling;
+      for(let checked=0;candidate&&checked<3;candidate=candidate.nextElementSibling,checked++){
+        if(candidate.matches('button,input,select,summary,style,script'))continue;
+        const text=(candidate.textContent||'').trim();
+        if(MD_READABLE_EXPLAIN_HEADING.test(text))break;
+        if(text.length>=18)return candidate;
+      }
+    }
+    return null;
+  }
+
   function mdImproveExplanationReadability(){
     const root=appRoot();if(!root)return;
     mdInstallReadabilityStyles();
     for(const el of root.querySelectorAll('div,span,b,strong,h3,h4,h5,p')){
-      if(el.children.length||!MD_READABLE_EXPLAIN_HEADING.test((el.textContent||'').trim()))continue;
-      // Works for either <header>title</header><div>body</div> or a
-      // styled title wrapper containing a single strong/span child.
-      let body=el.nextElementSibling;
-      if(!body||!body.textContent?.trim()){
-        const wrapper=el.parentElement;
-        if(wrapper&&wrapper.children.length<=3)body=wrapper.nextElementSibling;
-      }
-      if(!body||!body.textContent?.trim()||body.dataset.mdReadableExplanation==='1')continue;
-      if(body.matches('button,input,select,summary'))continue;
+      if(!MD_READABLE_EXPLAIN_HEADING.test((el.textContent||'').trim()))continue;
+      const body=mdFindExplanationBody(el);
+      if(!body||body.dataset.mdReadableExplanation==='1')continue;
       body.dataset.mdReadableExplanation='1';
       body.classList.add('md-readable-explanation-body');
       mdFormatExplanationText(body);
