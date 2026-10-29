@@ -86,4 +86,18 @@ for(const grade of ['navi2','navi3']){
   console.log('PAPER_COUNT_AUDIT '+JSON.stringify({id,total:exam.questions.length,usable:exam.questions.length-issues.length,counts,missing}));
 }
 
+
+for(const id of ['2025-navi2-1','2025-navi3-1']){
+  const exam=sandbox.window.MD_PAST[id];
+  assert.equal(exam.questions.length,125,id+' original exam must have 125 questions');
+  const blocked=exam.questions.filter(q=>sandbox.window.__mdLearningIntegrity.contentIssue(q));
+  assert.equal(blocked.length,0,id+' should retain all 125 answerable questions');
+}
+const n2=sandbox.window.MD_PAST['2025-navi2-1'].questions;
+const n3=sandbox.window.MD_PAST['2025-navi3-1'].questions;
+const find=(bank,n)=>bank.find(q=>q['과목']==='영어'&&Number(q['번호'])===n);
+assert.match(find(n2,5)['문제'],/\[밑줄: imminent\]/);
+assert.match(find(n2,7)['문제'],/\[밑줄: suited\]/);
+assert.match(find(n3,3)['문제'],/\[밑줄: Fairway speed\]/);
+
 console.log('PDF footer cleanup: PASS '+JSON.stringify({before,after,gradeBefore}));
