@@ -1,4 +1,4 @@
-name: Quick past-paper UI diagnostic
+name: Quick second-officer merchant-only test
 on:
   push:
     branches: [main]
@@ -7,8 +7,9 @@ on:
 permissions:
   contents: read
 jobs:
-  inspect:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - run: python tools/inspect_past_ui.py
+      - run: python tools/patch_navi2_merchant_only.py
+      - run: node tools/test_navi2_merchant_only.js
