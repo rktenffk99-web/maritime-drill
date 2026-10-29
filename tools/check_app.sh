@@ -2,7 +2,6 @@
 # Rebuild in the legacy order, then run regressions against the FINAL artifact.
 set -euo pipefail
 cd "$(dirname "$0")/.."
-python tools/inspect_past_ui.py
 python tools/patch_mock_recovery_v524.py
 python tools/patch_unified_mock_v525.py
 # Historical generators replace whole functions and are incompatible with a
@@ -57,6 +56,7 @@ python tools/patch_reported_content_fixes.py
 python tools/patch_mock_answer_access.py
 python tools/patch_mock_submission_safety.py
 python tools/patch_past_variant_navigation.py
+python tools/patch_navi2_merchant_only.py
 python tools/patch_keyboard_context.py
 python tools/patch_mock_hint.py
 python tools/patch_backup_restore_safety.py
@@ -98,6 +98,7 @@ node tools/test_mock_explanation_controls.js
 node tools/test_mock_answer_progress.js --final
 node tools/test_mock_submission_safety.js
 node tools/test_past_variant_navigation.js
+node tools/test_navi2_merchant_only.js
 node tools/test_keyboard_context.js
 node tools/test_settings_report_access.js
 python tools/test_weak_topic_analytics.py
