@@ -16766,19 +16766,21 @@ function getExplain(q){
   const e = baseId && window.MD_EXPLAIN[baseId];
   if(!e){
     const fallback=(typeof window.get2026Navi3Session3Explain==='function')?window.get2026Navi3Session3Explain(q):null;
-    if(fallback)return fallback;
-    return null;
+    if(fallback)return window.MDEnglishWordStudy ? window.MDEnglishWordStudy.augment(q,fallback) : fallback;
+    return window.MDEnglishWordStudy ? window.MDEnglishWordStudy.augment(q,null) : null;
   }
   // html 필드 단일 형식 우선 지원
   if(e.html){
-    return { html: e.html, loading: !!e.loading };
+    const result = { html: e.html, loading: !!e.loading };
+    return window.MDEnglishWordStudy ? window.MDEnglishWordStudy.augment(q,result) : result;
   }
   // 폴백: 기존 분리 필드 형식 (해설/용어/키포인트)
-  return {
+  const result = {
     해설: e['해설'] || e.explain || '',
     용어: e['용어'] || e.terms || {},
     키포인트: e['키포인트'] || e.keypoints || [],
   };
+  return window.MDEnglishWordStudy ? window.MDEnglishWordStudy.augment(q,result) : result;
 }
 // 기본 해설도 허용 태그/스타일만 남겨 innerHTML 주입을 차단합니다.
 function sanitizeExplainHtml(input){
@@ -16791,7 +16793,8 @@ function sanitizeExplainHtml(input){
     'padding','padding-top','padding-right','padding-bottom','padding-left',
     'margin','margin-top','margin-right','margin-bottom','margin-left',
     'border','border-top','border-right','border-bottom','border-left','border-color','border-width','border-style','border-radius',
-    'text-align','white-space','letter-spacing','text-decoration'
+    'text-align','white-space','letter-spacing','text-decoration',
+    'width','vertical-align','table-layout','overflow-wrap'
   ]);
   [...template.content.querySelectorAll('*')].forEach(el=>{
     if(!allowedTags.has(el.tagName)){
@@ -23386,6 +23389,8 @@ window.alert=appAlert;
 <script src="explain-2026-navi3-3.js?v=5.36"></script>
 <script src="explain-2026-navi3-3-english.js?v=5.36"></script>
 <script src="convenience-controls.js?v=5.36"></script>
+<script src="english-study-glossary.js?v=5.36"></script>
+<script src="english-word-study.js?v=5.36"></script>
 
 <script data-bundled-src="reported-content-fixes.js">
 // Maritime Drill reported content text corrections
