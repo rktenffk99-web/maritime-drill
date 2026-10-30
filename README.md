@@ -2,6 +2,18 @@
 
 해기사 필기·면접 학습 앱. 배포 주소: https://rktenffk99-web.github.io/maritime-drill/
 
+## 항해사 2·3급 영어 단어 보강 (2026-10-30)
+
+- 2020~2026년 상선 항해사 2급 600문항·3급 625문항, 총 1,225문항의 지문과 네 보기 전체에 `단어별 기본 뜻·형태`를 추가했습니다. 기존 지문 독해·보기 해석·정답 근거·핵심 암기 구성을 유지합니다.
+- 원문의 영어 45,885회 등장, 3,715개 철자에 대해 단어 행을 생성합니다. 각 구역 안에서 반복되는 단어는 한 행에 원문 위치를 모두 표시합니다. 관사·전치사·조동사·관계사도 포함합니다. 기존 문항 자체의 단어 정의를 우선 사용하고, 공통 어휘의 기본 뜻·굴절형 설명과 발음은 오프라인 자료로 보충합니다.
+- **검증 범위:** 자동 전수 검사는 원문 단어가 표시·조회되는지를 검증합니다. 이것은 1,225문항 전체의 문맥별 번역·문법·법령 근거를 사람이 새로 검수했다는 뜻이 아닙니다. 공통 기본 뜻은 문맥 해석을 대체하지 않습니다.
+- 초기 검사에서 남은 9개 표기는 원문 문맥과 대조했습니다. MDLT·PST는 극지운항 용어, SCs·OSCs·SMCs·MRCs는 보기의 수색구조 약어, Barwater·Baar·Abo는 지명·선명으로 설명했습니다. Miky는 Mike와 구별되는 오답 철자입니다. 그 밖의 원문 비표준 철자도 표준어와 구별합니다.
+- 2025년 2급 제2회 영어 Q14는 구절별 구조·대명사 지시 대상·생략·수동태·현재완료를 새로 설명했습니다. A‑VIII/1 대신 당직 원칙 A‑VIII/2를 안내하고, 구판 문구에 실제로 있는 `obviously` 자체를 함정이라고 단정하던 설명을 수정했습니다. 정답 ㉰는 유지합니다.
+- 질문·선택지·정답·문항 ID·학습 기록은 변경하지 않습니다. `english-word-study.js`는 해설 표시 시에만 보강 내용을 합성합니다. 어선 변종·다른 급수·다른 과목에는 적용하지 않습니다.
+- 재생성: `python tools/build_english_word_study.py`. 검증: `node tools/test_english_word_study.js`. 문항별 검사 결과는 `english-study/coverage.json`에 있습니다.
+- 발음은 기존 해설의 한글 표기와 CMUdict 기반 IPA, 일부 보강 한글 표기를 사용합니다. 발음 자료의 허가 문구는 `english-study/CMUDICT-LICENSE.txt`에 보존합니다.
+- Q14 원문 대조: [중국 해사국 공개 STCW 구판 협약](https://www.msa.gov.cn/public/documents/document/mduz/ndq1/~edisp/20150505053445277.pdf), [조지아 해사당국 공개 A‑VIII/1·2](https://www.mta.gov.ge/uploads/docum/ship_forms/Section_A-VIII.1.2.pdf). 추가 대조: [IMO Polar Code](https://wwwcdn.imo.org/localresources/en/MediaCentre/HotTopics/Documents/POLAR%20CODE%20TEXT%20AS%20ADOPTED.pdf), [IMO IAMSAR 개정문](https://wwwcdn.imo.org/localresources/en/OurWork/Safety/Documents/Documents%20relevant%20to%20SAR/MSC.1-CIRC.1594%20Amendments%20to%20IAMSAR%20Manual.pdf). 확인일 2026-10-30.
+
 ## v5.36 저장된 시험 개별 삭제
 
 - 이어풀기 카드 오른쪽 위에 `×` 버튼을 추가했습니다. 확인 후 해당 시험의 저장된 답안·문항 순서·이어풀기 위치만 삭제하며, 다른 시험과 이미 기록된 성적·복습 진도는 그대로 둡니다.

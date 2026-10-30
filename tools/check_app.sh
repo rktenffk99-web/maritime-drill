@@ -67,6 +67,7 @@ python tools/patch_homework_rotation_v535.py
 python tools/patch_exam_start_guard_v535.py
 # Older generators add script URLs; stamp the release only after all integration.
 python tools/patch_mock_answer_access.py
+python tools/patch_english_word_study.py
 node tools/test_exam_sessions_v530.js
 node tools/test_exam_cleanup_v531.js
 node tools/test_exam_deletion_v536.js
@@ -140,3 +141,7 @@ node tools/test_metrics_v522.js
 node tools/test_drive_recovery_v522.js
 node tools/test_drive_state_codec_v522.js
 node tools/test_progress_storage_v522.js
+
+# English lexical coverage must survive all legacy rebuild generators.
+python tools/build_english_word_study.py
+node tools/test_english_word_study.js
