@@ -84,6 +84,15 @@ let count=0;async function test(name,fn){await fn();count++;console.log('PASS '+
     assert.equal(h.counts.syncs,2);
     h.advance(20000);h.poll();assert.equal(h.counts.syncs,2);
   });
+  await test('continuous answering still uploads after a bounded 45-second edit burst',async()=>{
+    const h=harness();h.enable();h.save();h.emit('DOMContentLoaded');await Promise.resolve();
+    for(let i=0;i<12;i++){h.s.__mdDriveLocalChanged();h.advance(4000);}
+    assert.equal(h.counts.syncs,1);
+    const timer=[...h.timers.values()].find(timer=>timer.ms===0);
+    assert.ok(timer,'maximum wait should force a zero-delay upload despite further edits');
+    timer.fn();await Promise.resolve();
+    assert.equal(h.counts.syncs,2);
+  });
   await test('deferred remote updates apply as soon as a study session ends',async()=>{
     const h=harness();h.enable();h.save();h.emit('DOMContentLoaded');await Promise.resolve();
     h.run("currentMode='study'");h.s.__mdDriveSyncDeferred=true;
