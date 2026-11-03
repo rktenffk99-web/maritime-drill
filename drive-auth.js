@@ -13,6 +13,11 @@
   const originalRefresh=driveSyncRefreshPanel;
   const originalStatus=driveSyncPanelStatus;
   const originalManaged=isManagedStorageKey;
+  // Network checks are much less frequent when there are no new answers.
+  // Local answers still persist synchronously; only their Drive transfer is debounced.
+  const REMOTE_CHECK_MS=120000,EDIT_DEBOUNCE_MS=4500;
+  const RETRY_BASE_MS=30000,RETRY_MAX_MS=300000;
+  let nextCheckAt=0,retryAfter=0,failures=0,editTimer=null,editPending=false,activeAutoKind=null,lastAutoAt=0;
   function authState(){
     const codec=window.__mdDriveStateCodec;
     return codec&&typeof codec.loadHeader==='function'?codec.loadHeader():driveSyncLoadState();
@@ -184,6 +189,7 @@
       if(!driveSyncSaveState(state))throw new Error('동기화 설정을 저장하지 못했습니다. 사이트 저장 공간을 확인하세요.');
       driveSyncLastError='';
       await driveSyncOnce({interactive:false,showNotice:true});
+      if(!driveSyncLastError){failures=0;retryAfter=0;nextCheckAt=Date.now()+REMOTE_CHECK_MS;}
     }catch(error){
       if(epoch!==generation)return;
       driveSyncLastError=(error&&error.message)||'Google Drive 연결에 실패했습니다.';
@@ -196,7 +202,10 @@
     if(!driveSyncSaveState(state)){
       driveSyncLastError='연결 해제 설정을 저장하지 못했습니다.';driveSyncRefreshPanel();return;
     }
-    driveSyncClearSessionToken();driveSyncLastError='';driveSyncRefreshPanel();
+    driveSyncClearSessionToken();driveSyncLastError='';
+    if(editTimer!==null)clearTimeout(editTimer);
+    editTimer=null;editPending=false;activeAutoKind=null;nextCheckAt=0;retryAfter=0;failures=0;
+    driveSyncRefreshPanel();
     // Pausing this browser must not revoke the phone's grant as a side effect.
     backupNotice('이 브라우저의 자동 동기화를 껐습니다. 다른 기기와 Drive 기록은 유지합니다.');
   };
@@ -205,6 +214,11 @@
     const state=authState();
     if(state.enabled&&!navigator.onLine)return {label:'오프라인 · 동기화 대기',tone:'#D97706'};
     if(state.enabled&&!driveSyncHasToken())return {label:'연결 갱신 필요 · 동기화 일시 중지',tone:'#D97706'};
+    if(driveSyncLastError)return originalStatus();
+    if(driveSyncBusy&&activeAutoKind==='check')return {label:'Drive 최신 기록 확인 중…',tone:'#64748B'};
+    if(driveSyncBusy&&activeAutoKind==='change')return {label:'Drive 변경 기록 전송 중…',tone:'#2563EB'};
+    if(state.enabled&&editPending)return {label:'기기에 저장됨 · Drive 전송 대기',tone:'#D97706'};
+    if(state.enabled&&window.__mdDriveSyncDeferred)return {label:'기기에 저장됨 · Drive 병합 대기',tone:'#D97706'};
     return originalStatus();
   };
   function refreshBanner(){
@@ -231,33 +245,83 @@
     if(button){button.disabled=!!authPromise;if(authPromise)button.textContent='Google 확인 중…'}
     refreshBanner();
   };
+  function canAutoSync(){
+    return document.visibilityState==='visible'&&authState().enabled&&driveSyncHasToken()&&navigator.onLine;
+  }
+  function scheduleLocalChange(){
+    editPending=true;
+    if(editTimer!==null)clearTimeout(editTimer);
+    editTimer=setTimeout(()=>{
+      editTimer=null;
+      if(!canAutoSync())return; // Keep the locally saved edit pending until the page becomes active.
+      if(driveSyncBusy){scheduleLocalChange();return;}
+      if(Date.now()<retryAfter)return; // Backoff applies even while answers keep arriving.
+      startAutoSync(true);
+    },EDIT_DEBOUNCE_MS);
+    driveSyncRefreshPanel();
+  }
+  // Called only after a durable local metadata write, not on remote application.
+  window.__mdDriveLocalChanged=scheduleLocalChange;
+  function syncSettled(kind,error){
+    activeAutoKind=null;
+    if(error||driveSyncLastError){
+      failures++;
+      retryAfter=Date.now()+Math.min(RETRY_MAX_MS,RETRY_BASE_MS*Math.pow(2,Math.min(failures-1,4)));
+      nextCheckAt=retryAfter;
+      if(kind==='change')editPending=true;
+    }else{
+      failures=0;retryAfter=0;nextCheckAt=Date.now()+REMOTE_CHECK_MS;
+    }
+    driveSyncRefreshPanel();
+    if(editPending&&editTimer===null&&!driveSyncLastError)scheduleLocalChange();
+  }
+  function startAutoSync(force=false){
+    if(!canAutoSync()||driveSyncBusy||Date.now()<retryAfter)return;
+    if(!force&&!editPending&&Date.now()<nextCheckAt)return;
+    const kind=force||editPending?'change':'check';
+    editPending=false;activeAutoKind=kind;lastAutoAt=Date.now();
+    nextCheckAt=lastAutoAt+REMOTE_CHECK_MS;
+    try{
+      Promise.resolve(driveSyncOnce({interactive:false})).then(
+        ()=>syncSettled(kind,null),
+        error=>syncSettled(kind,error)
+      );
+    }catch(error){syncSettled(kind,error);}
+  }
+  function studyActive(){
+    return typeof currentMode==='string'&&
+      ['study','mock','focus','past','past-loading','review','visual','pass-plan-session'].includes(currentMode);
+  }
   function tick(){
     driveSyncRefreshPanel();
-    if(document.visibilityState!=='visible')return;
-    const state=authState();
-    if(state.enabled&&driveSyncHasToken()&&navigator.onLine)driveSyncOnce({interactive:false});
+    if(window.__mdDriveSyncDeferred&&!studyActive())nextCheckAt=0;
+    startAutoSync();
+  }
+  function wake(){
+    // A tab restored after some time should promptly check edits from other devices.
+    if(Date.now()-lastAutoAt>=15000)nextCheckAt=0;
+    tick();
   }
   function init(){
     if(initialized)return;initialized=true;
-    // The original init installs storage hooks first; replace its silent-expiry poll.
+    // Keep the light UI/credential poll, not a network request every 20 seconds.
     if(driveSyncTimer)clearInterval(driveSyncTimer);
     driveSyncTimer=setInterval(tick,DRIVE_SYNC_POLL_MS);
     driveSyncLoadSessionToken();
-    // Loading GIS does not request a token or open a Google window.
     driveSyncLoadGIS().catch(()=>{});
     window.addEventListener('storage',event=>{
       if(event.key===TOKEN_KEY||event.key===DRIVE_SYNC_STATE_KEY||event.key===null){
         if(event.key===DRIVE_SYNC_STATE_KEY){
-          // Sync metadata changes every poll. Only enabled changes are auth events;
-          // otherwise two open tabs would trigger each other's sync indefinitely.
+          // Metadata can change on every answer. Only enabled toggles are auth events.
           try{if(!!JSON.parse(event.oldValue||'null')?.enabled===!!JSON.parse(event.newValue||'null')?.enabled)return}catch(e){}
         }
         if(event.key===TOKEN_KEY||event.key===null){memoryToken=null;memoryOnly=false;remove(sessionStorage,DRIVE_SYNC_SESSION_TOKEN_KEY)}
-        if(!authState().enabled){generation++;if(cancelAuth)cancelAuth()}
-        driveSyncLastError='';tick();
+        if(!authState().enabled){generation++;if(cancelAuth)cancelAuth();}
+        nextCheckAt=0;driveSyncLastError='';tick();
       }
     });
-    window.addEventListener('pageshow',tick);
+    window.addEventListener('pageshow',wake);
+    document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')wake()});
     tick();
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
