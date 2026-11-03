@@ -15,9 +15,9 @@
   const originalManaged=isManagedStorageKey;
   // Network checks are much less frequent when there are no new answers.
   // Local answers still persist synchronously; only their Drive transfer is debounced.
-  const REMOTE_CHECK_MS=120000,EDIT_DEBOUNCE_MS=4500;
+  const REMOTE_CHECK_MS=120000,EDIT_DEBOUNCE_MS=4500,EDIT_MAX_WAIT_MS=45000;
   const RETRY_BASE_MS=30000,RETRY_MAX_MS=300000;
-  let nextCheckAt=0,retryAfter=0,failures=0,editTimer=null,editPending=false,activeAutoKind=null,lastAutoAt=0;
+  let nextCheckAt=0,retryAfter=0,failures=0,editTimer=null,editPending=false,editBurstStartedAt=0,activeAutoKind=null,lastAutoAt=0;
   function authState(){
     const codec=window.__mdDriveStateCodec;
     return codec&&typeof codec.loadHeader==='function'?codec.loadHeader():driveSyncLoadState();
@@ -204,7 +204,7 @@
     }
     driveSyncClearSessionToken();driveSyncLastError='';
     if(editTimer!==null)clearTimeout(editTimer);
-    editTimer=null;editPending=false;activeAutoKind=null;nextCheckAt=0;retryAfter=0;failures=0;
+    editTimer=null;editPending=false;editBurstStartedAt=0;activeAutoKind=null;nextCheckAt=0;retryAfter=0;failures=0;
     driveSyncRefreshPanel();
     // Pausing this browser must not revoke the phone's grant as a side effect.
     backupNotice('이 브라우저의 자동 동기화를 껐습니다. 다른 기기와 Drive 기록은 유지합니다.');
@@ -248,16 +248,24 @@
   function canAutoSync(){
     return document.visibilityState==='visible'&&authState().enabled&&driveSyncHasToken()&&navigator.onLine;
   }
+  function flushLocalChange(){
+    editTimer=null;
+    if(!canAutoSync())return; // Keep locally saved edits pending while offline or hidden.
+    if(driveSyncBusy){
+      // Never spin in a zero-delay loop while a long request is still active.
+      editTimer=setTimeout(flushLocalChange,EDIT_DEBOUNCE_MS);
+      return;
+    }
+    if(Date.now()<retryAfter)return; // Failed requests respect retry backoff.
+    startAutoSync(true);
+  }
   function scheduleLocalChange(){
+    if(!editPending)editBurstStartedAt=Date.now();
     editPending=true;
     if(editTimer!==null)clearTimeout(editTimer);
-    editTimer=setTimeout(()=>{
-      editTimer=null;
-      if(!canAutoSync())return; // Keep the locally saved edit pending until the page becomes active.
-      if(driveSyncBusy){scheduleLocalChange();return;}
-      if(Date.now()<retryAfter)return; // Backoff applies even while answers keep arriving.
-      startAutoSync(true);
-    },EDIT_DEBOUNCE_MS);
+    // Continuous rapid answers must still reach Drive at least once per burst window.
+    const remaining=Math.max(0,EDIT_MAX_WAIT_MS-(Date.now()-editBurstStartedAt));
+    editTimer=setTimeout(flushLocalChange,Math.min(EDIT_DEBOUNCE_MS,remaining));
     driveSyncRefreshPanel();
   }
   // Called only after a durable local metadata write, not on remote application.
@@ -268,7 +276,10 @@
       failures++;
       retryAfter=Date.now()+Math.min(RETRY_MAX_MS,RETRY_BASE_MS*Math.pow(2,Math.min(failures-1,4)));
       nextCheckAt=retryAfter;
-      if(kind==='change')editPending=true;
+      if(kind==='change'){
+        if(!editPending)editBurstStartedAt=Date.now();
+        editPending=true;
+      }
     }else{
       failures=0;retryAfter=0;nextCheckAt=Date.now()+REMOTE_CHECK_MS;
     }
@@ -279,7 +290,7 @@
     if(!canAutoSync()||driveSyncBusy||Date.now()<retryAfter)return;
     if(!force&&!editPending&&Date.now()<nextCheckAt)return;
     const kind=force||editPending?'change':'check';
-    editPending=false;activeAutoKind=kind;lastAutoAt=Date.now();
+    editPending=false;editBurstStartedAt=0;activeAutoKind=kind;lastAutoAt=Date.now();
     nextCheckAt=lastAutoAt+REMOTE_CHECK_MS;
     try{
       Promise.resolve(driveSyncOnce({interactive:false})).then(
