@@ -86,7 +86,7 @@ let count=0;async function test(name,fn){await fn();count++;console.log('PASS '+
   });
   await test('continuous answering still uploads after a bounded 45-second edit burst',async()=>{
     const h=harness();h.enable();h.save();h.emit('DOMContentLoaded');await Promise.resolve();
-    for(let i=0;i<12;i++){h.s.__mdDriveLocalChanged();h.advance(4000);}
+    for(let i=0;i<13;i++){h.s.__mdDriveLocalChanged();h.advance(4000);}
     assert.equal(h.counts.syncs,1);
     const timer=[...h.timers.values()].find(timer=>timer.ms===0);
     assert.ok(timer,'maximum wait should force a zero-delay upload despite further edits');
