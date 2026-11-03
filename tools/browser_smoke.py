@@ -78,9 +78,9 @@ try:
         agree.click()
         page.wait_for_function("hasAgreedTerms() && !document.getElementById('md-modal-wrap')")
         assert page.evaluate('APP_VERSION') == '5.36'
-        assert 'v5.35' in page.title()
+        assert 'v5.36' in page.title()
         assert page.evaluate("typeof window.__mdMockExplanationControls==='object'")
-        report['cases'].append('v5.35 startup and auxiliary scripts loaded')
+        report['cases'].append('v5.36 startup and auxiliary scripts loaded')
         page.evaluate("renderNavigatorPassPlan('navi3')")
         wait_plan(page, configure=True)
         target = (date.today() + timedelta(days=30)).isoformat()

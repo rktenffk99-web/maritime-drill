@@ -67,6 +67,47 @@ let count=0;async function test(name,fn){await fn();count++;console.log('PASS '+
     enabled=true;h.save();h.poll();assert.equal(h.counts.syncs,1);h.s.navigator.onLine=false;h.poll();assert.equal(h.counts.syncs,1);assert.match(h.s.driveSyncPanelStatus().label,/오프라인/);
     enabled=false;h.emit('storage',{key:STATE,oldValue:'{"enabled":true}',newValue:'{"enabled":false}'});assert.equal(h.counts.syncs,1);assert.equal(h.prompts.length,0);
   });
+  await test('idle polling checks Drive every two minutes instead of every 20 seconds',async()=>{
+    const h=harness();h.enable();h.save();h.emit('DOMContentLoaded');await Promise.resolve();
+    assert.equal(h.counts.syncs,1);
+    for(let i=0;i<5;i++){h.advance(20000);h.poll();}
+    assert.equal(h.counts.syncs,1);
+    h.advance(20000);h.poll();assert.equal(h.counts.syncs,2);
+  });
+  await test('rapid local edits collapse into one cloud sync and show a waiting label',async()=>{
+    const h=harness();h.enable();h.save();h.emit('DOMContentLoaded');await Promise.resolve();
+    h.s.__mdDriveLocalChanged();h.s.__mdDriveLocalChanged();h.s.__mdDriveLocalChanged();
+    assert.match(h.s.driveSyncPanelStatus().label,/Drive 전송 대기/);
+    const pending=[...h.timers.values()].filter(timer=>timer.ms===4500);
+    assert.equal(pending.length,1);
+    pending[0].fn();await Promise.resolve();
+    assert.equal(h.counts.syncs,2);
+    h.advance(20000);h.poll();assert.equal(h.counts.syncs,2);
+  });
+  await test('continuous answering still uploads after a bounded 45-second edit burst',async()=>{
+    const h=harness();h.enable();h.save();h.emit('DOMContentLoaded');await Promise.resolve();
+    for(let i=0;i<13;i++){h.s.__mdDriveLocalChanged();h.advance(4000);}
+    assert.equal(h.counts.syncs,1);
+    const timer=[...h.timers.values()].find(timer=>timer.ms===0);
+    assert.ok(timer,'maximum wait should force a zero-delay upload despite further edits');
+    timer.fn();await Promise.resolve();
+    assert.equal(h.counts.syncs,2);
+  });
+  await test('deferred remote updates apply as soon as a study session ends',async()=>{
+    const h=harness();h.enable();h.save();h.emit('DOMContentLoaded');await Promise.resolve();
+    h.run("currentMode='study'");h.s.__mdDriveSyncDeferred=true;
+    h.advance(20000);h.poll();assert.equal(h.counts.syncs,1);
+    h.run("currentMode='home'");h.poll();assert.equal(h.counts.syncs,2);
+  });
+  await test('disconnect cancels pending cloud uploads without touching local progress',async()=>{
+    const h=harness();h.enable();h.save();h.emit('DOMContentLoaded');await Promise.resolve();
+    h.s.localStorage.setItem('md_progress','saved-locally');
+    h.s.__mdDriveLocalChanged();assert.equal([...h.timers.values()].filter(timer=>timer.ms===4500).length,1);
+    h.s.disconnectGoogleDriveSync();
+    assert.equal([...h.timers.values()].filter(timer=>timer.ms===4500).length,0);
+    assert.equal(h.s.localStorage.getItem('md_progress'),'saved-locally');
+    h.advance(120000);h.poll();assert.equal(h.counts.syncs,1);
+  });
   await test('renewal is synchronous with the click, does not force chooser, and coalesces requests',async()=>{
     const h=harness();const p=h.s.driveSyncRequestToken(true),q=h.s.driveSyncRequestToken(true);
     assert.equal(h.prompts.length,1);assert.equal(h.prompts[0].prompt,'');assert.equal(p,q);h.respond();await p;assert.ok(h.s.driveSyncHasToken());
