@@ -228,6 +228,8 @@
     // A display failure must not turn a completed storage transaction into a
     // value rollback with already committed metadata.
     try{driveSyncRefreshPanel()}catch(error){console.warn('[sync-v2] panel refresh failed',error)}
+    // Debounce cloud uploads only after the local write and its field clocks are durable.
+    try{window.__mdDriveLocalChanged?.()}catch(error){console.warn('[sync-v2] local change notification',error)}
   }
   function mdSyncResetKey(key,value,label){
     const k=String(key),raw=String(value);
@@ -250,7 +252,9 @@
       if(typeof showStorageWarning==='function')showStorageWarning(label||'학습 진도 초기화',error);
       return false;
     }
-    driveSyncRefreshPanel();return true;
+    driveSyncRefreshPanel();
+    try{window.__mdDriveLocalChanged?.()}catch(error){console.warn('[sync-v2] reset notification',error)}
+    return true;
   }
 
   // Replace the v5.08 hooks before driveSyncInit() runs.
@@ -651,6 +655,7 @@
       Number(current.revision)!==Number(local.state.revision);
     const itemsChanged=mdSyncStable(latest.items)!==mdSyncStable(merged.items);
     const pending=changedDuringRequest || (itemsChanged&&mdSyncStudyActive());
+    window.__mdDriveSyncDeferred=!!pending;
     if(!pending){
       // Persist accepted remote deletions independently before replacing the
       // shared state. A stale tab cannot erase a downloaded tombstone either.
