@@ -583,7 +583,7 @@ clothing	dictionary_match	/ˈkloʊðɪŋ/	/ˈkloʊðɪŋ/	phonemes_and_vowel_str
 cm	supported_approximation	씨 엠	씨 엠	not_found	not_found	letter_names_only	-	-	https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf
 co	dictionary_match	/ˈkoʊ/	/ˈkoʊ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 coal	dictionary_match	/ˈkoʊl/	/ˈkoʊl/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-coaltitude	needs_review	코알티튜드	코알티튜드	not_found	not_found	US_dictionary_signature	정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.	-	-
+coaltitude	needs_review	코앨티튜드	코앨티튜드	not_found	not_found	component_pronunciation_checked_full_word_pending	정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.	-	https://msi.nga.mil/api/publications/download?key=16693975%2FSFH00000%2FBowditch_Vol_2_LoRes_2019.pdf; https://dictionary.cambridge.org/pronunciation/english/altitude
 coast	dictionary_match	/ˈkoʊst/	/ˈkoʊst/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 coastal	dictionary_match	/ˈkoʊstəl/	/ˈkoʊstəl/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 coasting	supported_approximation	코스팅	코스팅	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
@@ -2799,7 +2799,7 @@ responsibility	dictionary_match	/ɹiˌspɑnsəˈbɪləti/	/ɹiˌspɑnsəˈbɪlə
 responsible	dictionary_match	/ɹiˈspɑnsəbəl/	/ɹiˈspɑnsəbəl/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 rested	dictionary_match	/ˈɹɛstəd/	/ˈɹɛstəd/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 restored	supported_approximation	리스토어드	리스토어드	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
-restow	needs_review	리스토	리스토	not_found	hangul_not_comparable	US_dictionary_signature	정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.	-	-
+restow	needs_review	리스토우	리스토우	not_found	hangul_not_comparable	component_pronunciation_checked_full_word_pending	정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.	-	https://dictionary.cambridge.org/pronunciation/english/stow; https://en.wiktionary.org/wiki/restow
 restricted	supported_approximation	리스트릭티드	리스트릭티드	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 result	dictionary_match	/ɹɪˈzʌlt/	/ɹɪˈzʌlt/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 resulting	dictionary_match	/ɹɪˈzʌltɪŋ/	/ɹɪˈzʌltɪŋ/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-

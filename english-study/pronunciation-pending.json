@@ -197,19 +197,22 @@
     },
     "coaltitude": {
       "status": "needs_review",
-      "before": "코알티튜드",
-      "after": "코알티튜드",
+      "before": "코앨티튜드",
+      "after": "코앨티튜드",
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
         "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음."
       ],
-      "sources": [],
+      "sources": [
+        "https://msi.nga.mil/api/publications/download?key=16693975%2FSFH00000%2FBowditch_Vol_2_LoRes_2019.pdf",
+        "https://dictionary.cambridge.org/pronunciation/english/altitude"
+      ],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
+      "reviewer": "AI assistant",
+      "reviewScope": "component_pronunciation_checked_full_word_pending",
       "matchMethod": "CMU_phonemes_and_vowel_stress",
       "unresolvedContexts": [],
       "pendingKind": "technical_or_clipped_form",
@@ -1071,19 +1074,22 @@
     },
     "restow": {
       "status": "needs_review",
-      "before": "리스토",
-      "after": "리스토",
+      "before": "리스토우",
+      "after": "리스토우",
       "usComparison": "not_found",
       "ukComparison": "hangul_not_comparable",
       "reasons": [
         "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음."
       ],
-      "sources": [],
+      "sources": [
+        "https://dictionary.cambridge.org/pronunciation/english/stow",
+        "https://en.wiktionary.org/wiki/restow"
+      ],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
+      "reviewer": "AI assistant",
+      "reviewScope": "component_pronunciation_checked_full_word_pending",
       "matchMethod": "CMU_phonemes_and_vowel_stress",
       "unresolvedContexts": [],
       "pendingKind": "additional_phonetic_source_required",

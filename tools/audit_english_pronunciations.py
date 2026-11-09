@@ -41,6 +41,8 @@ REGRESSION = {
     "perpendiculars": "/ˌpɝpənˈdɪkjəlɚz/",
     "equipment": "/ɪˈkwɪpmənt/",
     "brocheures": "발음 미확정",
+    "restow": "리스토우",
+    "coaltitude": "코앨티튜드",
 }
 
 def audit_pronunciations(pron):

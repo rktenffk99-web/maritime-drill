@@ -72,3 +72,10 @@
 - [단어별 TSV](../../english-study/pronunciation-audit.tsv)
 - [미해결 49개와 사유](../../english-study/pronunciation-pending.json)
 - [직전 검수 보고서](pronunciation-2026-11-10.md)
+
+## 추가 보정 (2026-11-10)
+
+- `restow`: 학습용 한글 근사 `리스토` → `리스토우`. Cambridge `stow`(미 /stoʊ/, 영 /stəʊ/)와 Wiktionary의 `re- + stow`를 근거로 어말을 보정했습니다.
+- `coaltitude`: `코알티튜드` → `코앨티튜드`. 미국 NGA *Bowditch*의 항해 용어 정의와 Cambridge `altitude`의 /æ/ 모음에 근거해 보정했습니다.
+
+**두 단어 모두 합성어 전체의 IPA와 강세는 확정되지 않았으므로 미해결 49개에 유지**했습니다. 문제·정답·원본 해설·학습기록은 변경하지 않았습니다. 사전 출처: https://dictionary.cambridge.org/pronunciation/english/stow ; https://en.wiktionary.org/wiki/restow ; https://dictionary.cambridge.org/pronunciation/english/altitude ; https://msi.nga.mil/api/publications/download?key=16693975%2FSFH00000%2FBowditch_Vol_2_LoRes_2019.pdf

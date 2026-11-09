@@ -51,5 +51,8 @@ assert(kg.includes('용골 위 무게중심 높이'));
 assert(kg.includes('발음: 복원성 기호 KG: 케이 지'));
 const fragment=c.MDEnglishWordStudy.supplement({...q,'문제':'on-scene co-ordinator'});
 assert(fragment.includes('co-ordinator의 뒷부분으로 단독 단어가 아님'));
+const compounds=c.MDEnglishWordStudy.supplement({...q,'문제':'Restow the cargo; check coaltitude.'});
+assert(compounds.includes('발음: 리스토우 · 검수 필요'));
+assert(compounds.includes('발음: 코앨티튜드 · 검수 필요'));
 assert.equal(JSON.stringify(d),snapshot,'rendering mutated dictionary/context data');
 console.log(JSON.stringify({reviewedContextReadings:checked,staleContextFallback:true,unknownSpellingNoGuess:true,dialectAlternatives:true}));

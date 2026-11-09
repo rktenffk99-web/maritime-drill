@@ -414,9 +414,13 @@
       "note": "뜻·구성 성분만으로 미확인 강세나 전체 IPA를 생성하지 않음."
     },
     "coaltitude": {
-      "disposition": "insufficient_phonetic_evidence",
+      "disposition": "component_pronunciation_refined_full_word_still_pending",
       "stillPending": true,
-      "note": "뜻·구성 성분만으로 미확인 강세나 전체 IPA를 생성하지 않음."
+      "note": "NGA Bowditch는 항해 의미를 확인, Cambridge altitude는 /æ/ 확인. 합성어 전체 IPA/강세는 미확정.",
+      "sources": [
+        "https://msi.nga.mil/api/publications/download?key=16693975%2FSFH00000%2FBowditch_Vol_2_LoRes_2019.pdf",
+        "https://dictionary.cambridge.org/pronunciation/english/altitude"
+      ]
     },
     "coordinate": {
       "disposition": "insufficient_phonetic_evidence",
@@ -499,9 +503,13 @@
       "note": "뜻·구성 성분만으로 미확인 강세나 전체 IPA를 생성하지 않음."
     },
     "restow": {
-      "disposition": "insufficient_phonetic_evidence",
+      "disposition": "component_pronunciation_refined_full_word_still_pending",
       "stillPending": true,
-      "note": "뜻·구성 성분만으로 미확인 강세나 전체 IPA를 생성하지 않음."
+      "note": "restow는 re- + stow. stow의 미국식 /stoʊ/·영국식 /stəʊ/를 반영. 합성어 전체 강세는 미확정.",
+      "sources": [
+        "https://dictionary.cambridge.org/pronunciation/english/stow",
+        "https://en.wiktionary.org/wiki/restow"
+      ]
     },
     "shortlanded": {
       "disposition": "insufficient_phonetic_evidence",
@@ -1050,5 +1058,28 @@
     "url": "https://www.pfri.uniri.hr/bopri/IMEC_Proceedings/Rjecnik_Eng_Hrv.pdf",
     "sha256": "372c91a76d8940f03487a1fbffa796f61d1c71a1ebd003e7fdacc68c9f46219a",
     "redistribution": "Only the specifically reviewed headwords, page locators and results recorded; full dictionary not redistributed."
+  },
+  "postReview20261110": {
+    "summary": "두 합성어의 한글 학습용 근사 독음만 보정. 전체 IPA/강세의 직접 검증이 아니므로 미확정 49개 유지.",
+    "corrections": {
+      "restow": {
+        "before": "리스토",
+        "after": "리스토우",
+        "sources": [
+          "https://dictionary.cambridge.org/pronunciation/english/stow",
+          "https://en.wiktionary.org/wiki/restow"
+        ],
+        "fullCompoundStillPending": true
+      },
+      "coaltitude": {
+        "before": "코알티튜드",
+        "after": "코앨티튜드",
+        "sources": [
+          "https://msi.nga.mil/api/publications/download?key=16693975%2FSFH00000%2FBowditch_Vol_2_LoRes_2019.pdf",
+          "https://dictionary.cambridge.org/pronunciation/english/altitude"
+        ],
+        "fullCompoundStillPending": true
+      }
+    }
   }
 }

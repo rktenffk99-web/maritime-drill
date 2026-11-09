@@ -16251,7 +16251,15 @@
     "coaltitude": {
       "attemptedOn": "2026-11-10",
       "pendingKind": "technical_or_clipped_form",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음."
+      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "sources": [
+        "https://msi.nga.mil/api/publications/download?key=16693975%2FSFH00000%2FBowditch_Vol_2_LoRes_2019.pdf",
+        "https://dictionary.cambridge.org/pronunciation/english/altitude"
+      ],
+      "reviewer": "AI assistant",
+      "reviewScope": "component_pronunciation_checked_full_word_pending",
+      "componentEvidenceNote": "NGA Bowditch는 항해 의미를 확인, Cambridge altitude는 /æ/ 확인. 합성어 전체 IPA/강세는 미확정.",
+      "reviewedOn": "2026-11-10"
     },
     "codeclination": {
       "attemptedOn": "2026-11-10",
@@ -16729,7 +16737,15 @@
     "restow": {
       "attemptedOn": "2026-11-10",
       "pendingKind": "additional_phonetic_source_required",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음."
+      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "sources": [
+        "https://dictionary.cambridge.org/pronunciation/english/stow",
+        "https://en.wiktionary.org/wiki/restow"
+      ],
+      "reviewer": "AI assistant",
+      "reviewScope": "component_pronunciation_checked_full_word_pending",
+      "componentEvidenceNote": "restow는 re- + stow. stow의 미국식 /stoʊ/·영국식 /stəʊ/를 반영. 합성어 전체 강세는 미확정.",
+      "reviewedOn": "2026-11-10"
     },
     "sart": {
       "attemptedOn": "2026-11-10",
@@ -17116,17 +17132,17 @@
         },
         "questionText": "Choose one which cannot be the principles of drawing up clearly the contents of business letters."
       },
-      "4": {
-        "text": "Use auxiliary verb so as to make the sentence simple.",
-        "readings": {
-          "use": "동사 /ˈjuz/"
-        },
-        "questionText": "Choose one which cannot be the principles of drawing up clearly the contents of business letters."
-      },
       "3": {
         "text": "Only necessary words and phrases should be used instead of using old-fashioned or having much modifiers.",
         "readings": {
           "used": "사용한·사용된 /ˈjuːzd/"
+        },
+        "questionText": "Choose one which cannot be the principles of drawing up clearly the contents of business letters."
+      },
+      "4": {
+        "text": "Use auxiliary verb so as to make the sentence simple.",
+        "readings": {
+          "use": "동사 /ˈjuz/"
         },
         "questionText": "Choose one which cannot be the principles of drawing up clearly the contents of business letters."
       }
@@ -17610,18 +17626,18 @@
       }
     },
     "2025|navi2|1|영어|1": {
-      "3": {
-        "text": "Close up",
-        "readings": {
-          "close": "동사 /ˈkloʊz/"
-        },
-        "questionText": "What does the below-mentioned expression mean in SMCP? \"To increase the distance to the vessel ahead by reducing one's own speed\""
-      },
       "0": {
         "text": "What does the below-mentioned expression mean in SMCP? \"To increase the distance to the vessel ahead by reducing one's own speed\"",
         "readings": {
           "does": "do의 3인칭 단수 /ˈdʌz/",
           "increase": "동사 /ɪnˈkɹiːs/"
+        },
+        "questionText": "What does the below-mentioned expression mean in SMCP? \"To increase the distance to the vessel ahead by reducing one's own speed\""
+      },
+      "3": {
+        "text": "Close up",
+        "readings": {
+          "close": "동사 /ˈkloʊz/"
         },
         "questionText": "What does the below-mentioned expression mean in SMCP? \"To increase the distance to the vessel ahead by reducing one's own speed\""
       }
@@ -17692,17 +17708,17 @@
       }
     },
     "2025|navi2|4|영어|25": {
-      "4": {
-        "text": "To separate long sentences or items in one sentence.",
-        "readings": {
-          "separate": "동사 /ˈsɛpɚeɪt/"
-        },
-        "questionText": "Select one which is not the usage of symbol [;] semi-colon in sentences."
-      },
       "3": {
         "text": "To express time between hours and minutes.",
         "readings": {
           "minutes": "시간 분 복수형 /ˈmɪnəts/"
+        },
+        "questionText": "Select one which is not the usage of symbol [;] semi-colon in sentences."
+      },
+      "4": {
+        "text": "To separate long sentences or items in one sentence.",
+        "readings": {
+          "separate": "동사 /ˈsɛpɚeɪt/"
         },
         "questionText": "Select one which is not the usage of symbol [;] semi-colon in sentences."
       }
@@ -17745,17 +17761,17 @@
       }
     },
     "2025|navi3|2|영어|20": {
-      "4": {
-        "text": "have brief instructions or diagrams clearly illustrating the use of the hand flare printed on its casing",
-        "readings": {
-          "use": "명사 /ˈjus/"
-        },
-        "questionText": "Which detail is NOT appropriate for the hand flare according to LSA code? \"The hand flare shall; ( ).\""
-      },
       "3": {
         "text": "have a burning period of not less than 5 minutes",
         "readings": {
           "minutes": "시간 분 복수형 /ˈmɪnəts/"
+        },
+        "questionText": "Which detail is NOT appropriate for the hand flare according to LSA code? \"The hand flare shall; ( ).\""
+      },
+      "4": {
+        "text": "have brief instructions or diagrams clearly illustrating the use of the hand flare printed on its casing",
+        "readings": {
+          "use": "명사 /ˈjus/"
         },
         "questionText": "Which detail is NOT appropriate for the hand flare according to LSA code? \"The hand flare shall; ( ).\""
       }
@@ -18258,14 +18274,6 @@
       }
     },
     "2023|navi2|1|영어|6": {
-      "4": {
-        "text": "My ETA at one point three miles from number one buoy will be one four hours and two zero minutes.",
-        "readings": {
-          "minutes": "시간 분 복수형 /ˈmɪnəts/",
-          "number": "번호·수 /ˈnʌmbɚ/"
-        },
-        "questionText": "Select a correct translation of the following sentence. \"본선이 1번 부표 북쪽 1.3마일 지점에 도착할 예정시각은 14시 20분입니다.\""
-      },
       "1": {
         "text": "My ETA at North of number one buoy, one point three miles off is one four two zero hours.",
         "readings": {
@@ -18283,6 +18291,14 @@
       "3": {
         "text": "My ETA of North of number one buoy, from one decimal three miles is fourteen twenty hours.",
         "readings": {
+          "number": "번호·수 /ˈnʌmbɚ/"
+        },
+        "questionText": "Select a correct translation of the following sentence. \"본선이 1번 부표 북쪽 1.3마일 지점에 도착할 예정시각은 14시 20분입니다.\""
+      },
+      "4": {
+        "text": "My ETA at one point three miles from number one buoy will be one four hours and two zero minutes.",
+        "readings": {
+          "minutes": "시간 분 복수형 /ˈmɪnəts/",
           "number": "번호·수 /ˈnʌmbɚ/"
         },
         "questionText": "Select a correct translation of the following sentence. \"본선이 1번 부표 북쪽 1.3마일 지점에 도착할 예정시각은 14시 20분입니다.\""
@@ -18334,18 +18350,18 @@
       }
     },
     "2025|navi2|3|영어|5": {
-      "3": {
-        "text": "The cargo list will be available in 20 minutes.",
-        "readings": {
-          "minutes": "시간 분 복수형 /ˈmɪnəts/"
-        },
-        "questionText": "Select the one which has wrong expression."
-      },
       "2": {
         "text": "These slings does not permit safety cargo handling.",
         "readings": {
           "permit": "허용하다 동사 /pɚˈmɪt/",
           "does": "do의 3인칭 단수 /ˈdʌz/"
+        },
+        "questionText": "Select the one which has wrong expression."
+      },
+      "3": {
+        "text": "The cargo list will be available in 20 minutes.",
+        "readings": {
+          "minutes": "시간 분 복수형 /ˈmɪnəts/"
         },
         "questionText": "Select the one which has wrong expression."
       }
@@ -19192,14 +19208,6 @@
       }
     },
     "2025|navi2|3|영어|2": {
-      "4": {
-        "text": "The cable is leading round the bow.",
-        "readings": {
-          "bow": "선수·인사 /ˈbaʊ/",
-          "leading": "이끌다·이어지다의 -ing형 /ˈliːdɪŋ/"
-        },
-        "questionText": "Select a wrong answer to the following sentence. \"How is the cable leading?\""
-      },
       "0": {
         "text": "Select a wrong answer to the following sentence. \"How is the cable leading?\"",
         "readings": {
@@ -19217,6 +19225,14 @@
       "3": {
         "text": "The cable is leading to port.",
         "readings": {
+          "leading": "이끌다·이어지다의 -ing형 /ˈliːdɪŋ/"
+        },
+        "questionText": "Select a wrong answer to the following sentence. \"How is the cable leading?\""
+      },
+      "4": {
+        "text": "The cable is leading round the bow.",
+        "readings": {
+          "bow": "선수·인사 /ˈbaʊ/",
           "leading": "이끌다·이어지다의 -ing형 /ˈliːdɪŋ/"
         },
         "questionText": "Select a wrong answer to the following sentence. \"How is the cable leading?\""
@@ -19276,6 +19292,13 @@
         },
         "questionText": "Which is the most proper answer to the following question? Question: \"Unknown vessel outward in the vicinity of number three buoy. How do you read me?\""
       },
+      "1": {
+        "text": "I read you one. My name is ALFA.",
+        "readings": {
+          "read": "현재·원형 /ˈɹiːd/"
+        },
+        "questionText": "Which is the most proper answer to the following question? Question: \"Unknown vessel outward in the vicinity of number three buoy. How do you read me?\""
+      },
       "2": {
         "text": "I am moving to number three buoy. Go ahead.",
         "readings": {
@@ -19295,13 +19318,6 @@
         "text": "I read you three. I am heading to number three buoy. Who is speaking?",
         "readings": {
           "number": "번호·수 /ˈnʌmbɚ/",
-          "read": "현재·원형 /ˈɹiːd/"
-        },
-        "questionText": "Which is the most proper answer to the following question? Question: \"Unknown vessel outward in the vicinity of number three buoy. How do you read me?\""
-      },
-      "1": {
-        "text": "I read you one. My name is ALFA.",
-        "readings": {
           "read": "현재·원형 /ˈɹiːd/"
         },
         "questionText": "Which is the most proper answer to the following question? Question: \"Unknown vessel outward in the vicinity of number three buoy. How do you read me?\""
@@ -19774,13 +19790,6 @@
       }
     },
     "2020|navi3|2|영어|19": {
-      "4": {
-        "text": "increase her under-keel clearance.",
-        "readings": {
-          "increase": "동사 /ɪnˈkɹiːs/"
-        },
-        "questionText": "A vessel going from salt water to fresh water would:"
-      },
       "2": {
         "text": "decrease her draft.",
         "readings": {
@@ -19792,18 +19801,18 @@
         "text": "decrease her freeboard.",
         "readings": {
           "decrease": "동사 /dɪˈkɹiːs/"
+        },
+        "questionText": "A vessel going from salt water to fresh water would:"
+      },
+      "4": {
+        "text": "increase her under-keel clearance.",
+        "readings": {
+          "increase": "동사 /ɪnˈkɹiːs/"
         },
         "questionText": "A vessel going from salt water to fresh water would:"
       }
     },
     "2020|navi3|4|영어|23": {
-      "4": {
-        "text": "increase her under-keel clearance.",
-        "readings": {
-          "increase": "동사 /ɪnˈkɹiːs/"
-        },
-        "questionText": "A vessel going from salt water to fresh water would:"
-      },
       "2": {
         "text": "decrease her draft.",
         "readings": {
@@ -19815,6 +19824,13 @@
         "text": "decrease her freeboard.",
         "readings": {
           "decrease": "동사 /dɪˈkɹiːs/"
+        },
+        "questionText": "A vessel going from salt water to fresh water would:"
+      },
+      "4": {
+        "text": "increase her under-keel clearance.",
+        "readings": {
+          "increase": "동사 /ɪnˈkɹiːs/"
         },
         "questionText": "A vessel going from salt water to fresh water would:"
       }
@@ -20635,17 +20651,17 @@
       }
     },
     "2023|navi2|4|영어|23": {
-      "4": {
-        "text": "Special Survey Report",
-        "readings": {
-          "survey": "검사·조사 명사 /ˈsɝveɪ/"
-        },
-        "questionText": "Which of the following is an appropriate title for the article? Gentlemen: Please accept this as notice that the Hanbando is now berthed at your dock and is in all respects ready to load cargo as per the terms of the charter party dated at Busan on May 12, 2022. Accepted 8:00 AM. May 12, 2022"
-      },
       "1": {
         "text": "Letter of Protest",
         "readings": {
           "protest": "항의·해난보고서 명사 /ˈpɹoʊtɛst/"
+        },
+        "questionText": "Which of the following is an appropriate title for the article? Gentlemen: Please accept this as notice that the Hanbando is now berthed at your dock and is in all respects ready to load cargo as per the terms of the charter party dated at Busan on May 12, 2022. Accepted 8:00 AM. May 12, 2022"
+      },
+      "4": {
+        "text": "Special Survey Report",
+        "readings": {
+          "survey": "검사·조사 명사 /ˈsɝveɪ/"
         },
         "questionText": "Which of the following is an appropriate title for the article? Gentlemen: Please accept this as notice that the Hanbando is now berthed at your dock and is in all respects ready to load cargo as per the terms of the charter party dated at Busan on May 12, 2022. Accepted 8:00 AM. May 12, 2022"
       }
@@ -20701,17 +20717,17 @@
       }
     },
     "2024|navi2|1|영어|18": {
-      "4": {
-        "text": "Special Survey Report",
-        "readings": {
-          "survey": "검사·조사 명사 /ˈsɝveɪ/"
-        },
-        "questionText": "Which of the following is an appropriate title for the article? Gentlemen: Please accept this as notice that the Hanbando is now berthed at your dock and is in all respects ready to load cargo as per the terms of the charter party dated at Busan on May 12, 2022. Accepted 8:00 AM. May 12, 2022"
-      },
       "1": {
         "text": "Letter of Protest",
         "readings": {
           "protest": "항의·해난보고서 명사 /ˈpɹoʊtɛst/"
+        },
+        "questionText": "Which of the following is an appropriate title for the article? Gentlemen: Please accept this as notice that the Hanbando is now berthed at your dock and is in all respects ready to load cargo as per the terms of the charter party dated at Busan on May 12, 2022. Accepted 8:00 AM. May 12, 2022"
+      },
+      "4": {
+        "text": "Special Survey Report",
+        "readings": {
+          "survey": "검사·조사 명사 /ˈsɝveɪ/"
         },
         "questionText": "Which of the following is an appropriate title for the article? Gentlemen: Please accept this as notice that the Hanbando is now berthed at your dock and is in all respects ready to load cargo as per the terms of the charter party dated at Busan on May 12, 2022. Accepted 8:00 AM. May 12, 2022"
       }
