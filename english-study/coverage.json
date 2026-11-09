@@ -3,8 +3,14 @@
   "uniqueWords": 3715,
   "wordOccurrences": 45885,
   "missingWords": [],
-  "unconfirmedPronunciations": [],
-  "unresolvedSourceSpellings": [],
+  "unconfirmedPronunciations": [
+    "boatsuain",
+    "ramain"
+  ],
+  "unresolvedSourceSpellings": [
+    "boatsuain",
+    "ramain"
+  ],
   "manualContextReviewComplete": false,
   "definitionSource": "existing explanations + maintained lexical supplement",
   "questions": [
