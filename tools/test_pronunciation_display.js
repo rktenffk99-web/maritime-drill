@@ -29,5 +29,16 @@ assert(patched.includes('[핸들 백즈]'));
 assert(!patched.includes('[백스]'));
 assert(patched.includes('→ 포대를 다루다'));
 assert.equal(JSON.stringify(legacy),old,'legacy source explanation mutated');
+// Apply phrase corrections only to the reviewed English token. Identical
+// Korean strings belonging to other English words must not be rewritten.
+const contextual={html:'<span>holds water</span> <span style="color:#94A3B8">[홀즈 워터]</span><br><span>holes</span> <span style="color:#94A3B8">[홀즈]</span><br><span>holds and holes</span> <span style="color:#94A3B8">[홀즈 앤드 홀즈]</span>'};
+const fixed=c.MDEnglishWordStudy.augment(q,contextual).html;
+assert(fixed.includes('[홀드즈 워터]'));
+assert(fixed.includes('[홀즈]'));
+assert(fixed.includes('[홀즈 앤드 홀즈]'));
+const saint={_year:2025,_short:'navi3',_session:3,'과목':'영어','번호':2,'문제':d.pronunciationContexts['2025|navi3|3|영어|2']['0'].text,'선택지':[]};
+assert(c.MDEnglishWordStudy.supplement(saint).includes('saint의 축약형 /ˈseɪnt/'));
+const phase=c.MDEnglishWordStudy.augment(q,{html:'<span>St. Nicholas</span> <span style="color:#94A3B8">[스트리트 니콜라스]</span>'}).html;
+assert(phase.includes('[세인트 니콜라스]'));
 assert.equal(JSON.stringify(d),snapshot,'rendering mutated dictionary/context data');
 console.log(JSON.stringify({reviewedContextReadings:checked,staleContextFallback:true,unknownSpellingNoGuess:true,dialectAlternatives:true}));

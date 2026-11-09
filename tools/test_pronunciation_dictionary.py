@@ -48,4 +48,23 @@ class PronunciationReviewTests(unittest.TestCase):
                     count+=1
         self.assertGreater(count,90)
 
+    def test_remaining_review_is_scoped_and_not_a_human_signoff(self):
+        review=json.loads((ROOT/'english-study/pronunciation-review.json').read_text())
+        manifest=json.loads((ROOT/'english-study/remaining-review-20261110.json').read_text())
+        report=build_report()
+        self.assertEqual(len(manifest['originalPendingWords']),1133)
+        self.assertEqual(len(set(manifest['originalPendingWords'])),1133)
+        self.assertIn('not exact IPA',manifest['scope'])
+        self.assertEqual(report['pendingAfterCorrection'],91)
+        self.assertEqual(report['counts']['supported_approximation'],1245)
+        for w in ['cyclone','interpolation','instantaneous','lien','fragile','longitude','spherical','furthest']:
+            self.assertTrue(review['words'][w]['verified'])
+            self.assertTrue(review['words'][w]['sources'])
+        for w in ['coordinate','read','separate','refuse']:
+            self.assertTrue(report['words'][w]['reasons'])
+            self.assertFalse(review['words'][w]['contextReviewed'])
+        self.assertEqual(review['words']['gps']['reviewScope'],'letter_names_only')
+        self.assertIn('철자 읽기',review['words']['gps']['display'])
+        self.assertFalse(any('HumanReview' in key for row in report['words'].values() for key in row))
+
 if __name__=='__main__':unittest.main()

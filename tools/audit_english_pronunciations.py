@@ -58,9 +58,9 @@ def audit_pronunciations(pron):
                 errors.append(f"{word}: unverified source spelling must remain explicitly unconfirmed")
             counts["unconfirmed"] += 1
             continue
-        if word == "nd":
+        if word in {"nd", "th"}:
             if reading != ORDINAL_SUFFIX:
-                errors.append("nd: ordinal suffix must not be assigned a standalone word pronunciation")
+                errors.append(word + ": ordinal suffix must not be assigned a standalone word pronunciation")
             continue
         if IPA.fullmatch(reading):
             # Stress belongs before the first stressed syllable's onset, not

@@ -53,7 +53,7 @@
     const local=global.MDEnglishWordStudyData.local[key(q)]||{};
     const contexts=global.MDEnglishWordStudyData.pronunciationContexts?.[key(q)]||{};
     let html='━━ 단어별 기본 뜻·형태 ━━<p>지문과 네 보기의 영어 단어를 원문 순서로 확인합니다. 같은 철자가 반복되면 한 행에 위치를 모두 표시합니다. 여러 뜻이 있는 단어의 이 문장 해석과 구·절의 연결은 위의 지문 독해·보기 해석을 함께 보십시오.</p>';
-    html+='<p style="color:#64748B">발음은 기본적으로 미국식입니다. 한글은 근사 독음이며, 검수 필요·발음 미확정 항목은 사전·문맥 확인이 남아 있습니다. 품사별 발음과 영국식이 확인된 경우 따로 표시합니다.</p>';
+    html+='<p style="color:#64748B">IPA는 별도 표시가 없으면 미국식입니다. 한글은 학습용 근사 독음으로 강세·모음 길이·영어 고유 자음을 정확히 나타내지 못합니다. 사전의 IPA·음성을 우선하십시오. 검수 필요·발음 미확정 항목은 확인이 남아 있습니다. 약어 철자 읽기는 통용 단어식 독음과 구별해 표시합니다.</p>';
     html+=wordSection('지문',q['문제'],local,contexts['0']);
     (q['선택지']||[]).forEach((choice,i)=>{html+=wordSection(`보기 ${MARKS[i]||i+1}`,choice,local,contexts[String(i+1)]);});
     return html;
@@ -77,8 +77,17 @@
         }
         // A phrase is not synthesized from isolated dictionary words. Only
         // independently confirmed erroneous Korean tokens are corrected.
-        const fixes={'백스':'백즈','슬링스':'슬링즈','톤스':'턴즈','패신저스':'패신저즈','오더스':'오더즈','팀버스':'팀버즈','섀클스':'섀클즈','부오이언시':'보이언시','데이비츠':'대비츠'};
-        reading=reading.split(' ').map(part=>fixes[part]||part).join(' ');
+        const data=global.MDEnglishWordStudyData,englishWords=ts.map(w=>w.toLowerCase());
+        for(const [word,fix] of Object.entries(data.pronunciationTokenFixes||{})){
+          if(!englishWords.includes(word))continue;
+          if(fix.requiredEnglish && !raw.toLowerCase().includes(fix.requiredEnglish.toLowerCase()))continue;
+          // "holds" and "holes" may both have been approximated as 홀즈.
+          // If another source word shares the old reading, do not guess which
+          // token in a phrase should change. The word table remains authoritative.
+          if(englishWords.some(w=>w!==word && (data.lexicon[w]?.[1]===fix.before || data.pronunciationTokenFixes?.[w]?.before===fix.before)))continue;
+          const escaped=fix.before.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+          reading=reading.replace(new RegExp('(^|\\s)'+escaped+'(?=\\s|$)','g'),(_,prefix)=>prefix+fix.after);
+        }
         return `${open}${english}${close}<span ${attrs} title="기존 문장 근사 독음 · 전체 발음 검수 필요">[${H(reading)}]</span>`;
       });
   }

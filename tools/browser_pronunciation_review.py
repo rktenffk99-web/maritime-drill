@@ -60,7 +60,7 @@ try:
         assert report['sourceGuard']=={'issue':'밑줄 위치 확인 필요','reviewedPronunciation':True}
         # The NOR source lacks its underline, so it must remain excluded by the
         # app guard. Test its supplement without weakening the production guard.
-        fixtures=[('navi3',2024,2,14,'/ɪnˈvælɪd/'),('navi2',2022,2,9,'동사 /ˈjuz/'),('navi3',2022,2,8,'동사 /ˈkloʊz/'),('navi3',2021,3,21,'형용사 /ˈsɛpɚət/')]
+        fixtures=[('navi3',2024,2,14,'/ɪnˈvælɪd/'),('navi2',2022,2,9,'동사 /ˈjuz/'),('navi3',2022,2,8,'동사 /ˈkloʊz/'),('navi3',2021,3,21,'형용사 /ˈsɛpɚət/'),('navi3',2025,2,23,'명사·형용사 /ˈæbstɹækt/'),('navi2',2020,2,11,'완벽한 형용사 /ˈpɝfɛkt/'),('navi2',2021,3,19,'기록 명사 복수형 /ˈɹɛkɚdz/'),('navi3',2020,4,24,'운송 명사 /ˈtɹænspɔɹt/'),('navi3',2025,3,2,'saint의 축약형 /ˈseɪnt/')]
         for grade,year,session,number,expected in fixtures:
             page.evaluate('''({grade,year,session,number})=>{
               const paper=MD_PAST[`${year}-${grade}-${session}`];

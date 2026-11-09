@@ -39735,5 +39735,347 @@
         "N"
       ]
     ]
+  },
+  "supportingBases": {
+    "berth": [
+      [
+        "B",
+        "ER1",
+        "TH"
+      ]
+    ],
+    "charter": [
+      [
+        "CH",
+        "AA1",
+        "R",
+        "T",
+        "ER0"
+      ]
+    ],
+    "prevent": [
+      [
+        "P",
+        "R",
+        "IH0",
+        "V",
+        "EH1",
+        "N",
+        "T"
+      ],
+      [
+        "P",
+        "R",
+        "IY0",
+        "V",
+        "EH1",
+        "N",
+        "T"
+      ]
+    ],
+    "growl": [
+      [
+        "G",
+        "R",
+        "AW1",
+        "L"
+      ]
+    ],
+    "atmosphere": [
+      [
+        "AE1",
+        "T",
+        "M",
+        "AH0",
+        "S",
+        "F",
+        "IH2",
+        "R"
+      ]
+    ],
+    "commotion": [
+      [
+        "K",
+        "AH0",
+        "M",
+        "OW1",
+        "SH",
+        "AH0",
+        "N"
+      ]
+    ],
+    "draining": [
+      [
+        "D",
+        "R",
+        "EY1",
+        "N",
+        "IH0",
+        "NG"
+      ]
+    ],
+    "harbour": [
+      [
+        "HH",
+        "AA1",
+        "R",
+        "B",
+        "ER0"
+      ]
+    ],
+    "packing": [
+      [
+        "P",
+        "AE1",
+        "K",
+        "IH0",
+        "NG"
+      ]
+    ],
+    "perpendicular": [
+      [
+        "P",
+        "ER2",
+        "P",
+        "AH0",
+        "N",
+        "D",
+        "IH1",
+        "K",
+        "Y",
+        "AH0",
+        "L",
+        "ER0"
+      ]
+    ],
+    "securing": [
+      [
+        "S",
+        "IH0",
+        "K",
+        "Y",
+        "UH1",
+        "R",
+        "IH0",
+        "NG"
+      ]
+    ],
+    "spar": [
+      [
+        "S",
+        "P",
+        "AA1",
+        "R"
+      ]
+    ],
+    "stevedore": [
+      [
+        "S",
+        "T",
+        "IY1",
+        "V",
+        "AH0",
+        "D",
+        "AO2",
+        "R"
+      ]
+    ],
+    "washing": [
+      [
+        "W",
+        "AA1",
+        "SH",
+        "IH0",
+        "NG"
+      ]
+    ],
+    "tug": [
+      [
+        "T",
+        "AH1",
+        "G"
+      ]
+    ],
+    "mate": [
+      [
+        "M",
+        "EY1",
+        "T"
+      ]
+    ],
+    "lighthouse": [
+      [
+        "L",
+        "AY1",
+        "T",
+        "HH",
+        "AW2",
+        "S"
+      ]
+    ],
+    "lubber": [
+      [
+        "L",
+        "AH1",
+        "B",
+        "ER0"
+      ]
+    ],
+    "observer": [
+      [
+        "AH0",
+        "B",
+        "Z",
+        "ER1",
+        "V",
+        "ER0"
+      ]
+    ],
+    "sender": [
+      [
+        "S",
+        "EH1",
+        "N",
+        "D",
+        "ER0"
+      ]
+    ],
+    "analyzed": [
+      [
+        "AE1",
+        "N",
+        "AH0",
+        "L",
+        "AY2",
+        "Z",
+        "D"
+      ]
+    ],
+    "maneuver": [
+      [
+        "M",
+        "AH0",
+        "N",
+        "UW1",
+        "V",
+        "ER0"
+      ]
+    ],
+    "maneuvering": [
+      [
+        "M",
+        "AH0",
+        "N",
+        "UW1",
+        "V",
+        "ER0",
+        "IH0",
+        "NG"
+      ]
+    ],
+    "molded": [
+      [
+        "M",
+        "OW1",
+        "L",
+        "D",
+        "AH0",
+        "D"
+      ],
+      [
+        "M",
+        "OW1",
+        "L",
+        "D",
+        "IH0",
+        "D"
+      ]
+    ]
+  },
+  "derivedEvidence": {
+    "atmospheres": {
+      "base": "atmosphere",
+      "rule": "plural_z"
+    },
+    "commotions": {
+      "base": "commotion",
+      "rule": "plural_z"
+    },
+    "drainings": {
+      "base": "draining",
+      "rule": "plural_z"
+    },
+    "harbours": {
+      "base": "harbour",
+      "rule": "plural_z"
+    },
+    "packings": {
+      "base": "packing",
+      "rule": "plural_z"
+    },
+    "perpendiculars": {
+      "base": "perpendicular",
+      "rule": "plural_z"
+    },
+    "securings": {
+      "base": "securing",
+      "rule": "plural_z"
+    },
+    "spars": {
+      "base": "spar",
+      "rule": "plural_z"
+    },
+    "stevedores": {
+      "base": "stevedore",
+      "rule": "plural_z"
+    },
+    "washings": {
+      "base": "washing",
+      "rule": "plural_z"
+    },
+    "tug's": {
+      "base": "tug",
+      "rule": "possessive_z"
+    },
+    "mate's": {
+      "base": "mate",
+      "rule": "possessive_s"
+    },
+    "lighthouse's": {
+      "base": "lighthouse",
+      "rule": "possessive_iz"
+    },
+    "lubber's": {
+      "base": "lubber",
+      "rule": "possessive_z"
+    },
+    "observer's": {
+      "base": "observer",
+      "rule": "possessive_z"
+    },
+    "sender's": {
+      "base": "sender",
+      "rule": "possessive_z"
+    },
+    "analysed": {
+      "base": "analyzed",
+      "rule": "British_spelling_alias"
+    },
+    "manoeuvre": {
+      "base": "maneuver",
+      "rule": "British_spelling_alias"
+    },
+    "manoeuvring": {
+      "base": "maneuvering",
+      "rule": "British_spelling_alias"
+    },
+    "moulded": {
+      "base": "molded",
+      "rule": "British_spelling_alias"
+    },
+    "berthed": {
+      "base": "berth",
+      "rule": "past_t"
+    }
   }
 }
