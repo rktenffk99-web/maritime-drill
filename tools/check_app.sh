@@ -146,3 +146,5 @@ node tools/test_progress_storage_v522.js
 python tools/build_english_word_study.py
 python tools/audit_english_pronunciations.py
 node tools/test_english_word_study.js
+python tools/test_pronunciation_dictionary.py
+node tools/test_pronunciation_display.js

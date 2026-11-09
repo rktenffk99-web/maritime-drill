@@ -8,7 +8,8 @@ import json
 import re
 
 ROOT = Path(__file__).resolve().parents[1]
-UNCONFIRMED = {"ramain", "boatsuain"}  # Source spellings are not established words.
+UNCONFIRMED = {"ramain", "boatsuain", "brocheures", "decemeber", "miky", "barwater",
+               "var'ly", "womanned", "catched", "departer"}
 ORDINAL_SUFFIX = "서수 접미부(숫자와 함께 읽음)"
 SPACED_INITIALISMS = set("""
 imo psc ais lsa smcs mlc isps scs iala dsc lo lt oscs cont mrcs hf ne msi
@@ -38,7 +39,7 @@ REGRESSION = {
     "modification": "/ˌmɑdəfəˈkeɪʃən/",
     "perpendiculars": "/ˌpɝpənˈdɪkjəlɚz/",
     "equipment": "/ɪˈkwɪpmənt/",
-    "brocheures": "브로슈어즈",
+    "brocheures": "발음 미확정",
 }
 
 def audit_pronunciations(pron):
