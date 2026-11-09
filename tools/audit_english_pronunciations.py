@@ -32,7 +32,7 @@ REGRESSION = {
     "steady": "스테디",
     "cpa": "씨피에이",
     "ukc": "유케이씨",
-    "lighthouse's": "/ˈlaɪthˌaʊsɪz/",
+    "lighthouse's": "/ˈlaɪtˌhaʊsɪz/",
     "sailing": "/ˈseɪlɪŋ/",
     "great": "/ˈɡɹeɪt/",
     "modification": "/ˌmɑdəfəˈkeɪʃən/",
