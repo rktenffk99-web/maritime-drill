@@ -45,4 +45,19 @@ assert.equal(c.MDEnglishWordStudy.augment({...q,_short:'navi3e'},{html:'fish'}).
 assert.equal(c.MDEnglishWordStudy.augment({...q,'과목':'항해'},{html:'nav'}).html,'nav');
 assert.equal(c.MDEnglishWordStudy.augment(q,{html:'loading',loading:true}).html,'loading');
 assert.equal(c.MDEnglishWordStudy.augment({...q,'문제':'xyzzymissing'},null).html.includes('보강 필요'),true);
+// Pronunciation text must be a reading of this word, not text copied from a
+// definition or surrounding question sentence.
+const expectedReadings={a:'어 / 에이',the:'더 / 디',of:'어브',to:'투 / 터',
+ and:'앤드',was:'워즈',from:'프럼',good:'굿',steady:'스테디',
+ cpa:'씨피에이',ukc:'유케이씨',narcotics:'나르카틱스',
+ "lighthouse's":'/lˈaɪthˌaʊsɪz/'};
+for(const [word,reading] of Object.entries(expectedReadings)){
+ assert.equal(c.MDEnglishWordStudyData.lexicon[word][1],reading,word+' pronunciation regression');
+}
+assert.equal(Object.keys(c.MDEnglishWordStudyData.lexicon).length,3715);
+for(const [word,[meaning,reading]] of Object.entries(c.MDEnglishWordStudyData.lexicon)){
+ assert(!/ \+ (복수·동사 어미|소유격 어미)/.test(reading),word+' unresolved inflection');
+ assert(!/\(\s*\)/.test(reading),word+' corrupted example placeholder');
+ assert(!/어라운드 더 쉽|어라운드 더 탱커|위드 더 프로비전즈/.test(reading),word+' copied sentence');
+}
 console.log(JSON.stringify({questions:n,wordOccurrences:total,missing:0,watchQuestionCorrections:samples}));
