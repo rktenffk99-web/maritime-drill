@@ -1,0 +1,1085 @@
+{
+  "date": "2026-11-10",
+  "baselineCommit": "86302385ba066d4b6bec83be4aa226a0712fc361",
+  "baselinePending": 91,
+  "reviewer": "AI assistant",
+  "scope": "Direct publisher dictionaries, published maritime dictionary, full question plus option; uncertain names and distractors are not assigned invented pronunciations.",
+  "words": {
+    "fathometer": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/fathometer"
+      ],
+      "scope": "direct_dictionary"
+    },
+    "cyclolysis": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/cyclolysis"
+      ],
+      "scope": "direct_dictionary"
+    },
+    "ballot's": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/buys-ballots-law"
+      ],
+      "scope": "direct_dictionary"
+    },
+    "valorem": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/ad-valorem"
+      ],
+      "scope": "direct_dictionary"
+    },
+    "cesser": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.dictionary.com/browse/cesser"
+      ],
+      "scope": "direct_dictionary"
+    },
+    "sublate": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/sublate"
+      ],
+      "scope": "direct_dictionary"
+    },
+    "loxodromic": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.dictionary.com/browse/loxodromic"
+      ],
+      "scope": "direct_dictionary"
+    },
+    "fairlead": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/fairlead"
+      ],
+      "scope": "direct_dictionary"
+    },
+    "laytime": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/laytime"
+      ],
+      "scope": "direct_dictionary"
+    },
+    "quadrantal": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/quadrant"
+      ],
+      "scope": "direct_dictionary"
+    },
+    "codeclination": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/codeclination"
+      ],
+      "scope": "direct_dictionary"
+    },
+    "floeberg": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/floeberg"
+      ],
+      "scope": "direct_dictionary"
+    },
+    "weathertight": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/weathertight"
+      ],
+      "scope": "direct_dictionary"
+    },
+    "loadable": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english-german/loadable"
+      ],
+      "scope": "direct_dictionary"
+    },
+    "sternway": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/sternway"
+      ],
+      "scope": "direct_dictionary"
+    },
+    "decca": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/decca"
+      ],
+      "scope": "direct_dictionary"
+    },
+    "raoult's": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/raoults-law"
+      ],
+      "scope": "direct_dictionary"
+    },
+    "kim": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://dictionary.cambridge.org/pronunciation/english/kim"
+      ],
+      "scope": "direct_dictionary"
+    },
+    "busan": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/busan"
+      ],
+      "scope": "direct_dictionary"
+    },
+    "coriolis": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/coriolis-effect",
+        "https://dictionary.cambridge.org/pronunciation/english/coriolis"
+      ],
+      "scope": "direct_dictionary"
+    },
+    "bareboat": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.pfri.uniri.hr/bopri/IMEC_Proceedings/Rjecnik_Eng_Hrv.pdf"
+      ],
+      "scope": "published_maritime_dictionary"
+    },
+    "dewpoint": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.pfri.uniri.hr/bopri/IMEC_Proceedings/Rjecnik_Eng_Hrv.pdf"
+      ],
+      "scope": "published_maritime_dictionary"
+    },
+    "laydays": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.pfri.uniri.hr/bopri/IMEC_Proceedings/Rjecnik_Eng_Hrv.pdf"
+      ],
+      "scope": "published_maritime_dictionary"
+    },
+    "navtex": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.pfri.uniri.hr/bopri/IMEC_Proceedings/Rjecnik_Eng_Hrv.pdf"
+      ],
+      "scope": "published_maritime_dictionary"
+    },
+    "arpa": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.pfri.uniri.hr/bopri/IMEC_Proceedings/Rjecnik_Eng_Hrv.pdf"
+      ],
+      "scope": "British_broad_segment_approximation"
+    },
+    "interco": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.pfri.uniri.hr/bopri/IMEC_Proceedings/Rjecnik_Eng_Hrv.pdf"
+      ],
+      "scope": "British_broad_segment_approximation"
+    },
+    "colregs": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.pfri.uniri.hr/bopri/IMEC_Proceedings/Rjecnik_Eng_Hrv.pdf"
+      ],
+      "scope": "British_broad_segment_approximation"
+    },
+    "servomechanisms": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/servomechanism"
+      ],
+      "scope": "direct_dictionary_regular_plural"
+    },
+    "var'ly": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://doi.org/10.5539/elt.v4n2p107",
+        "https://dictionary.cambridge.org/us/pronunciation/english/variously"
+      ],
+      "scope": "direct_dictionary"
+    },
+    "stb'd": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://doi.org/10.5539/elt.v4n2p107",
+        "https://dictionary.cambridge.org/pronunciation/english/starboard"
+      ],
+      "scope": "abbreviation_expansion"
+    },
+    "kg": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.pfri.uniri.hr/bopri/IMEC_Proceedings/Rjecnik_Eng_Hrv.pdf"
+      ],
+      "scope": "letter_names_only"
+    },
+    "securite": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.maritimenz.govt.nz/media/zgrhubg4/part23-maritime-rule-original.pdf",
+        "https://taic.org.nz/glossary"
+      ],
+      "scope": "radio_procedure_pronunciation"
+    },
+    "seelonce": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://www.govinfo.gov/content/pkg/CFR-2010-title47-vol5/pdf/CFR-2010-title47-vol5.pdf",
+        "https://www.collinsdictionary.com/dictionary/french-english/silence_1"
+      ],
+      "scope": "radio_procedure_pronunciation"
+    },
+    "ordinator": {
+      "disposition": "dictionary_or_context_reviewed",
+      "sources": [
+        "https://dictionary.cambridge.org/dictionary/english/coordinator"
+      ],
+      "scope": "reviewed_token_fragment"
+    },
+    "separate": {
+      "disposition": "full_question_context_resolved",
+      "sources": [
+        "https://github.com/cmusphinx/cmudict",
+        "https://dictionary.cambridge.org/dictionary/english/separate"
+      ]
+    },
+    "refuse": {
+      "disposition": "full_question_context_resolved",
+      "sources": [
+        "https://dictionary.cambridge.org/pronunciation/english/refuse",
+        "https://github.com/cmusphinx/cmudict"
+      ]
+    },
+    "defect": {
+      "disposition": "full_question_context_resolved",
+      "sources": [
+        "https://github.com/cmusphinx/cmudict"
+      ]
+    },
+    "polish": {
+      "disposition": "full_question_context_resolved",
+      "sources": [
+        "https://github.com/cmusphinx/cmudict"
+      ]
+    },
+    "record": {
+      "disposition": "full_question_context_resolved",
+      "sources": [
+        "https://github.com/cmusphinx/cmudict"
+      ]
+    },
+    "transfer": {
+      "disposition": "full_question_context_resolved",
+      "sources": [
+        "https://dictionary.cambridge.org/pronunciation/english/transfer",
+        "https://github.com/cmusphinx/cmudict"
+      ]
+    },
+    "read": {
+      "disposition": "full_question_context_resolved",
+      "sources": [
+        "https://github.com/cmusphinx/cmudict"
+      ]
+    },
+    "moderate": {
+      "disposition": "full_question_context_resolved",
+      "sources": [
+        "https://dictionary.cambridge.org/pronunciation/english/moderate",
+        "https://github.com/cmusphinx/cmudict"
+      ]
+    },
+    "ausrep": {
+      "disposition": "unsupported_wordlike_reading_replaced_with_labelled_spelling",
+      "stillPending": true
+    },
+    "eloran": {
+      "disposition": "unsupported_wordlike_reading_replaced_with_labelled_spelling",
+      "stillPending": true
+    },
+    "epirb": {
+      "disposition": "unsupported_wordlike_reading_replaced_with_labelled_spelling",
+      "stillPending": true
+    },
+    "marpol": {
+      "disposition": "unsupported_wordlike_reading_replaced_with_labelled_spelling",
+      "stillPending": true
+    },
+    "metarea": {
+      "disposition": "unsupported_wordlike_reading_replaced_with_labelled_spelling",
+      "stillPending": true
+    },
+    "navarea": {
+      "disposition": "unsupported_wordlike_reading_replaced_with_labelled_spelling",
+      "stillPending": true
+    },
+    "nvoc": {
+      "disposition": "unsupported_wordlike_reading_replaced_with_labelled_spelling",
+      "stillPending": true
+    },
+    "nvocc": {
+      "disposition": "unsupported_wordlike_reading_replaced_with_labelled_spelling",
+      "stillPending": true
+    },
+    "sart": {
+      "disposition": "unsupported_wordlike_reading_replaced_with_labelled_spelling",
+      "stillPending": true
+    },
+    "solas": {
+      "disposition": "unsupported_wordlike_reading_replaced_with_labelled_spelling",
+      "stillPending": true
+    },
+    "abo": {
+      "disposition": "unsupported_proper_name_reading_withheld",
+      "stillPending": true
+    },
+    "baar": {
+      "disposition": "unsupported_proper_name_reading_withheld",
+      "stillPending": true
+    },
+    "hanbando": {
+      "disposition": "unsupported_proper_name_reading_withheld",
+      "stillPending": true
+    },
+    "heukryong": {
+      "disposition": "unsupported_proper_name_reading_withheld",
+      "stillPending": true
+    },
+    "seastar": {
+      "disposition": "unsupported_proper_name_reading_withheld",
+      "stillPending": true
+    },
+    "hongdo": {
+      "disposition": "native_place_name_distinguished_from_English_pronunciation",
+      "stillPending": true
+    },
+    "mukho": {
+      "disposition": "native_place_name_distinguished_from_English_pronunciation",
+      "stillPending": true
+    },
+    "boatsuain": {
+      "disposition": "original_distractor_or_uncertain_source_spelling_preserved",
+      "stillPending": true,
+      "note": "철자 문제의 오답 보기. 표준형 boatswain: 미국식 /ˈboʊsən/ · 영국식 /ˈbəʊsən/ (별도 단어)"
+    },
+    "miky": {
+      "disposition": "original_distractor_or_uncertain_source_spelling_preserved",
+      "stillPending": true,
+      "note": "철자통화의 오답 보기. M의 표준 부호는 Mike (마이크); 원문의 Miky를 임의 발음하지 않음"
+    },
+    "brocheures": {
+      "disposition": "original_distractor_or_uncertain_source_spelling_preserved",
+      "stillPending": true,
+      "note": "brochures의 오탈자 의심. 원문 보기와 정답은 보존하며 이 철자의 발음을 생성하지 않음"
+    },
+    "decemeber": {
+      "disposition": "original_distractor_or_uncertain_source_spelling_preserved",
+      "stillPending": true,
+      "note": "December의 오탈자 의심. 원문 보기와 정답은 보존함"
+    },
+    "catched": {
+      "disposition": "original_distractor_or_uncertain_source_spelling_preserved",
+      "stillPending": true,
+      "note": "표준 catch의 과거형 caught와 구별되는 비표준 보기. 원문 보존"
+    },
+    "womanned": {
+      "disposition": "original_distractor_or_uncertain_source_spelling_preserved",
+      "stillPending": true,
+      "note": "SMCP의 부적절 표현을 고르는 문제의 오답 표현. manned 등으로 원문을 바꾸지 않음"
+    },
+    "ramain": {
+      "disposition": "original_distractor_or_uncertain_source_spelling_preserved",
+      "stillPending": true,
+      "note": "remain의 오탈자 의심. 원문 보기와 정답은 보존함"
+    },
+    "departer": {
+      "disposition": "original_distractor_or_uncertain_source_spelling_preserved",
+      "stillPending": true,
+      "note": "일지의 동사 자리이지만 원문은 departer. departed 등으로 임의 보정하지 않음"
+    },
+    "barwater": {
+      "disposition": "insufficient_phonetic_evidence",
+      "stillPending": true,
+      "note": "뜻·구성 성분만으로 미확인 강세나 전체 IPA를 생성하지 않음."
+    },
+    "coaltitude": {
+      "disposition": "component_pronunciation_refined_full_word_still_pending",
+      "stillPending": true,
+      "note": "NGA Bowditch는 항해 의미를 확인, Cambridge altitude는 /æ/ 확인. 합성어 전체 IPA/강세는 미확정.",
+      "sources": [
+        "https://msi.nga.mil/api/publications/download?key=16693975%2FSFH00000%2FBowditch_Vol_2_LoRes_2019.pdf",
+        "https://dictionary.cambridge.org/pronunciation/english/altitude"
+      ]
+    },
+    "coordinate": {
+      "disposition": "insufficient_phonetic_evidence",
+      "stillPending": true,
+      "note": "뜻·구성 성분만으로 미확인 강세나 전체 IPA를 생성하지 않음."
+    },
+    "deballasting": {
+      "disposition": "insufficient_phonetic_evidence",
+      "stillPending": true,
+      "note": "뜻·구성 성분만으로 미확인 강세나 전체 IPA를 생성하지 않음."
+    },
+    "decrease": {
+      "disposition": "insufficient_phonetic_evidence",
+      "stillPending": true,
+      "note": "뜻·구성 성분만으로 미확인 강세나 전체 IPA를 생성하지 않음."
+    },
+    "deratting": {
+      "disposition": "insufficient_phonetic_evidence",
+      "stillPending": true,
+      "note": "뜻·구성 성분만으로 미확인 강세나 전체 IPA를 생성하지 않음."
+    },
+    "firemain": {
+      "disposition": "insufficient_phonetic_evidence",
+      "stillPending": true,
+      "note": "뜻·구성 성분만으로 미확인 강세나 전체 IPA를 생성하지 않음."
+    },
+    "gyrosphere": {
+      "disposition": "insufficient_phonetic_evidence",
+      "stillPending": true,
+      "note": "뜻·구성 성분만으로 미확인 강세나 전체 IPA를 생성하지 않음."
+    },
+    "hatchrails": {
+      "disposition": "insufficient_phonetic_evidence",
+      "stillPending": true,
+      "note": "뜻·구성 성분만으로 미확인 강세나 전체 IPA를 생성하지 않음."
+    },
+    "increase": {
+      "disposition": "insufficient_phonetic_evidence",
+      "stillPending": true,
+      "note": "뜻·구성 성분만으로 미확인 강세나 전체 IPA를 생성하지 않음."
+    },
+    "inerted": {
+      "disposition": "insufficient_phonetic_evidence",
+      "stillPending": true,
+      "note": "뜻·구성 성분만으로 미확인 강세나 전체 IPA를 생성하지 않음."
+    },
+    "loadline": {
+      "disposition": "insufficient_phonetic_evidence",
+      "stillPending": true,
+      "note": "뜻·구성 성분만으로 미확인 강세나 전체 IPA를 생성하지 않음."
+    },
+    "misdelivery": {
+      "disposition": "insufficient_phonetic_evidence",
+      "stillPending": true,
+      "note": "뜻·구성 성분만으로 미확인 강세나 전체 IPA를 생성하지 않음."
+    },
+    "mislanding": {
+      "disposition": "insufficient_phonetic_evidence",
+      "stillPending": true,
+      "note": "뜻·구성 성분만으로 미확인 강세나 전체 IPA를 생성하지 않음."
+    },
+    "overstow": {
+      "disposition": "insufficient_phonetic_evidence",
+      "stillPending": true,
+      "note": "뜻·구성 성분만으로 미확인 강세나 전체 IPA를 생성하지 않음."
+    },
+    "radiobeacons": {
+      "disposition": "insufficient_phonetic_evidence",
+      "stillPending": true,
+      "note": "뜻·구성 성분만으로 미확인 강세나 전체 IPA를 생성하지 않음."
+    },
+    "renailed": {
+      "disposition": "insufficient_phonetic_evidence",
+      "stillPending": true,
+      "note": "뜻·구성 성분만으로 미확인 강세나 전체 IPA를 생성하지 않음."
+    },
+    "resewn": {
+      "disposition": "insufficient_phonetic_evidence",
+      "stillPending": true,
+      "note": "뜻·구성 성분만으로 미확인 강세나 전체 IPA를 생성하지 않음."
+    },
+    "restow": {
+      "disposition": "component_pronunciation_refined_full_word_still_pending",
+      "stillPending": true,
+      "note": "restow는 re- + stow. stow의 미국식 /stoʊ/·영국식 /stəʊ/를 반영. 합성어 전체 강세는 미확정.",
+      "sources": [
+        "https://dictionary.cambridge.org/pronunciation/english/stow",
+        "https://en.wiktionary.org/wiki/restow"
+      ]
+    },
+    "shortlanded": {
+      "disposition": "insufficient_phonetic_evidence",
+      "stillPending": true,
+      "note": "뜻·구성 성분만으로 미확인 강세나 전체 IPA를 생성하지 않음."
+    },
+    "shortshipped": {
+      "disposition": "insufficient_phonetic_evidence",
+      "stillPending": true,
+      "note": "뜻·구성 성분만으로 미확인 강세나 전체 IPA를 생성하지 않음."
+    },
+    "sternlight": {
+      "disposition": "insufficient_phonetic_evidence",
+      "stillPending": true,
+      "note": "뜻·구성 성분만으로 미확인 강세나 전체 IPA를 생성하지 않음."
+    },
+    "watchkeeping": {
+      "disposition": "insufficient_phonetic_evidence",
+      "stillPending": true,
+      "note": "뜻·구성 성분만으로 미확인 강세나 전체 IPA를 생성하지 않음."
+    },
+    "worthfulness": {
+      "disposition": "insufficient_phonetic_evidence",
+      "stillPending": true,
+      "note": "뜻·구성 성분만으로 미확인 강세나 전체 IPA를 생성하지 않음."
+    }
+  },
+  "newContextReadings": [
+    {
+      "word": "separate",
+      "key": "2023|navi3|4|영어|19",
+      "section": "4",
+      "reading": "동사 /ˈsɛpɚeɪt/",
+      "reason": "문제 지문의 문법 구조와 보기의 결합을 함께 확인"
+    },
+    {
+      "word": "separate",
+      "key": "2024|navi3|3|영어|15",
+      "section": "4",
+      "reading": "동사 /ˈsɛpɚeɪt/",
+      "reason": "문제 지문의 문법 구조와 보기의 결합을 함께 확인"
+    },
+    {
+      "word": "separate",
+      "key": "2024|navi3|4|영어|6",
+      "section": "4",
+      "reading": "형용사 /ˈsɛpɚət/",
+      "reason": "문제 지문의 문법 구조와 보기의 결합을 함께 확인"
+    },
+    {
+      "word": "refuse",
+      "key": "2021|navi2|2|영어|1",
+      "section": "3",
+      "reading": "거절하다 동사 /ɹɪˈfjuːz/",
+      "reason": "문제 지문의 문법 구조와 보기의 결합을 함께 확인"
+    },
+    {
+      "word": "refuse",
+      "key": "2022|navi2|3|영어|4",
+      "section": "3",
+      "reading": "거절하다 동사 /ɹɪˈfjuːz/",
+      "reason": "문제 지문의 문법 구조와 보기의 결합을 함께 확인"
+    },
+    {
+      "word": "refuse",
+      "key": "2023|navi2|2|영어|5",
+      "section": "2",
+      "reading": "거절하다 동사 /ɹɪˈfjuːz/",
+      "reason": "문제 지문의 문법 구조와 보기의 결합을 함께 확인"
+    },
+    {
+      "word": "refuse",
+      "key": "2023|navi2|3|영어|4",
+      "section": "3",
+      "reading": "거절하다 동사 /ɹɪˈfjuːz/",
+      "reason": "문제 지문의 문법 구조와 보기의 결합을 함께 확인"
+    },
+    {
+      "word": "refuse",
+      "key": "2026|navi2|2|영어|6",
+      "section": "3",
+      "reading": "거절하다 동사 /ɹɪˈfjuːz/",
+      "reason": "문제 지문의 문법 구조와 보기의 결합을 함께 확인"
+    },
+    {
+      "word": "defect",
+      "key": "2023|navi2|2|영어|16",
+      "section": "3",
+      "reading": "이탈하다 동사 /dɪˈfɛkt/",
+      "reason": "문제 지문의 문법 구조와 보기의 결합을 함께 확인"
+    },
+    {
+      "word": "polish",
+      "key": "2020|navi2|3|영어|25",
+      "section": "3",
+      "reading": "닦다·광택제 /ˈpɑlɪʃ/",
+      "reason": "문제 지문의 문법 구조와 보기의 결합을 함께 확인"
+    },
+    {
+      "word": "polish",
+      "key": "2025|navi2|2|영어|23",
+      "section": "2",
+      "reading": "닦다·광택제 /ˈpɑlɪʃ/",
+      "reason": "문제 지문의 문법 구조와 보기의 결합을 함께 확인"
+    },
+    {
+      "word": "polish",
+      "key": "2025|navi2|3|영어|20",
+      "section": "2",
+      "reading": "닦다·광택제 /ˈpɑlɪʃ/",
+      "reason": "문제 지문의 문법 구조와 보기의 결합을 함께 확인"
+    },
+    {
+      "word": "record",
+      "key": "2022|navi2|1|영어|19",
+      "section": "3",
+      "reading": "기록 명사 /ˈɹɛkɚd/",
+      "reason": "문제 지문의 문법 구조와 보기의 결합을 함께 확인"
+    },
+    {
+      "word": "record",
+      "key": "2022|navi2|4|영어|23",
+      "section": "3",
+      "reading": "기록 명사 /ˈɹɛkɚd/",
+      "reason": "문제 지문의 문법 구조와 보기의 결합을 함께 확인"
+    },
+    {
+      "word": "transfer",
+      "key": "2026|navi3|2|영어|14",
+      "section": "1",
+      "reading": "명사 미국식 /ˈtɹænsfɝ/",
+      "reason": "문제 지문의 문법 구조와 보기의 결합을 함께 확인"
+    },
+    {
+      "word": "read",
+      "key": "2023|navi2|3|영어|21",
+      "section": "1",
+      "reading": "과거·과거분사 /ˈɹɛd/",
+      "reason": "문제 지문의 문법 구조와 보기의 결합을 함께 확인"
+    },
+    {
+      "word": "moderate",
+      "key": "2023|navi2|4|영어|10",
+      "section": "4",
+      "reading": "명사·형용사 /ˈmɑdɚət/",
+      "reason": "문제 지문의 문법 구조와 보기의 결합을 함께 확인"
+    }
+  ],
+  "readingChanges": [
+    {
+      "word": "fathometer",
+      "before": "패더미터",
+      "after": "/fæˈðɑmɪtɚ/",
+      "confirmedError": true
+    },
+    {
+      "word": "cyclolysis",
+      "before": "사이클로라이시스",
+      "after": "/saɪˈklɑləsɪs/",
+      "confirmedError": true
+    },
+    {
+      "word": "ballot's",
+      "before": "/ˈbæləts/",
+      "after": "/bəˈlɑts/",
+      "confirmedError": true
+    },
+    {
+      "word": "valorem",
+      "before": "밸로럼",
+      "after": "/vəˈlɔrəm/",
+      "confirmedError": true
+    },
+    {
+      "word": "cesser",
+      "before": "세서",
+      "after": "/ˈsɛsə/",
+      "confirmedError": false
+    },
+    {
+      "word": "sublate",
+      "before": "서블레이트",
+      "after": "/səbˈleɪt/",
+      "confirmedError": false
+    },
+    {
+      "word": "loxodromic",
+      "before": "록소드로믹",
+      "after": "/ˌlɒksəˈdrɒmɪk/",
+      "confirmedError": false
+    },
+    {
+      "word": "fairlead",
+      "before": "페어리드",
+      "after": "/ˈfɛərˌliːd/",
+      "confirmedError": false
+    },
+    {
+      "word": "laytime",
+      "before": "레이타임",
+      "after": "/ˈleɪˌtaɪm/",
+      "confirmedError": false
+    },
+    {
+      "word": "quadrantal",
+      "before": "쿼드랜털",
+      "after": "/kwɒˈdræntəl/",
+      "confirmedError": false
+    },
+    {
+      "word": "codeclination",
+      "before": "코데클리네이션",
+      "after": "/ˌkoʊˌdɛkləˈneɪʃən/",
+      "confirmedError": false
+    },
+    {
+      "word": "floeberg",
+      "before": "플로버그",
+      "after": "/ˈfloʊbɝɡ/",
+      "confirmedError": false
+    },
+    {
+      "word": "weathertight",
+      "before": "웨더타이트",
+      "after": "/ˈwɛðɚˌtaɪt/",
+      "confirmedError": false
+    },
+    {
+      "word": "loadable",
+      "before": "로더블",
+      "after": "/ˈləʊdəbəl/",
+      "confirmedError": false
+    },
+    {
+      "word": "sternway",
+      "before": "스턴웨이",
+      "after": "/ˈstɝnˌweɪ/",
+      "confirmedError": false
+    },
+    {
+      "word": "decca",
+      "before": "데카",
+      "after": "/ˈdɛkə/",
+      "confirmedError": false
+    },
+    {
+      "word": "raoult's",
+      "before": "라울스",
+      "after": "/rɑːˈuːlz/",
+      "confirmedError": false
+    },
+    {
+      "word": "kim",
+      "before": "킴",
+      "after": "/kɪm/",
+      "confirmedError": false
+    },
+    {
+      "word": "bareboat",
+      "before": "베어보트",
+      "after": "/ˈbeəbəʊt/",
+      "confirmedError": false
+    },
+    {
+      "word": "dewpoint",
+      "before": "듀포인트",
+      "after": "/ˈdjuːpɔɪnt/",
+      "confirmedError": false
+    },
+    {
+      "word": "laydays",
+      "before": "레이데이즈",
+      "after": "/ˈleɪdeɪz/",
+      "confirmedError": false
+    },
+    {
+      "word": "navtex",
+      "before": "나브텍스",
+      "after": "/ˈnævˌteks/",
+      "confirmedError": false
+    },
+    {
+      "word": "colregs",
+      "before": "콜렉스",
+      "after": "콜레그즈",
+      "confirmedError": false
+    },
+    {
+      "word": "servomechanisms",
+      "before": "서보메커니즘즈",
+      "after": "/ˈsɝvoʊˌmɛkəˌnɪzəmz/",
+      "confirmedError": false
+    },
+    {
+      "word": "var'ly",
+      "before": "발음 미확정",
+      "after": "/ˈvɛriəsli/",
+      "confirmedError": true
+    },
+    {
+      "word": "kg",
+      "before": "킬로그램 / 케이 지",
+      "after": "케이 지",
+      "confirmedError": true
+    },
+    {
+      "word": "stb'd",
+      "before": "스타보드",
+      "after": "/ˈstɑːrbɚd/",
+      "confirmedError": false
+    }
+  ],
+  "summary": {
+    "baselinePending": 91,
+    "resolvedWithinStatedScope": 42,
+    "pending": 49,
+    "newConfirmedErrors": 6,
+    "currentCounts": {
+      "supported_approximation": 1247,
+      "dictionary_match": 2374,
+      "needs_review": 49,
+      "confirmed_error": 45
+    },
+    "sourceReadingFieldsChanged": 42,
+    "contextReadings": 540,
+    "addedContextReadings": 17,
+    "unsupportedWordlikeAcronymsReplaced": 10,
+    "unsupportedProperNameReadingsWithheld": 5
+  },
+  "allSourceReadingChanges": [
+    {
+      "word": "cyclolysis",
+      "before": "사이클로라이시스",
+      "after": "/saɪˈklɑləsɪs/"
+    },
+    {
+      "word": "laytime",
+      "before": "레이타임",
+      "after": "/ˈleɪˌtaɪm/"
+    },
+    {
+      "word": "codeclination",
+      "before": "코데클리네이션",
+      "after": "/ˌkoʊˌdɛkləˈneɪʃən/"
+    },
+    {
+      "word": "navtex",
+      "before": "나브텍스",
+      "after": "/ˈnævˌteks/"
+    },
+    {
+      "word": "raoult's",
+      "before": "라울스",
+      "after": "/rɑːˈuːlz/"
+    },
+    {
+      "word": "fathometer",
+      "before": "패더미터",
+      "after": "/fæˈðɑmɪtɚ/"
+    },
+    {
+      "word": "kim",
+      "before": "킴",
+      "after": "/kɪm/"
+    },
+    {
+      "word": "valorem",
+      "before": "밸로럼",
+      "after": "/vəˈlɔrəm/"
+    },
+    {
+      "word": "loxodromic",
+      "before": "록소드로믹",
+      "after": "/ˌlɒksəˈdrɒmɪk/"
+    },
+    {
+      "word": "sublate",
+      "before": "서블레이트",
+      "after": "/səbˈleɪt/"
+    },
+    {
+      "word": "quadrantal",
+      "before": "쿼드랜털",
+      "after": "/kwɒˈdræntəl/"
+    },
+    {
+      "word": "heukryong",
+      "before": "흑룡",
+      "after": "발음 미확정"
+    },
+    {
+      "word": "hanbando",
+      "before": "한반도",
+      "after": "발음 미확정"
+    },
+    {
+      "word": "colregs",
+      "before": "콜렉스",
+      "after": "콜레그즈"
+    },
+    {
+      "word": "abo",
+      "before": "아보",
+      "after": "발음 미확정"
+    },
+    {
+      "word": "nvoc",
+      "before": "엔보크",
+      "after": "엔 브이 오 씨"
+    },
+    {
+      "word": "laydays",
+      "before": "레이데이즈",
+      "after": "/ˈleɪdeɪz/"
+    },
+    {
+      "word": "dewpoint",
+      "before": "듀포인트",
+      "after": "/ˈdjuːpɔɪnt/"
+    },
+    {
+      "word": "epirb",
+      "before": "이퍼브",
+      "after": "이 피 아이 아르 비"
+    },
+    {
+      "word": "decca",
+      "before": "데카",
+      "after": "/ˈdɛkə/"
+    },
+    {
+      "word": "solas",
+      "before": "솔라스",
+      "after": "에스 오 엘 에이 에스"
+    },
+    {
+      "word": "ballot's",
+      "before": "/ˈbæləts/",
+      "after": "/bəˈlɑts/"
+    },
+    {
+      "word": "sart",
+      "before": "사트",
+      "after": "에스 에이 아르 티"
+    },
+    {
+      "word": "cesser",
+      "before": "세서",
+      "after": "/ˈsɛsə/"
+    },
+    {
+      "word": "metarea",
+      "before": "메타에어리어",
+      "after": "엠 이 티 에이 아르 이 에이"
+    },
+    {
+      "word": "servomechanisms",
+      "before": "서보메커니즘즈",
+      "after": "/ˈsɝvoʊˌmɛkəˌnɪzəmz/"
+    },
+    {
+      "word": "stb'd",
+      "before": "스타보드",
+      "after": "/ˈstɑːrbɚd/"
+    },
+    {
+      "word": "marpol",
+      "before": "마폴",
+      "after": "엠 에이 아르 피 오 엘"
+    },
+    {
+      "word": "loadable",
+      "before": "로더블",
+      "after": "/ˈləʊdəbəl/"
+    },
+    {
+      "word": "ausrep",
+      "before": "오스렙",
+      "after": "에이 유 에스 아르 이 피"
+    },
+    {
+      "word": "fairlead",
+      "before": "페어리드",
+      "after": "/ˈfɛərˌliːd/"
+    },
+    {
+      "word": "bareboat",
+      "before": "베어보트",
+      "after": "/ˈbeəbəʊt/"
+    },
+    {
+      "word": "eloran",
+      "before": "이로란",
+      "after": "이 엘 오 아르 에이 엔"
+    },
+    {
+      "word": "nvocc",
+      "before": "엔보씨씨",
+      "after": "엔 브이 오 씨 씨"
+    },
+    {
+      "word": "kg",
+      "before": "킬로그램 / 케이 지",
+      "after": "케이 지"
+    },
+    {
+      "word": "seastar",
+      "before": "시스타",
+      "after": "발음 미확정"
+    },
+    {
+      "word": "baar",
+      "before": "바르",
+      "after": "발음 미확정"
+    },
+    {
+      "word": "var'ly",
+      "before": "발음 미확정",
+      "after": "/ˈvɛriəsli/"
+    },
+    {
+      "word": "sternway",
+      "before": "스턴웨이",
+      "after": "/ˈstɝnˌweɪ/"
+    },
+    {
+      "word": "weathertight",
+      "before": "웨더타이트",
+      "after": "/ˈwɛðɚˌtaɪt/"
+    },
+    {
+      "word": "floeberg",
+      "before": "플로버그",
+      "after": "/ˈfloʊbɝɡ/"
+    },
+    {
+      "word": "navarea",
+      "before": "나브에어리어",
+      "after": "엔 에이 브이 에이 아르 이 에이"
+    }
+  ],
+  "researchReference": {
+    "title": "An Illustrated Maritime Dictionary, English–Croatian",
+    "editor": "Boris Pritchard",
+    "edition": "October 2024",
+    "url": "https://www.pfri.uniri.hr/bopri/IMEC_Proceedings/Rjecnik_Eng_Hrv.pdf",
+    "sha256": "372c91a76d8940f03487a1fbffa796f61d1c71a1ebd003e7fdacc68c9f46219a",
+    "redistribution": "Only the specifically reviewed headwords, page locators and results recorded; full dictionary not redistributed."
+  },
+  "postReview20261110": {
+    "summary": "두 합성어의 한글 학습용 근사 독음만 보정. 전체 IPA/강세의 직접 검증이 아니므로 미확정 49개 유지.",
+    "corrections": {
+      "restow": {
+        "before": "리스토",
+        "after": "리스토우",
+        "sources": [
+          "https://dictionary.cambridge.org/pronunciation/english/stow",
+          "https://en.wiktionary.org/wiki/restow"
+        ],
+        "fullCompoundStillPending": true
+      },
+      "coaltitude": {
+        "before": "코알티튜드",
+        "after": "코앨티튜드",
+        "sources": [
+          "https://msi.nga.mil/api/publications/download?key=16693975%2FSFH00000%2FBowditch_Vol_2_LoRes_2019.pdf",
+          "https://dictionary.cambridge.org/pronunciation/english/altitude"
+        ],
+        "fullCompoundStillPending": true
+      }
+    }
+  }
+}

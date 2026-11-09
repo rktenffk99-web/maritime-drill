@@ -553,7 +553,7 @@ s=표기 구성요소: 소유격·복수형의 일부 또는 South(남) 등의 �
 after=전치사·접속사·부사: ~후에·~한 후·나중에
 height=명사: 높이
 tonnage=명사: 톤수
-m,cm,kg,km,mm=단위 기호: m 미터, cm 센티미터, kg 킬로그램, km 킬로미터, mm 밀리미터
+m,cm,km,mm=단위 기호: m 미터, cm 센티미터, kg 킬로그램, km 킬로미터, mm 밀리미터
 during=전치사: ~동안
 party=명사: 당사자·일행; charter party는 용선계약(서)
 along=전치사·부사: ~을 따라·나란히
@@ -1702,3 +1702,5 @@ scs=약어 복수형: SAR coordinators, 수색구조 조정관들(국가 차원�
 oscs=약어 복수형: On-scene coordinators, 현장조정관들
 smcs=약어 복수형: SAR mission coordinators, 수색구조 임무조정관들
 mrcs=이 보기에서 Maritime rescue coordinators(해상구조 조정관들)라고 풀어 쓴 약어; SAR의 표준 3단계 조정관 분류에는 포함되지 않는 오답 항목
+
+kg=기호: 대문자 KG는 용골 위 무게중심 높이(복원성), 소문자 kg는 질량 단위 킬로그램. 원문 대소문자와 문맥으로 구별

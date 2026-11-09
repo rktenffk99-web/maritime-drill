@@ -9,11 +9,12 @@ import re
 
 ROOT = Path(__file__).resolve().parents[1]
 UNCONFIRMED = {"ramain", "boatsuain", "brocheures", "decemeber", "miky", "barwater",
-               "var'ly", "womanned", "catched", "departer"}
+               "womanned", "catched", "departer", "abo", "baar", "hanbando", "heukryong", "seastar"}
 ORDINAL_SUFFIX = "서수 접미부(숫자와 함께 읽음)"
 SPACED_INITIALISMS = set("""
 imo psc ais lsa smcs mlc isps scs iala dsc lo lt oscs cont mrcs hf ne msi
 imdg cm khz psi mf lop ibc hpa mm bc igc stbd km nne pst unclos ism kg
+ausrep eloran epirb marpol metarea navarea nvoc nvocc sart solas
 """.split())
 VARIANT_READINGS = {"a", "the", "to", "kg"}
 IPA = re.compile(r"^/[^/\s()+,:?_\[\]]+/$")
@@ -40,6 +41,8 @@ REGRESSION = {
     "perpendiculars": "/ˌpɝpənˈdɪkjəlɚz/",
     "equipment": "/ɪˈkwɪpmənt/",
     "brocheures": "발음 미확정",
+    "restow": "리스토우",
+    "coaltitude": "코앨티튜드",
 }
 
 def audit_pronunciations(pron):
@@ -58,9 +61,9 @@ def audit_pronunciations(pron):
                 errors.append(f"{word}: unverified source spelling must remain explicitly unconfirmed")
             counts["unconfirmed"] += 1
             continue
-        if word == "nd":
+        if word in {"nd", "th"}:
             if reading != ORDINAL_SUFFIX:
-                errors.append("nd: ordinal suffix must not be assigned a standalone word pronunciation")
+                errors.append(word + ": ordinal suffix must not be assigned a standalone word pronunciation")
             continue
         if IPA.fullmatch(reading):
             # Stress belongs before the first stressed syllable's onset, not

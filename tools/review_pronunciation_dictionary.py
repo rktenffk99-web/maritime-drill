@@ -6,6 +6,7 @@ its dictionary nor its transcriptions are redistributed in this application.
 """
 import argparse
 import collections
+import csv
 import hashlib
 import json
 import re
@@ -114,29 +115,41 @@ def build_report():
         elif word in HETERONYMS and not manual.get('contextReviewed'):
             reasons.append('품사·뜻에 따른 발음이 달라 문맥별 확인 필요')
         if not manual.get('verified') and comparison != 'phonemes_and_vowel_stress_match':
-            reasons.append('한글 독음 수동 대조 필요' if comparison == 'not_ipa' else '미국식 사전 대조 확인 필요: ' + comparison)
+            reasons.append(manual.get('remainingReason') or ('한글 독음 수동 대조 필요' if comparison == 'not_ipa' else '미국식 사전 대조 확인 필요: ' + comparison))
         status = ('needs_review' if manual.get('unconfirmed') else
-                  'confirmed_error' if manual.get('before') is not None else
-                  'needs_review' if reasons else 'dictionary_match')
+                  'confirmed_error' if manual.get('before') is not None and manual.get('correctionType') != 'approximation_refinement' else
+                  'needs_review' if reasons else
+                  'supported_approximation' if manual.get('reviewScope') in ['broad_segment_approximation', 'British_broad_segment_approximation', 'letter_names_only'] else
+                  'dictionary_match')
         rows[word] = {'status': status, 'before': manual.get('before', reading), 'after': reading,
                       'usComparison': comparison, 'ukComparison': uk['outcomes'][word],
                       'reasons': reasons, 'sources': manual.get('sources', []),
-                      'ukHumanReview': bool(manual.get('ukReviewed')),
-                      'hangulHumanReview': bool(manual.get('hangulReviewed')),
-                      'contextHumanReview': bool(manual.get('contextReviewed')),
+                      'ukReviewed': bool(manual.get('ukReviewed')),
+                      'hangulReviewed': bool(manual.get('hangulReviewed')),
+                      'contextReviewed': bool(manual.get('contextReviewed')),
+                      'reviewer': manual.get('reviewer', 'automated comparison'),
+                      'reviewScope': manual.get('reviewScope', 'US_dictionary_signature'),
+                      'matchMethod': ('reviewed_learning_approximation' if manual.get('hangulReviewed') and not reading.startswith('/') else
+                                      'reviewed_context_or_dictionary' if manual.get('verified') else 'CMU_phonemes_and_vowel_stress'),
+                      'unresolvedContexts': manual.get('unresolvedContexts', []),
+                      'pendingKind': manual.get('pendingKind') if reasons else None,
+                      'remainingReason': manual.get('remainingReason') if reasons else None,
                       'priorFixGroups': prior.get(word, []),
+                      'correctionType': manual.get('correctionType', 'confirmed_error') if manual.get('before') is not None else None,
                       'correctionReason': manual.get('reason') if manual.get('before') is not None else None,
-                      'contextOnlyCorrection': bool(manual.get('contextOnly'))}
-    return {'date': '2026-11-09', 'baselineCommit': '1181fa802da8acc9c3eb886e4b7bcc1077ca0b76',
+                      'contextOnlyCorrection': bool(manual.get('contextOnly')),
+                      'legacyOnlyCorrection': bool(manual.get('legacyOnly'))}
+    return {'date': review.get('date', '2026-11-09'), 'baselineCommit': '1181fa802da8acc9c3eb886e4b7bcc1077ca0b76',
             'total': len(rows), 'counts': dict(collections.Counter(r['status'] for r in rows.values())),
             'limitations': ['dictionary_match means US phonemes and vowel stress match a CMU entry, or the specifically cited manual review; it is not full contextual or UK certification.',
-                            'All 3715 keys checked in both dictionary lookups. Missing entries and non-comparable Hangul remain unresolved.',
+                            'All 3715 keys checked in both dictionary lookups. A reviewed Korean learning approximation is not an exact transcription or an independent UK stress check.',
                             'BEEP is an old research reference without reliable stress; UK differences are review candidates, never automatic errors.',
-                            'IPA syllable-onset placement and every Korean approximation have NOT all received independent human review.'],
+                            'AI-assisted review; no human phonetician sign-off. Unresolved spellings, proper names and ambiguous bare options are never guessed.'],
             'us': {'source': reference['source'], 'package': reference['package'], 'entriesFound': len(reference['entries'])},
             'uk': {k: v for k, v in uk.items() if k != 'outcomes'},
             'ukCounts': dict(collections.Counter(uk['outcomes'].values())),
             'pendingAfterCorrection': sum(bool(r['reasons']) for r in rows.values()),
+            'reviewMethodCounts': dict(collections.Counter(r['matchMethod'] for r in rows.values())),
             'priorFixRecheck': {group:dict(collections.Counter(r['status'] for r in rows.values() if group in r['priorFixGroups']))
                                for group in ['prior_70_reading_fixes','prior_2124_stress_moves']},
             'words': rows}
@@ -151,6 +164,13 @@ def main():
         (ROOT/'english-study/uk-comparison.json').write_text(json.dumps(uk, ensure_ascii=False, indent=2)+'\n')
     report = build_report()
     (ROOT/'english-study/pronunciation-audit.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')
+    with (ROOT/'english-study/pronunciation-audit.tsv').open('w', newline='') as stream:
+        writer=csv.writer(stream, delimiter='\t', lineterminator='\n')
+        writer.writerow(['word','status','before','after','US comparison','UK comparison','review scope','remaining review','correction reason','sources'])
+        for word,row in report['words'].items():
+            writer.writerow([value or '-' for value in [word,row['status'],row['before'],row['after'],row['usComparison'],row['ukComparison'],row['reviewScope'],'; '.join(row['reasons']),row['correctionReason'], '; '.join(row['sources'])]])
+    pending={word:row for word,row in report['words'].items() if row['reasons']}
+    (ROOT/'english-study/pronunciation-pending.json').write_text(json.dumps({'date':report['date'],'total':len(pending),'words':pending},ensure_ascii=False,indent=2)+'\n')
     print(json.dumps({k: v for k, v in report.items() if k in ['total', 'counts', 'us', 'ukCounts']}, ensure_ascii=False))
 
 if __name__ == '__main__':
