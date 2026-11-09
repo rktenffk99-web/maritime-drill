@@ -50,7 +50,7 @@ assert.equal(c.MDEnglishWordStudy.augment({...q,'문제':'xyzzymissing'},null).h
 const expectedReadings={a:'어 / 에이',the:'더 / 디',of:'어브',to:'투 / 터',
  and:'앤드',was:'워즈',from:'프럼',good:'굿',steady:'스테디',
  cpa:'씨피에이',ukc:'유케이씨',narcotics:'나르카틱스',
- "lighthouse's":'/lˈaɪthˌaʊsɪz/'};
+ "lighthouse's":'/ˈlaɪthˌaʊsɪz/',sailing:'/ˈseɪlɪŋ/',great:'/ˈɡɹeɪt/',modification:'/ˌmɑdəfəˈkeɪʃən/',perpendiculars:'/ˌpɝpənˈdɪkjəlɚz/',equipment:'/ɪˈkwɪpmənt/',brocheures:'브로슈어즈'};
 for(const [word,reading] of Object.entries(expectedReadings)){
  assert.equal(c.MDEnglishWordStudyData.lexicon[word][1],reading,word+' pronunciation regression');
 }
