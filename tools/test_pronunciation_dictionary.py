@@ -56,7 +56,7 @@ class PronunciationReviewTests(unittest.TestCase):
         self.assertEqual(len(set(manifest['originalPendingWords'])),1133)
         self.assertIn('not exact IPA',manifest['scope'])
         self.assertEqual(report['pendingAfterCorrection'],91)
-        self.assertEqual(report['counts']['supported_approximation'],1245)
+        self.assertEqual(report['counts']['supported_approximation'],1244)
         for w in ['cyclone','interpolation','instantaneous','lien','fragile','longitude','spherical','furthest']:
             self.assertTrue(review['words'][w]['verified'])
             self.assertTrue(review['words'][w]['sources'])

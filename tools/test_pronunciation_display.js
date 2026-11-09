@@ -40,5 +40,7 @@ const saint={_year:2025,_short:'navi3',_session:3,'과목':'영어','번호':2,'
 assert(c.MDEnglishWordStudy.supplement(saint).includes('saint의 축약형 /ˈseɪnt/'));
 const phase=c.MDEnglishWordStudy.augment(q,{html:'<span>St. Nicholas</span> <span style="color:#94A3B8">[스트리트 니콜라스]</span>'}).html;
 assert(phase.includes('[세인트 니콜라스]'));
+const hooks=c.MDEnglishWordStudy.augment(q,{html:'<span>hooks for handling</span> <span style="color:#94A3B8">[훗스 포 핸들링]</span>'}).html;
+assert(hooks.includes('[훅스 포 핸들링]'));
 assert.equal(JSON.stringify(d),snapshot,'rendering mutated dictionary/context data');
 console.log(JSON.stringify({reviewedContextReadings:checked,staleContextFallback:true,unknownSpellingNoGuess:true,dialectAlternatives:true}));

@@ -5790,7 +5790,9 @@
       "sources": [
         "https://github.com/cmusphinx/cmudict"
       ],
-      "reason": "사전 음소와 학습용 한글 근사 독음을 대조. 강세·길이·영어 고유 자음의 정밀 전사는 아님."
+      "reason": "단어표는 훅스이나 실제 해설 hooks for handling에 훗스가 남아 있어 대응되는 문장 토큰만 교체함. /k/를 /t/처럼 적은 오류.",
+      "before": "훗스",
+      "legacyOnly": true
     },
     "horizon": {
       "verified": true,

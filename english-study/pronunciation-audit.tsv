@@ -1558,7 +1558,7 @@ holes	supported_approximation	홀즈	홀즈	not_ipa	hangul_not_comparable	broad_
 holiday	dictionary_match	/ˈhɑləˌdeɪ/	/ˈhɑləˌdeɪ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 hong	dictionary_match	/ˈhɔŋ/	/ˈhɔŋ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 hongdo	needs_review	홍도	홍도	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
-hooks	supported_approximation	훅스	훅스	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
+hooks	confirmed_error	훗스	훅스	not_ipa	hangul_not_comparable	broad_segment_approximation	-	단어표는 훅스이나 실제 해설 hooks for handling에 훗스가 남아 있어 대응되는 문장 토큰만 교체함. /k/를 /t/처럼 적은 오류.	https://github.com/cmusphinx/cmudict
 hope	dictionary_match	/ˈhoʊp/	/ˈhoʊp/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 horizon	supported_approximation	호라이즌	호라이즌	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 horizontal	dictionary_match	/ˌhɔɹəˈzɑntəl/	/ˌhɔɹəˈzɑntəl/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-

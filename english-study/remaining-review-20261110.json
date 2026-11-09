@@ -7642,7 +7642,7 @@
   "baselinePendingCount": 1433,
   "baselineCommit": "227be83358dea0e7a0f45af55f6e6196c6923f03",
   "currentChangeSummary": {
-    "newConfirmedErrors": 20,
+    "newConfirmedErrors": 21,
     "sourceReadingFieldsChanged": 30,
     "contextOnlyCorrections": [
       "record"
@@ -7830,7 +7830,16 @@
         "before": "돌핀스",
         "after": "돌핀즈",
         "kind": "approximation_refinement"
+      },
+      {
+        "word": "hooks",
+        "before": "훗스",
+        "after": "훅스",
+        "kind": "legacy_only_confirmed_error"
       }
+    ],
+    "legacyOnlyCorrections": [
+      "hooks"
     ]
   }
 }

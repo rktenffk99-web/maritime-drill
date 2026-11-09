@@ -137,7 +137,8 @@ def build_report():
                       'priorFixGroups': prior.get(word, []),
                       'correctionType': manual.get('correctionType', 'confirmed_error') if manual.get('before') is not None else None,
                       'correctionReason': manual.get('reason') if manual.get('before') is not None else None,
-                      'contextOnlyCorrection': bool(manual.get('contextOnly'))}
+                      'contextOnlyCorrection': bool(manual.get('contextOnly')),
+                      'legacyOnlyCorrection': bool(manual.get('legacyOnly'))}
     return {'date': review.get('date', '2026-11-09'), 'baselineCommit': '1181fa802da8acc9c3eb886e4b7bcc1077ca0b76',
             'total': len(rows), 'counts': dict(collections.Counter(r['status'] for r in rows.values())),
             'limitations': ['dictionary_match means US phonemes and vowel stress match a CMU entry, or the specifically cited manual review; it is not full contextual or UK certification.',

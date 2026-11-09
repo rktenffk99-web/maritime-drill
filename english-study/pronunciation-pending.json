@@ -26,7 +26,8 @@
       ],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "arpa": {
       "status": "needs_review",
@@ -50,7 +51,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "ausrep": {
       "status": "needs_review",
@@ -74,7 +76,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "baar": {
       "status": "needs_review",
@@ -100,7 +103,8 @@
       ],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "ballot's": {
       "status": "needs_review",
@@ -127,7 +131,8 @@
       ],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "bareboat": {
       "status": "needs_review",
@@ -151,7 +156,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "barwater": {
       "status": "needs_review",
@@ -178,7 +184,8 @@
       ],
       "correctionType": "confirmed_error",
       "correctionReason": "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "boatsuain": {
       "status": "needs_review",
@@ -205,7 +212,8 @@
       ],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "brocheures": {
       "status": "needs_review",
@@ -230,7 +238,8 @@
       "priorFixGroups": [],
       "correctionType": "confirmed_error",
       "correctionReason": "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "busan": {
       "status": "needs_review",
@@ -254,7 +263,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "catched": {
       "status": "needs_review",
@@ -279,7 +289,8 @@
       "priorFixGroups": [],
       "correctionType": "confirmed_error",
       "correctionReason": "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "cesser": {
       "status": "needs_review",
@@ -303,7 +314,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "coaltitude": {
       "status": "needs_review",
@@ -327,7 +339,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "codeclination": {
       "status": "needs_review",
@@ -351,7 +364,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "colregs": {
       "status": "needs_review",
@@ -375,7 +389,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "coordinate": {
       "status": "needs_review",
@@ -407,7 +422,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "coriolis": {
       "status": "needs_review",
@@ -431,7 +447,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "cyclolysis": {
       "status": "needs_review",
@@ -455,7 +472,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "deballasting": {
       "status": "needs_review",
@@ -479,7 +497,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "decca": {
       "status": "needs_review",
@@ -503,7 +522,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "decemeber": {
       "status": "needs_review",
@@ -528,7 +548,8 @@
       "priorFixGroups": [],
       "correctionType": "confirmed_error",
       "correctionReason": "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "decrease": {
       "status": "needs_review",
@@ -569,7 +590,8 @@
       ],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "defect": {
       "status": "needs_review",
@@ -600,7 +622,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "departer": {
       "status": "needs_review",
@@ -625,7 +648,8 @@
       "priorFixGroups": [],
       "correctionType": "confirmed_error",
       "correctionReason": "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "deratting": {
       "status": "needs_review",
@@ -649,7 +673,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "dewpoint": {
       "status": "needs_review",
@@ -673,7 +698,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "eloran": {
       "status": "needs_review",
@@ -697,7 +723,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "epirb": {
       "status": "needs_review",
@@ -721,7 +748,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "fairlead": {
       "status": "needs_review",
@@ -745,7 +773,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "fathometer": {
       "status": "needs_review",
@@ -769,7 +798,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "firemain": {
       "status": "needs_review",
@@ -793,7 +823,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "floeberg": {
       "status": "needs_review",
@@ -817,7 +848,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "gyrosphere": {
       "status": "needs_review",
@@ -841,7 +873,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "hanbando": {
       "status": "needs_review",
@@ -865,7 +898,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "hatchrails": {
       "status": "needs_review",
@@ -889,7 +923,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "heukryong": {
       "status": "needs_review",
@@ -913,7 +948,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "hongdo": {
       "status": "needs_review",
@@ -937,7 +973,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "increase": {
       "status": "needs_review",
@@ -984,7 +1021,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "inerted": {
       "status": "needs_review",
@@ -1008,7 +1046,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "interco": {
       "status": "needs_review",
@@ -1032,7 +1071,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "kg": {
       "status": "needs_review",
@@ -1058,7 +1098,8 @@
       ],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "kim": {
       "status": "needs_review",
@@ -1082,7 +1123,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "laydays": {
       "status": "needs_review",
@@ -1106,7 +1148,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "laytime": {
       "status": "needs_review",
@@ -1130,7 +1173,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "loadable": {
       "status": "needs_review",
@@ -1154,7 +1198,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "loadline": {
       "status": "needs_review",
@@ -1178,7 +1223,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "loxodromic": {
       "status": "needs_review",
@@ -1202,7 +1248,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "marpol": {
       "status": "needs_review",
@@ -1226,7 +1273,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "metarea": {
       "status": "needs_review",
@@ -1250,7 +1298,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "miky": {
       "status": "needs_review",
@@ -1277,7 +1326,8 @@
       ],
       "correctionType": "confirmed_error",
       "correctionReason": "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "misdelivery": {
       "status": "needs_review",
@@ -1301,7 +1351,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "mislanding": {
       "status": "needs_review",
@@ -1325,7 +1376,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "moderate": {
       "status": "needs_review",
@@ -1357,7 +1409,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "mukho": {
       "status": "needs_review",
@@ -1381,7 +1434,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "navarea": {
       "status": "needs_review",
@@ -1405,7 +1459,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "navtex": {
       "status": "needs_review",
@@ -1429,7 +1484,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "nvoc": {
       "status": "needs_review",
@@ -1453,7 +1509,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "nvocc": {
       "status": "needs_review",
@@ -1477,7 +1534,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "ordinator": {
       "status": "needs_review",
@@ -1503,7 +1561,8 @@
       ],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "overstow": {
       "status": "needs_review",
@@ -1527,7 +1586,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "polish": {
       "status": "needs_review",
@@ -1566,7 +1626,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "quadrantal": {
       "status": "needs_review",
@@ -1590,7 +1651,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "radiobeacons": {
       "status": "needs_review",
@@ -1614,7 +1676,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "ramain": {
       "status": "needs_review",
@@ -1641,7 +1704,8 @@
       ],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "raoult's": {
       "status": "needs_review",
@@ -1665,7 +1729,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "read": {
       "status": "needs_review",
@@ -1696,7 +1761,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "record": {
       "status": "confirmed_error",
@@ -1731,7 +1797,8 @@
       "priorFixGroups": [],
       "correctionType": "confirmed_error",
       "correctionReason": "Take and record 동사에도 기존 명사형 근사 독음만 표시됨",
-      "contextOnlyCorrection": true
+      "contextOnlyCorrection": true,
+      "legacyOnlyCorrection": false
     },
     "refuse": {
       "status": "needs_review",
@@ -1779,7 +1846,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "renailed": {
       "status": "needs_review",
@@ -1803,7 +1871,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "resewn": {
       "status": "needs_review",
@@ -1827,7 +1896,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "restow": {
       "status": "needs_review",
@@ -1851,7 +1921,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "sart": {
       "status": "needs_review",
@@ -1875,7 +1946,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "seastar": {
       "status": "needs_review",
@@ -1899,7 +1971,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "securite": {
       "status": "needs_review",
@@ -1923,7 +1996,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "seelonce": {
       "status": "needs_review",
@@ -1947,7 +2021,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "separate": {
       "status": "confirmed_error",
@@ -1987,7 +2062,8 @@
       "priorFixGroups": [],
       "correctionType": "confirmed_error",
       "correctionReason": "단일 독음으로 품사별 발음 차이를 누락함. 문항·보기별 검수값 또는 품사별 대안을 표시.",
-      "contextOnlyCorrection": true
+      "contextOnlyCorrection": true,
+      "legacyOnlyCorrection": false
     },
     "servomechanisms": {
       "status": "needs_review",
@@ -2011,7 +2087,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "shortlanded": {
       "status": "needs_review",
@@ -2035,7 +2112,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "shortshipped": {
       "status": "needs_review",
@@ -2059,7 +2137,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "solas": {
       "status": "needs_review",
@@ -2083,7 +2162,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "stb'd": {
       "status": "needs_review",
@@ -2107,7 +2187,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "sternlight": {
       "status": "needs_review",
@@ -2131,7 +2212,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "sternway": {
       "status": "needs_review",
@@ -2155,7 +2237,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "sublate": {
       "status": "needs_review",
@@ -2179,7 +2262,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "transfer": {
       "status": "needs_review",
@@ -2211,7 +2295,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "valorem": {
       "status": "needs_review",
@@ -2235,7 +2320,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "var'ly": {
       "status": "needs_review",
@@ -2262,7 +2348,8 @@
       ],
       "correctionType": "confirmed_error",
       "correctionReason": "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "watchkeeping": {
       "status": "needs_review",
@@ -2286,7 +2373,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "weathertight": {
       "status": "needs_review",
@@ -2310,7 +2398,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "womanned": {
       "status": "needs_review",
@@ -2335,7 +2424,8 @@
       "priorFixGroups": [],
       "correctionType": "confirmed_error",
       "correctionReason": "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     },
     "worthfulness": {
       "status": "needs_review",
@@ -2359,7 +2449,8 @@
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
-      "contextOnlyCorrection": false
+      "contextOnlyCorrection": false,
+      "legacyOnlyCorrection": false
     }
   }
 }

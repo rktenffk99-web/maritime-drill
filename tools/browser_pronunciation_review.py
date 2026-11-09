@@ -74,6 +74,8 @@ try:
             assert 'existing-history-sentinel'==page.evaluate("localStorage.getItem('pronunciation_test_preserve')")
             if number==9:
                 assert '[백스]' not in page.locator('#app').inner_text()
+                assert '훗스' not in page.locator('#app').inner_text()
+                assert '[훅스 포 핸들링]' in page.locator('#app').inner_text()
                 assert '/ˈbæɡz/' in page.locator('#app').inner_text()
                 page.get_by_text('단어별 기본 뜻·형태',exact=False).last.scroll_into_view_if_needed()
                 page.screenshot(path=str(OUT/'pronunciation-desktop.png'),full_page=False)
