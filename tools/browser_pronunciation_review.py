@@ -53,7 +53,14 @@ try:
           return {questions,rows,unconfirmedRows:unknown,questionsAnswersExplanationsAndStorageUnchanged:true};
         }''')
         assert report['corpus']['questions']==1225,report['corpus']
-        fixtures=[('navi3',2024,2,14,'/ɪnˈvælɪd/'),('navi2',2022,2,9,'동사 /ˈjuz/'),('navi3',2022,2,8,'동사 /ˈkloʊz/'),('navi2',2021,1,23,'/ˈnɔɹ/'),('navi3',2021,3,21,'형용사 /ˈsɛpɚət/')]
+        report['sourceGuard']=page.evaluate('''()=>{
+          const q={...MD_PAST['2021-navi2-1'].questions.find(q=>q['과목']==='영어'&&Number(q['번호'])===23),_year:2021,_short:'navi2',_session:1};
+          return {issue:mdQuestionContentIssue(q),reviewedPronunciation:MDEnglishWordStudy.supplement(q).includes('/ˈnɔɹ/')};
+        }''')
+        assert report['sourceGuard']=={'issue':'밑줄 위치 확인 필요','reviewedPronunciation':True}
+        # The NOR source lacks its underline, so it must remain excluded by the
+        # app guard. Test its supplement without weakening the production guard.
+        fixtures=[('navi3',2024,2,14,'/ɪnˈvælɪd/'),('navi2',2022,2,9,'동사 /ˈjuz/'),('navi3',2022,2,8,'동사 /ˈkloʊz/'),('navi3',2021,3,21,'형용사 /ˈsɛpɚət/')]
         for grade,year,session,number,expected in fixtures:
             page.evaluate('''({grade,year,session,number})=>{
               const paper=MD_PAST[`${year}-${grade}-${session}`];
