@@ -144,4 +144,5 @@ node tools/test_progress_storage_v522.js
 
 # English lexical coverage must survive all legacy rebuild generators.
 python tools/build_english_word_study.py
+python tools/audit_english_pronunciations.py
 node tools/test_english_word_study.js
