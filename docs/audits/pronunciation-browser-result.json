@@ -1,0 +1,45 @@
+{
+  "pageErrors": [],
+  "cases": [
+    {
+      "grade": "navi3",
+      "year": 2024,
+      "session": 2,
+      "question": 14,
+      "expected": "/ɪnˈvælɪd/"
+    },
+    {
+      "grade": "navi2",
+      "year": 2022,
+      "session": 2,
+      "question": 9,
+      "expected": "동사 /ˈjuz/"
+    },
+    {
+      "grade": "navi3",
+      "year": 2022,
+      "session": 2,
+      "question": 8,
+      "expected": "동사 /ˈkloʊz/"
+    },
+    {
+      "grade": "navi3",
+      "year": 2021,
+      "session": 3,
+      "question": 21,
+      "expected": "형용사 /ˈsɛpɚət/"
+    }
+  ],
+  "network": "local app only",
+  "profile": "fresh isolated; no user data",
+  "corpus": {
+    "questions": 1225,
+    "rows": 39717,
+    "unconfirmedRows": 20,
+    "questionsAnswersExplanationsAndStorageUnchanged": true
+  },
+  "sourceGuard": {
+    "issue": "밑줄 위치 확인 필요",
+    "reviewedPronunciation": true
+  }
+}

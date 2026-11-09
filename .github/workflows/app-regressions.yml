@@ -42,6 +42,7 @@ jobs:
           - browser_exam_sessions_v530.py
           - browser_app_audit_v533.py
           - browser_exam_start_guard_v535.py
+          - browser_pronunciation_review.py
     steps:
       - uses: actions/checkout@v5
       - uses: actions/download-artifact@v4

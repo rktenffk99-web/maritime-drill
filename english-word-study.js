@@ -15,7 +15,20 @@
     return q && q['과목']==='영어' && /^(navi2|navi3)$/.test(q._short||q._gradeShort||'');
   }
   function key(q){return `${q._year}|${q._short||q._gradeShort}|${q._session||q['회차']}|영어|${q['번호']}`;}
-  function wordSection(label,value,local){
+  function pronunciation(word,value,section){
+    const data=global.MDEnglishWordStudyData;
+    const note=data.pronunciationNotes?.[word];
+    if(note?.unconfirmed)return '발음 미확정';
+    // Exact section text is part of the review identity. Never apply an old
+    // part-of-speech decision to a changed/imported sentence with the same ID.
+    if(section?.text===text(value) && section.readings?.[word])return section.readings[word];
+    if(note?.display)return note.display;
+    if(note?.variants)return Object.values(note.variants).map(v=>`${v.label} ${v.reading}`).join(' · ')+' (문맥별 선택 필요)';
+    const reading=data.lexicon[word]?.[1]||'발음 미등록';
+    const status=data.pronunciationStatus?.[word];
+    return reading+(status==='needs_review'?' · 검수 필요':'');
+  }
+  function wordSection(label,value,local,section){
     const data=global.MDEnglishWordStudyData;
     const ts=tokens(value),seen=new Map();
     ts.forEach((word,i)=>{
@@ -30,17 +43,19 @@
       const entry=data.lexicon[word];
       // A future imported question may contain a new token. Expose it, never silently skip it.
       const definition=local[word]||entry?.[0]||'단어 뜻 미등록 — 보강 필요';
-      const pronunciation=entry?.[1]||'발음 미등록';
-      result+=`<tr><td style="vertical-align:top;padding:6px;overflow-wrap:anywhere;border-top:1px solid #DBEAFE"><b>${H(item.word)}</b><br><span style="color:#64748B;font-size:0.85em">${item.positions.join(', ')}번${item.positions.length>1?' · 반복':''}</span></td><td style="vertical-align:top;padding:6px;overflow-wrap:anywhere;border-top:1px solid #DBEAFE">${H(definition)}<br><span style="color:#64748B">발음: ${H(pronunciation)}</span></td></tr>`;
+      const reading=pronunciation(word,value,section);
+      result+=`<tr><td style="vertical-align:top;padding:6px;overflow-wrap:anywhere;border-top:1px solid #DBEAFE"><b>${H(item.word)}</b><br><span style="color:#64748B;font-size:0.85em">${item.positions.join(', ')}번${item.positions.length>1?' · 반복':''}</span></td><td style="vertical-align:top;padding:6px;overflow-wrap:anywhere;border-top:1px solid #DBEAFE">${H(definition)}<br><span style="color:#64748B">발음: ${H(reading)}</span></td></tr>`;
     }
     return result+'</tbody></table>';
   }
   function supplement(q){
     if(!eligible(q)||!global.MDEnglishWordStudyData)return '';
     const local=global.MDEnglishWordStudyData.local[key(q)]||{};
+    const contexts=global.MDEnglishWordStudyData.pronunciationContexts?.[key(q)]||{};
     let html='━━ 단어별 기본 뜻·형태 ━━<p>지문과 네 보기의 영어 단어를 원문 순서로 확인합니다. 같은 철자가 반복되면 한 행에 위치를 모두 표시합니다. 여러 뜻이 있는 단어의 이 문장 해석과 구·절의 연결은 위의 지문 독해·보기 해석을 함께 보십시오.</p>';
-    html+=wordSection('지문',q['문제'],local);
-    (q['선택지']||[]).forEach((choice,i)=>{html+=wordSection(`보기 ${MARKS[i]||i+1}`,choice,local);});
+    html+='<p style="color:#64748B">발음은 기본적으로 미국식입니다. 한글은 근사 독음이며, 검수 필요·발음 미확정 항목은 사전·문맥 확인이 남아 있습니다. 품사별 발음과 영국식이 확인된 경우 따로 표시합니다.</p>';
+    html+=wordSection('지문',q['문제'],local,contexts['0']);
+    (q['선택지']||[]).forEach((choice,i)=>{html+=wordSection(`보기 ${MARKS[i]||i+1}`,choice,local,contexts[String(i+1)]);});
     return html;
   }
   function isWatchQuestion(q){
@@ -49,6 +64,23 @@
     return /officer in charge of the watch/.test(stem)&&/wrong/.test(stem)&&options.length===4&&
       options[0].startsWith('notify the master')&&options[1].startsWith('keep his watch')&&
       options[2].startsWith('hand over the watch')&&options[3].startsWith('continue to be responsible');
+  }
+  function reviewLegacyPronunciations(html){
+    // Work on the returned HTML string only. Never mutate MD_EXPLAIN or any
+    // question/answer/state object. Match only the legacy paired reading spans.
+    return String(html).replace(/(<span\b[^>]*>)([^<>]*)(<\/span>\s*)<span\b([^>]*)>\[([^\]<>]*)\]<\/span>/g,
+      (all,open,english,close,attrs,reading)=>{
+        if(!/color\s*:\s*#94A3B8/i.test(attrs))return all;
+        const raw=text(english).trim(),ts=tokens(raw);
+        if(ts.length===1 && /^[A-Za-z]+(?:'[A-Za-z]+)?$/.test(raw) && global.MDEnglishWordStudyData.lexicon[raw.toLowerCase()]){
+          return `${open}${english}${close}<span ${attrs}>[${H(pronunciation(raw.toLowerCase(),'',null))}]</span>`;
+        }
+        // A phrase is not synthesized from isolated dictionary words. Only
+        // independently confirmed erroneous Korean tokens are corrected.
+        const fixes={'백스':'백즈','슬링스':'슬링즈','톤스':'턴즈','패신저스':'패신저즈','오더스':'오더즈','팀버스':'팀버즈','섀클스':'섀클즈','부오이언시':'보이언시','데이비츠':'대비츠'};
+        reading=reading.split(' ').map(part=>fixes[part]||part).join(' ');
+        return `${open}${english}${close}<span ${attrs} title="기존 문장 근사 독음 · 전체 발음 검수 필요">[${H(reading)}]</span>`;
+      });
   }
   const chunk=(en,ko,structure)=>`<p><span style="color:#0EA5E9;font-weight:bold">${H(en)}</span><br>→ ${H(ko)}<br><span style="color:#64748B">${H(structure)}</span></p>`;
   function watchDetail(){
@@ -90,7 +122,8 @@
       }
       else html='<p>이 문항의 문장별 해설은 보강이 필요합니다. 아래는 원문 전체의 단어별 기본 뜻입니다.</p>';
     }
-    return {...(explanation||{}),html:html+'<br>'+extra};
+    html=reviewLegacyPronunciations(html);
+    return {...(explanation||{}),html:'<p style="color:#64748B">기존 해설의 문장 단위 한글 독음은 전체 검수가 남아 있습니다. 단어별 발음과 검수 상태는 아래 표를 확인하십시오.</p>'+html+'<br>'+extra};
   }
   global.MDEnglishWordStudy={augment,tokens,supplement,isWatchQuestion};
 })(window);

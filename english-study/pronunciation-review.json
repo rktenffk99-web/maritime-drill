@@ -1,0 +1,1051 @@
+{
+  "date": "2026-11-09",
+  "words": {
+    "invalid": {
+      "before": "/ˈɪnvələd/",
+      "verified": true,
+      "reason": "무효인 형용사 문맥에 병약자 명사 발음이 들어감",
+      "sources": [
+        "https://dictionary.cambridge.org/dictionary/english/invalid"
+      ],
+      "ukReviewed": true,
+      "contextReviewed": true
+    },
+    "subject": {
+      "before": "/səbˈdʒɛkt/",
+      "verified": true,
+      "reason": "현재 지문의 명사·형용사 subject에 동사 발음이 들어감",
+      "sources": [
+        "https://dictionary.cambridge.org/dictionary/english/subject"
+      ],
+      "ukReviewed": true,
+      "contextReviewed": true
+    },
+    "nor": {
+      "before": "엔오알",
+      "verified": true,
+      "reason": "Neither ... nor의 접속사를 NOR 약어로 읽음",
+      "sources": [
+        "https://dictionary.cambridge.org/dictionary/english/nor"
+      ],
+      "ukReviewed": true,
+      "contextReviewed": true
+    },
+    "bags": {
+      "before": "백스",
+      "verified": true,
+      "reason": "복수형 /ɡz/가 /ks/처럼 표시됨",
+      "sources": [
+        "https://github.com/cmusphinx/cmudict"
+      ],
+      "ukReviewed": false,
+      "contextReviewed": false
+    },
+    "slings": {
+      "before": "슬링스",
+      "verified": true,
+      "reason": "복수형 /z/를 /s/처럼 표시함",
+      "sources": [
+        "https://github.com/cmusphinx/cmudict"
+      ],
+      "ukReviewed": false,
+      "contextReviewed": false
+    },
+    "tonnes": {
+      "before": "톤스",
+      "verified": true,
+      "reason": "복수형 /z/를 /s/처럼 표시함",
+      "sources": [
+        "https://github.com/cmusphinx/cmudict"
+      ],
+      "ukReviewed": false,
+      "contextReviewed": false
+    },
+    "passengers": {
+      "before": "패신저스",
+      "verified": true,
+      "reason": "복수형 /z/를 /s/처럼 표시함",
+      "sources": [
+        "https://github.com/cmusphinx/cmudict"
+      ],
+      "ukReviewed": false,
+      "contextReviewed": false
+    },
+    "orders": {
+      "before": "오더스",
+      "verified": true,
+      "reason": "복수형 /z/를 /s/처럼 표시함",
+      "sources": [
+        "https://github.com/cmusphinx/cmudict"
+      ],
+      "ukReviewed": false,
+      "contextReviewed": false
+    },
+    "timbers": {
+      "before": "팀버스",
+      "verified": true,
+      "reason": "복수형 /z/를 /s/처럼 표시함",
+      "sources": [
+        "https://github.com/cmusphinx/cmudict"
+      ],
+      "ukReviewed": false,
+      "contextReviewed": false
+    },
+    "shackles": {
+      "before": "섀클스",
+      "verified": true,
+      "reason": "복수형 /z/를 /s/처럼 표시함",
+      "sources": [
+        "https://github.com/cmusphinx/cmudict"
+      ],
+      "ukReviewed": false,
+      "contextReviewed": false
+    },
+    "buoyancy": {
+      "before": "부오이언시",
+      "verified": true,
+      "reason": "/ɔɪ/ 이중모음이 부오이로 분리되어 표시됨",
+      "sources": [
+        "https://dictionary.cambridge.org/dictionary/english/buoyancy"
+      ],
+      "ukReviewed": true,
+      "contextReviewed": false
+    },
+    "davits": {
+      "before": "데이비츠",
+      "verified": true,
+      "reason": "davit의 /æ/를 데이로 표시함; 확인된 단수형의 규칙 복수",
+      "sources": [
+        "https://dictionary.cambridge.org/pronunciation/english/davit"
+      ],
+      "ukReviewed": true,
+      "contextReviewed": false
+    },
+    "stbd": {
+      "before": "에스 티 비 디",
+      "verified": true,
+      "reason": "항해일지에서 starboard의 축약형을 철자 이름으로 읽음",
+      "sources": [
+        "https://www.cambridge.org/core/services/aop-cambridge-core/content/view/EA6AB445F7D8796A81E9AB0204DD531D/S0373463300025467a.pdf/a-navigational-glossary.pdf"
+      ],
+      "ukReviewed": false,
+      "contextReviewed": true
+    },
+    "ramain": {
+      "unconfirmed": true,
+      "reason": "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
+      "sources": []
+    },
+    "boatsuain": {
+      "unconfirmed": true,
+      "reason": "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
+      "sources": []
+    },
+    "brocheures": {
+      "unconfirmed": true,
+      "reason": "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
+      "sources": [],
+      "before": "브로슈어즈"
+    },
+    "decemeber": {
+      "unconfirmed": true,
+      "reason": "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
+      "sources": [],
+      "before": "디셈버"
+    },
+    "miky": {
+      "unconfirmed": true,
+      "reason": "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
+      "sources": [],
+      "before": "미키"
+    },
+    "barwater": {
+      "unconfirmed": true,
+      "reason": "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
+      "sources": [],
+      "before": "바워터"
+    },
+    "var'ly": {
+      "unconfirmed": true,
+      "reason": "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
+      "sources": [],
+      "before": "베어리어블리"
+    },
+    "womanned": {
+      "unconfirmed": true,
+      "reason": "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
+      "sources": [],
+      "before": "우먼드"
+    },
+    "catched": {
+      "unconfirmed": true,
+      "reason": "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
+      "sources": [],
+      "before": "캐치드"
+    },
+    "departer": {
+      "unconfirmed": true,
+      "reason": "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
+      "sources": [],
+      "before": "디파터"
+    },
+    "use": {
+      "before": "/ˈjus/",
+      "verified": true,
+      "contextReviewed": true,
+      "contextOnly": true,
+      "reason": "단일 독음으로 품사별 발음 차이를 누락함. 문항·보기별 검수값 또는 품사별 대안을 표시.",
+      "sources": [
+        "https://github.com/cmusphinx/cmudict",
+        "https://dictionary.cambridge.org/dictionary/english/use"
+      ],
+      "variants": {
+        "noun": {
+          "label": "명사",
+          "reading": "/ˈjus/"
+        },
+        "verb": {
+          "label": "동사",
+          "reading": "/ˈjuz/"
+        }
+      }
+    },
+    "close": {
+      "before": "/ˈkloʊs/",
+      "verified": true,
+      "contextReviewed": true,
+      "contextOnly": true,
+      "reason": "단일 독음으로 품사별 발음 차이를 누락함. 문항·보기별 검수값 또는 품사별 대안을 표시.",
+      "sources": [
+        "https://github.com/cmusphinx/cmudict",
+        "https://dictionary.cambridge.org/dictionary/english/close"
+      ],
+      "variants": {
+        "other": {
+          "label": "형용사·부사",
+          "reading": "/ˈkloʊs/"
+        },
+        "verb": {
+          "label": "동사",
+          "reading": "/ˈkloʊz/"
+        }
+      }
+    },
+    "present": {
+      "before": "프레전트",
+      "verified": true,
+      "contextReviewed": true,
+      "contextOnly": true,
+      "reason": "단일 독음으로 품사별 발음 차이를 누락함. 문항·보기별 검수값 또는 품사별 대안을 표시.",
+      "sources": [
+        "https://github.com/cmusphinx/cmudict",
+        "https://dictionary.cambridge.org/dictionary/english/present"
+      ],
+      "variants": {
+        "other": {
+          "label": "명사·형용사",
+          "reading": "/ˈpɹɛzənt/"
+        },
+        "verb": {
+          "label": "동사",
+          "reading": "/pɹɪˈzɛnt/"
+        }
+      }
+    },
+    "conduct": {
+      "before": "/ˈkɑndəkt/",
+      "verified": true,
+      "contextReviewed": true,
+      "contextOnly": true,
+      "reason": "단일 독음으로 품사별 발음 차이를 누락함. 문항·보기별 검수값 또는 품사별 대안을 표시.",
+      "sources": [
+        "https://github.com/cmusphinx/cmudict",
+        "https://dictionary.cambridge.org/dictionary/english/conduct"
+      ],
+      "variants": {
+        "noun": {
+          "label": "명사",
+          "reading": "/ˈkɑndəkt/"
+        },
+        "verb": {
+          "label": "동사",
+          "reading": "/kənˈdʌkt/"
+        }
+      }
+    },
+    "separate": {
+      "before": "세퍼레이트",
+      "verified": true,
+      "contextReviewed": false,
+      "contextOnly": true,
+      "reason": "단일 독음으로 품사별 발음 차이를 누락함. 문항·보기별 검수값 또는 품사별 대안을 표시.",
+      "sources": [
+        "https://github.com/cmusphinx/cmudict",
+        "https://dictionary.cambridge.org/dictionary/english/separate"
+      ],
+      "variants": {
+        "adjective": {
+          "label": "형용사",
+          "reading": "/ˈsɛpɚət/"
+        },
+        "verb": {
+          "label": "동사",
+          "reading": "/ˈsɛpɚˌeɪt/"
+        }
+      }
+    },
+    "buoy": {
+      "verified": true,
+      "ukReviewed": true,
+      "sources": [
+        "https://dictionary.cambridge.org/dictionary/english/buoy"
+      ],
+      "display": "미국식 /ˈbuːi/ 또는 /bɔɪ/ · 영국식 /bɔɪ/",
+      "reason": "미국식 부이는 허용되는 발음. 영국식과 함께 표시."
+    },
+    "stowage": {
+      "verified": true,
+      "ukReviewed": true,
+      "sources": [
+        "https://en.pons.com/translate/english-french/stowage"
+      ],
+      "display": "미국식 /ˈstoʊɪdʒ/ · 영국식 /ˈstəʊɪdʒ/",
+      "reason": "미국식·영국식 차이 표시"
+    }
+  },
+  "contexts": {
+    "2020|navi2|2|영어|8": {
+      "1": {
+        "text": "\"What is your present course?\" → \"My course is not reported.\"",
+        "readings": {
+          "present": "명사·형용사 /ˈpɹɛzənt/"
+        }
+      }
+    },
+    "2020|navi2|2|영어|15": {
+      "0": {
+        "text": "Select the correct one for the blank. \"The art of steering is largely keeping a very close watch on the lubber's line and putting the helm over as soon as the ship starts to ( ).\"",
+        "readings": {
+          "close": "형용사·부사 /ˈkloʊs/"
+        }
+      }
+    },
+    "2020|navi2|2|영어|19": {
+      "0": {
+        "text": "Select suitable word for the blank. \"The condition of the ship and its equipment shall be maintained to ( ) with the provisions of the present regulations.\"",
+        "readings": {
+          "present": "명사·형용사 /ˈpɹɛzənt/"
+        }
+      }
+    },
+    "2020|navi3|3|영어|24": {
+      "0": {
+        "text": "Select a suitable group for the blank. \"The effectiveness of life-saving appliances depends heavily on good ( ) by the crew and their use in regular ( ).\"",
+        "readings": {
+          "use": "명사 /ˈjus/"
+        }
+      }
+    },
+    "2020|navi3|4|영어|2": {
+      "0": {
+        "text": "Select the suitable one for the blank. \"If any part of the message is considered sufficiently important to need safeguarding, we use the word ( ).\"",
+        "readings": {
+          "use": "동사 /ˈjuz/"
+        }
+      }
+    },
+    "2020|navi3|4|영어|12": {
+      "0": {
+        "text": "What does the following statement explain? \"Noxious liquid substances which, if discharged into the sea from tank cleaning or deballasting operations, are deemed to present a major hazard to either marine resources or human health and, therefore, justify the prohibition of the discharge into the marine environment.＂",
+        "readings": {
+          "present": "동사 /pɹɪˈzɛnt/"
+        }
+      }
+    },
+    "2020|navi3|4|영어|17": {
+      "0": {
+        "text": "Select suitable word for the blank. \"Detection of targets, particularly small targets, is generally better at short ranges. However, if the radar is to be used for plotting it is not advisable to use a scale that is too ( ).\"",
+        "readings": {
+          "use": "동사 /ˈjuz/"
+        }
+      }
+    },
+    "2021|navi2|1|영어|16": {
+      "0": {
+        "text": "Choose the incorrect one to complete the following sentence. \"The reason why shipowners use flags of convenience is:\"",
+        "readings": {
+          "use": "동사 /ˈjuz/"
+        }
+      }
+    },
+    "2021|navi2|3|영어|11": {
+      "0": {
+        "text": "Choose the best one which has the same meaning as the underlined 'revolving'. \"Any light to attract the attention of another vessel shall be such that it cannot be mistaken for any to navigation. For the purpose of this, the use of high intensity intermittent or revolving lights, such as strobe lights, shall be avoided.\"",
+        "readings": {
+          "use": "명사 /ˈjus/"
+        }
+      }
+    },
+    "2021|navi2|3|영어|17": {
+      "0": {
+        "text": "Select a group of words suitable for the blank. \"The effectiveness of life-saving appliances depends heavily on good ( ) by the crew and their use in regular drills. The lapse of time since the last survey for a Safety Equipment Certificate can be a significant factor in the degree of ( ) of equipment if it has not been subject to regular inspection by the crew.\"",
+        "readings": {
+          "use": "명사 /ˈjus/"
+        }
+      }
+    },
+    "2021|navi2|4|영어|1": {
+      "0": {
+        "text": "Choose the most suitable word for the blank. \"The SMCP has been compiled to assist in the greater ( ) of navigation and of the conduct of the ship.\"",
+        "readings": {
+          "conduct": "명사 /ˈkɑndəkt/"
+        }
+      }
+    },
+    "2021|navi2|4|영어|7": {
+      "4": {
+        "text": "Advise you to keep your present course.",
+        "readings": {
+          "present": "명사·형용사 /ˈpɹɛzənt/"
+        }
+      }
+    },
+    "2021|navi3|1|영어|19": {
+      "0": {
+        "text": "This is the amount payable for the use of the whole or portion of a ship. This form of freight is calculated on the actual cubic capacity of the ship offered, and has no direct relation to the cargo to be carried. What is this?",
+        "readings": {
+          "use": "명사 /ˈjus/"
+        }
+      }
+    },
+    "2021|navi3|3|영어|1": {
+      "0": {
+        "text": "What is the meaning of the underlined part? VTS Station: \"I can not understand you. Please use 'INTERCO', over.\"",
+        "readings": {
+          "use": "동사 /ˈjuz/"
+        }
+      }
+    },
+    "2021|navi3|3|영어|9": {
+      "3": {
+        "text": "Present tide is 0.1 meter below datum at your anchorage.",
+        "readings": {
+          "present": "명사·형용사 /ˈpɹɛzənt/"
+        }
+      }
+    },
+    "2021|navi3|3|영어|21": {
+      "0": {
+        "text": "Select the correct one for the blank \"Classification Rules require that the surveys of hull and machinery are carried out every four years. And also alternatively ( ) systems are carried out, whereby the surveys are divided into separate items for inspection during a five-year cycle.\"",
+        "readings": {
+          "separate": "형용사 /ˈsɛpɚət/"
+        }
+      }
+    },
+    "2021|navi3|4|영어|19": {
+      "0": {
+        "text": "According to SOLAS, Select the incorrect one for the blank. \"The present regulations[SOLAS], unless expressly provided otherwise, do not apply to: ( ).\"",
+        "readings": {
+          "present": "명사·형용사 /ˈpɹɛzənt/"
+        }
+      }
+    },
+    "2021|navi3|4|영어|23": {
+      "0": {
+        "text": "Select the correct one for the blank. \"On arriving at the port of discharge, the consignee or holder of the bill of lading will present it to the master for ( ).\"",
+        "readings": {
+          "present": "동사 /pɹɪˈzɛnt/"
+        }
+      }
+    },
+    "2021|navi3|4|영어|25": {
+      "1": {
+        "text": "Sublate to use too much formal expression in business letters.",
+        "readings": {
+          "use": "동사 /ˈjuz/"
+        }
+      },
+      "2": {
+        "text": "Use the modified block format letter as practicable.",
+        "readings": {
+          "use": "동사 /ˈjuz/"
+        }
+      },
+      "4": {
+        "text": "Use auxiliary verb so as to make the sentence simple.",
+        "readings": {
+          "use": "동사 /ˈjuz/"
+        }
+      }
+    },
+    "2022|navi2|1|영어|22": {
+      "1": {
+        "text": "Use of ECDIS to maintain safety of navigation",
+        "readings": {
+          "use": "명사 /ˈjus/"
+        }
+      },
+      "3": {
+        "text": "Use of internal communication systems",
+        "readings": {
+          "use": "명사 /ˈjus/"
+        }
+      },
+      "4": {
+        "text": "Use of leadership and managerial skill",
+        "readings": {
+          "use": "명사 /ˈjus/"
+        }
+      }
+    },
+    "2022|navi2|1|영어|25": {
+      "3": {
+        "text": "To use auxiliary verbs.",
+        "readings": {
+          "use": "동사 /ˈjuz/"
+        }
+      },
+      "4": {
+        "text": "To use abbreviations as possible.",
+        "readings": {
+          "use": "동사 /ˈjuz/"
+        }
+      }
+    },
+    "2022|navi2|2|영어|9": {
+      "0": {
+        "text": "Select suitable one for the blank. \"Do not use hooks ( ) handling bags.\"",
+        "readings": {
+          "use": "동사 /ˈjuz/"
+        }
+      }
+    },
+    "2022|navi2|2|영어|17": {
+      "0": {
+        "text": "Choose the incorrect one for blank to complete the following sentence. \"The reason why shipowners use flags of convenience is ( ).\"",
+        "readings": {
+          "use": "동사 /ˈjuz/"
+        }
+      }
+    },
+    "2022|navi2|3|영어|16": {
+      "0": {
+        "text": "Select suitable word for the blank. \"The condition of the ship and its equipment shall be maintained to ( ) with the provisions of the present regulations.\"",
+        "readings": {
+          "present": "명사·형용사 /ˈpɹɛzənt/"
+        }
+      }
+    },
+    "2022|navi3|1|영어|23": {
+      "0": {
+        "text": "What is not record item in the following sentence during every twenty minutes? \"Contractor to provide two mechanics to assist ship's force to conduct sea trials for approximately eight hours. The contractor shall compile a complete record during sea trials, giving temperature readings, pressure readings, engine and shaft RPM every twenty minutes. Upon completion of sea trials, submit trial records in triplicate to the Owner's Representative.\"",
+        "readings": {
+          "conduct": "동사 /kənˈdʌkt/"
+        }
+      }
+    },
+    "2022|navi3|2|영어|8": {
+      "3": {
+        "text": "You must close up on the vessel ahead of you.",
+        "readings": {
+          "close": "동사 /ˈkloʊz/"
+        }
+      }
+    },
+    "2022|navi3|4|영어|1": {
+      "0": {
+        "text": "Fill the blank with the most appropriate message markers. \"This is St. Nicholas Strait VTS center. Unknown vessel passing west of Bligh Bank buoy. You are running into danger. Submerged wreck ahead of you. It is dangerous to remain on your present course. ( ). You must alter course to starboard.\"",
+        "readings": {
+          "present": "명사·형용사 /ˈpɹɛzənt/"
+        }
+      }
+    },
+    "2022|navi3|4|영어|21": {
+      "0": {
+        "text": "Select the correct one for the blank \"Classification Rules require that the surveys of hull and machinery are carried out every four years. And also alternatively ( ) systems are carried out, whereby the surveys are divided into separate items for inspection during a five-year cycle.\"",
+        "readings": {
+          "separate": "형용사 /ˈsɛpɚət/"
+        }
+      }
+    },
+    "2023|navi2|1|영어|5": {
+      "0": {
+        "text": "Fill the blank from the given. \"When you give your crew members a ballast control briefing, you say: We are waiting for shore instructions and there is no pumping ( ) present.\"",
+        "readings": {
+          "present": "명사·형용사 /ˈpɹɛzənt/"
+        }
+      }
+    },
+    "2023|navi2|1|영어|23": {
+      "4": {
+        "text": "As entries are stated after occurrence, it is desirable to use the present tense in principle.",
+        "readings": {
+          "use": "동사 /ˈjuz/",
+          "present": "명사·형용사 /ˈpɹɛzənt/"
+        }
+      }
+    },
+    "2023|navi2|2|영어|16": {
+      "0": {
+        "text": "Select a suitable word for the blank. \"The condition of the ship and its equipment shall be maintained to ( ) with the provisions of the present regulations.\"",
+        "readings": {
+          "present": "명사·형용사 /ˈpɹɛzənt/"
+        }
+      }
+    },
+    "2023|navi2|2|영어|24": {
+      "1": {
+        "text": "To use auxiliary verbs.",
+        "readings": {
+          "use": "동사 /ˈjuz/"
+        }
+      },
+      "2": {
+        "text": "To use abbreviations as possible.",
+        "readings": {
+          "use": "동사 /ˈjuz/"
+        }
+      }
+    },
+    "2023|navi2|4|영어|3": {
+      "0": {
+        "text": "Select the most suitable word to fill the blank. \"The use of ( ) language should be avoided when VHF radio is used on channel sixteen.\"",
+        "readings": {
+          "use": "명사 /ˈjus/"
+        }
+      }
+    },
+    "2023|navi2|4|영어|18": {
+      "0": {
+        "text": "Select the proper word for the blank. \"When, from any reason, the vessel required to keep her course and speed finds herself so close that collision cannot be avoided by the action of the ( ) alone, she shall take such action as will best aid to avoid collision.\"",
+        "readings": {
+          "close": "형용사·부사 /ˈkloʊs/"
+        }
+      }
+    },
+    "2023|navi2|4|영어|24": {
+      "1": {
+        "text": "To separate long sentences or items in one sentence.",
+        "readings": {
+          "separate": "동사 /ˈsɛpɚˌeɪt/"
+        }
+      }
+    },
+    "2023|navi3|1|영어|2": {
+      "0": {
+        "text": "Fill the blank with the most appropriate SMCP message markers. \"This is St. Nicholas Strait VTS center. Unknown vessel passing west of Bligh Bank buoy. You are running into danger. Submerged wreck ahead of you. It is dangerous to remain on your present course. ( ). You must alter course to starboard.\"",
+        "readings": {
+          "present": "명사·형용사 /ˈpɹɛzənt/"
+        }
+      }
+    },
+    "2023|navi3|1|영어|13": {
+      "0": {
+        "text": "What does the following statement explain? \"Noxious Liquid Substances which, if discharged into the sea from tank cleaning or deballasting operation, are deemed to present a hazard to either marine resources or human health or cause harm to amenities or other legitimate uses of the sea and therefore justify a limitation on the quality and quantity of the discharge into the marine environment.\"",
+        "readings": {
+          "present": "동사 /pɹɪˈzɛnt/"
+        }
+      }
+    },
+    "2023|navi3|1|영어|24": {
+      "0": {
+        "text": "How long does it take for sea trials in the following sentence? \"Contractor to provide two mechanics to assist ship's force to conduct sea trials for approximately eight hours. The contractor shall compile a complete record during sea trials, giving temperature readings, pressure readings, engine and shaft rpm every twenty minutes. Upon completion of sea trials, submit trial records in triplicate to owner's representative.\"",
+        "readings": {
+          "conduct": "동사 /kənˈdʌkt/"
+        }
+      }
+    },
+    "2023|navi3|2|영어|13": {
+      "0": {
+        "text": "Place names used should be those on the chart or Sailing directions in use. Should these not be understood, what should be given?",
+        "readings": {
+          "use": "명사 /ˈjus/"
+        }
+      }
+    },
+    "2023|navi3|2|영어|25": {
+      "0": {
+        "text": "What is the subject of the following sentence? \"Contractor to provide two mechanics to assist Ship's Force to conduct Sea Trials for approximately eight hours. The Contractor shall compile a complete record during Sea. Trials, giving temperature readings, pressure readings, engine and shaft RPM every twenty minutes. Upon completion of Sea Trials, submit trial records in triplicate to Owner's Representative.\"",
+        "readings": {
+          "conduct": "동사 /kənˈdʌkt/"
+        }
+      }
+    },
+    "2023|navi3|3|영어|1": {
+      "0": {
+        "text": "Fill in the blank with the most appropriate SMCP message markers. \"This is St. Nicholas Strait VTS center. Unknown vessel passing west of Bligh Bank buoy. You are running into danger. Submerged wreck ahead of you. It is dangerous to remain on your present course. ( ). You must alter course to starboard.\"",
+        "readings": {
+          "present": "명사·형용사 /ˈpɹɛzənt/"
+        }
+      }
+    },
+    "2023|navi3|3|영어|17": {
+      "0": {
+        "text": "Select a suitable group for the blank. \"The effectiveness of life-saving appliances depends heavily on good ( ) by the crew and their use in regular ( ).\"",
+        "readings": {
+          "use": "명사 /ˈjus/"
+        }
+      }
+    },
+    "2023|navi3|4|영어|2": {
+      "0": {
+        "text": "Fill in the blank with the most appropriate SMCP message markers. \"This is St. Nicholas Strait VTS center. Unknown vessel passing west of Bligh Bank buoy. You are running into danger. Submerged wreck ahead of you. It is dangerous to remain on your present course. ( ). You must alter course to starboard.\"",
+        "readings": {
+          "present": "명사·형용사 /ˈpɹɛzənt/"
+        }
+      }
+    },
+    "2023|navi3|4|영어|7": {
+      "4": {
+        "text": "Advise you to keep your present course.",
+        "readings": {
+          "present": "명사·형용사 /ˈpɹɛzənt/"
+        }
+      }
+    },
+    "2024|navi2|1|영어|15": {
+      "0": {
+        "text": "Choose the incorrect one for blank to complete the following sentence. \"The reason why shipowners use flags of convenience is ( ).\"",
+        "readings": {
+          "use": "동사 /ˈjuz/"
+        }
+      }
+    },
+    "2024|navi2|2|영어|8": {
+      "3": {
+        "text": "must close up on",
+        "readings": {
+          "close": "동사 /ˈkloʊz/"
+        }
+      }
+    },
+    "2024|navi2|3|영어|5": {
+      "0": {
+        "text": "According to the SMCP, select the proper one for the blank. \"Present ( ) of the main engine is 170 kilowatts.\"",
+        "readings": {
+          "present": "명사·형용사 /ˈpɹɛzənt/"
+        }
+      }
+    },
+    "2024|navi2|3|영어|13": {
+      "0": {
+        "text": "Select the proper one for the blank. \"It is a simple and effective way of monitoring a ship's progress by observing the movement of the echo of a clearly identified mark with respect to lines drawn on the radar display ( ) to the ship's track. It is of particular use in the preparation of tracks when planning a passage.\"",
+        "readings": {
+          "use": "명사 /ˈjus/"
+        }
+      }
+    },
+    "2024|navi2|3|영어|23": {
+      "1": {
+        "text": "To use longer verb than short one.",
+        "readings": {
+          "use": "동사 /ˈjuz/"
+        }
+      },
+      "3": {
+        "text": "To use auxiliary verb instead of using long sentences.",
+        "readings": {
+          "use": "동사 /ˈjuz/"
+        }
+      }
+    },
+    "2024|navi2|4|영어|5": {
+      "0": {
+        "text": "Select the suitable one for the blank. \"Do not use hooks ( ) handling bags.\"",
+        "readings": {
+          "use": "동사 /ˈjuz/"
+        }
+      }
+    },
+    "2024|navi2|4|영어|11": {
+      "0": {
+        "text": "Select the suitable one for the blank. \"The ability to separate targets close together at the same range is called ( ).\"",
+        "readings": {
+          "separate": "동사 /ˈsɛpɚˌeɪt/",
+          "close": "형용사·부사 /ˈkloʊs/"
+        }
+      }
+    },
+    "2024|navi3|1|영어|3": {
+      "0": {
+        "text": "Fill in the blank with the most appropriate SMCP message markers. \"This is St. Nicholas Strait VTS center. Unknown vessel passing west of Bligh Bank buoy. You are running into danger. Submerged wreck is ahead of you. It is dangerous to remain on your present course. ( ). You must alter course to starboard.\"",
+        "readings": {
+          "present": "명사·형용사 /ˈpɹɛzənt/"
+        }
+      }
+    },
+    "2024|navi3|1|영어|13": {
+      "0": {
+        "text": "Place names used should be those on the chart or Sailing directions in use. Should these not be understood, what should be given?",
+        "readings": {
+          "use": "명사 /ˈjus/"
+        }
+      }
+    },
+    "2024|navi3|2|영어|1": {
+      "0": {
+        "text": "Fill in the blank with the most appropriate SMCP message markers. \"This is St. Nicholas Strait VTS center. Unknown vessel passing west of Bligh Bank buoy. You are running into danger. Submerged wreck is ahead of you. It is dangerous to remain on your present course. ( ). You must alter course to starboard.\"",
+        "readings": {
+          "present": "명사·형용사 /ˈpɹɛzənt/"
+        }
+      }
+    },
+    "2024|navi3|2|영어|7": {
+      "0": {
+        "text": "Refer to the following statement according to SMCP message markers. What is the statement of message markers? \"This indicates that the following message informs others about immediate navigational action intended to be taken. The use of this message marker is logically restricted to messages announcing navigational actions by the vessel sending this message.\"",
+        "readings": {
+          "use": "명사 /ˈjus/"
+        }
+      }
+    },
+    "2024|navi3|2|영어|24": {
+      "0": {
+        "text": "Select a proper word for the blank according to SOLAS. \"( ) shall be situated ready for use at easily visible places, which can be reached quickly and easily at any time in the event of a fire, and in such a way that their serviceability is not impaired by the weather, vibration or other external factors.\"",
+        "readings": {
+          "use": "명사 /ˈjus/"
+        }
+      }
+    },
+    "2024|navi3|4|영어|3": {
+      "0": {
+        "text": "Select the suitable one for the blank. \"Close-coupled towing is a method of towing vessels through polar ice by means of icebreaking tugs with a special stern ( ) suited to receive and hold the bow of the vessel to be towed.\"",
+        "readings": {
+          "close": "형용사·부사 /ˈkloʊs/"
+        }
+      }
+    },
+    "2024|navi3|4|영어|4": {
+      "0": {
+        "text": "Fill in the blank with the most appropriate SMCP Message Markers. \"This is St. Nicholas Strait VTS center. Unknown vessel passing west of Bligh Bank buoy. You are running into danger. Submerged wreck is ahead of you. It is dangerous to remain on your present course. ( ). You must alter course to starboard.\"",
+        "readings": {
+          "present": "명사·형용사 /ˈpɹɛzənt/"
+        }
+      }
+    },
+    "2024|navi3|4|영어|18": {
+      "0": {
+        "text": "Select the suitable one for the blanks. \"The effectiveness of life-saving appliances depends heavily on good ( ) by the crew and their use in regular ( ).\"",
+        "readings": {
+          "use": "명사 /ˈjus/"
+        }
+      }
+    },
+    "2024|navi3|4|영어|20": {
+      "0": {
+        "text": "Select the correct one for the blank \"( ) is the amount payable for the use of the whole or portion of a ship. This form of freight is calculated on the actual cubic capacity of the ship offered, and has no direct relation to the cargo to be carried.\"",
+        "readings": {
+          "use": "명사 /ˈjus/"
+        }
+      }
+    },
+    "2025|navi2|1|영어|1": {
+      "3": {
+        "text": "Close up",
+        "readings": {
+          "close": "동사 /ˈkloʊz/"
+        }
+      }
+    },
+    "2025|navi2|1|영어|12": {
+      "0": {
+        "text": "Select a correct one for the blank. \"The officer of watchkeeping should be thoroughly familiar ( ) the use of electronic navigational aids carried.\"",
+        "readings": {
+          "use": "명사 /ˈjus/"
+        }
+      }
+    },
+    "2025|navi2|2|영어|15": {
+      "0": {
+        "text": "Choose the incorrect one for blank to complete the following sentence. \"The reason why shipowners use flags of convenience is ( ).\"",
+        "readings": {
+          "use": "동사 /ˈjuz/"
+        }
+      }
+    },
+    "2025|navi2|2|영어|18": {
+      "0": {
+        "text": "Select a group of words suitable for the blanks. \"The effectiveness of life-saving appliances depends heavily on good ( ) by the crew and their use in regular drills. The lapse of time since the last survey for a Safety Equipment Certificate can be a significant factor in the degree of ( ) of equipment if it has not been subject to regular inspection by the crew.\"",
+        "readings": {
+          "use": "명사 /ˈjus/"
+        }
+      }
+    },
+    "2025|navi2|2|영어|25": {
+      "0": {
+        "text": "Select one which has improper use of auxiliary verb in simplifying long sentences.",
+        "readings": {
+          "use": "명사 /ˈjus/"
+        }
+      }
+    },
+    "2025|navi2|3|영어|4": {
+      "0": {
+        "text": "Select the proper one for the blank. \"When you give your crew members a ballast control briefing, you say: We are waiting for shore instructions and there is no pumping ( ) present.\"",
+        "readings": {
+          "present": "명사·형용사 /ˈpɹɛzənt/"
+        }
+      }
+    },
+    "2025|navi2|3|영어|8": {
+      "0": {
+        "text": "Select a proper word for the blank. This indicates that the following message is of interrogative character. For example: \"( ). What is your present maximum draft?\"",
+        "readings": {
+          "present": "명사·형용사 /ˈpɹɛzənt/"
+        }
+      }
+    },
+    "2025|navi2|3|영어|13": {
+      "0": {
+        "text": "Select the most appropriate one for the blank. \"The ability of a radar to separate targets close together on the same bearing is called ( ).\"",
+        "readings": {
+          "separate": "동사 /ˈsɛpɚˌeɪt/",
+          "close": "형용사·부사 /ˈkloʊs/"
+        }
+      }
+    },
+    "2025|navi2|4|영어|25": {
+      "4": {
+        "text": "To separate long sentences or items in one sentence.",
+        "readings": {
+          "separate": "동사 /ˈsɛpɚˌeɪt/"
+        }
+      }
+    },
+    "2025|navi3|1|영어|4": {
+      "4": {
+        "text": "Advise you to keep your present course.",
+        "readings": {
+          "present": "명사·형용사 /ˈpɹɛzənt/"
+        }
+      }
+    },
+    "2025|navi3|1|영어|6": {
+      "0": {
+        "text": "What is the estimated metacentric height(GM) of the vessel in the following communication? A: \"What is the breadth of your vessel?\" B: \"My breadth is 20 meters.\" A: \"What is your present full roll period?\" B: \"My present full roll period is 20 seconds.\"",
+        "readings": {
+          "present": "명사·형용사 /ˈpɹɛzənt/"
+        }
+      }
+    },
+    "2025|navi3|1|영어|20": {
+      "0": {
+        "text": "Select the suitable one for the blanks. \"The effectiveness of life-saving appliances depends heavily on good ( ) by the crew and their use in regular ( ).\"",
+        "readings": {
+          "use": "명사 /ˈjus/"
+        }
+      }
+    },
+    "2025|navi3|2|영어|11": {
+      "0": {
+        "text": "Select the most appropriate group of words for the blanks in order. \"It proposed a system allowing the use of both cardinal and lateral systems in each region, but whereas in region A the color ( ) of the lateral system is used to mark the port side of channels and the color ( ) the starboard side, in region B the colors are reversed.\"",
+        "readings": {
+          "use": "명사 /ˈjus/"
+        }
+      }
+    },
+    "2025|navi3|2|영어|20": {
+      "4": {
+        "text": "have brief instructions or diagrams clearly illustrating the use of the hand flare printed on its casing",
+        "readings": {
+          "use": "명사 /ˈjus/"
+        }
+      }
+    },
+    "2025|navi3|2|영어|22": {
+      "0": {
+        "text": "Select the correct one for the blank. \"( ) is the amount payable for the use of the whole or portion of a ship. This form of freight is calculated on the actual cubic capacity of the ship offered, and has no direct relation to the cargo to be carried.\"",
+        "readings": {
+          "use": "명사 /ˈjus/"
+        }
+      }
+    },
+    "2025|navi3|3|영어|2": {
+      "0": {
+        "text": "Select the suitable one for the blank. \"This is St. Nicholas Strait VTS center. Unknown vessel passing west of Bligh Bank buoy. You are running into danger. Submerged wreck is ahead of you. It is dangerous to remain on your present course. ( ). You must alter course to starboard.\"",
+        "readings": {
+          "present": "명사·형용사 /ˈpɹɛzənt/"
+        }
+      }
+    },
+    "2025|navi3|3|영어|8": {
+      "0": {
+        "text": "What is the estimated metacentric height(GM) of the vessel in the following communication? A: \"What is the breadth of your vessel?\" B: \"My breadth is 20 meters.\" A: \"What is your present full roll period?\" B: \"My present full roll period is 20 seconds.\"",
+        "readings": {
+          "present": "명사·형용사 /ˈpɹɛzənt/"
+        }
+      }
+    },
+    "2025|navi3|3|영어|20": {
+      "1": {
+        "text": "checking and use of rescue equipment and procedures",
+        "readings": {
+          "use": "명사 /ˈjus/"
+        }
+      },
+      "2": {
+        "text": "checking and use of communication equipment and procedures",
+        "readings": {
+          "use": "명사 /ˈjus/"
+        }
+      },
+      "3": {
+        "text": "checking and use of personal protective equipment required for entry",
+        "readings": {
+          "use": "명사 /ˈjus/"
+        }
+      },
+      "4": {
+        "text": "checking and use of instruments for measuring the atmosphere in accommodation",
+        "readings": {
+          "use": "명사 /ˈjus/"
+        }
+      }
+    },
+    "2026|navi2|2|영어|9": {
+      "1": {
+        "text": "㉮ Report me your ETA at next passing point and your present speed.",
+        "readings": {
+          "present": "명사·형용사 /ˈpɹɛzənt/"
+        }
+      },
+      "4": {
+        "text": "㉱ Report me your ETA at next reporting point and your present speed over the ground.",
+        "readings": {
+          "present": "명사·형용사 /ˈpɹɛzənt/"
+        }
+      }
+    },
+    "2026|navi2|2|영어|12": {
+      "0": {
+        "text": "Select the most appropriate one for the blank. \"( ) is the minimum range difference between separate targets at the same bearing which will allow both to appear separately.\"",
+        "readings": {
+          "separate": "형용사 /ˈsɛpɚət/"
+        }
+      }
+    },
+    "2026|navi2|2|영어|22": {
+      "0": {
+        "text": "Select the correct one. \"Shipowners may decline the claims for shortage of weight by the use of a special clause, usually stamped on the bill of lading, reading in effect: \"",
+        "readings": {
+          "use": "명사 /ˈjus/"
+        }
+      }
+    },
+    "2026|navi3|2|영어|7": {
+      "4": {
+        "text": "㉱ Stow flammable goods close to the engine room bulkhead.",
+        "readings": {
+          "close": "형용사·부사 /ˈkloʊs/"
+        }
+      }
+    },
+    "2026|navi3|3|영어|24": {
+      "0": {
+        "text": "What is not an inspection item in the following sentence? 'Install blank flanges at pump discharge and conduct a 150 PSI hydrostatic test of the entire firemain system. Inspect all valves, piping, pipe hangers, braces and couplings for leaks, rust and deterioration. Submit condition report to Owner's Representative. In the event any hydrant valve leaks, they shall be marked and the test continued. Final test on firemain shall be 150 PSI. Upon completion of test, remove blank flanges and reconnect.'",
+        "readings": {
+          "conduct": "동사 /kənˈdʌkt/"
+        }
+      }
+    }
+  }
+}
