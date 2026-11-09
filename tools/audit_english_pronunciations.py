@@ -32,7 +32,13 @@ REGRESSION = {
     "steady": "스테디",
     "cpa": "씨피에이",
     "ukc": "유케이씨",
-    "lighthouse's": "/lˈaɪthˌaʊsɪz/",
+    "lighthouse's": "/ˈlaɪtˌhaʊsɪz/",
+    "sailing": "/ˈseɪlɪŋ/",
+    "great": "/ˈɡɹeɪt/",
+    "modification": "/ˌmɑdəfəˈkeɪʃən/",
+    "perpendiculars": "/ˌpɝpənˈdɪkjəlɚz/",
+    "equipment": "/ɪˈkwɪpmənt/",
+    "brocheures": "브로슈어즈",
 }
 
 def audit_pronunciations(pron):
@@ -56,6 +62,15 @@ def audit_pronunciations(pron):
                 errors.append("nd: ordinal suffix must not be assigned a standalone word pronunciation")
             continue
         if IPA.fullmatch(reading):
+            # Stress belongs before the first stressed syllable's onset, not
+            # inside the initial consonant cluster immediately before its vowel.
+            body = reading[1:-1]
+            stress_positions = [i for i, ch in enumerate(body) if ch in "ˈˌ"]
+            if stress_positions:
+                first = stress_positions[0]
+                vowels = "aɑɒæəɐɛeɪiɨɔoʊuʉʌɜɝɚɵøœyɯɶ"
+                if first > 0 and not any(ch in vowels for ch in body[:first]):
+                    errors.append(f"{word}: initial-syllable IPA stress is inside its onset")
             counts["ipa"] += 1
             continue
         if "/" in reading and word not in VARIANT_READINGS:
