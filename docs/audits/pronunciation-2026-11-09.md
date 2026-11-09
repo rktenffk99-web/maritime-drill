@@ -48,8 +48,10 @@
 - `node tools/test_english_word_study.js`: 1,225문항·45,885회 단어 검사 및 문제·정답·기존 해설 데이터 불변 확인.
 - `python tools/audit_english_pronunciations.py`: 3,715개 필드 형식과 실제 표시용 사전의 동기화 확인.
 - 학습기록 보존: record safety 11개, progress storage 6개, data identity 15개 테스트 통과.
-- 전체 `bash tools/check_app.sh`는 기존 `test_mastery_sessions_v522.js:125`의 구술 복습 날짜 불일치(기대 2026-10-25, 실제 2026-10-24)로 중단. 원본 main의 index.html에서도 동일 실패 재현. 한국 시간대로 다시 실행해도 동일. 이 PR에서 관련 학습·일정 코드를 변경하지 않았음.
+- 로컬 전체 `bash tools/check_app.sh`는 기존 `test_mastery_sessions_v522.js:125`의 구술 복습 날짜 불일치(기대 2026-10-25, 실제 2026-10-24)로 중단. 원본 main의 index.html에서도 동일 실패 재현. 한국 시간대로 다시 실행해도 동일. 다만 [GitHub Actions 전체 재빌드·자동검사](https://github.com/rktenffk99-web/maritime-drill/actions/runs/42559801412)는 이 날짜 테스트 25개를 포함해 통과했습니다. 로컬·CI 환경 차이는 미확정이며, 이 PR에서 관련 학습·일정 코드를 변경하지 않았음.
 - 로컬 Chromium 다운로드는 차단되었으나, [독립 GitHub Actions 브라우저 검사](https://github.com/rktenffk99-web/maritime-drill/actions/runs/42559801433)는 **통과**. 새 프로필·외부 통신 차단으로 1,225문항·39,717행을 DOM에서 검사하고, invalid·use/bags·close·separate의 실제 문제 카드 4개와 데스크톱·모바일 화면을 확인. JS 오류 0개, 모바일 가로 넘침 없음. NOR 원문은 밑줄 위치가 누락돼 기존 출제 차단을 유지하면서 단어 표의 수정 발음만 별도 검증. 문제·정답·기존 해설·단어 표 렌더링 중 저장기록 불변 및 문제 화면 전환 중 기존 기록 표식 보존 확인. [실행 결과 JSON](pronunciation-browser-result.json), [데스크톱](pronunciation-desktop.png), [모바일](pronunciation-mobile.png).
+
+- [전체 앱 회귀 검사](https://github.com/rktenffk99-web/maritime-drill/actions/runs/42559801412): 재빌드와 브라우저 14개 작업 모두 통과. 검사한 코드 리비전 `1510a64a0ebfe56f6120a4b30f396d6d661dbcc2`; 이후 변경은 이 결과 문서·스크린샷뿐입니다.
 
 ## 파일과 재현
 
