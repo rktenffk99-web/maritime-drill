@@ -25,9 +25,12 @@ class PronunciationReviewTests(unittest.TestCase):
         self.assertEqual(sum(report['counts'].values()), 3715)
         for group, count in [('prior_70_reading_fixes',70),('prior_2124_stress_moves',2124)]:
             self.assertEqual(sum(report['priorFixRecheck'][group].values()), count)
-        for word in ['ramain','boatsuain','brocheures','decemeber','miky','barwater',"var'ly",'womanned','catched','departer']:
+        for word in ['ramain','boatsuain','brocheures','decemeber','miky','barwater','womanned','catched','departer','abo','baar','hanbando','heukryong','seastar']:
             self.assertEqual(report['words'][word]['status'], 'needs_review')
             self.assertEqual(pron[word], '발음 미확정')
+        self.assertEqual(pron["var'ly"], '/ˈvɛriəsli/')
+        self.assertEqual(report['words']["var'ly"]['status'], 'confirmed_error')
+        self.assertEqual(pron['kg'], '케이 지')
 
     def test_curated_contexts_exist_in_actual_questions(self):
         from build_english_word_study import extract, plain, TOKEN
@@ -43,6 +46,7 @@ class PronunciationReviewTests(unittest.TestCase):
         for key, rows in review['contexts'].items():
             for index,row in rows.items():
                 self.assertEqual(row['text'], sections[key][int(index)])
+                self.assertEqual(row['questionText'], sections[key][0])
                 for word,reading in row['readings'].items():
                     self.assertIn(word,[t.lower() for t in TOKEN.findall(row['text'])])
                     count+=1
@@ -55,14 +59,17 @@ class PronunciationReviewTests(unittest.TestCase):
         self.assertEqual(len(manifest['originalPendingWords']),1133)
         self.assertEqual(len(set(manifest['originalPendingWords'])),1133)
         self.assertIn('not exact IPA',manifest['scope'])
-        self.assertEqual(report['pendingAfterCorrection'],91)
-        self.assertEqual(report['counts']['supported_approximation'],1244)
+        self.assertEqual(report['pendingAfterCorrection'],49)
+        self.assertEqual(report['counts']['supported_approximation'],1247)
         for w in ['cyclone','interpolation','instantaneous','lien','fragile','longitude','spherical','furthest']:
             self.assertTrue(review['words'][w]['verified'])
             self.assertTrue(review['words'][w]['sources'])
-        for w in ['coordinate','read','separate','refuse']:
+        for w in ['coordinate','increase','decrease']:
             self.assertTrue(report['words'][w]['reasons'])
             self.assertFalse(review['words'][w]['contextReviewed'])
+        for w in ['read','separate','refuse','record']:
+            self.assertFalse(report['words'][w]['reasons'])
+            self.assertTrue(review['words'][w]['contextReviewed'])
         self.assertEqual(review['words']['gps']['reviewScope'],'letter_names_only')
         self.assertIn('철자 읽기',review['words']['gps']['display'])
         self.assertFalse(any('HumanReview' in key for row in report['words'].values() for key in row))

@@ -61,6 +61,7 @@ try:
         # The NOR source lacks its underline, so it must remain excluded by the
         # app guard. Test its supplement without weakening the production guard.
         fixtures=[('navi3',2024,2,14,'/ɪnˈvælɪd/'),('navi2',2022,2,9,'동사 /ˈjuz/'),('navi3',2022,2,8,'동사 /ˈkloʊz/'),('navi3',2021,3,21,'형용사 /ˈsɛpɚət/'),('navi3',2025,2,23,'명사·형용사 /ˈæbstɹækt/'),('navi2',2020,2,11,'완벽한 형용사 /ˈpɝfɛkt/'),('navi2',2021,3,19,'기록 명사 복수형 /ˈɹɛkɚdz/'),('navi3',2020,4,24,'운송 명사 /ˈtɹænspɔɹt/'),('navi3',2025,3,2,'saint의 축약형 /ˈseɪnt/')]
+        fixtures += [('navi2',2023,3,21,'과거·과거분사 /ˈɹɛd/'),('navi2',2021,1,19,'복원성 기호 KG: 케이 지'),('navi3',2022,1,16,"Buys Ballot's 법칙의 이름: 미국식 /bəˈlɑts/"),('navi2',2020,3,25,'/fæˈðɑmɪtɚ/'),('navi2',2025,3,23,"var'ly = variously"),('navi3',2020,2,22,'선박·등대 이름의 실제 발음 근거 미확인')]
         for grade,year,session,number,expected in fixtures:
             page.evaluate('''({grade,year,session,number})=>{
               const paper=MD_PAST[`${year}-${grade}-${session}`];

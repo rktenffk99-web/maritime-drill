@@ -15,20 +15,20 @@
     return q && q['과목']==='영어' && /^(navi2|navi3)$/.test(q._short||q._gradeShort||'');
   }
   function key(q){return `${q._year}|${q._short||q._gradeShort}|${q._session||q['회차']}|영어|${q['번호']}`;}
-  function pronunciation(word,value,section){
+  function pronunciation(word,value,section,q){
     const data=global.MDEnglishWordStudyData;
     const note=data.pronunciationNotes?.[word];
-    if(note?.unconfirmed)return '발음 미확정';
-    // Exact section text is part of the review identity. Never apply an old
-    // part-of-speech decision to a changed/imported sentence with the same ID.
-    if(section?.text===text(value) && section.readings?.[word])return section.readings[word];
+    if(note?.unconfirmed)return '발음 미확정'+(note.display?' · '+note.display:'');
+    // Both stem and section belong to the review identity. A bare option can
+    // stay identical while its grammatical role changes under another stem.
+    if(section?.text===text(value) && section.questionText===text(q?.['문제']) && section.readings?.[word])return section.readings[word];
     if(note?.display)return note.display;
     if(note?.variants)return Object.values(note.variants).map(v=>`${v.label} ${v.reading}`).join(' · ')+' (문맥별 선택 필요)';
     const reading=data.lexicon[word]?.[1]||'발음 미등록';
     const status=data.pronunciationStatus?.[word];
     return reading+(status==='needs_review'?' · 검수 필요':'');
   }
-  function wordSection(label,value,local,section){
+  function wordSection(label,value,local,section,q){
     const data=global.MDEnglishWordStudyData;
     const ts=tokens(value),seen=new Map();
     ts.forEach((word,i)=>{
@@ -43,7 +43,7 @@
       const entry=data.lexicon[word];
       // A future imported question may contain a new token. Expose it, never silently skip it.
       const definition=local[word]||entry?.[0]||'단어 뜻 미등록 — 보강 필요';
-      const reading=pronunciation(word,value,section);
+      const reading=pronunciation(word,value,section,q);
       result+=`<tr><td style="vertical-align:top;padding:6px;overflow-wrap:anywhere;border-top:1px solid #DBEAFE"><b>${H(item.word)}</b><br><span style="color:#64748B;font-size:0.85em">${item.positions.join(', ')}번${item.positions.length>1?' · 반복':''}</span></td><td style="vertical-align:top;padding:6px;overflow-wrap:anywhere;border-top:1px solid #DBEAFE">${H(definition)}<br><span style="color:#64748B">발음: ${H(reading)}</span></td></tr>`;
     }
     return result+'</tbody></table>';
@@ -54,8 +54,8 @@
     const contexts=global.MDEnglishWordStudyData.pronunciationContexts?.[key(q)]||{};
     let html='━━ 단어별 기본 뜻·형태 ━━<p>지문과 네 보기의 영어 단어를 원문 순서로 확인합니다. 같은 철자가 반복되면 한 행에 위치를 모두 표시합니다. 여러 뜻이 있는 단어의 이 문장 해석과 구·절의 연결은 위의 지문 독해·보기 해석을 함께 보십시오.</p>';
     html+='<p style="color:#64748B">IPA는 별도 표시가 없으면 미국식입니다. 한글은 학습용 근사 독음으로 강세·모음 길이·영어 고유 자음을 정확히 나타내지 못합니다. 사전의 IPA·음성을 우선하십시오. 검수 필요·발음 미확정 항목은 확인이 남아 있습니다. 약어 철자 읽기는 통용 단어식 독음과 구별해 표시합니다.</p>';
-    html+=wordSection('지문',q['문제'],local,contexts['0']);
-    (q['선택지']||[]).forEach((choice,i)=>{html+=wordSection(`보기 ${MARKS[i]||i+1}`,choice,local,contexts[String(i+1)]);});
+    html+=wordSection('지문',q['문제'],local,contexts['0'],q);
+    (q['선택지']||[]).forEach((choice,i)=>{html+=wordSection(`보기 ${MARKS[i]||i+1}`,choice,local,contexts[String(i+1)],q);});
     return html;
   }
   function isWatchQuestion(q){
@@ -78,6 +78,8 @@
         // A phrase is not synthesized from isolated dictionary words. Only
         // independently confirmed erroneous Korean tokens are corrected.
         const data=global.MDEnglishWordStudyData,englishWords=ts.map(w=>w.toLowerCase());
+        const uncertain=[...new Set(englishWords.filter(w=>data.pronunciationNotes?.[w]?.unconfirmed || data.pronunciationNotes?.[w]?.conventionalUnconfirmed))];
+        if(uncertain.length)return `${open}${english}${close}<span ${attrs}>[발음 미확정 포함: ${H(uncertain.join(', '))} · 단어별 표 참조]</span>`;
         for(const [word,fix] of Object.entries(data.pronunciationTokenFixes||{})){
           if(!englishWords.includes(word))continue;
           if(fix.requiredEnglish && !raw.toLowerCase().includes(fix.requiredEnglish.toLowerCase()))continue;

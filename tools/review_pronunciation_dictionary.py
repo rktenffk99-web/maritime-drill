@@ -115,7 +115,7 @@ def build_report():
         elif word in HETERONYMS and not manual.get('contextReviewed'):
             reasons.append('품사·뜻에 따른 발음이 달라 문맥별 확인 필요')
         if not manual.get('verified') and comparison != 'phonemes_and_vowel_stress_match':
-            reasons.append('한글 독음 수동 대조 필요' if comparison == 'not_ipa' else '미국식 사전 대조 확인 필요: ' + comparison)
+            reasons.append(manual.get('remainingReason') or ('한글 독음 수동 대조 필요' if comparison == 'not_ipa' else '미국식 사전 대조 확인 필요: ' + comparison))
         status = ('needs_review' if manual.get('unconfirmed') else
                   'confirmed_error' if manual.get('before') is not None and manual.get('correctionType') != 'approximation_refinement' else
                   'needs_review' if reasons else

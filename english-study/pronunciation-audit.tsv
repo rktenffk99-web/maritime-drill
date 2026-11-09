@@ -8,7 +8,7 @@ ability	dictionary_match	/əˈbɪləˌti/	/əˈbɪləˌti/	phonemes_and_vowel_st
 able	dictionary_match	/ˈeɪbəl/	/ˈeɪbəl/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 abnormal	dictionary_match	/æbˈnɔɹməl/	/æbˈnɔɹməl/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 abnormally	dictionary_match	/æbˈnɔɹməli/	/æbˈnɔɹməli/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-abo	needs_review	아보	아보	not_ipa	hangul_not_comparable	needs_lexical_role_check	한글 독음 수동 대조 필요	-	-
+abo	needs_review	발음 미확정	발음 미확정	not_ipa	hangul_not_comparable	needs_lexical_role_check	선박·등대의 고유명. 실제 원어명·공식 음성 근거가 없어 영어 독음을 추정하지 않음.; 원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함.	-	-
 aboard	supported_approximation	어보드	어보드	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 about	dictionary_match	/əˈbaʊt/	/əˈbaʊt/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 above	dictionary_match	/əˈbʌv/	/əˈbʌv/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
@@ -202,7 +202,7 @@ arises	dictionary_match	/ɚˈaɪzəz/	/ɚˈaɪzəz/	phonemes_and_vowel_stress_ma
 arising	dictionary_match	/ɚˈaɪzɪŋ/	/ɚˈaɪzɪŋ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 arm	dictionary_match	/ˈɑɹm/	/ˈɑɹm/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 around	dictionary_match	/ɚˈaʊnd/	/ɚˈaʊnd/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-arpa	needs_review	아르파	아르파	not_ipa	not_found	needs_lexical_role_check	한글 독음 수동 대조 필요	-	-
+arpa	supported_approximation	아르파	아르파	not_ipa	not_found	British_broad_segment_approximation	-	-	https://www.pfri.uniri.hr/bopri/IMEC_Proceedings/Rjecnik_Eng_Hrv.pdf
 arrange	supported_approximation	어레인지	어레인지	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 arranged	dictionary_match	/ɚˈeɪndʒd/	/ɚˈeɪndʒd/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 arrangement	dictionary_match	/ɚˈeɪndʒmənt/	/ɚˈeɪndʒmənt/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
@@ -248,7 +248,7 @@ audibility	supported_approximation	오더빌러티	오더빌러티	not_found	han
 audible	supported_approximation	오디블	오디블	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 auditor	supported_approximation	오디터	오디터	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 audits	dictionary_match	/ˈɑdəts/	/ˈɑdəts/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-ausrep	needs_review	오스렙	오스렙	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+ausrep	needs_review	에이 유 에스 아르 이 피	에이 유 에스 아르 이 피	not_found	not_found	letter_names_only	철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음.	-	https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf
 author	supported_approximation	오서	오서	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 authorities	dictionary_match	/əˈθɔɹətiz/	/əˈθɔɹətiz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 authority	dictionary_match	/əˈθɔɹəti/	/əˈθɔɹəti/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
@@ -269,7 +269,7 @@ away	supported_approximation	어웨이	어웨이	not_ipa	hangul_not_comparable	b
 axis	supported_approximation	액시스	액시스	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 azimuth	supported_approximation	애저머스	애저머스	not_found	hangul_not_comparable	British_broad_segment_approximation	-	-	https://openslr.org/14/
 b	dictionary_match	/ˈbi/	/ˈbi/	phonemes_and_vowel_stress_match	not_found	US_dictionary_signature	-	-	-
-baar	needs_review	바르	바르	not_ipa	not_found	needs_lexical_role_check	한글 독음 수동 대조 필요	-	-
+baar	needs_review	발음 미확정	발음 미확정	not_ipa	not_found	needs_lexical_role_check	선박·등대의 고유명. 실제 원어명·공식 음성 근거가 없어 영어 독음을 추정하지 않음.; 원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함.	-	-
 back	supported_approximation	백	백	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 background	dictionary_match	/ˈbækˌɡɹaʊnd/	/ˈbækˌɡɹaʊnd/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 backing	supported_approximation	배킹	배킹	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
@@ -284,20 +284,20 @@ ball	dictionary_match	/ˈbɔl/	/ˈbɔl/	phonemes_and_vowel_stress_match	broad_ph
 ballast	dictionary_match	/ˈbæləst/	/ˈbæləst/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 ballasting	supported_approximation	밸러스팅	밸러스팅	not_found	hangul_not_comparable	British_broad_segment_approximation	-	-	https://openslr.org/14/
 ballasts	supported_approximation	밸러스츠	밸러스츠	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
-ballot's	needs_review	/ˈbæləts/	/ˈbæləts/	not_found	broad_phonemes_match	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+ballot's	confirmed_error	/ˈbæləts/	/bəˈlɑts/	not_found	different_accent_or_transcription_needs_review	direct_dictionary	-	고유명 Buys Ballot's law에 일반명사 ballots의 첫음절 강세 /ˈbæləts/를 적용함.	https://www.collinsdictionary.com/dictionary/english/buys-ballots-law
 balls	supported_approximation	볼즈	볼즈	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 band	dictionary_match	/ˈbænd/	/ˈbænd/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 bank	dictionary_match	/ˈbæŋk/	/ˈbæŋk/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 bar	dictionary_match	/ˈbɑɹ/	/ˈbɑɹ/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 bare	dictionary_match	/ˈbɛɹ/	/ˈbɛɹ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-bareboat	needs_review	베어보트	베어보트	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+bareboat	dictionary_match	/ˈbeəbəʊt/	/ˈbeəbəʊt/	not_found	not_found	published_maritime_dictionary	-	-	https://www.pfri.uniri.hr/bopri/IMEC_Proceedings/Rjecnik_Eng_Hrv.pdf
 barge	supported_approximation	바아지	바아지	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 barometer	supported_approximation	버로미터	버로미터	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 barometric	dictionary_match	/ˌbæɹəˈmɛtɹɪk/	/ˌbæɹəˈmɛtɹɪk/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 barratry	supported_approximation	배러트리	배러트리	not_found	hangul_not_comparable	British_broad_segment_approximation	-	-	https://openslr.org/14/
 barrels	supported_approximation	배럴즈	배럴즈	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 bars	dictionary_match	/ˈbɑɹz/	/ˈbɑɹz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-barwater	needs_review	바워터	발음 미확정	not_found	not_found	US_dictionary_signature	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.; 미국식 사전 대조 확인 필요: not_found	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.	-
+barwater	needs_review	바워터	발음 미확정	not_found	not_found	US_dictionary_signature	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.; 원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함.	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.	-
 based	dictionary_match	/ˈbeɪst/	/ˈbeɪst/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 baseline	supported_approximation	베이스라인	베이스라인	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 basic	dictionary_match	/ˈbeɪsɪk/	/ˈbeɪsɪk/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
@@ -367,7 +367,7 @@ blue	dictionary_match	/ˈblu/	/ˈblu/	phonemes_and_vowel_stress_match	broad_phon
 board	dictionary_match	/ˈbɔɹd/	/ˈbɔɹd/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 boat	dictionary_match	/ˈboʊt/	/ˈboʊt/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 boats	dictionary_match	/ˈboʊts/	/ˈboʊts/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-boatsuain	needs_review	발음 미확정	발음 미확정	not_found	not_found	US_dictionary_signature	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.; 미국식 사전 대조 확인 필요: not_found	-	-
+boatsuain	needs_review	발음 미확정	발음 미확정	not_found	not_found	US_dictionary_signature	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.; 원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함.	-	https://dictionary.cambridge.org/pronunciation/english/boatswain
 bob	supported_approximation	밥	밥	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 bobbing	dictionary_match	/ˈbɑbɪŋ/	/ˈbɑbɪŋ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 bodies	dictionary_match	/ˈbɑdiz/	/ˈbɑdiz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
@@ -416,7 +416,7 @@ bright	dictionary_match	/ˈbɹaɪt/	/ˈbɹaɪt/	phonemes_and_vowel_stress_match	
 bring	supported_approximation	브링	브링	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 broach	dictionary_match	/ˈbɹoʊtʃ/	/ˈbɹoʊtʃ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 broadcast	dictionary_match	/ˈbɹɔdˌkæst/	/ˈbɹɔdˌkæst/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-brocheures	needs_review	브로슈어즈	발음 미확정	not_found	not_found	US_dictionary_signature	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.; 미국식 사전 대조 확인 필요: not_found	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.	-
+brocheures	needs_review	브로슈어즈	발음 미확정	not_found	not_found	US_dictionary_signature	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.; 원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함.	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.	-
 brochures	supported_approximation	브로슈어즈	브로슈어즈	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 broke	dictionary_match	/ˈbɹoʊk/	/ˈbɹoʊk/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 broken	supported_approximation	브로큰	브로큰	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
@@ -434,7 +434,7 @@ buoyancy	confirmed_error	부오이언시	/ˈbɔɪənsi/	phonemes_and_vowel_stres
 buoyed	dictionary_match	/ˈbuid/	/ˈbuid/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 burn	dictionary_match	/ˈbɝn/	/ˈbɝn/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 burning	dictionary_match	/ˈbɝnɪŋ/	/ˈbɝnɪŋ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-busan	needs_review	부산	부산	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+busan	dictionary_match	부산	부산	not_found	not_found	direct_dictionary	-	-	https://www.collinsdictionary.com/dictionary/english/busan
 business	dictionary_match	/ˈbɪznəs/	/ˈbɪznəs/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 but	supported_approximation	벗	벗	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 butterworth	dictionary_match	/ˈbʌtɚˌwɝθ/	/ˈbʌtɚˌwɝθ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
@@ -490,7 +490,7 @@ cases	supported_approximation	케이시즈	케이시즈	not_ipa	hangul_not_compa
 casing	dictionary_match	/ˈkeɪsɪŋ/	/ˈkeɪsɪŋ/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 cast	dictionary_match	/ˈkæst/	/ˈkæst/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 casualty	dictionary_match	/ˈkæʒəwəlti/	/ˈkæʒəwəlti/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-catched	needs_review	캐치드	발음 미확정	not_found	hangul_not_comparable	US_dictionary_signature	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.; 미국식 사전 대조 확인 필요: not_found	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.	-
+catched	needs_review	캐치드	발음 미확정	not_found	hangul_not_comparable	US_dictionary_signature	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.; 원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함.	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.	-
 categories	dictionary_match	/ˈkætəˌɡɔɹiz/	/ˈkætəˌɡɔɹiz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 category	dictionary_match	/ˈkætəˌɡɔɹi/	/ˈkætəˌɡɔɹi/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 cats	dictionary_match	/ˈkæts/	/ˈkæts/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
@@ -516,7 +516,7 @@ certificated	supported_approximation	서티피케이티드	서티피케이티드
 certifies	dictionary_match	/ˈsɝtəˌfaɪz/	/ˈsɝtəˌfaɪz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 certify	dictionary_match	/ˈsɝtəˌfaɪ/	/ˈsɝtəˌfaɪ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 ces	supported_approximation	씨이에스	씨이에스	not_found	not_found	letter_names_only	-	-	https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf
-cesser	needs_review	세서	세서	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+cesser	dictionary_match	/ˈsɛsə/	/ˈsɛsə/	not_found	not_found	direct_dictionary	-	-	https://www.dictionary.com/browse/cesser
 chain	dictionary_match	/ˈtʃeɪn/	/ˈtʃeɪn/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 chains	dictionary_match	/ˈtʃeɪnz/	/ˈtʃeɪnz/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 change	supported_approximation	체인지	체인지	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
@@ -583,7 +583,7 @@ clothing	dictionary_match	/ˈkloʊðɪŋ/	/ˈkloʊðɪŋ/	phonemes_and_vowel_str
 cm	supported_approximation	씨 엠	씨 엠	not_found	not_found	letter_names_only	-	-	https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf
 co	dictionary_match	/ˈkoʊ/	/ˈkoʊ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 coal	dictionary_match	/ˈkoʊl/	/ˈkoʊl/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-coaltitude	needs_review	코알티튜드	코알티튜드	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+coaltitude	needs_review	코알티튜드	코알티튜드	not_found	not_found	US_dictionary_signature	정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.	-	-
 coast	dictionary_match	/ˈkoʊst/	/ˈkoʊst/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 coastal	dictionary_match	/ˈkoʊstəl/	/ˈkoʊstəl/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 coasting	supported_approximation	코스팅	코스팅	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
@@ -591,7 +591,7 @@ coat	dictionary_match	/ˈkoʊt/	/ˈkoʊt/	phonemes_and_vowel_stress_match	differ
 coating	dictionary_match	/ˈkoʊtɪŋ/	/ˈkoʊtɪŋ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 coats	dictionary_match	/ˈkoʊts/	/ˈkoʊts/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 code	dictionary_match	/ˈkoʊd/	/ˈkoʊd/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-codeclination	needs_review	코데클리네이션	코데클리네이션	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+codeclination	dictionary_match	/ˌkoʊˌdɛkləˈneɪʃən/	/ˌkoʊˌdɛkləˈneɪʃən/	not_found	not_found	direct_dictionary	-	-	https://www.collinsdictionary.com/dictionary/english/codeclination
 coefficient	dictionary_match	/ˌkoʊəˈfɪʃənt/	/ˌkoʊəˈfɪʃənt/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 coercivity	dictionary_match	코어시비티	코어시비티	not_found	not_found	direct_current_dictionary	-	-	https://dictionary.cambridge.org/pronunciation/english/coercivity
 coincided	supported_approximation	코인사이디드	코인사이디드	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
@@ -607,7 +607,7 @@ colon	supported_approximation	콜론	콜론	not_ipa	hangul_not_comparable	broad_
 color	dictionary_match	/ˈkʌlɚ/	/ˈkʌlɚ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 colors	dictionary_match	/ˈkʌlɚz/	/ˈkʌlɚz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 colour	dictionary_match	/ˈkʌlɚ/	/ˈkʌlɚ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-colregs	needs_review	콜렉스	콜렉스	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+colregs	supported_approximation	콜레그즈	콜레그즈	not_found	not_found	British_broad_segment_approximation	-	-	https://www.pfri.uniri.hr/bopri/IMEC_Proceedings/Rjecnik_Eng_Hrv.pdf
 column	dictionary_match	/ˈkɑləm/	/ˈkɑləm/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 combined	dictionary_match	/kəmˈbaɪnd/	/kəmˈbaɪnd/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 combining	dictionary_match	/kəmˈbaɪnɪŋ/	/kəmˈbaɪnɪŋ/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
@@ -757,7 +757,7 @@ coordination	dictionary_match	/koʊˌɔɹdəˈneɪʃən/	/koʊˌɔɹdəˈneɪʃ�
 coordinators	dictionary_match	/koʊˈɔɹdəˌneɪtɚz/	/koʊˈɔɹdəˌneɪtɚz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 copy	supported_approximation	카피	카피	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 core	supported_approximation	코어	코어	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
-coriolis	needs_review	코리올리스	코리올리스	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+coriolis	dictionary_match	코리올리스	코리올리스	not_found	not_found	direct_dictionary	-	-	https://www.collinsdictionary.com/dictionary/english/coriolis-effect; https://dictionary.cambridge.org/pronunciation/english/coriolis
 corner	dictionary_match	/ˈkɔɹnɚ/	/ˈkɔɹnɚ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 correct	supported_approximation	커렉트	커렉트	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 corrected	dictionary_match	/kɚˈɛktəd/	/kɚˈɛktəd/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
@@ -811,7 +811,7 @@ cut	dictionary_match	/ˈkʌt/	/ˈkʌt/	phonemes_and_vowel_stress_match	broad_pho
 cuts	dictionary_match	/ˈkʌts/	/ˈkʌts/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 cycle	dictionary_match	/ˈsaɪkəl/	/ˈsaɪkəl/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 cycles	dictionary_match	/ˈsaɪkəlz/	/ˈsaɪkəlz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-cyclolysis	needs_review	사이클로라이시스	사이클로라이시스	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+cyclolysis	confirmed_error	사이클로라이시스	/saɪˈklɑləsɪs/	not_found	not_found	direct_dictionary	-	cyclolysis의 /ləsɪs/를 라이시스처럼 잘못 표시함.	https://www.collinsdictionary.com/dictionary/english/cyclolysis
 cyclone	dictionary_match	싸이클론	싸이클론	not_ipa	hangul_not_comparable	dictionary_crosscheck	-	-	https://dictionary.cambridge.org/us/pronunciation/english/cyclone
 cyclones	dictionary_match	/sɪˈkloʊnz/	/sɪˈkloʊnz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 cylinder	supported_approximation	실린더	실린더	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
@@ -836,11 +836,11 @@ daylight	dictionary_match	/ˈdeɪˌlaɪt/	/ˈdeɪˌlaɪt/	phonemes_and_vowel_str
 days	dictionary_match	/ˈdeɪz/	/ˈdeɪz/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 dead	dictionary_match	/ˈdɛd/	/ˈdɛd/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 deadweight	supported_approximation	데드웨이트	데드웨이트	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
-deballasting	needs_review	디밸러스팅	디밸러스팅	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+deballasting	needs_review	디밸러스팅	디밸러스팅	not_found	not_found	US_dictionary_signature	정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.	-	-
 debited	dictionary_match	/ˈdɛbɪˌtɪd/	/ˈdɛbɪˌtɪd/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
-decca	needs_review	데카	데카	not_ipa	not_found	needs_lexical_role_check	한글 독음 수동 대조 필요	-	-
+decca	dictionary_match	/ˈdɛkə/	/ˈdɛkə/	phonemes_and_vowel_stress_match	not_found	direct_dictionary	-	-	https://www.collinsdictionary.com/dictionary/english/decca
 december	supported_approximation	디셈버	디셈버	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
-decemeber	needs_review	디셈버	발음 미확정	not_found	not_found	US_dictionary_signature	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.; 미국식 사전 대조 확인 필요: not_found	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.	-
+decemeber	needs_review	디셈버	발음 미확정	not_found	not_found	US_dictionary_signature	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.; 원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함.	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.	-
 deciding	dictionary_match	/ˌdɪˈsaɪdɪŋ/	/ˌdɪˈsaɪdɪŋ/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 decimal	dictionary_match	/ˈdɛsəməl/	/ˈdɛsəməl/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 decisions	dictionary_match	/dɪˈsɪʒənz/	/dɪˈsɪʒənz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
@@ -856,7 +856,7 @@ dedicated	dictionary_match	/ˈdɛdəkeɪtəd/	/ˈdɛdəkeɪtəd/	phonemes_and_vo
 deemed	dictionary_match	/ˈdimd/	/ˈdimd/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 deep	dictionary_match	/ˈdip/	/ˈdip/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 deepening	supported_approximation	디프닝	디프닝	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
-defect	needs_review	디펙트	디펙트	not_ipa	hangul_not_comparable	question_section_context	품사·뜻에 따른 발음이 달라 문맥별 확인 필요	-	https://github.com/cmusphinx/cmudict
+defect	dictionary_match	디펙트	디펙트	not_ipa	hangul_not_comparable	question_section_context	-	-	https://github.com/cmusphinx/cmudict
 defective	dictionary_match	/dɪˈfɛktɪv/	/dɪˈfɛktɪv/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 defects	dictionary_match	/ˈdifɛkts/	/ˈdifɛkts/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 deferred	supported_approximation	디퍼드	디퍼드	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
@@ -884,7 +884,7 @@ dense	dictionary_match	/ˈdɛns/	/ˈdɛns/	phonemes_and_vowel_stress_match	broad
 density	supported_approximation	덴시티	덴시티	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 dent	supported_approximation	덴트	덴트	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 departed	dictionary_match	/dɪˈpɑɹtɪd/	/dɪˈpɑɹtɪd/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-departer	needs_review	디파터	발음 미확정	not_found	hangul_not_comparable	US_dictionary_signature	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.; 미국식 사전 대조 확인 필요: not_found	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.	-
+departer	needs_review	디파터	발음 미확정	not_found	hangul_not_comparable	US_dictionary_signature	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.; 원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함.	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.	-
 departure	supported_approximation	디파처	디파처	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 dependent	dictionary_match	/dɪˈpɛndənt/	/dɪˈpɛndənt/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 depending	dictionary_match	/dɪˈpɛndɪŋ/	/dɪˈpɛndɪŋ/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
@@ -894,7 +894,7 @@ depression	dictionary_match	/dɪˈpɹɛʃən/	/dɪˈpɹɛʃən/	phonemes_and_vow
 deprived	dictionary_match	/dɪˈpɹaɪvd/	/dɪˈpɹaɪvd/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 depth	supported_approximation	뎁쓰	뎁쓰	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 depths	supported_approximation	뎁스	뎁스	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
-deratting	needs_review	디래팅	디래팅	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+deratting	needs_review	디래팅	디래팅	not_found	not_found	US_dictionary_signature	정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.	-	-
 derelict	supported_approximation	데럴릭트	데럴릭트	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 derrick	dictionary_match	/ˈdɛɹɪk/	/ˈdɛɹɪk/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 describe	dictionary_match	/dɪˈskɹaɪb/	/dɪˈskɹaɪb/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
@@ -927,7 +927,7 @@ deviate	supported_approximation	디비에이트	디비에이트	not_ipa	hangul_n
 deviation	supported_approximation	디비에이션	디비에이션	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 devices	dictionary_match	/dɪˈvaɪsəz/	/dɪˈvaɪsəz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 dew	dictionary_match	/ˈdu/	/ˈdu/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-dewpoint	needs_review	듀포인트	듀포인트	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+dewpoint	dictionary_match	/ˈdjuːpɔɪnt/	/ˈdjuːpɔɪnt/	not_found	not_found	published_maritime_dictionary	-	-	https://www.pfri.uniri.hr/bopri/IMEC_Proceedings/Rjecnik_Eng_Hrv.pdf
 dgps	supported_approximation	디지피에스	디지피에스	not_found	not_found	letter_names_only	-	-	https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf
 diagrams	dictionary_match	/ˈdaɪəˌɡɹæmz/	/ˈdaɪəˌɡɹæmz/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 diameter	dictionary_match	/daɪˈæmətɚ/	/daɪˈæmətɚ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
@@ -1099,7 +1099,7 @@ elevated	dictionary_match	/ˈɛləˌveɪtɪd/	/ˈɛləˌveɪtɪd/	phonemes_and_v
 elimination	dictionary_match	/ɪˌlɪməˈneɪʃən/	/ɪˌlɪməˈneɪʃən/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 ellipse	supported_approximation	일립스	일립스	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 elongation	supported_approximation	일롱게이션	일롱게이션	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
-eloran	needs_review	이로란	이로란	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+eloran	needs_review	이 엘 오 아르 에이 엔	이 엘 오 아르 에이 엔	not_found	not_found	letter_names_only	철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음.	-	https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf
 embarking	dictionary_match	/ɛmˈbɑɹkɪŋ/	/ɛmˈbɑɹkɪŋ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 emergency	supported_approximation	이머전시	이머전시	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 emit	supported_approximation	이밋	이밋	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
@@ -1133,7 +1133,7 @@ entries	supported_approximation	엔트리즈	엔트리즈	not_ipa	hangul_not_com
 entry	supported_approximation	엔트리	엔트리	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 environment	dictionary_match	/ɪnˈvaɪɹənmənt/	/ɪnˈvaɪɹənmənt/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 environmental	dictionary_match	/ɪnˌvaɪɹənˈmɛntəl/	/ɪnˌvaɪɹənˈmɛntəl/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-epirb	needs_review	이퍼브	이퍼브	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+epirb	needs_review	이 피 아이 아르 비	이 피 아이 아르 비	not_found	not_found	letter_names_only	철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음.	-	https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf
 equal	dictionary_match	/ˈikwəl/	/ˈikwəl/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 equality	dictionary_match	/ɪˈkwɑləti/	/ɪˈkwɑləti/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 equally	dictionary_match	/ˈikwəli/	/ˈikwəli/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
@@ -1240,7 +1240,7 @@ failed	dictionary_match	/ˈfeɪld/	/ˈfeɪld/	phonemes_and_vowel_stress_match	br
 fails	dictionary_match	/ˈfeɪlz/	/ˈfeɪlz/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 failure	dictionary_match	/ˈfeɪljɚ/	/ˈfeɪljɚ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 fair	dictionary_match	/ˈfɛɹ/	/ˈfɛɹ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-fairlead	needs_review	페어리드	페어리드	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+fairlead	dictionary_match	/ˈfɛərˌliːd/	/ˈfɛərˌliːd/	not_found	not_found	direct_dictionary	-	-	https://www.collinsdictionary.com/dictionary/english/fairlead
 fairly	dictionary_match	/ˈfɛɹli/	/ˈfɛɹli/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 fairway	supported_approximation	페어웨이	페어웨이	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 falling	supported_approximation	폴링	폴링	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
@@ -1254,7 +1254,7 @@ farther	supported_approximation	파더	파더	not_ipa	hangul_not_comparable	broa
 fashioned	dictionary_match	/ˈfæʃənd/	/ˈfæʃənd/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 fast	supported_approximation	패스트	패스트	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 faster	dictionary_match	/ˈfæstɚ/	/ˈfæstɚ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-fathometer	needs_review	패더미터	패더미터	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+fathometer	confirmed_error	패더미터	/fæˈðɑmɪtɚ/	not_found	not_found	direct_dictionary	-	해사 계기의 강세 있는 두 번째 모음 /ɑ/ 또는 /ɒ/를 기존 패더미터의 약모음처럼 적음.	https://www.collinsdictionary.com/dictionary/english/fathometer
 fatigue	supported_approximation	퍼티그	퍼티그	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 faxing	dictionary_match	/ˈfæksɪŋ/	/ˈfæksɪŋ/	phonemes_and_vowel_stress_match	not_found	US_dictionary_signature	-	-	-
 fcl	supported_approximation	에프씨엘	에프씨엘	not_found	not_found	letter_names_only	-	-	https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf
@@ -1277,7 +1277,7 @@ finds	dictionary_match	/ˈfaɪndz/	/ˈfaɪndz/	phonemes_and_vowel_stress_match	b
 finished	dictionary_match	/ˈfɪnɪʃt/	/ˈfɪnɪʃt/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 fio	supported_approximation	에프아이오	에프아이오	not_found	not_found	letter_names_only	-	-	https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf
 fire	dictionary_match	/ˈfaɪɚ/	/ˈfaɪɚ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-firemain	needs_review	파이어메인	파이어메인	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+firemain	needs_review	파이어메인	파이어메인	not_found	not_found	US_dictionary_signature	정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.	-	-
 fireman's	dictionary_match	/ˈfaɪɹmənz/	/ˈfaɪɹmənz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 firm	dictionary_match	/ˈfɝm/	/ˈfɝm/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 first	supported_approximation	퍼스트	퍼스트	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
@@ -1308,7 +1308,7 @@ float	supported_approximation	플로트	플로트	not_ipa	hangul_not_comparable	
 floatation	supported_approximation	플로테이션	플로테이션	not_found	hangul_not_comparable	British_broad_segment_approximation	-	-	https://openslr.org/14/
 floating	dictionary_match	/ˈfloʊtɪŋ/	/ˈfloʊtɪŋ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 floe	supported_approximation	플로우	플로우	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
-floeberg	needs_review	플로버그	플로버그	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+floeberg	dictionary_match	/ˈfloʊbɝɡ/	/ˈfloʊbɝɡ/	not_found	not_found	direct_dictionary	-	-	https://www.collinsdictionary.com/dictionary/english/floeberg
 flood	supported_approximation	플러드	플러드	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 flooding	supported_approximation	플러딩	플러딩	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 flour	dictionary_match	/ˈflaʊɚ/	/ˈflaʊɚ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
@@ -1470,12 +1470,12 @@ gyro	dictionary_match	/ˈdʒaɪˌɹoʊ/	/ˈdʒaɪˌɹoʊ/	phonemes_and_vowel_str
 gyrocompass	supported_approximation	자이로컴패스	자이로컴패스	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 gyroscope	supported_approximation	자이로스코프	자이로스코프	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 gyroscopic	dictionary_match	/ˌdʒaɪɹəˈskɑpɪk/	/ˌdʒaɪɹəˈskɑpɪk/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-gyrosphere	needs_review	자이로스피어	자이로스피어	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+gyrosphere	needs_review	자이로스피어	자이로스피어	not_found	not_found	US_dictionary_signature	정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.	-	-
 had	dictionary_match	/ˈhæd/	/ˈhæd/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 half	dictionary_match	/ˈhæf/	/ˈhæf/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 hamburg	dictionary_match	/ˈhæmbɚɡ/	/ˈhæmbɚɡ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 hampered	supported_approximation	햄퍼드	햄퍼드	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
-hanbando	needs_review	한반도	한반도	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+hanbando	needs_review	발음 미확정	발음 미확정	not_found	not_found	US_dictionary_signature	선박·등대의 고유명. 실제 원어명·공식 음성 근거가 없어 영어 독음을 추정하지 않음.; 원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함.	-	-
 hand	dictionary_match	/ˈhænd/	/ˈhænd/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 handed	dictionary_match	/ˈhændəd/	/ˈhændəd/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 handle	dictionary_match	/ˈhændəl/	/ˈhændəl/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
@@ -1498,7 +1498,7 @@ has	dictionary_match	/ˈhæz/	/ˈhæz/	phonemes_and_vowel_stress_match	broad_pho
 hat	dictionary_match	/ˈhæt/	/ˈhæt/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 hatch	dictionary_match	/ˈhætʃ/	/ˈhætʃ/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 hatches	dictionary_match	/ˈhætʃɪz/	/ˈhætʃɪz/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
-hatchrails	needs_review	해치레일즈	해치레일즈	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+hatchrails	needs_review	해치레일즈	해치레일즈	not_found	not_found	US_dictionary_signature	정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.	-	-
 hatchways	supported_approximation	해치웨이즈	해치웨이즈	not_found	hangul_not_comparable	British_broad_segment_approximation	-	-	https://openslr.org/14/
 haul	dictionary_match	/ˈhɔl/	/ˈhɔl/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 have	supported_approximation	해브	해브	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
@@ -1535,7 +1535,7 @@ her	supported_approximation	허	허	not_ipa	hangul_not_comparable	broad_segment_
 here	supported_approximation	히어	히어	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 hereby	dictionary_match	/hɪɹˈbaɪ/	/hɪɹˈbaɪ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 herself	dictionary_match	/hɚˈsɛlf/	/hɚˈsɛlf/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-heukryong	needs_review	흑룡	흑룡	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+heukryong	needs_review	발음 미확정	발음 미확정	not_found	not_found	US_dictionary_signature	선박·등대의 고유명. 실제 원어명·공식 음성 근거가 없어 영어 독음을 추정하지 않음.; 원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함.	-	-
 hf	supported_approximation	에이치 에프	에이치 에프	not_found	not_found	letter_names_only	-	-	https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf
 hidden	dictionary_match	/ˈhɪdən/	/ˈhɪdən/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 high	supported_approximation	하이	하이	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
@@ -1557,7 +1557,7 @@ holed	dictionary_match	/ˈhoʊld/	/ˈhoʊld/	phonemes_and_vowel_stress_match	dif
 holes	supported_approximation	홀즈	홀즈	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 holiday	dictionary_match	/ˈhɑləˌdeɪ/	/ˈhɑləˌdeɪ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 hong	dictionary_match	/ˈhɔŋ/	/ˈhɔŋ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-hongdo	needs_review	홍도	홍도	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+hongdo	needs_review	홍도	홍도	not_found	not_found	US_dictionary_signature	원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함.	-	-
 hooks	confirmed_error	훗스	훅스	not_ipa	hangul_not_comparable	broad_segment_approximation	-	단어표는 훅스이나 실제 해설 hooks for handling에 훗스가 남아 있어 대응되는 문장 토큰만 교체함. /k/를 /t/처럼 적은 오류.	https://github.com/cmusphinx/cmudict
 hope	dictionary_match	/ˈhoʊp/	/ˈhoʊp/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 horizon	supported_approximation	호라이즌	호라이즌	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
@@ -1677,7 +1677,7 @@ indirect	dictionary_match	/ˌɪndɚˈɛkt/	/ˌɪndɚˈɛkt/	phonemes_and_vowel_s
 individually	supported_approximation	인디비주얼리	인디비주얼리	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 industrial	dictionary_match	/ˌɪnˈdʌstɹiəl/	/ˌɪnˈdʌstɹiəl/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 inert	dictionary_match	/ˌɪˈnɝt/	/ˌɪˈnɝt/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-inerted	needs_review	이너티드	이너티드	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+inerted	needs_review	이너티드	이너티드	not_found	not_found	US_dictionary_signature	정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.	-	-
 inertia	supported_approximation	이너셔	이너셔	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 inertial	dictionary_match	/ˌɪˈnɝʃəl/	/ˌɪˈnɝʃəl/	phonemes_and_vowel_stress_match	not_found	US_dictionary_signature	-	-	-
 inerting	supported_approximation	이너팅	이너팅	not_found	hangul_not_comparable	British_broad_segment_approximation	-	-	https://openslr.org/14/
@@ -1727,7 +1727,7 @@ intense	dictionary_match	/ˌɪnˈtɛns/	/ˌɪnˈtɛns/	phonemes_and_vowel_stress
 intensity	supported_approximation	인텐시티	인텐시티	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 intention	supported_approximation	인텐션	인텐션	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 interactions	dictionary_match	/ˌɪntɚˈækʃənz/	/ˌɪntɚˈækʃənz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-interco	needs_review	인터코	인터코	not_ipa	not_found	needs_lexical_role_check	한글 독음 수동 대조 필요	-	-
+interco	supported_approximation	인터코	인터코	not_ipa	not_found	British_broad_segment_approximation	-	-	https://www.pfri.uniri.hr/bopri/IMEC_Proceedings/Rjecnik_Eng_Hrv.pdf
 intercom	supported_approximation	인터컴	인터컴	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 interest	dictionary_match	/ˈɪntɹəst/	/ˈɪntɹəst/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 interests	dictionary_match	/ˈɪntɹəsts/	/ˈɪntɹəsts/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
@@ -1796,12 +1796,12 @@ keep	supported_approximation	킵	킵	not_ipa	hangul_not_comparable	broad_segment
 keeping	dictionary_match	/ˈkipɪŋ/	/ˈkipɪŋ/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 kept	dictionary_match	/ˈkɛpt/	/ˈkɛpt/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 key	dictionary_match	/ˈki/	/ˈki/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
-kg	needs_review	킬로그램 / 케이 지	킬로그램 / 케이 지	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+kg	confirmed_error	킬로그램 / 케이 지	케이 지	not_found	not_found	letter_names_only	-	실제 두 문제의 대문자 KG는 복원성 기호인데 단위 kg의 킬로그램을 혼합해 제시함.	https://www.pfri.uniri.hr/bopri/IMEC_Proceedings/Rjecnik_Eng_Hrv.pdf
 khz	confirmed_error	케이 에이치 지	킬로허츠	not_found	not_found	source_context_expansion	-	주파수 단위 kHz는 kilohertz로 읽음. 기존 철자 독음만으로 단위 발음을 대체하지 않음.	https://dictionary.cambridge.org/us/dictionary/english/kilohertz
 kilo	dictionary_match	/ˈkɪˌloʊ/	/ˈkɪˌloʊ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 kilometers	dictionary_match	/kəˈlɑˌmʌtɚz/	/kəˈlɑˌmʌtɚz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 kilowatts	dictionary_match	/ˈkɪləˌwɑts/	/ˈkɪləˌwɑts/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-kim	needs_review	킴	킴	not_ipa	not_found	needs_lexical_role_check	한글 독음 수동 대조 필요	-	-
+kim	dictionary_match	/kɪm/	/kɪm/	stress_differs	not_found	direct_dictionary	-	-	https://dictionary.cambridge.org/pronunciation/english/kim
 kind	dictionary_match	/ˈkaɪnd/	/ˈkaɪnd/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 kindly	supported_approximation	카인들리	카인들리	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 kinds	dictionary_match	/ˈkaɪndz/	/ˈkaɪndz/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
@@ -1849,9 +1849,9 @@ latter	dictionary_match	/ˈlætɚ/	/ˈlætɚ/	phonemes_and_vowel_stress_match	di
 launching	dictionary_match	/ˈlɔntʃɪŋ/	/ˈlɔntʃɪŋ/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 law	dictionary_match	/ˈlɔ/	/ˈlɔ/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 lawyer	dictionary_match	/ˈlɔjɚ/	/ˈlɔjɚ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-laydays	needs_review	레이데이즈	레이데이즈	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+laydays	dictionary_match	/ˈleɪdeɪz/	/ˈleɪdeɪz/	not_found	not_found	published_maritime_dictionary	-	-	https://www.pfri.uniri.hr/bopri/IMEC_Proceedings/Rjecnik_Eng_Hrv.pdf
 laying	dictionary_match	/ˈleɪɪŋ/	/ˈleɪɪŋ/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
-laytime	needs_review	레이타임	레이타임	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+laytime	dictionary_match	/ˈleɪˌtaɪm/	/ˈleɪˌtaɪm/	not_found	not_found	direct_dictionary	-	-	https://www.collinsdictionary.com/dictionary/english/laytime
 lead	dictionary_match	리드	리드	not_ipa	hangul_not_comparable	question_section_context	-	-	https://github.com/cmusphinx/cmudict
 leadership	dictionary_match	/ˈlidɚˌʃɪp/	/ˈlidɚˌʃɪp/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 leading	dictionary_match	리딩	리딩	not_ipa	hangul_not_comparable	question_section_context	-	-	https://github.com/cmusphinx/cmudict
@@ -1919,10 +1919,10 @@ live	dictionary_match	/ˈlaɪv/	/ˈlaɪv/	phonemes_and_vowel_stress_match	broad_
 living	dictionary_match	/ˈlɪvɪŋ/	/ˈlɪvɪŋ/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 lo	supported_approximation	엘 오	엘 오	not_ipa	hangul_not_comparable	letter_names_only	-	-	https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf
 load	supported_approximation	로드	로드	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
-loadable	needs_review	로더블	로더블	not_found	hangul_not_comparable	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+loadable	dictionary_match	/ˈləʊdəbəl/	/ˈləʊdəbəl/	not_found	different_accent_or_transcription_needs_review	direct_dictionary	-	-	https://www.collinsdictionary.com/dictionary/english-german/loadable
 loaded	dictionary_match	/ˈloʊdɪd/	/ˈloʊdɪd/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 loading	supported_approximation	로딩	로딩	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
-loadline	needs_review	로드라인	로드라인	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+loadline	needs_review	로드라인	로드라인	not_found	not_found	US_dictionary_signature	정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.	-	-
 loads	dictionary_match	/ˈloʊdz/	/ˈloʊdz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 lobe	dictionary_match	/ˈloʊb/	/ˈloʊb/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 local	dictionary_match	/ˈloʊkəl/	/ˈloʊkəl/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
@@ -1953,7 +1953,7 @@ lower	supported_approximation	로워	로워	not_ipa	hangul_not_comparable	broad_
 lowered	supported_approximation	로워드	로워드	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 lowest	supported_approximation	로우이스트	로우이스트	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 lows	dictionary_match	/ˈloʊz/	/ˈloʊz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-loxodromic	needs_review	록소드로믹	록소드로믹	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+loxodromic	dictionary_match	/ˌlɒksəˈdrɒmɪk/	/ˌlɒksəˈdrɒmɪk/	not_found	not_found	direct_dictionary	-	-	https://www.dictionary.com/browse/loxodromic
 lrit	supported_approximation	엘알아이티	엘알아이티	not_found	not_found	letter_names_only	-	-	https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf
 lsa	supported_approximation	엘 에스 에이	엘 에스 에이	not_found	not_found	letter_names_only	-	-	https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf
 lt	supported_approximation	엘 티	엘 티	not_found	not_found	letter_names_only	-	-	https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf
@@ -2008,7 +2008,7 @@ marker	dictionary_match	/ˈmɑɹkɚ/	/ˈmɑɹkɚ/	phonemes_and_vowel_stress_matc
 markers	dictionary_match	/ˈmɑɹkɚz/	/ˈmɑɹkɚz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 markings	dictionary_match	/ˈmɑɹkɪŋz/	/ˈmɑɹkɪŋz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 marks	dictionary_match	/ˈmɑɹks/	/ˈmɑɹks/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-marpol	needs_review	마폴	마폴	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+marpol	needs_review	엠 에이 아르 피 오 엘	엠 에이 아르 피 오 엘	not_found	not_found	letter_names_only	철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음.	-	https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf
 mass	dictionary_match	/ˈmæs/	/ˈmæs/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 master	supported_approximation	마스터	마스터	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 master's	dictionary_match	/ˈmæstɚz/	/ˈmæstɚz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
@@ -2060,7 +2060,7 @@ met	dictionary_match	/ˈmɛt/	/ˈmɛt/	phonemes_and_vowel_stress_match	broad_pho
 metacenter	supported_approximation	메타센터	메타센터	not_found	hangul_not_comparable	British_broad_segment_approximation	-	-	https://openslr.org/14/
 metacentric	supported_approximation	메터센트릭	메터센트릭	not_found	hangul_not_comparable	British_broad_segment_approximation	-	-	https://openslr.org/14/
 metal	dictionary_match	/ˈmɛtəl/	/ˈmɛtəl/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-metarea	needs_review	메타에어리어	메타에어리어	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+metarea	needs_review	엠 이 티 에이 아르 이 에이	엠 이 티 에이 아르 이 에이	not_found	not_found	letter_names_only	철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음.	-	https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf
 meteorological	dictionary_match	/ˌmitiˌɔɹəˈlɑdʒɪkəl/	/ˌmitiˌɔɹəˈlɑdʒɪkəl/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 meter	dictionary_match	/ˈmitɚ/	/ˈmitɚ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 meters	dictionary_match	/ˈmitɚz/	/ˈmitɚz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
@@ -2075,7 +2075,7 @@ midship	supported_approximation	미드십	미드십	not_found	hangul_not_compara
 midships	supported_approximation	미드십스	미드십스	not_found	hangul_not_comparable	British_broad_segment_approximation	-	-	https://openslr.org/14/
 might	dictionary_match	/ˈmaɪt/	/ˈmaɪt/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 mike	dictionary_match	/ˈmaɪk/	/ˈmaɪk/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
-miky	needs_review	미키	발음 미확정	not_found	not_found	US_dictionary_signature	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.; 미국식 사전 대조 확인 필요: not_found	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.	-
+miky	needs_review	미키	발음 미확정	not_found	not_found	US_dictionary_signature	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.; 원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함.	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.	https://www.faa.gov/air_traffic/publications/atpubs/aim_html/chap4_section_2.html
 mile	dictionary_match	/ˈmaɪl/	/ˈmaɪl/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 miles	dictionary_match	/ˈmaɪlz/	/ˈmaɪlz/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 million	dictionary_match	/ˈmɪljən/	/ˈmɪljən/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
@@ -2089,8 +2089,8 @@ minor	dictionary_match	/ˈmaɪnɚ/	/ˈmaɪnɚ/	phonemes_and_vowel_stress_match	d
 minus	dictionary_match	/ˈmaɪnəs/	/ˈmaɪnəs/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 minutes	dictionary_match	미닛츠	미닛츠	not_ipa	hangul_not_comparable	question_section_context	-	-	https://github.com/cmusphinx/cmudict
 mirror	dictionary_match	/ˈmɪɹɚ/	/ˈmɪɹɚ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-misdelivery	needs_review	미스딜리버리	미스딜리버리	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
-mislanding	needs_review	미스랜딩	미스랜딩	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+misdelivery	needs_review	미스딜리버리	미스딜리버리	not_found	not_found	US_dictionary_signature	정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.	-	-
+mislanding	needs_review	미스랜딩	미스랜딩	not_found	not_found	US_dictionary_signature	정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.	-	-
 missed	dictionary_match	/ˈmɪst/	/ˈmɪst/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 missing	supported_approximation	미싱	미싱	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 mission	dictionary_match	/ˈmɪʃən/	/ˈmɪʃən/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
@@ -2104,7 +2104,7 @@ mm	supported_approximation	엠 엠	엠 엠	not_ipa	hangul_not_comparable	letter_
 mmsi	supported_approximation	엠엠에스아이	엠엠에스아이	not_found	not_found	letter_names_only	-	-	https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf
 mobile	dictionary_match	/ˈmoʊbəl/	/ˈmoʊbəl/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 modalism	dictionary_match	/ˈmoʊdəlɪzəm/	/ˈmoʊdəlɪzəm/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-moderate	needs_review	모더릿	모더릿	not_ipa	hangul_not_comparable	question_section_context	품사·뜻에 따른 발음이 달라 문맥별 확인 필요	-	https://dictionary.cambridge.org/pronunciation/english/moderate; https://github.com/cmusphinx/cmudict
+moderate	dictionary_match	모더릿	모더릿	not_ipa	hangul_not_comparable	question_section_context	-	-	https://dictionary.cambridge.org/pronunciation/english/moderate; https://github.com/cmusphinx/cmudict
 modern	dictionary_match	/ˈmɑdɚn/	/ˈmɑdɚn/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 modification	dictionary_match	/ˌmɑdəfəˈkeɪʃən/	/ˌmɑdəfəˈkeɪʃən/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 modified	dictionary_match	/ˈmɑdəˌfaɪd/	/ˈmɑdəˌfaɪd/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
@@ -2136,7 +2136,7 @@ mrcs	supported_approximation	엠 아르 씨 에스	엠 아르 씨 에스	not_fou
 msi	supported_approximation	엠 에스 아이	엠 에스 아이	not_found	not_found	letter_names_only	-	-	https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf
 mtc	supported_approximation	엠티씨	엠티씨	not_found	not_found	letter_names_only	-	-	https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf
 much	dictionary_match	/ˈmʌtʃ/	/ˈmʌtʃ/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
-mukho	needs_review	묵호	묵호	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+mukho	needs_review	묵호	묵호	not_found	not_found	US_dictionary_signature	원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함.	-	-
 multi	dictionary_match	/ˈmʌlti/	/ˈmʌlti/	phonemes_and_vowel_stress_match	not_found	US_dictionary_signature	-	-	-
 multimodal	dictionary_match	멀티모덜	멀티모덜	not_found	not_found	direct_current_dictionary	-	-	https://dictionary.cambridge.org/us/pronunciation/english/multimodal
 must	dictionary_match	/ˈmʌst/	/ˈmʌst/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
@@ -2156,7 +2156,7 @@ natural	dictionary_match	/ˈnætʃɚəl/	/ˈnætʃɚəl/	phonemes_and_vowel_stre
 naturally	dictionary_match	/ˈnætʃɚəli/	/ˈnætʃɚəli/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 nature	dictionary_match	/ˈneɪtʃɚ/	/ˈneɪtʃɚ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 nautical	dictionary_match	/ˈnɔtəkəl/	/ˈnɔtəkəl/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-navarea	needs_review	나브에어리어	나브에어리어	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+navarea	needs_review	엔 에이 브이 에이 아르 이 에이	엔 에이 브이 에이 아르 이 에이	not_found	not_found	letter_names_only	철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음.	-	https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf
 navigability	supported_approximation	내비거빌리티	내비거빌리티	not_found	hangul_not_comparable	British_broad_segment_approximation	-	-	https://openslr.org/14/
 navigable	supported_approximation	내비거블	내비거블	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 navigate	supported_approximation	내비게이트	내비게이트	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
@@ -2165,7 +2165,7 @@ navigation	supported_approximation	내비게이션	내비게이션	not_ipa	hangu
 navigational	dictionary_match	/ˌnævəˈɡeɪʃənəl/	/ˌnævəˈɡeɪʃənəl/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 navigator	supported_approximation	내비게이터	내비게이터	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 navigators	dictionary_match	/ˈnævəˌɡeɪtɚz/	/ˈnævəˌɡeɪtɚz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-navtex	needs_review	나브텍스	나브텍스	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+navtex	dictionary_match	/ˈnævˌteks/	/ˈnævˌteks/	not_found	not_found	published_maritime_dictionary	-	-	https://www.pfri.uniri.hr/bopri/IMEC_Proceedings/Rjecnik_Eng_Hrv.pdf
 navy	dictionary_match	/ˈneɪvi/	/ˈneɪvi/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 nd	dictionary_match	서수 접미부(숫자와 함께 읽음)	서수 접미부(숫자와 함께 읽음)	not_found	not_found	ordinal_suffix	-	-	https://dictionary.cambridge.org/dictionary/english/ordinal
 ne	supported_approximation	엔 이	엔 이	not_ipa	hangul_not_comparable	letter_names_only	-	-	https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf
@@ -2228,8 +2228,8 @@ numbers	dictionary_match	/ˈnʌmbɚz/	/ˈnʌmbɚz/	phonemes_and_vowel_stress_mat
 numeral	dictionary_match	/ˈnumɚəl/	/ˈnumɚəl/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 numerous	supported_approximation	뉴머러스	뉴머러스	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 nut	dictionary_match	/ˈnʌt/	/ˈnʌt/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
-nvoc	needs_review	엔보크	엔보크	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
-nvocc	needs_review	엔보씨씨	엔보씨씨	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+nvoc	needs_review	엔 브이 오 씨	엔 브이 오 씨	not_found	not_found	letter_names_only	철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음.	-	https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf
+nvocc	needs_review	엔 브이 오 씨 씨	엔 브이 오 씨 씨	not_found	not_found	letter_names_only	철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음.	-	https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf
 o	dictionary_match	/ˈoʊ/	/ˈoʊ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 o'clock	dictionary_match	/əˈklɑk/	/əˈklɑk/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 obeying	dictionary_match	/oʊˈbeɪɪŋ/	/oʊˈbeɪɪŋ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
@@ -2314,7 +2314,7 @@ ordering	dictionary_match	/ˈɔɹdɚɪŋ/	/ˈɔɹdɚɪŋ/	phonemes_and_vowel_str
 orders	confirmed_error	오더스	/ˈɔɹdɚz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	복수형 /z/를 /s/처럼 표시함	https://github.com/cmusphinx/cmudict
 ordinary	dictionary_match	/ˈɔɹdəˌnɛɹi/	/ˈɔɹdəˌnɛɹi/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 ordinate	dictionary_match	오디넛	오디넛	not_found	hangul_not_comparable	direct_current_dictionary	-	-	https://dictionary.cambridge.org/us/dictionary/english/ordinate
-ordinator	needs_review	오디네이터	오디네이터	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+ordinator	dictionary_match	오디네이터	오디네이터	not_found	not_found	reviewed_token_fragment	-	-	https://dictionary.cambridge.org/dictionary/english/coordinator
 organic	dictionary_match	/ɔɹˈɡænɪk/	/ɔɹˈɡænɪk/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 organization	dictionary_match	/ˌɔɹɡənəˈzeɪʃən/	/ˌɔɹɡənəˈzeɪʃən/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 organized	dictionary_match	/ˈɔɹɡəˌnaɪzd/	/ˈɔɹɡəˌnaɪzd/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
@@ -2340,7 +2340,7 @@ overboard	supported_approximation	오버보드	오버보드	not_ipa	hangul_not_c
 overhauled	supported_approximation	오버홀드	오버홀드	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 overhead	dictionary_match	/ˈoʊvɚˈhɛd/	/ˈoʊvɚˈhɛd/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 override	supported_approximation	오버라이드	오버라이드	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
-overstow	needs_review	오버스토우	오버스토우	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+overstow	needs_review	오버스토우	오버스토우	not_found	not_found	US_dictionary_signature	정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.	-	-
 overtake	supported_approximation	오버테이크	오버테이크	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 overtaken	supported_approximation	오버테이큰	오버테이큰	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 overtakes	dictionary_match	/ˈoʊvɚˌteɪks/	/ˈoʊvɚˌteɪks/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
@@ -2486,7 +2486,7 @@ polaris	dictionary_match	/poʊˈlɛɹəs/	/poʊˈlɛɹəs/	phonemes_and_vowel_st
 pole	supported_approximation	폴	폴	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 poles	dictionary_match	/ˈpoʊlz/	/ˈpoʊlz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 policy	dictionary_match	/ˈpɑləsi/	/ˈpɑləsi/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-polish	needs_review	폴리시	폴리시	not_ipa	hangul_not_comparable	question_section_context	품사·뜻에 따른 발음이 달라 문맥별 확인 필요	-	https://github.com/cmusphinx/cmudict
+polish	dictionary_match	폴리시	폴리시	not_ipa	hangul_not_comparable	question_section_context	-	-	https://github.com/cmusphinx/cmudict
 pollutants	dictionary_match	/pəˈlutənts/	/pəˈlutənts/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 polluter	supported_approximation	폴루터	폴루터	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 pollution	supported_approximation	폴루션	폴루션	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
@@ -2626,7 +2626,7 @@ pushing	dictionary_match	/ˈpʊʃɪŋ/	/ˈpʊʃɪŋ/	phonemes_and_vowel_stress_m
 put	supported_approximation	풋	풋	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 putting	dictionary_match	/ˈpʌtɪŋ/	/ˈpʌtɪŋ/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 q	dictionary_match	/ˈkju/	/ˈkju/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
-quadrantal	needs_review	쿼드랜털	쿼드랜털	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+quadrantal	dictionary_match	/kwɒˈdræntəl/	/kwɒˈdræntəl/	not_found	not_found	direct_dictionary	-	-	https://www.collinsdictionary.com/dictionary/english/quadrant
 quadrature	supported_approximation	쿼드러처	쿼드러처	not_found	hangul_not_comparable	British_broad_segment_approximation	-	-	https://openslr.org/14/
 quality	dictionary_match	/ˈkwɑləti/	/ˈkwɑləti/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 quantity	dictionary_match	/ˈkwɑntəti/	/ˈkwɑntəti/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
@@ -2644,19 +2644,19 @@ racing	supported_approximation	레이싱	레이싱	not_ipa	hangul_not_comparable
 racking	supported_approximation	래킹	래킹	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 radar	supported_approximation	레이더	레이더	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 radio	dictionary_match	/ˈɹeɪdiˌoʊ/	/ˈɹeɪdiˌoʊ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-radiobeacons	needs_review	레이디오비컨즈	레이디오비컨즈	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+radiobeacons	needs_review	레이디오비컨즈	레이디오비컨즈	not_found	not_found	US_dictionary_signature	정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.	-	-
 radiotelephone	supported_approximation	레이디오텔레폰	레이디오텔레폰	not_found	hangul_not_comparable	British_broad_segment_approximation	-	-	https://openslr.org/14/
 railroad	dictionary_match	/ˈɹeɪlˌɹoʊd/	/ˈɹeɪlˌɹoʊd/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 rails	supported_approximation	레일즈	레일즈	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 rain	dictionary_match	/ˈɹeɪn/	/ˈɹeɪn/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 raised	supported_approximation	레이즈드	레이즈드	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 raising	supported_approximation	레이징	레이징	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
-ramain	needs_review	발음 미확정	발음 미확정	not_found	not_found	US_dictionary_signature	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.; 미국식 사전 대조 확인 필요: not_found	-	-
+ramain	needs_review	발음 미확정	발음 미확정	not_found	not_found	US_dictionary_signature	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.; 원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함.	-	-
 rang	dictionary_match	/ˈɹæŋ/	/ˈɹæŋ/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 range	supported_approximation	레인지	레인지	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 ranges	dictionary_match	/ˈɹeɪndʒəz/	/ˈɹeɪndʒəz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 ranging	dictionary_match	/ˈɹeɪndʒɪŋ/	/ˈɹeɪndʒɪŋ/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
-raoult's	needs_review	라울스	라울스	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+raoult's	dictionary_match	/rɑːˈuːlz/	/rɑːˈuːlz/	not_found	not_found	direct_dictionary	-	-	https://www.collinsdictionary.com/dictionary/english/raoults-law
 rapidly	dictionary_match	/ˈɹæpədli/	/ˈɹæpədli/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 rata	dictionary_match	/ˈɹætə/	/ˈɹætə/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 rate	supported_approximation	레이트	레이트	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
@@ -2666,7 +2666,7 @@ rcc	supported_approximation	알씨씨	알씨씨	not_found	not_found	letter_names
 reach	supported_approximation	리치	리치	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 reached	dictionary_match	/ˈɹitʃt/	/ˈɹitʃt/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 reaching	dictionary_match	/ˈɹitʃɪŋ/	/ˈɹitʃɪŋ/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
-read	needs_review	리드	리드	not_ipa	hangul_not_comparable	question_section_context	품사·뜻에 따른 발음이 달라 문맥별 확인 필요	-	https://github.com/cmusphinx/cmudict
+read	dictionary_match	리드	리드	not_ipa	hangul_not_comparable	question_section_context	-	-	https://github.com/cmusphinx/cmudict
 readily	dictionary_match	/ˈɹɛdəli/	/ˈɹɛdəli/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 readiness	dictionary_match	/ˈɹɛdinəs/	/ˈɹɛdinəs/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 reading	dictionary_match	리딩	리딩	not_ipa	hangul_not_comparable	question_section_context	-	-	https://github.com/cmusphinx/cmudict
@@ -2696,7 +2696,7 @@ recommenced	supported_approximation	리커멘스트	리커멘스트	not_found	ha
 recommendations	dictionary_match	/ˌɹɛkəmənˈdeɪʃənz/	/ˌɹɛkəmənˈdeɪʃənz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 recommended	supported_approximation	레커멘디드	레커멘디드	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 reconnect	dictionary_match	/ɹikəˈnɛkt/	/ɹikəˈnɛkt/	phonemes_and_vowel_stress_match	not_found	US_dictionary_signature	-	-	-
-record	confirmed_error	레코드	레코드	not_ipa	hangul_not_comparable	question_section_context	품사·뜻에 따른 발음이 달라 문맥별 확인 필요	Take and record 동사에도 기존 명사형 근사 독음만 표시됨	https://github.com/cmusphinx/cmudict
+record	confirmed_error	레코드	레코드	not_ipa	hangul_not_comparable	question_section_context	-	Take and record 동사에도 기존 명사형 근사 독음만 표시됨	https://github.com/cmusphinx/cmudict
 recorded	dictionary_match	/ɹəˈkɔɹdɪd/	/ɹəˈkɔɹdɪd/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 records	confirmed_error	/ɹəˈkɔɹdz/	/ˈɹɛkɚdz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	question_section_context	-	명사 records에 동사 3인칭 단수 발음이 표시됨	https://dictionary.cambridge.org/dictionary/english/record; https://github.com/cmusphinx/cmudict
 recovered	supported_approximation	리커버드	리커버드	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
@@ -2717,7 +2717,7 @@ refinery	dictionary_match	/ɹɪˈfaɪnɚi/	/ɹɪˈfaɪnɚi/	phonemes_and_vowel_s
 refloat	supported_approximation	리플로트	리플로트	not_found	hangul_not_comparable	British_broad_segment_approximation	-	-	https://openslr.org/14/
 refraction	supported_approximation	리프랙션	리프랙션	not_found	hangul_not_comparable	British_broad_segment_approximation	-	-	https://openslr.org/14/
 refrigerated	dictionary_match	/ɹɪˈfɹɪdʒɚˌeɪtɪd/	/ɹɪˈfɹɪdʒɚˌeɪtɪd/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-refuse	needs_review	리퓨즈	리퓨즈	not_ipa	hangul_not_comparable	question_section_context	품사·뜻에 따른 발음이 달라 문맥별 확인 필요	-	https://dictionary.cambridge.org/pronunciation/english/refuse; https://github.com/cmusphinx/cmudict
+refuse	dictionary_match	리퓨즈	리퓨즈	not_ipa	hangul_not_comparable	question_section_context	-	-	https://dictionary.cambridge.org/pronunciation/english/refuse; https://github.com/cmusphinx/cmudict
 regard	dictionary_match	/ɹɪˈɡɑɹd/	/ɹɪˈɡɑɹd/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 regarding	dictionary_match	/ɹɪˈɡɑɹdɪŋ/	/ɹɪˈɡɑɹdɪŋ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 regards	dictionary_match	/ɹɪˈɡɑɹdz/	/ɹɪˈɡɑɹdz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
@@ -2752,7 +2752,7 @@ remote	dictionary_match	/ɹɪˈmoʊt/	/ɹɪˈmoʊt/	phonemes_and_vowel_stress_ma
 remove	supported_approximation	리무브	리무브	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 removed	dictionary_match	/ɹiˈmuvd/	/ɹiˈmuvd/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 removing	dictionary_match	/ɹiˈmuvɪŋ/	/ɹiˈmuvɪŋ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-renailed	needs_review	리네일드	리네일드	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+renailed	needs_review	리네일드	리네일드	not_found	not_found	US_dictionary_signature	정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.	-	-
 rendezvous	dictionary_match	/ˈɹɑndɪˌvu/	/ˈɹɑndɪˌvu/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 repair	dictionary_match	/ɹɪˈpɛɹ/	/ɹɪˈpɛɹ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 repaired	supported_approximation	리페어드	리페어드	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
@@ -2787,7 +2787,7 @@ rescue	supported_approximation	레스큐	레스큐	not_ipa	hangul_not_comparable
 rescuing	dictionary_match	/ˈɹɛskjuɪŋ/	/ˈɹɛskjuɪŋ/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 reservation	dictionary_match	/ˌɹɛzɚˈveɪʃən/	/ˌɹɛzɚˈveɪʃən/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 reserve	dictionary_match	/ɹɪˈzɝv/	/ɹɪˈzɝv/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-resewn	needs_review	리쏘운	리쏘운	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+resewn	needs_review	리쏘운	리쏘운	not_found	not_found	US_dictionary_signature	정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.	-	-
 residues	dictionary_match	/ˈɹɛzəˌduz/	/ˈɹɛzəˌduz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 resistance	dictionary_match	/ɹɪˈzɪstəns/	/ɹɪˈzɪstəns/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 resistant	dictionary_match	/ɹɪˈzɪstənt/	/ɹɪˈzɪstənt/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
@@ -2799,7 +2799,7 @@ responsibility	dictionary_match	/ɹiˌspɑnsəˈbɪləti/	/ɹiˌspɑnsəˈbɪlə
 responsible	dictionary_match	/ɹiˈspɑnsəbəl/	/ɹiˈspɑnsəbəl/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 rested	dictionary_match	/ˈɹɛstəd/	/ˈɹɛstəd/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 restored	supported_approximation	리스토어드	리스토어드	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
-restow	needs_review	리스토	리스토	not_found	hangul_not_comparable	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+restow	needs_review	리스토	리스토	not_found	hangul_not_comparable	US_dictionary_signature	정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.	-	-
 restricted	supported_approximation	리스트릭티드	리스트릭티드	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 result	dictionary_match	/ɹɪˈzʌlt/	/ɹɪˈzʌlt/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 resulting	dictionary_match	/ɹɪˈzʌltɪŋ/	/ɹɪˈzʌltɪŋ/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
@@ -2890,7 +2890,7 @@ sand	dictionary_match	/ˈsænd/	/ˈsænd/	phonemes_and_vowel_stress_match	broad_
 sandbanks	supported_approximation	샌드뱅크스	샌드뱅크스	not_found	hangul_not_comparable	British_broad_segment_approximation	-	-	https://openslr.org/14/
 sanitary	dictionary_match	/ˈsænɪˌtɛɹi/	/ˈsænɪˌtɛɹi/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 sar	supported_approximation	에스에이알	에스에이알	not_ipa	not_found	letter_names_only	-	-	https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf
-sart	needs_review	사트	사트	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+sart	needs_review	에스 에이 아르 티	에스 에이 아르 티	not_found	not_found	letter_names_only	철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음.	-	https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf
 satellite	dictionary_match	/ˈsætəˌlaɪt/	/ˈsætəˌlaɪt/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 satellites	dictionary_match	/ˈsætəˌlaɪts/	/ˈsætəˌlaɪts/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 satisfaction	dictionary_match	/ˌsætəˈsfækʃən/	/ˌsætəˈsfækʃən/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
@@ -2926,7 +2926,7 @@ searched	dictionary_match	/ˈsɝtʃt/	/ˈsɝtʃt/	phonemes_and_vowel_stress_matc
 seas	dictionary_match	/ˈsiz/	/ˈsiz/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 season	dictionary_match	/ˈsizən/	/ˈsizən/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 seasonal	supported_approximation	시즈널	시즈널	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
-seastar	needs_review	시스타	시스타	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+seastar	needs_review	발음 미확정	발음 미확정	not_found	not_found	US_dictionary_signature	선박·등대의 고유명. 실제 원어명·공식 음성 근거가 없어 영어 독음을 추정하지 않음.; 원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함.	-	-
 seat	supported_approximation	씨트	씨트	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 seaway	dictionary_match	/ˈsiˌweɪ/	/ˈsiˌweɪ/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 seaworthiness	supported_approximation	씨워디니스	씨워디니스	not_found	hangul_not_comparable	British_broad_segment_approximation	-	-	https://openslr.org/14/
@@ -2940,11 +2940,11 @@ secure	dictionary_match	/sɪˈkjʊɹ/	/sɪˈkjʊɹ/	phonemes_and_vowel_stress_ma
 secured	supported_approximation	시큐어드	시큐어드	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 securing	supported_approximation	시큐어링	시큐어링	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 securings	dictionary_match	/sɪˈkjʊɹɪŋz/	/sɪˈkjʊɹɪŋz/	not_found	different_accent_or_transcription_needs_review	attested_base_and_regular_inflection	-	-	https://github.com/cmusphinx/cmudict
-securite	needs_review	세큐리테	세큐리테	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+securite	dictionary_match	세큐리테	세큐리테	not_found	not_found	radio_procedure_pronunciation	-	-	https://www.maritimenz.govt.nz/media/zgrhubg4/part23-maritime-rule-original.pdf; https://taic.org.nz/glossary
 security	dictionary_match	/sɪˈkjʊɹəti/	/sɪˈkjʊɹəti/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 see	supported_approximation	씨	씨	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 seeing	dictionary_match	/ˈsiɪŋ/	/ˈsiɪŋ/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
-seelonce	needs_review	실롱스	실롱스	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+seelonce	dictionary_match	실롱스	실롱스	not_found	not_found	radio_procedure_pronunciation	-	-	https://www.govinfo.gov/content/pkg/CFR-2010-title47-vol5/pdf/CFR-2010-title47-vol5.pdf; https://www.collinsdictionary.com/dictionary/french-english/silence_1; https://www.aph.gov.au/-/media/02_Parliamentary_Business/24_Committees/244_Joint_Committees/JSCT/2025/Radio_Regulations/WRC-23_treaty_text.pdf
 seen	dictionary_match	/ˈsin/	/ˈsin/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 sees	dictionary_match	/ˈsiz/	/ˈsiz/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 segregated	supported_approximation	세그리게이티드	세그리게이티드	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
@@ -2965,7 +2965,7 @@ sent	dictionary_match	/ˈsɛnt/	/ˈsɛnt/	phonemes_and_vowel_stress_match	broad_
 sentence	dictionary_match	/ˈsɛntəns/	/ˈsɛntəns/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 sentenced	supported_approximation	센텐스트	센텐스트	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 sentences	supported_approximation	센텐시즈	센텐시즈	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
-separate	confirmed_error	세퍼레이트	세퍼레이트	not_ipa	hangul_not_comparable	question_section_context	품사·뜻에 따른 발음이 달라 문맥별 확인 필요	단일 독음으로 품사별 발음 차이를 누락함. 문항·보기별 검수값 또는 품사별 대안을 표시.	https://github.com/cmusphinx/cmudict; https://dictionary.cambridge.org/dictionary/english/separate
+separate	confirmed_error	세퍼레이트	세퍼레이트	not_ipa	hangul_not_comparable	question_section_context	-	단일 독음으로 품사별 발음 차이를 누락함. 문항·보기별 검수값 또는 품사별 대안을 표시.	https://github.com/cmusphinx/cmudict; https://dictionary.cambridge.org/dictionary/english/separate
 separately	dictionary_match	/ˈsɛpɚətli/	/ˈsɛpɚətli/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 separation	dictionary_match	/ˌsɛpɚˈeɪʃən/	/ˌsɛpɚˈeɪʃən/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 series	dictionary_match	/ˈsɪɹiz/	/ˈsɪɹiz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
@@ -2975,7 +2975,7 @@ served	dictionary_match	/ˈsɝvd/	/ˈsɝvd/	phonemes_and_vowel_stress_match	diff
 service	dictionary_match	/ˈsɝvəs/	/ˈsɝvəs/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 serviceability	supported_approximation	서비서빌리티	서비서빌리티	not_found	hangul_not_comparable	British_broad_segment_approximation	-	-	https://openslr.org/14/
 serving	dictionary_match	/ˈsɝvɪŋ/	/ˈsɝvɪŋ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-servomechanisms	needs_review	서보메커니즘즈	서보메커니즘즈	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+servomechanisms	dictionary_match	/ˈsɝvoʊˌmɛkəˌnɪzəmz/	/ˈsɝvoʊˌmɛkəˌnɪzəmz/	not_found	not_found	direct_dictionary_regular_plural	-	-	https://www.collinsdictionary.com/dictionary/english/servomechanism
 ses	supported_approximation	에스이에스	에스이에스	not_found	not_found	letter_names_only	-	-	https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf
 session	dictionary_match	/ˈsɛʃən/	/ˈsɛʃən/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 set	supported_approximation	셋	셋	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
@@ -3018,8 +3018,8 @@ shore	dictionary_match	/ˈʃɔɹ/	/ˈʃɔɹ/	phonemes_and_vowel_stress_match	bro
 shoring	supported_approximation	쇼링	쇼링	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 short	supported_approximation	숏	숏	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 shortage	dictionary_match	/ˈʃɔɹtədʒ/	/ˈʃɔɹtədʒ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-shortlanded	needs_review	숏랜디드	숏랜디드	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
-shortshipped	needs_review	쇼트십트	쇼트십트	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+shortlanded	needs_review	숏랜디드	숏랜디드	not_found	not_found	US_dictionary_signature	정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.	-	-
+shortshipped	needs_review	쇼트십트	쇼트십트	not_found	not_found	US_dictionary_signature	정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.	-	-
 should	supported_approximation	슈드	슈드	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 showing	dictionary_match	/ˈʃoʊɪŋ/	/ˈʃoʊɪŋ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 shown	dictionary_match	/ˈʃoʊn/	/ˈʃoʊn/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
@@ -3090,7 +3090,7 @@ smuggled	supported_approximation	스머글드	스머글드	not_ipa	hangul_not_co
 so	supported_approximation	쏘	쏘	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 society	dictionary_match	/səˈsaɪəti/	/səˈsaɪəti/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 soda	dictionary_match	/ˈsoʊdə/	/ˈsoʊdə/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-solas	needs_review	솔라스	솔라스	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+solas	needs_review	에스 오 엘 에이 에스	에스 오 엘 에이 에스	not_found	not_found	letter_names_only	철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음.	-	https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf
 solid	dictionary_match	/ˈsɑləd/	/ˈsɑləd/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 solids	dictionary_match	/ˈsɑlədz/	/ˈsɑlədz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 solving	dictionary_match	/ˈsɑlvɪŋ/	/ˈsɑlvɪŋ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
@@ -3168,7 +3168,7 @@ stationed	dictionary_match	/ˈsteɪʃənd/	/ˈsteɪʃənd/	phonemes_and_vowel_st
 stations	dictionary_match	/ˈsteɪʃənz/	/ˈsteɪʃənz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 status	dictionary_match	/ˈstætəs/	/ˈstætəs/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 stay	dictionary_match	/ˈsteɪ/	/ˈsteɪ/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
-stb'd	needs_review	스타보드	스타보드	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+stb'd	dictionary_match	/ˈstɑːrbɚd/	/ˈstɑːrbɚd/	not_found	not_found	abbreviation_expansion	-	-	https://doi.org/10.5539/elt.v4n2p107; https://dictionary.cambridge.org/pronunciation/english/starboard; https://global.kawasaki.com/en/industrial_equipment/hydraulic/applications_marine/pdf/steering_e.pdf
 stbd	confirmed_error	에스 티 비 디	스타보드	not_found	not_found	US_dictionary_signature	-	항해일지에서 starboard의 축약형을 철자 이름으로 읽음	https://www.cambridge.org/core/services/aop-cambridge-core/content/view/EA6AB445F7D8796A81E9AB0204DD531D/S0373463300025467a.pdf/a-navigational-glossary.pdf
 stcw	supported_approximation	에스티씨더블유	에스티씨더블유	not_found	not_found	letter_names_only	-	-	https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf
 steadily	dictionary_match	/ˈstɛdəli/	/ˈstɛdəli/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
@@ -3183,9 +3183,9 @@ steerageway	supported_approximation	스티어리지웨이	스티어리지웨이	
 steered	dictionary_match	/ˈstɪɹd/	/ˈstɪɹd/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 steering	dictionary_match	/ˈstɪɹɪŋ/	/ˈstɪɹɪŋ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 stern	supported_approximation	스턴	스턴	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
-sternlight	needs_review	스턴라이트	스턴라이트	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+sternlight	needs_review	스턴라이트	스턴라이트	not_found	not_found	US_dictionary_signature	정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.	-	-
 sterns	dictionary_match	/ˈstɝnz/	/ˈstɝnz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-sternway	needs_review	스턴웨이	스턴웨이	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+sternway	dictionary_match	/ˈstɝnˌweɪ/	/ˈstɝnˌweɪ/	not_found	not_found	direct_dictionary	-	-	https://www.collinsdictionary.com/dictionary/english/sternway
 stevedore	supported_approximation	스티버도어	스티버도어	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 stevedores	dictionary_match	/ˈstivəˌdɔɹz/	/ˈstivəˌdɔɹz/	not_found	different_accent_or_transcription_needs_review	attested_base_and_regular_inflection	-	-	https://github.com/cmusphinx/cmudict
 stiff	dictionary_match	/ˈstɪf/	/ˈstɪf/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
@@ -3225,7 +3225,7 @@ struts	dictionary_match	/ˈstɹʌts/	/ˈstɹʌts/	phonemes_and_vowel_stress_matc
 style	dictionary_match	/ˈstaɪl/	/ˈstaɪl/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 sub	dictionary_match	/ˈsʌb/	/ˈsʌb/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 subject	confirmed_error	/səbˈdʒɛkt/	/ˈsʌbdʒɛkt/	phonemes_differ	different_accent_or_transcription_needs_review	US_dictionary_signature	-	현재 지문의 명사·형용사 subject에 동사 발음이 들어감	https://dictionary.cambridge.org/dictionary/english/subject
-sublate	needs_review	서블레이트	서블레이트	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+sublate	dictionary_match	/səbˈleɪt/	/səbˈleɪt/	not_found	not_found	direct_dictionary	-	-	https://www.collinsdictionary.com/dictionary/english/sublate
 submerged	supported_approximation	섭머지드	섭머지드	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 submit	dictionary_match	/səbˈmɪt/	/səbˈmɪt/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 submitted	dictionary_match	/səbˈmɪtɪd/	/səbˈmɪtɪd/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
@@ -3412,7 +3412,7 @@ trailing	dictionary_match	/ˈtɹeɪlɪŋ/	/ˈtɹeɪlɪŋ/	phonemes_and_vowel_str
 trained	supported_approximation	트레인드	트레인드	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 training	supported_approximation	트레이닝	트레이닝	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 tramper	supported_approximation	트램퍼	트램퍼	not_found	hangul_not_comparable	British_broad_segment_approximation	-	-	https://openslr.org/14/
-transfer	needs_review	트랜스퍼	트랜스퍼	not_ipa	hangul_not_comparable	question_section_context	품사·뜻에 따른 발음이 달라 문맥별 확인 필요	-	https://dictionary.cambridge.org/pronunciation/english/transfer; https://github.com/cmusphinx/cmudict
+transfer	dictionary_match	트랜스퍼	트랜스퍼	not_ipa	hangul_not_comparable	question_section_context	-	-	https://dictionary.cambridge.org/pronunciation/english/transfer; https://github.com/cmusphinx/cmudict
 transferred	dictionary_match	/tɹænˈsfɝd/	/tɹænˈsfɝd/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 transit	dictionary_match	/ˈtɹænzɪt/	/ˈtɹænzɪt/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 translates	dictionary_match	/tɹænzˈleɪts/	/tɹænzˈleɪts/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
@@ -3537,12 +3537,12 @@ utopia	dictionary_match	/juˈtoʊpiə/	/juˈtoʊpiə/	phonemes_and_vowel_stress_
 v	dictionary_match	/ˈvi/	/ˈvi/	phonemes_and_vowel_stress_match	not_found	US_dictionary_signature	-	-	-
 valid	dictionary_match	/ˈvælɪd/	/ˈvælɪd/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 validity	dictionary_match	/vəˈlɪdəti/	/vəˈlɪdəti/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-valorem	needs_review	밸로럼	밸로럼	not_found	hangul_not_comparable	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+valorem	confirmed_error	밸로럼	/vəˈlɔrəm/	not_found	broad_phonemes_match	direct_dictionary	-	ad valorem의 첫 모음은 약모음 /ə/이며 뒤의 /lɔ/에 강세가 있음. 기존 밸로럼을 사전 IPA로 교정.	https://www.collinsdictionary.com/dictionary/english/ad-valorem
 valuation	dictionary_match	/væljuˈeɪʃən/	/væljuˈeɪʃən/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 value	dictionary_match	/ˈvælju/	/ˈvælju/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 valve	dictionary_match	/ˈvælv/	/ˈvælv/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 valves	dictionary_match	/ˈvælvz/	/ˈvælvz/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
-var'ly	needs_review	베어리어블리	발음 미확정	not_found	not_found	US_dictionary_signature	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.; 미국식 사전 대조 확인 필요: not_found	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.	-
+var'ly	confirmed_error	베어리어블리	/ˈvɛriəsli/	not_found	not_found	direct_dictionary	-	항해일지 논문에서 variously의 축약임을 확인. 기존 variably 계열 독음은 다른 단어의 발음임.	https://doi.org/10.5539/elt.v4n2p107; https://dictionary.cambridge.org/us/pronunciation/english/variously
 variable	dictionary_match	/ˈvɛɹiəbəl/	/ˈvɛɹiəbəl/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 variation	supported_approximation	베리에이션	베리에이션	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 varied	supported_approximation	베어리드	베어리드	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
@@ -3613,7 +3613,7 @@ wastes	dictionary_match	/ˈweɪsts/	/ˈweɪsts/	phonemes_and_vowel_stress_match	
 watch	supported_approximation	워치	워치	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 watches	dictionary_match	/ˈwɑtʃəz/	/ˈwɑtʃəz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 watching	dictionary_match	/ˈwɑtʃɪŋ/	/ˈwɑtʃɪŋ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-watchkeeping	needs_review	워치키핑	워치키핑	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+watchkeeping	needs_review	워치키핑	워치키핑	not_found	not_found	US_dictionary_signature	정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.	-	-
 water	dictionary_match	/ˈwɔtɚ/	/ˈwɔtɚ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 waterline	supported_approximation	워터라인	워터라인	not_found	hangul_not_comparable	British_broad_segment_approximation	-	-	https://openslr.org/14/
 waters	dictionary_match	/ˈwɔtɚz/	/ˈwɔtɚz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
@@ -3629,7 +3629,7 @@ wear	dictionary_match	/ˈwɛɹ/	/ˈwɛɹ/	phonemes_and_vowel_stress_match	differ
 wearer	dictionary_match	/ˈwɛɹɚ/	/ˈwɛɹɚ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 wearing	dictionary_match	/ˈwɛɹɪŋ/	/ˈwɛɹɪŋ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 weather	supported_approximation	웨더	웨더	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
-weathertight	needs_review	웨더타이트	웨더타이트	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+weathertight	dictionary_match	/ˈwɛðɚˌtaɪt/	/ˈwɛðɚˌtaɪt/	not_found	not_found	direct_dictionary	-	-	https://www.collinsdictionary.com/dictionary/english/weathertight
 wedging	supported_approximation	웨징	웨징	not_found	hangul_not_comparable	British_broad_segment_approximation	-	-	https://openslr.org/14/
 week	dictionary_match	/ˈwik/	/ˈwik/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
 weeks	dictionary_match	/ˈwiks/	/ˈwiks/	phonemes_and_vowel_stress_match	broad_phonemes_match	US_dictionary_signature	-	-	-
@@ -3676,7 +3676,7 @@ wish	dictionary_match	/ˈwɪʃ/	/ˈwɪʃ/	phonemes_and_vowel_stress_match	broad_
 with	supported_approximation	위드	위드	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 within	supported_approximation	위딘	위딘	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 without	supported_approximation	위드아웃	위드아웃	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
-womanned	needs_review	우먼드	발음 미확정	not_found	not_found	US_dictionary_signature	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.; 미국식 사전 대조 확인 필요: not_found	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.	-
+womanned	needs_review	우먼드	발음 미확정	not_found	not_found	US_dictionary_signature	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.; 원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함.	원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.	-
 word	dictionary_match	/ˈwɝd/	/ˈwɝd/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 words	dictionary_match	/ˈwɝdz/	/ˈwɝdz/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 work	supported_approximation	워크	워크	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
@@ -3684,7 +3684,7 @@ workers	dictionary_match	/ˈwɝkɚz/	/ˈwɝkɚz/	phonemes_and_vowel_stress_match
 working	dictionary_match	/ˈwɝkɪŋ/	/ˈwɝkɪŋ/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
 workload	supported_approximation	워크로드	워크로드	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 works	dictionary_match	/ˈwɝks/	/ˈwɝks/	phonemes_and_vowel_stress_match	different_accent_or_transcription_needs_review	US_dictionary_signature	-	-	-
-worthfulness	needs_review	워스풀니스	워스풀니스	not_found	not_found	US_dictionary_signature	미국식 사전 대조 확인 필요: not_found	-	-
+worthfulness	needs_review	워스풀니스	워스풀니스	not_found	not_found	US_dictionary_signature	정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.	-	-
 would	supported_approximation	우드	우드	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 wreck	supported_approximation	렉	렉	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict
 wrecked	supported_approximation	렉트	렉트	not_ipa	hangul_not_comparable	broad_segment_approximation	-	-	https://github.com/cmusphinx/cmudict

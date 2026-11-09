@@ -7,11 +7,12 @@ let checked=0;
 for(const [key,sections] of Object.entries(d.pronunciationContexts)){
  const [year,grade,session,,number]=key.split('|');
  for(const [index,section] of Object.entries(sections)){
-  const q={_year:Number(year),_short:grade,_session:Number(session),'과목':'영어','번호':Number(number),'문제':'','선택지':['','','','']};
+  const q={_year:Number(year),_short:grade,_session:Number(session),'과목':'영어','번호':Number(number),'문제':section.questionText,'선택지':['','','','']};
   if(Number(index)===0)q['문제']=section.text;else q['선택지'][Number(index)-1]=section.text;
   const html=c.MDEnglishWordStudy.supplement(q);
   for(const reading of Object.values(section.readings)){assert(html.includes('발음: '+reading),key+' exact-context reading missing');checked++;}
   // A changed sentence must fall back to explicit alternatives, never inherit POS.
+  if(Number(index)!==0){const stem=q['문제'];q['문제']+=' changed';assert(c.MDEnglishWordStudy.supplement(q).includes('문맥별 선택 필요'),key+' option reused under changed stem');q['문제']=stem;}
   if(Number(index)===0)q['문제']+=' changed';else q['선택지'][Number(index)-1]+=' changed';
   assert(c.MDEnglishWordStudy.supplement(q).includes('문맥별 선택 필요'));
  }
@@ -42,5 +43,13 @@ const phase=c.MDEnglishWordStudy.augment(q,{html:'<span>St. Nicholas</span> <spa
 assert(phase.includes('[세인트 니콜라스]'));
 const hooks=c.MDEnglishWordStudy.augment(q,{html:'<span>hooks for handling</span> <span style="color:#94A3B8">[훗스 포 핸들링]</span>'}).html;
 assert(hooks.includes('[훅스 포 핸들링]'));
+const uncertain=c.MDEnglishWordStudy.augment(q,{html:'<span>M/V Seastar is here</span> <span style="color:#94A3B8">[엠브이 시스타 이즈 히어]</span>'}).html;
+assert(uncertain.includes('발음 미확정 포함: seastar'));
+assert(!uncertain.includes('시스타 이즈 히어'));
+const kg=c.MDEnglishWordStudy.supplement({...q,'문제':'The KG increases.'});
+assert(kg.includes('용골 위 무게중심 높이'));
+assert(kg.includes('발음: 복원성 기호 KG: 케이 지'));
+const fragment=c.MDEnglishWordStudy.supplement({...q,'문제':'on-scene co-ordinator'});
+assert(fragment.includes('co-ordinator의 뒷부분으로 단독 단어가 아님'));
 assert.equal(JSON.stringify(d),snapshot,'rendering mutated dictionary/context data');
 console.log(JSON.stringify({reviewedContextReadings:checked,staleContextFallback:true,unknownSpellingNoGuess:true,dialectAlternatives:true}));

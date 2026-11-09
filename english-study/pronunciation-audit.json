@@ -3,10 +3,10 @@
   "baselineCommit": "1181fa802da8acc9c3eb886e4b7bcc1077ca0b76",
   "total": 3715,
   "counts": {
-    "supported_approximation": 1244,
-    "dictionary_match": 2343,
-    "needs_review": 89,
-    "confirmed_error": 39
+    "supported_approximation": 1247,
+    "dictionary_match": 2374,
+    "needs_review": 49,
+    "confirmed_error": 45
   },
   "limitations": [
     "dictionary_match means US phonemes and vowel stress match a CMU entry, or the specifically cited manual review; it is not full contextual or UK certification.",
@@ -26,28 +26,28 @@
     "limitations": "Research comparison only; no lexical stress in most entries. Differences from American English are not classified as errors. No BEEP transcriptions redistributed."
   },
   "ukCounts": {
-    "hangul_not_comparable": 1232,
+    "hangul_not_comparable": 1230,
     "not_found": 204,
-    "different_accent_or_transcription_needs_review": 1353,
+    "different_accent_or_transcription_needs_review": 1355,
     "broad_phonemes_match": 926
   },
-  "pendingAfterCorrection": 91,
+  "pendingAfterCorrection": 49,
   "reviewMethodCounts": {
-    "reviewed_learning_approximation": 1287,
-    "CMU_phonemes_and_vowel_stress": 2341,
-    "reviewed_context_or_dictionary": 87
+    "reviewed_learning_approximation": 1297,
+    "CMU_phonemes_and_vowel_stress": 2297,
+    "reviewed_context_or_dictionary": 121
   },
   "priorFixRecheck": {
     "prior_70_reading_fixes": {
       "supported_approximation": 34,
-      "needs_review": 10,
-      "confirmed_error": 4,
-      "dictionary_match": 22
+      "needs_review": 6,
+      "confirmed_error": 7,
+      "dictionary_match": 23
     },
     "prior_2124_stress_moves": {
       "dictionary_match": 2110,
-      "confirmed_error": 12,
-      "needs_review": 2
+      "confirmed_error": 13,
+      "needs_review": 1
     }
   },
   "words": {
@@ -278,12 +278,13 @@
     },
     "abo": {
       "status": "needs_review",
-      "before": "아보",
-      "after": "아보",
+      "before": "발음 미확정",
+      "after": "발음 미확정",
       "usComparison": "not_ipa",
       "ukComparison": "hangul_not_comparable",
       "reasons": [
-        "한글 독음 수동 대조 필요"
+        "선박·등대의 고유명. 실제 원어명·공식 음성 근거가 없어 영어 독음을 추정하지 않음.",
+        "원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -5041,24 +5042,24 @@
       "legacyOnlyCorrection": false
     },
     "arpa": {
-      "status": "needs_review",
+      "status": "supported_approximation",
       "before": "아르파",
       "after": "아르파",
       "usComparison": "not_ipa",
       "ukComparison": "not_found",
-      "reasons": [
-        "한글 독음 수동 대조 필요"
+      "reasons": [],
+      "sources": [
+        "https://www.pfri.uniri.hr/bopri/IMEC_Proceedings/Rjecnik_Eng_Hrv.pdf"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
       "reviewer": "AI assistant",
-      "reviewScope": "needs_lexical_role_check",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewScope": "British_broad_segment_approximation",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "conventional_spoken_abbreviation",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -6173,23 +6174,25 @@
     },
     "ausrep": {
       "status": "needs_review",
-      "before": "오스렙",
-      "after": "오스렙",
+      "before": "에이 유 에스 아르 이 피",
+      "after": "에이 유 에스 아르 이 피",
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음."
       ],
-      "sources": [],
+      "sources": [
+        "https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf"
+      ],
       "ukReviewed": false,
-      "hangulReviewed": false,
+      "hangulReviewed": true,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "letter_names_only",
+      "matchMethod": "reviewed_learning_approximation",
       "unresolvedContexts": [],
       "pendingKind": "conventional_spoken_abbreviation",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "remainingReason": "철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음.",
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -6694,12 +6697,13 @@
     },
     "baar": {
       "status": "needs_review",
-      "before": "바르",
-      "after": "바르",
+      "before": "발음 미확정",
+      "after": "발음 미확정",
       "usComparison": "not_ipa",
       "ukComparison": "not_found",
       "reasons": [
-        "한글 독음 수동 대조 필요"
+        "선박·등대의 고유명. 실제 원어명·공식 음성 근거가 없어 영어 독음을 추정하지 않음.",
+        "원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -7070,30 +7074,30 @@
       "legacyOnlyCorrection": false
     },
     "ballot's": {
-      "status": "needs_review",
+      "status": "confirmed_error",
       "before": "/ˈbæləts/",
-      "after": "/ˈbæləts/",
+      "after": "/bəˈlɑts/",
       "usComparison": "not_found",
-      "ukComparison": "broad_phonemes_match",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "ukComparison": "different_accent_or_transcription_needs_review",
+      "reasons": [],
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/buys-ballots-law"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "direct_dictionary",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "proper_name_or_trade_name",
-      "remainingReason": "원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [
         "prior_70_reading_fixes",
         "prior_2124_stress_moves"
       ],
-      "correctionType": null,
-      "correctionReason": null,
+      "correctionType": "confirmed_error",
+      "correctionReason": "고유명 Buys Ballot's law에 일반명사 ballots의 첫음절 강세 /ˈbæləts/를 적용함.",
       "contextOnlyCorrection": false,
       "legacyOnlyCorrection": false
     },
@@ -7223,24 +7227,24 @@
       "legacyOnlyCorrection": false
     },
     "bareboat": {
-      "status": "needs_review",
-      "before": "베어보트",
-      "after": "베어보트",
+      "status": "dictionary_match",
+      "before": "/ˈbeəbəʊt/",
+      "after": "/ˈbeəbəʊt/",
       "usComparison": "not_found",
       "ukComparison": "not_found",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "reasons": [],
+      "sources": [
+        "https://www.pfri.uniri.hr/bopri/IMEC_Proceedings/Rjecnik_Eng_Hrv.pdf"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "published_maritime_dictionary",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "additional_phonetic_source_required",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -7405,7 +7409,7 @@
       "ukComparison": "not_found",
       "reasons": [
         "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
-        "미국식 사전 대조 확인 필요: not_found"
+        "원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -9156,9 +9160,11 @@
       "ukComparison": "not_found",
       "reasons": [
         "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
-        "미국식 사전 대조 확인 필요: not_found"
+        "원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함."
       ],
-      "sources": [],
+      "sources": [
+        "https://dictionary.cambridge.org/pronunciation/english/boatswain"
+      ],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
@@ -10386,7 +10392,7 @@
       "ukComparison": "not_found",
       "reasons": [
         "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
-        "미국식 사전 대조 확인 필요: not_found"
+        "원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -10830,24 +10836,24 @@
       "legacyOnlyCorrection": false
     },
     "busan": {
-      "status": "needs_review",
+      "status": "dictionary_match",
       "before": "부산",
       "after": "부산",
       "usComparison": "not_found",
       "ukComparison": "not_found",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "reasons": [],
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/busan"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "direct_dictionary",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "proper_name_or_trade_name",
-      "remainingReason": "원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -12241,7 +12247,7 @@
       "ukComparison": "hangul_not_comparable",
       "reasons": [
         "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
-        "미국식 사전 대조 확인 필요: not_found"
+        "원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -12887,24 +12893,24 @@
       "legacyOnlyCorrection": false
     },
     "cesser": {
-      "status": "needs_review",
-      "before": "세서",
-      "after": "세서",
+      "status": "dictionary_match",
+      "before": "/ˈsɛsə/",
+      "after": "/ˈsɛsə/",
       "usComparison": "not_found",
       "ukComparison": "not_found",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "reasons": [],
+      "sources": [
+        "https://www.dictionary.com/browse/cesser"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "direct_dictionary",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "technical_or_clipped_form",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -14571,7 +14577,7 @@
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -14765,24 +14771,24 @@
       "legacyOnlyCorrection": false
     },
     "codeclination": {
-      "status": "needs_review",
-      "before": "코데클리네이션",
-      "after": "코데클리네이션",
+      "status": "dictionary_match",
+      "before": "/ˌkoʊˌdɛkləˈneɪʃən/",
+      "after": "/ˌkoʊˌdɛkləˈneɪʃən/",
       "usComparison": "not_found",
       "ukComparison": "not_found",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "reasons": [],
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/codeclination"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "direct_dictionary",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "technical_or_clipped_form",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -15165,24 +15171,24 @@
       "legacyOnlyCorrection": false
     },
     "colregs": {
-      "status": "needs_review",
-      "before": "콜렉스",
-      "after": "콜렉스",
+      "status": "supported_approximation",
+      "before": "콜레그즈",
+      "after": "콜레그즈",
       "usComparison": "not_found",
       "ukComparison": "not_found",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "reasons": [],
+      "sources": [
+        "https://www.pfri.uniri.hr/bopri/IMEC_Proceedings/Rjecnik_Eng_Hrv.pdf"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "British_broad_segment_approximation",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "conventional_spoken_abbreviation",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -18929,24 +18935,25 @@
       "legacyOnlyCorrection": false
     },
     "coriolis": {
-      "status": "needs_review",
+      "status": "dictionary_match",
       "before": "코리올리스",
       "after": "코리올리스",
       "usComparison": "not_found",
       "ukComparison": "not_found",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "reasons": [],
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/coriolis-effect",
+        "https://dictionary.cambridge.org/pronunciation/english/coriolis"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "direct_dictionary",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "proper_name_or_trade_name",
-      "remainingReason": "원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -20273,27 +20280,27 @@
       "legacyOnlyCorrection": false
     },
     "cyclolysis": {
-      "status": "needs_review",
+      "status": "confirmed_error",
       "before": "사이클로라이시스",
-      "after": "사이클로라이시스",
+      "after": "/saɪˈklɑləsɪs/",
       "usComparison": "not_found",
       "ukComparison": "not_found",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "reasons": [],
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/cyclolysis"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "direct_dictionary",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "additional_phonetic_source_required",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
-      "correctionType": null,
-      "correctionReason": null,
+      "correctionType": "confirmed_error",
+      "correctionReason": "cyclolysis의 /ləsɪs/를 라이시스처럼 잘못 표시함.",
       "contextOnlyCorrection": false,
       "legacyOnlyCorrection": false
     },
@@ -20904,7 +20911,7 @@
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -20948,24 +20955,24 @@
       "legacyOnlyCorrection": false
     },
     "decca": {
-      "status": "needs_review",
-      "before": "데카",
-      "after": "데카",
-      "usComparison": "not_ipa",
+      "status": "dictionary_match",
+      "before": "/ˈdɛkə/",
+      "after": "/ˈdɛkə/",
+      "usComparison": "phonemes_and_vowel_stress_match",
       "ukComparison": "not_found",
-      "reasons": [
-        "한글 독음 수동 대조 필요"
+      "reasons": [],
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/decca"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
       "reviewer": "AI assistant",
-      "reviewScope": "needs_lexical_role_check",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewScope": "direct_dictionary",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "proper_name_or_trade_name",
-      "remainingReason": "원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -21005,7 +21012,7 @@
       "ukComparison": "not_found",
       "reasons": [
         "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
-        "미국식 사전 대조 확인 필요: not_found"
+        "원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -21416,31 +21423,24 @@
       "legacyOnlyCorrection": false
     },
     "defect": {
-      "status": "needs_review",
+      "status": "dictionary_match",
       "before": "디펙트",
       "after": "디펙트",
       "usComparison": "not_ipa",
       "ukComparison": "hangul_not_comparable",
-      "reasons": [
-        "품사·뜻에 따른 발음이 달라 문맥별 확인 필요"
-      ],
+      "reasons": [],
       "sources": [
         "https://github.com/cmusphinx/cmudict"
       ],
       "ukReviewed": false,
       "hangulReviewed": false,
-      "contextReviewed": false,
+      "contextReviewed": true,
       "reviewer": "AI assistant",
       "reviewScope": "question_section_context",
       "matchMethod": "reviewed_context_or_dictionary",
-      "unresolvedContexts": [
-        {
-          "key": "2023|navi2|2|영어|16",
-          "section": "3"
-        }
-      ],
-      "pendingKind": "ambiguous_question_sense",
-      "remainingReason": "단독 보기 등의 품사·뜻을 하나로 정할 수 없어 확인된 사전 대안을 함께 표시함.",
+      "unresolvedContexts": [],
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -22132,7 +22132,7 @@
       "ukComparison": "hangul_not_comparable",
       "reasons": [
         "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
-        "미국식 사전 대조 확인 필요: not_found"
+        "원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -22382,7 +22382,7 @@
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -23203,24 +23203,24 @@
       "legacyOnlyCorrection": false
     },
     "dewpoint": {
-      "status": "needs_review",
-      "before": "듀포인트",
-      "after": "듀포인트",
+      "status": "dictionary_match",
+      "before": "/ˈdjuːpɔɪnt/",
+      "after": "/ˈdjuːpɔɪnt/",
       "usComparison": "not_found",
       "ukComparison": "not_found",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "reasons": [],
+      "sources": [
+        "https://www.pfri.uniri.hr/bopri/IMEC_Proceedings/Rjecnik_Eng_Hrv.pdf"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "published_maritime_dictionary",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "additional_phonetic_source_required",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -27463,23 +27463,25 @@
     },
     "eloran": {
       "status": "needs_review",
-      "before": "이로란",
-      "after": "이로란",
+      "before": "이 엘 오 아르 에이 엔",
+      "after": "이 엘 오 아르 에이 엔",
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음."
       ],
-      "sources": [],
+      "sources": [
+        "https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf"
+      ],
       "ukReviewed": false,
-      "hangulReviewed": false,
+      "hangulReviewed": true,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "letter_names_only",
+      "matchMethod": "reviewed_learning_approximation",
       "unresolvedContexts": [],
       "pendingKind": "conventional_spoken_abbreviation",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "remainingReason": "철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음.",
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -28296,23 +28298,25 @@
     },
     "epirb": {
       "status": "needs_review",
-      "before": "이퍼브",
-      "after": "이퍼브",
+      "before": "이 피 아이 아르 비",
+      "after": "이 피 아이 아르 비",
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음."
       ],
-      "sources": [],
+      "sources": [
+        "https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf"
+      ],
       "ukReviewed": false,
-      "hangulReviewed": false,
+      "hangulReviewed": true,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "letter_names_only",
+      "matchMethod": "reviewed_learning_approximation",
       "unresolvedContexts": [],
       "pendingKind": "conventional_spoken_abbreviation",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "remainingReason": "철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음.",
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -30950,24 +30954,24 @@
       "legacyOnlyCorrection": false
     },
     "fairlead": {
-      "status": "needs_review",
-      "before": "페어리드",
-      "after": "페어리드",
+      "status": "dictionary_match",
+      "before": "/ˈfɛərˌliːd/",
+      "after": "/ˈfɛərˌliːd/",
       "usComparison": "not_found",
       "ukComparison": "not_found",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "reasons": [],
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/fairlead"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "direct_dictionary",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "additional_phonetic_source_required",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -31300,27 +31304,27 @@
       "legacyOnlyCorrection": false
     },
     "fathometer": {
-      "status": "needs_review",
+      "status": "confirmed_error",
       "before": "패더미터",
-      "after": "패더미터",
+      "after": "/fæˈðɑmɪtɚ/",
       "usComparison": "not_found",
       "ukComparison": "not_found",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "reasons": [],
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/fathometer"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "direct_dictionary",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "additional_phonetic_source_required",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
-      "correctionType": null,
-      "correctionReason": null,
+      "correctionType": "confirmed_error",
+      "correctionReason": "해사 계기의 강세 있는 두 번째 모음 /ɑ/ 또는 /ɒ/를 기존 패더미터의 약모음처럼 적음.",
       "contextOnlyCorrection": false,
       "legacyOnlyCorrection": false
     },
@@ -31881,7 +31885,7 @@
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -32650,24 +32654,24 @@
       "legacyOnlyCorrection": false
     },
     "floeberg": {
-      "status": "needs_review",
-      "before": "플로버그",
-      "after": "플로버그",
+      "status": "dictionary_match",
+      "before": "/ˈfloʊbɝɡ/",
+      "after": "/ˈfloʊbɝɡ/",
       "usComparison": "not_found",
       "ukComparison": "not_found",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "reasons": [],
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/floeberg"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "direct_dictionary",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "additional_phonetic_source_required",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -36715,7 +36719,7 @@
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -36835,12 +36839,13 @@
     },
     "hanbando": {
       "status": "needs_review",
-      "before": "한반도",
-      "after": "한반도",
+      "before": "발음 미확정",
+      "after": "발음 미확정",
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "선박·등대의 고유명. 실제 원어명·공식 음성 근거가 없어 영어 독음을 추정하지 않음.",
+        "원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -37418,7 +37423,7 @@
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -38338,12 +38343,13 @@
     },
     "heukryong": {
       "status": "needs_review",
-      "before": "흑룡",
-      "after": "흑룡",
+      "before": "발음 미확정",
+      "after": "발음 미확정",
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "선박·등대의 고유명. 실제 원어명·공식 음성 근거가 없어 영어 독음을 추정하지 않음.",
+        "원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -38893,7 +38899,7 @@
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -41902,7 +41908,7 @@
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -43134,24 +43140,24 @@
       "legacyOnlyCorrection": false
     },
     "interco": {
-      "status": "needs_review",
+      "status": "supported_approximation",
       "before": "인터코",
       "after": "인터코",
       "usComparison": "not_ipa",
       "ukComparison": "not_found",
-      "reasons": [
-        "한글 독음 수동 대조 필요"
+      "reasons": [],
+      "sources": [
+        "https://www.pfri.uniri.hr/bopri/IMEC_Proceedings/Rjecnik_Eng_Hrv.pdf"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
       "reviewer": "AI assistant",
-      "reviewScope": "needs_lexical_role_check",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewScope": "British_broad_segment_approximation",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "conventional_spoken_abbreviation",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -44837,29 +44843,29 @@
       "legacyOnlyCorrection": false
     },
     "kg": {
-      "status": "needs_review",
+      "status": "confirmed_error",
       "before": "킬로그램 / 케이 지",
-      "after": "킬로그램 / 케이 지",
+      "after": "케이 지",
       "usComparison": "not_found",
       "ukComparison": "not_found",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "reasons": [],
+      "sources": [
+        "https://www.pfri.uniri.hr/bopri/IMEC_Proceedings/Rjecnik_Eng_Hrv.pdf"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "letter_names_only",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "additional_phonetic_source_required",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [
         "prior_70_reading_fixes"
       ],
-      "correctionType": null,
-      "correctionReason": null,
+      "correctionType": "confirmed_error",
+      "correctionReason": "실제 두 문제의 대문자 KG는 복원성 기호인데 단위 kg의 킬로그램을 혼합해 제시함.",
       "contextOnlyCorrection": false,
       "legacyOnlyCorrection": false
     },
@@ -44964,24 +44970,24 @@
       "legacyOnlyCorrection": false
     },
     "kim": {
-      "status": "needs_review",
-      "before": "킴",
-      "after": "킴",
-      "usComparison": "not_ipa",
+      "status": "dictionary_match",
+      "before": "/kɪm/",
+      "after": "/kɪm/",
+      "usComparison": "stress_differs",
       "ukComparison": "not_found",
-      "reasons": [
-        "한글 독음 수동 대조 필요"
+      "reasons": [],
+      "sources": [
+        "https://dictionary.cambridge.org/pronunciation/english/kim"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
       "reviewer": "AI assistant",
-      "reviewScope": "needs_lexical_role_check",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewScope": "direct_dictionary",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "proper_name_or_trade_name",
-      "remainingReason": "원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -46162,24 +46168,24 @@
       "legacyOnlyCorrection": false
     },
     "laydays": {
-      "status": "needs_review",
-      "before": "레이데이즈",
-      "after": "레이데이즈",
+      "status": "dictionary_match",
+      "before": "/ˈleɪdeɪz/",
+      "after": "/ˈleɪdeɪz/",
       "usComparison": "not_found",
       "ukComparison": "not_found",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "reasons": [],
+      "sources": [
+        "https://www.pfri.uniri.hr/bopri/IMEC_Proceedings/Rjecnik_Eng_Hrv.pdf"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "published_maritime_dictionary",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "additional_phonetic_source_required",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -46212,24 +46218,24 @@
       "legacyOnlyCorrection": false
     },
     "laytime": {
-      "status": "needs_review",
-      "before": "레이타임",
-      "after": "레이타임",
+      "status": "dictionary_match",
+      "before": "/ˈleɪˌtaɪm/",
+      "after": "/ˈleɪˌtaɪm/",
       "usComparison": "not_found",
       "ukComparison": "not_found",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "reasons": [],
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/laytime"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "direct_dictionary",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "additional_phonetic_source_required",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -47919,24 +47925,24 @@
       "legacyOnlyCorrection": false
     },
     "loadable": {
-      "status": "needs_review",
-      "before": "로더블",
-      "after": "로더블",
+      "status": "dictionary_match",
+      "before": "/ˈləʊdəbəl/",
+      "after": "/ˈləʊdəbəl/",
       "usComparison": "not_found",
-      "ukComparison": "hangul_not_comparable",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "ukComparison": "different_accent_or_transcription_needs_review",
+      "reasons": [],
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english-german/loadable"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "direct_dictionary",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "additional_phonetic_source_required",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -48000,7 +48006,7 @@
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -48769,24 +48775,24 @@
       "legacyOnlyCorrection": false
     },
     "loxodromic": {
-      "status": "needs_review",
-      "before": "록소드로믹",
-      "after": "록소드로믹",
+      "status": "dictionary_match",
+      "before": "/ˌlɒksəˈdrɒmɪk/",
+      "after": "/ˌlɒksəˈdrɒmɪk/",
       "usComparison": "not_found",
       "ukComparison": "not_found",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "reasons": [],
+      "sources": [
+        "https://www.dictionary.com/browse/loxodromic"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "direct_dictionary",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "technical_or_clipped_form",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -50146,23 +50152,25 @@
     },
     "marpol": {
       "status": "needs_review",
-      "before": "마폴",
-      "after": "마폴",
+      "before": "엠 에이 아르 피 오 엘",
+      "after": "엠 에이 아르 피 오 엘",
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음."
       ],
-      "sources": [],
+      "sources": [
+        "https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf"
+      ],
       "ukReviewed": false,
-      "hangulReviewed": false,
+      "hangulReviewed": true,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "letter_names_only",
+      "matchMethod": "reviewed_learning_approximation",
       "unresolvedContexts": [],
       "pendingKind": "conventional_spoken_abbreviation",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "remainingReason": "철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음.",
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -51453,23 +51461,25 @@
     },
     "metarea": {
       "status": "needs_review",
-      "before": "메타에어리어",
-      "after": "메타에어리어",
+      "before": "엠 이 티 에이 아르 이 에이",
+      "after": "엠 이 티 에이 아르 이 에이",
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음."
       ],
-      "sources": [],
+      "sources": [
+        "https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf"
+      ],
       "ukReviewed": false,
-      "hangulReviewed": false,
+      "hangulReviewed": true,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "letter_names_only",
+      "matchMethod": "reviewed_learning_approximation",
       "unresolvedContexts": [],
       "pendingKind": "conventional_spoken_abbreviation",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "remainingReason": "철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음.",
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -51834,9 +51844,11 @@
       "ukComparison": "not_found",
       "reasons": [
         "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
-        "미국식 사전 대조 확인 필요: not_found"
+        "원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함."
       ],
-      "sources": [],
+      "sources": [
+        "https://www.faa.gov/air_traffic/publications/atpubs/aim_html/chap4_section_2.html"
+      ],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
@@ -52186,7 +52198,7 @@
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -52211,7 +52223,7 @@
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -52555,32 +52567,25 @@
       "legacyOnlyCorrection": false
     },
     "moderate": {
-      "status": "needs_review",
+      "status": "dictionary_match",
       "before": "모더릿",
       "after": "모더릿",
       "usComparison": "not_ipa",
       "ukComparison": "hangul_not_comparable",
-      "reasons": [
-        "품사·뜻에 따른 발음이 달라 문맥별 확인 필요"
-      ],
+      "reasons": [],
       "sources": [
         "https://dictionary.cambridge.org/pronunciation/english/moderate",
         "https://github.com/cmusphinx/cmudict"
       ],
       "ukReviewed": false,
       "hangulReviewed": false,
-      "contextReviewed": false,
+      "contextReviewed": true,
       "reviewer": "AI assistant",
       "reviewScope": "question_section_context",
       "matchMethod": "reviewed_context_or_dictionary",
-      "unresolvedContexts": [
-        {
-          "key": "2023|navi2|4|영어|10",
-          "section": "4"
-        }
-      ],
-      "pendingKind": "ambiguous_question_sense",
-      "remainingReason": "단독 보기 등의 품사·뜻을 하나로 정할 수 없어 확인된 사전 대안을 함께 표시함.",
+      "unresolvedContexts": [],
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -53371,7 +53376,7 @@
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -53866,23 +53871,25 @@
     },
     "navarea": {
       "status": "needs_review",
-      "before": "나브에어리어",
-      "after": "나브에어리어",
+      "before": "엔 에이 브이 에이 아르 이 에이",
+      "after": "엔 에이 브이 에이 아르 이 에이",
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음."
       ],
-      "sources": [],
+      "sources": [
+        "https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf"
+      ],
       "ukReviewed": false,
-      "hangulReviewed": false,
+      "hangulReviewed": true,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "letter_names_only",
+      "matchMethod": "reviewed_learning_approximation",
       "unresolvedContexts": [],
       "pendingKind": "conventional_spoken_abbreviation",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "remainingReason": "철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음.",
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -54090,24 +54097,24 @@
       "legacyOnlyCorrection": false
     },
     "navtex": {
-      "status": "needs_review",
-      "before": "나브텍스",
-      "after": "나브텍스",
+      "status": "dictionary_match",
+      "before": "/ˈnævˌteks/",
+      "after": "/ˈnævˌteks/",
       "usComparison": "not_found",
       "ukComparison": "not_found",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "reasons": [],
+      "sources": [
+        "https://www.pfri.uniri.hr/bopri/IMEC_Proceedings/Rjecnik_Eng_Hrv.pdf"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "published_maritime_dictionary",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "conventional_spoken_abbreviation",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -55672,23 +55679,25 @@
     },
     "nvoc": {
       "status": "needs_review",
-      "before": "엔보크",
-      "after": "엔보크",
+      "before": "엔 브이 오 씨",
+      "after": "엔 브이 오 씨",
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음."
       ],
-      "sources": [],
+      "sources": [
+        "https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf"
+      ],
       "ukReviewed": false,
-      "hangulReviewed": false,
+      "hangulReviewed": true,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "letter_names_only",
+      "matchMethod": "reviewed_learning_approximation",
       "unresolvedContexts": [],
       "pendingKind": "conventional_spoken_abbreviation",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "remainingReason": "철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음.",
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -55697,23 +55706,25 @@
     },
     "nvocc": {
       "status": "needs_review",
-      "before": "엔보씨씨",
-      "after": "엔보씨씨",
+      "before": "엔 브이 오 씨 씨",
+      "after": "엔 브이 오 씨 씨",
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음."
       ],
-      "sources": [],
+      "sources": [
+        "https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf"
+      ],
       "ukReviewed": false,
-      "hangulReviewed": false,
+      "hangulReviewed": true,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "letter_names_only",
+      "matchMethod": "reviewed_learning_approximation",
       "unresolvedContexts": [],
       "pendingKind": "conventional_spoken_abbreviation",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "remainingReason": "철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음.",
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -57794,24 +57805,24 @@
       "legacyOnlyCorrection": false
     },
     "ordinator": {
-      "status": "needs_review",
+      "status": "dictionary_match",
       "before": "오디네이터",
       "after": "오디네이터",
       "usComparison": "not_found",
       "ukComparison": "not_found",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "reasons": [],
+      "sources": [
+        "https://dictionary.cambridge.org/dictionary/english/coordinator"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "reviewed_token_fragment",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "technical_or_clipped_form",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [
         "prior_70_reading_fixes"
       ],
@@ -58442,7 +58453,7 @@
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -62092,39 +62103,24 @@
       "legacyOnlyCorrection": false
     },
     "polish": {
-      "status": "needs_review",
+      "status": "dictionary_match",
       "before": "폴리시",
       "after": "폴리시",
       "usComparison": "not_ipa",
       "ukComparison": "hangul_not_comparable",
-      "reasons": [
-        "품사·뜻에 따른 발음이 달라 문맥별 확인 필요"
-      ],
+      "reasons": [],
       "sources": [
         "https://github.com/cmusphinx/cmudict"
       ],
       "ukReviewed": false,
       "hangulReviewed": false,
-      "contextReviewed": false,
+      "contextReviewed": true,
       "reviewer": "AI assistant",
       "reviewScope": "question_section_context",
       "matchMethod": "reviewed_context_or_dictionary",
-      "unresolvedContexts": [
-        {
-          "key": "2020|navi2|3|영어|25",
-          "section": "3"
-        },
-        {
-          "key": "2025|navi2|2|영어|23",
-          "section": "2"
-        },
-        {
-          "key": "2025|navi2|3|영어|20",
-          "section": "2"
-        }
-      ],
-      "pendingKind": "ambiguous_question_sense",
-      "remainingReason": "단독 보기 등의 품사·뜻을 하나로 정할 수 없어 확인된 사전 대안을 함께 표시함.",
+      "unresolvedContexts": [],
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -65612,24 +65608,24 @@
       "legacyOnlyCorrection": false
     },
     "quadrantal": {
-      "status": "needs_review",
-      "before": "쿼드랜털",
-      "after": "쿼드랜털",
+      "status": "dictionary_match",
+      "before": "/kwɒˈdræntəl/",
+      "after": "/kwɒˈdræntəl/",
       "usComparison": "not_found",
       "ukComparison": "not_found",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "reasons": [],
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/quadrant"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "direct_dictionary",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "additional_phonetic_source_required",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -66066,7 +66062,7 @@
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -66244,7 +66240,7 @@
       "ukComparison": "not_found",
       "reasons": [
         "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
-        "미국식 사전 대조 확인 필요: not_found"
+        "원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -66365,24 +66361,24 @@
       "legacyOnlyCorrection": false
     },
     "raoult's": {
-      "status": "needs_review",
-      "before": "라울스",
-      "after": "라울스",
+      "status": "dictionary_match",
+      "before": "/rɑːˈuːlz/",
+      "after": "/rɑːˈuːlz/",
       "usComparison": "not_found",
       "ukComparison": "not_found",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "reasons": [],
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/raoults-law"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "direct_dictionary",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "proper_name_or_trade_name",
-      "remainingReason": "원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -66617,31 +66613,24 @@
       "legacyOnlyCorrection": false
     },
     "read": {
-      "status": "needs_review",
+      "status": "dictionary_match",
       "before": "리드",
       "after": "리드",
       "usComparison": "not_ipa",
       "ukComparison": "hangul_not_comparable",
-      "reasons": [
-        "품사·뜻에 따른 발음이 달라 문맥별 확인 필요"
-      ],
+      "reasons": [],
       "sources": [
         "https://github.com/cmusphinx/cmudict"
       ],
       "ukReviewed": false,
       "hangulReviewed": false,
-      "contextReviewed": false,
+      "contextReviewed": true,
       "reviewer": "AI assistant",
       "reviewScope": "question_section_context",
       "matchMethod": "reviewed_context_or_dictionary",
-      "unresolvedContexts": [
-        {
-          "key": "2023|navi2|3|영어|21",
-          "section": "1"
-        }
-      ],
-      "pendingKind": "ambiguous_question_sense",
-      "remainingReason": "단독 보기 등의 품사·뜻을 하나로 정할 수 없어 확인된 사전 대안을 함께 표시함.",
+      "unresolvedContexts": [],
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -67379,30 +67368,19 @@
       "after": "레코드",
       "usComparison": "not_ipa",
       "ukComparison": "hangul_not_comparable",
-      "reasons": [
-        "품사·뜻에 따른 발음이 달라 문맥별 확인 필요"
-      ],
+      "reasons": [],
       "sources": [
         "https://github.com/cmusphinx/cmudict"
       ],
       "ukReviewed": false,
       "hangulReviewed": false,
-      "contextReviewed": false,
+      "contextReviewed": true,
       "reviewer": "AI assistant",
       "reviewScope": "question_section_context",
       "matchMethod": "reviewed_context_or_dictionary",
-      "unresolvedContexts": [
-        {
-          "key": "2022|navi2|1|영어|19",
-          "section": "3"
-        },
-        {
-          "key": "2022|navi2|4|영어|23",
-          "section": "3"
-        }
-      ],
-      "pendingKind": "ambiguous_question_sense",
-      "remainingReason": "단독 보기 등의 품사·뜻을 하나로 정할 수 없어 확인된 사전 대안을 함께 표시함.",
+      "unresolvedContexts": [],
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": "confirmed_error",
       "correctionReason": "Take and record 동사에도 기존 명사형 근사 독음만 표시됨",
@@ -67913,48 +67891,25 @@
       "legacyOnlyCorrection": false
     },
     "refuse": {
-      "status": "needs_review",
+      "status": "dictionary_match",
       "before": "리퓨즈",
       "after": "리퓨즈",
       "usComparison": "not_ipa",
       "ukComparison": "hangul_not_comparable",
-      "reasons": [
-        "품사·뜻에 따른 발음이 달라 문맥별 확인 필요"
-      ],
+      "reasons": [],
       "sources": [
         "https://dictionary.cambridge.org/pronunciation/english/refuse",
         "https://github.com/cmusphinx/cmudict"
       ],
       "ukReviewed": false,
       "hangulReviewed": false,
-      "contextReviewed": false,
+      "contextReviewed": true,
       "reviewer": "AI assistant",
       "reviewScope": "question_section_context",
       "matchMethod": "reviewed_context_or_dictionary",
-      "unresolvedContexts": [
-        {
-          "key": "2021|navi2|2|영어|1",
-          "section": "3"
-        },
-        {
-          "key": "2022|navi2|3|영어|4",
-          "section": "3"
-        },
-        {
-          "key": "2023|navi2|2|영어|5",
-          "section": "2"
-        },
-        {
-          "key": "2023|navi2|3|영어|4",
-          "section": "3"
-        },
-        {
-          "key": "2026|navi2|2|영어|6",
-          "section": "3"
-        }
-      ],
-      "pendingKind": "ambiguous_question_sense",
-      "remainingReason": "단독 보기 등의 품사·뜻을 하나로 정할 수 없어 확인된 사전 대안을 함께 표시함.",
+      "unresolvedContexts": [],
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -68818,7 +68773,7 @@
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -69693,7 +69648,7 @@
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -69993,7 +69948,7 @@
       "usComparison": "not_found",
       "ukComparison": "hangul_not_comparable",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -72266,23 +72221,25 @@
     },
     "sart": {
       "status": "needs_review",
-      "before": "사트",
-      "after": "사트",
+      "before": "에스 에이 아르 티",
+      "after": "에스 에이 아르 티",
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음."
       ],
-      "sources": [],
+      "sources": [
+        "https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf"
+      ],
       "ukReviewed": false,
-      "hangulReviewed": false,
+      "hangulReviewed": true,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "letter_names_only",
+      "matchMethod": "reviewed_learning_approximation",
       "unresolvedContexts": [],
       "pendingKind": "conventional_spoken_abbreviation",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "remainingReason": "철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음.",
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -73166,12 +73123,13 @@
     },
     "seastar": {
       "status": "needs_review",
-      "before": "시스타",
-      "after": "시스타",
+      "before": "발음 미확정",
+      "after": "발음 미확정",
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "선박·등대의 고유명. 실제 원어명·공식 음성 근거가 없어 영어 독음을 추정하지 않음.",
+        "원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -73518,24 +73476,25 @@
       "legacyOnlyCorrection": false
     },
     "securite": {
-      "status": "needs_review",
+      "status": "dictionary_match",
       "before": "세큐리테",
       "after": "세큐리테",
       "usComparison": "not_found",
       "ukComparison": "not_found",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "reasons": [],
+      "sources": [
+        "https://www.maritimenz.govt.nz/media/zgrhubg4/part23-maritime-rule-original.pdf",
+        "https://taic.org.nz/glossary"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "radio_procedure_pronunciation",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "conventional_spoken_abbreviation",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -73618,24 +73577,26 @@
       "legacyOnlyCorrection": false
     },
     "seelonce": {
-      "status": "needs_review",
+      "status": "dictionary_match",
       "before": "실롱스",
       "after": "실롱스",
       "usComparison": "not_found",
       "ukComparison": "not_found",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "reasons": [],
+      "sources": [
+        "https://www.govinfo.gov/content/pkg/CFR-2010-title47-vol5/pdf/CFR-2010-title47-vol5.pdf",
+        "https://www.collinsdictionary.com/dictionary/french-english/silence_1",
+        "https://www.aph.gov.au/-/media/02_Parliamentary_Business/24_Committees/244_Joint_Committees/JSCT/2025/Radio_Regulations/WRC-23_treaty_text.pdf"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "radio_procedure_pronunciation",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "conventional_spoken_abbreviation",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -74151,35 +74112,20 @@
       "after": "세퍼레이트",
       "usComparison": "not_ipa",
       "ukComparison": "hangul_not_comparable",
-      "reasons": [
-        "품사·뜻에 따른 발음이 달라 문맥별 확인 필요"
-      ],
+      "reasons": [],
       "sources": [
         "https://github.com/cmusphinx/cmudict",
         "https://dictionary.cambridge.org/dictionary/english/separate"
       ],
       "ukReviewed": false,
       "hangulReviewed": false,
-      "contextReviewed": false,
+      "contextReviewed": true,
       "reviewer": "AI assistant",
       "reviewScope": "question_section_context",
       "matchMethod": "reviewed_context_or_dictionary",
-      "unresolvedContexts": [
-        {
-          "key": "2023|navi3|4|영어|19",
-          "section": "4"
-        },
-        {
-          "key": "2024|navi3|3|영어|15",
-          "section": "4"
-        },
-        {
-          "key": "2024|navi3|4|영어|6",
-          "section": "4"
-        }
-      ],
-      "pendingKind": "ambiguous_question_sense",
-      "remainingReason": "단독 보기 등의 품사·뜻을 하나로 정할 수 없어 확인된 사전 대안을 함께 표시함.",
+      "unresolvedContexts": [],
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": "confirmed_error",
       "correctionReason": "단일 독음으로 품사별 발음 차이를 누락함. 문항·보기별 검수값 또는 품사별 대안을 표시.",
@@ -74412,24 +74358,24 @@
       "legacyOnlyCorrection": false
     },
     "servomechanisms": {
-      "status": "needs_review",
-      "before": "서보메커니즘즈",
-      "after": "서보메커니즘즈",
+      "status": "dictionary_match",
+      "before": "/ˈsɝvoʊˌmɛkəˌnɪzəmz/",
+      "after": "/ˈsɝvoʊˌmɛkəˌnɪzəmz/",
       "usComparison": "not_found",
       "ukComparison": "not_found",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "reasons": [],
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/servomechanism"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "direct_dictionary_regular_plural",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "additional_phonetic_source_required",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -75497,7 +75443,7 @@
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -75522,7 +75468,7 @@
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -77296,23 +77242,25 @@
     },
     "solas": {
       "status": "needs_review",
-      "before": "솔라스",
-      "after": "솔라스",
+      "before": "에스 오 엘 에이 에스",
+      "after": "에스 오 엘 에이 에스",
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음."
       ],
-      "sources": [],
+      "sources": [
+        "https://ioc.xtec.cat/materials/FP/Recursos/fp_anggm_apd_/web/fp_anggm_apd_htmlindex/WebContent/u2/media/english_alphabet.pdf"
+      ],
       "ukReviewed": false,
-      "hangulReviewed": false,
+      "hangulReviewed": true,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "letter_names_only",
+      "matchMethod": "reviewed_learning_approximation",
       "unresolvedContexts": [],
       "pendingKind": "conventional_spoken_abbreviation",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "remainingReason": "철자 읽기는 확인. 통용 단어식 발음에 대한 신뢰할 발음 근거가 부족하여 기존 추정 독음을 표시하지 않음.",
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -79250,24 +79198,26 @@
       "legacyOnlyCorrection": false
     },
     "stb'd": {
-      "status": "needs_review",
-      "before": "스타보드",
-      "after": "스타보드",
+      "status": "dictionary_match",
+      "before": "/ˈstɑːrbɚd/",
+      "after": "/ˈstɑːrbɚd/",
       "usComparison": "not_found",
       "ukComparison": "not_found",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "reasons": [],
+      "sources": [
+        "https://doi.org/10.5539/elt.v4n2p107",
+        "https://dictionary.cambridge.org/pronunciation/english/starboard",
+        "https://global.kawasaki.com/en/industrial_equipment/hydraulic/applications_marine/pdf/steering_e.pdf"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "abbreviation_expansion",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "additional_phonetic_source_required",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -79633,7 +79583,7 @@
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -79677,24 +79627,24 @@
       "legacyOnlyCorrection": false
     },
     "sternway": {
-      "status": "needs_review",
-      "before": "스턴웨이",
-      "after": "스턴웨이",
+      "status": "dictionary_match",
+      "before": "/ˈstɝnˌweɪ/",
+      "after": "/ˈstɝnˌweɪ/",
       "usComparison": "not_found",
       "ukComparison": "not_found",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "reasons": [],
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/sternway"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "direct_dictionary",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "additional_phonetic_source_required",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -80682,24 +80632,24 @@
       "legacyOnlyCorrection": false
     },
     "sublate": {
-      "status": "needs_review",
-      "before": "서블레이트",
-      "after": "서블레이트",
+      "status": "dictionary_match",
+      "before": "/səbˈleɪt/",
+      "after": "/səbˈleɪt/",
       "usComparison": "not_found",
       "ukComparison": "not_found",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "reasons": [],
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/sublate"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "direct_dictionary",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "technical_or_clipped_form",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -85363,32 +85313,25 @@
       "legacyOnlyCorrection": false
     },
     "transfer": {
-      "status": "needs_review",
+      "status": "dictionary_match",
       "before": "트랜스퍼",
       "after": "트랜스퍼",
       "usComparison": "not_ipa",
       "ukComparison": "hangul_not_comparable",
-      "reasons": [
-        "품사·뜻에 따른 발음이 달라 문맥별 확인 필요"
-      ],
+      "reasons": [],
       "sources": [
         "https://dictionary.cambridge.org/pronunciation/english/transfer",
         "https://github.com/cmusphinx/cmudict"
       ],
       "ukReviewed": false,
       "hangulReviewed": false,
-      "contextReviewed": false,
+      "contextReviewed": true,
       "reviewer": "AI assistant",
       "reviewScope": "question_section_context",
       "matchMethod": "reviewed_context_or_dictionary",
-      "unresolvedContexts": [
-        {
-          "key": "2026|navi3|2|영어|14",
-          "section": "1"
-        }
-      ],
-      "pendingKind": "ambiguous_question_sense",
-      "remainingReason": "단독 보기 등의 품사·뜻을 하나로 정할 수 없어 확인된 사전 대안을 함께 표시함.",
+      "unresolvedContexts": [],
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -88503,27 +88446,27 @@
       "legacyOnlyCorrection": false
     },
     "valorem": {
-      "status": "needs_review",
+      "status": "confirmed_error",
       "before": "밸로럼",
-      "after": "밸로럼",
+      "after": "/vəˈlɔrəm/",
       "usComparison": "not_found",
-      "ukComparison": "hangul_not_comparable",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "ukComparison": "broad_phonemes_match",
+      "reasons": [],
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/ad-valorem"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "direct_dictionary",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "additional_phonetic_source_required",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
-      "correctionType": null,
-      "correctionReason": null,
+      "correctionType": "confirmed_error",
+      "correctionReason": "ad valorem의 첫 모음은 약모음 /ə/이며 뒤의 /lɔ/에 강세가 있음. 기존 밸로럼을 사전 IPA로 교정.",
       "contextOnlyCorrection": false,
       "legacyOnlyCorrection": false
     },
@@ -88626,30 +88569,30 @@
       "legacyOnlyCorrection": false
     },
     "var'ly": {
-      "status": "needs_review",
+      "status": "confirmed_error",
       "before": "베어리어블리",
-      "after": "발음 미확정",
+      "after": "/ˈvɛriəsli/",
       "usComparison": "not_found",
       "ukComparison": "not_found",
-      "reasons": [
-        "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
-        "미국식 사전 대조 확인 필요: not_found"
+      "reasons": [],
+      "sources": [
+        "https://doi.org/10.5539/elt.v4n2p107",
+        "https://dictionary.cambridge.org/us/pronunciation/english/variously"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "direct_dictionary",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "unconfirmed_source_spelling",
-      "remainingReason": "원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [
         "prior_70_reading_fixes"
       ],
       "correctionType": "confirmed_error",
-      "correctionReason": "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
+      "correctionReason": "항해일지 논문에서 variously의 축약임을 확인. 기존 variably 계열 독음은 다른 단어의 발음임.",
       "contextOnlyCorrection": false,
       "legacyOnlyCorrection": false
     },
@@ -90417,7 +90360,7 @@
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -90811,24 +90754,24 @@
       "legacyOnlyCorrection": false
     },
     "weathertight": {
-      "status": "needs_review",
-      "before": "웨더타이트",
-      "after": "웨더타이트",
+      "status": "dictionary_match",
+      "before": "/ˈwɛðɚˌtaɪt/",
+      "after": "/ˈwɛðɚˌtaɪt/",
       "usComparison": "not_found",
       "ukComparison": "not_found",
-      "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+      "reasons": [],
+      "sources": [
+        "https://www.collinsdictionary.com/dictionary/english/weathertight"
       ],
-      "sources": [],
       "ukReviewed": false,
       "hangulReviewed": false,
       "contextReviewed": false,
-      "reviewer": "automated comparison",
-      "reviewScope": "US_dictionary_signature",
-      "matchMethod": "CMU_phonemes_and_vowel_stress",
+      "reviewer": "AI assistant",
+      "reviewScope": "direct_dictionary",
+      "matchMethod": "reviewed_context_or_dictionary",
       "unresolvedContexts": [],
-      "pendingKind": "additional_phonetic_source_required",
-      "remainingReason": "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음.",
+      "pendingKind": null,
+      "remainingReason": null,
       "priorFixGroups": [],
       "correctionType": null,
       "correctionReason": null,
@@ -91995,7 +91938,7 @@
       "ukComparison": "not_found",
       "reasons": [
         "원문 철자·고유명·축약형의 발음 근거 미확인. 추정 발음을 생성하지 않음.",
-        "미국식 사전 대조 확인 필요: not_found"
+        "원문 철자·문맥과 해당 고유명/형태의 발음을 함께 확정할 근거가 부족함."
       ],
       "sources": [],
       "ukReviewed": false,
@@ -92195,7 +92138,7 @@
       "usComparison": "not_found",
       "ukComparison": "not_found",
       "reasons": [
-        "미국식 사전 대조 확인 필요: not_found"
+        "정의나 철자는 확인할 수 있어도 통용 독음·강세를 확정할 발음 근거가 부족함. 미확인 IPA를 생성하지 않음."
       ],
       "sources": [],
       "ukReviewed": false,

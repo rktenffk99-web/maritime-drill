@@ -4,19 +4,22 @@
   "wordOccurrences": 45885,
   "missingWords": [],
   "unconfirmedPronunciations": [
+    "abo",
+    "baar",
     "barwater",
     "boatsuain",
     "brocheures",
     "catched",
     "decemeber",
     "departer",
+    "hanbando",
+    "heukryong",
     "miky",
     "ramain",
-    "var'ly",
+    "seastar",
     "womanned"
   ],
   "unresolvedSourceSpellings": [
-    "barwater",
     "boatsuain",
     "brocheures",
     "catched",
@@ -24,7 +27,6 @@
     "departer",
     "miky",
     "ramain",
-    "var'ly",
     "womanned"
   ],
   "manualContextReviewComplete": false,
