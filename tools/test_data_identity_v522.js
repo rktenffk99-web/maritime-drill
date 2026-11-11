@@ -22,22 +22,9 @@ for(const grade of ['navi2','navi3']){
 const savedProgress={'unrelated|legacy':{firstPassDate:'2026-01-01',mastered:true,attempts:17},'navi2|q-1nmb11m':{firstPassDate:'2026-10-21',correct:3,wrong:1,mastered:false}},before=JSON.stringify(savedProgress),pools={};
 for(const grade of ['navi2','navi3'])pools[grade]=api.buildPool(all[grade],{gradeId:grade,subjects:all[grade].subjects,years:[2022,2023,2024,2025,2026],getExam,usable});
 const clusters=api.clusterPools(pools),flat=Object.values(pools).flat();
-const gyroGroup=all.navi2.groups.filter(g=>g.subject==='항해'&&g.hits.some(h=>h.year===2026&&h.session===2&&h.number===4));
-const gyroSource=getExam('navi2',2026,2)?.questions.find(q=>q['과목']==='항해'&&q['번호']===4);
-console.log('GYRO_IDENTITY_DIAG '+JSON.stringify({groups:gyroGroup.map(g=>({id:g.id,question:g.question,normalized:g.normalized,hits:g.hits.filter(h=>h.year===2026&&h.session===2&&h.number===4)})),source:gyroSource?.['문제'],sourceNorm:norm(gyroSource?.['문제'])}));
-const reportedIdentityCases=[
- ['navi2',2025,3,'상선전문',25],['navi2',2025,2,'상선전문',25],
- ['navi2',2025,1,'상선전문',25],['navi2',2026,2,'항해',4],
- ['navi2',2023,4,'법규',14],['navi2',2024,1,'운용',3],
- ['navi2',2023,4,'상선전문',23],['navi3',2025,4,'항해',13],
- ['navi3',2025,4,'법규',7],['navi3',2024,4,'법규',11]
-];
-for(const [grade,year,session,subject,number] of reportedIdentityCases){
- const question=getExam(grade,year,session)?.questions.find(q=>q['과목']===subject&&q['번호']===number);
- const groups=all[grade].groups.filter(g=>g.subject===subject&&g.hits.some(h=>h.year===year&&h.session===session&&h.number===number));
- console.log('REPORT_IDENTITY_DIAG '+JSON.stringify({grade,year,session,subject,number,question:question?.['문제'],issue:question?ctx.__mdLearningIntegrity.contentIssue(question):'missing',groups:groups.map(g=>({id:g.id,question:g.question,normalized:g.normalized,matched:question?norm(g.normalized||g.question)===norm(question['문제']):false,baseline:baseline[grade].some(row=>row.key===grade+'|'+g.id)}))}));
-}
-console.log('BASELINE_COUNTS '+JSON.stringify(Object.fromEntries(Object.entries(baseline).map(([g,rows])=>[g,rows.length]))));
+const gyroLegacyGroup=all.navi2.groups.find(g=>g.subject==='항해'&&g.hits.some(h=>h.year===2026&&h.session===2&&h.number===4));
+ assert.ok(gyroLegacyGroup,'corrected gyro question must retain its frequency group');
+ assert.ok(baseline.navi2.some(row=>row.key==='navi2|'+gyroLegacyGroup.id),'corrected gyro question must retain its prior legacy study key');
 
 
 test('SHA-256 matches the platform for ASCII, Korean and supplementary Unicode',()=>{for(const s of ['','abc','북방위·서방위','해기사🚢'])assert.equal(api.sha256(s),crypto.createHash('sha256').update(s).digest('hex'))});
