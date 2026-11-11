@@ -37,6 +37,30 @@ if(require.main===module)(async()=>{
  const before=reload.s.pastProgressId;await reload.s.resumePastProgress('nonexistent');assert.equal(reload.s.pastProgressId,before);
  const corrupt=harness(new Map(baseData));corrupt.rows[0]['정답']=3;corrupt.s.currentMode='home';await corrupt.s.resumePastProgress(id);assert.equal(corrupt.s.currentMode,'past-resume-error');assert.ok(corrupt.s.getPastProgress(id));
  console.log('PASS mismatched paper/content or missing selected version never substitutes another exam');
+ const oldPaper=harness();
+ oldPaper.s.pastQueue=oldPaper.s.pastQueue.slice(0,122).reverse();
+ Object.assign(oldPaper.s.pastQueue[4],{'문제':'확인하는 대상으로옳지 않은 것은?','선택지':['a','b','c','분리 밸러스트 탱크의 밸브 10 - 2025년'],'정답':3});
+ oldPaper.s.pastAnswers=Array.from({length:122},(_,i)=>i<103?i%4:null);oldPaper.s.pastIdx=103;
+ assert.equal(oldPaper.s.savePastProgress(),true);
+ const oldId=oldPaper.s.pastProgressId,oldKey=prefix+oldId,oldRaw=oldPaper.data.get(oldKey);
+ const corrected=harness(new Map(oldPaper.data));corrected.s.currentMode='home';
+ vm.runInContext(fs.readFileSync('reported-content-fixes.js','utf8'),corrected.s);
+ const correctedRow=corrected.rows.find(row=>row['번호']===oldPaper.s.pastQueue[4]['번호']);
+ Object.assign(correctedRow,{'문제':'확인하는 대상으로 옳지 않은 것은?','선택지':['a','b','c','분리 밸러스트 탱크의 밸브'],'정답':3});
+ await corrected.s.resumePastProgress(oldId);
+ assert.equal(corrected.s.currentMode,'past');assert.equal(corrected.s.pastIdx,103);
+ assert.deepEqual(plain(corrected.s.pastAnswers),oldPaper.s.pastAnswers);
+ assert.deepEqual(plain(corrected.s.pastQueue.map(corrected.s.pqid)),oldPaper.s.pastQueue.map(oldPaper.s.pqid));
+ assert.equal(corrected.s.pastQueue[4]['선택지'][3],correctedRow['선택지'][3]);
+ assert.equal(corrected.data.get(oldKey),oldRaw);
+ for(const mutation of [{'정답':2},{'선택지':['b','a','c',correctedRow['선택지'][3]]},{'이미지':'different.png'},{'문제':'다른 문제'}]){
+  const original={...correctedRow};Object.assign(correctedRow,mutation);
+  corrected.s.currentMode='home';await corrected.s.resumePastProgress(oldId);
+  assert.equal(corrected.s.currentMode,'past-resume-error');assert.equal(corrected.data.get(oldKey),oldRaw);
+  for(const field of Object.keys(mutation))delete correctedRow[field];
+  Object.assign(correctedRow,original);
+ }
+ console.log('PASS verified text repairs restore 103/122 answers at question 104; grading, choice order, images and unrelated wording still require an exact match');
  const quota=harness(new Map(baseData));quota.s.currentMode='home';await quota.s.resumePastProgress(id);const prior=quota.data.get(key);quota.s.pastAnswers[50]=2;quota.s.safeStorageSet=()=>false;assert.equal(quota.s.savePastProgress(),false);assert.equal(quota.data.get(key),prior);const live=JSON.parse(quota.s.__mdExamSessions.liveItems()[key]);assert.equal(Object.values(live.heads)[0].state.answers[50],2);
  console.log('PASS quota failure preserves durable snapshot and exports unsaved live answer');
  const legacy=harness(new Map([['md_past_checkpoint_v2',JSON.stringify({meta:expected.meta,state:expected.state})]]));assert.equal(legacy.s.getPastProgress(),null);
