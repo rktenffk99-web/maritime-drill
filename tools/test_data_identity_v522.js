@@ -25,6 +25,20 @@ const clusters=api.clusterPools(pools),flat=Object.values(pools).flat();
 const gyroGroup=all.navi2.groups.filter(g=>g.subject==='항해'&&g.hits.some(h=>h.year===2026&&h.session===2&&h.number===4));
 const gyroSource=getExam('navi2',2026,2)?.questions.find(q=>q['과목']==='항해'&&q['번호']===4);
 console.log('GYRO_IDENTITY_DIAG '+JSON.stringify({groups:gyroGroup.map(g=>({id:g.id,question:g.question,normalized:g.normalized,hits:g.hits.filter(h=>h.year===2026&&h.session===2&&h.number===4)})),source:gyroSource?.['문제'],sourceNorm:norm(gyroSource?.['문제'])}));
+const reportedIdentityCases=[
+ ['navi2',2025,3,'상선전문',25],['navi2',2025,2,'상선전문',25],
+ ['navi2',2025,1,'상선전문',25],['navi2',2026,2,'항해',4],
+ ['navi2',2023,4,'법규',14],['navi2',2024,1,'운용',3],
+ ['navi2',2023,4,'상선전문',23],['navi3',2025,4,'항해',13],
+ ['navi3',2025,4,'법규',7],['navi3',2024,4,'법규',11]
+];
+for(const [grade,year,session,subject,number] of reportedIdentityCases){
+ const question=getExam(grade,year,session)?.questions.find(q=>q['과목']===subject&&q['번호']===number);
+ const groups=all[grade].groups.filter(g=>g.subject===subject&&g.hits.some(h=>h.year===year&&h.session===session&&h.number===number));
+ console.log('REPORT_IDENTITY_DIAG '+JSON.stringify({grade,year,session,subject,number,question:question?.['문제'],issue:question?ctx.__mdLearningIntegrity.contentIssue(question):'missing',groups:groups.map(g=>({id:g.id,question:g.question,normalized:g.normalized,matched:question?norm(g.normalized||g.question)===norm(question['문제']):false,baseline:baseline[grade].some(row=>row.key===grade+'|'+g.id)}))}));
+}
+console.log('BASELINE_COUNTS '+JSON.stringify(Object.fromEntries(Object.entries(baseline).map(([g,rows])=>[g,rows.length]))));
+
 
 test('SHA-256 matches the platform for ASCII, Korean and supplementary Unicode',()=>{for(const s of ['','abc','북방위·서방위','해기사🚢'])assert.equal(api.sha256(s),crypto.createHash('sha256').update(s).digest('hex'))});
 test('all 26 normalized-cache drops are restored from their real source origins',()=>{const repaired=["navi2|q-xxnc82", "navi2|q-ye57r1", "navi2|q-1tqisch", "navi2|q-1iseyu4", "navi2|q-90l7mw", "navi2|q-1ooj42a", "navi2|q-9dac6l", "navi2|q-nf1bc6", "navi2|q-b8t8iq", "navi2|q-1h2bikc", "navi2|q-17qaglm", "navi2|q-hpc1lx", "navi2|q-1ovx57w", "navi2|q-kybekk", "navi2|q-vjm4uy", "navi2|q-rlfvwq", "navi2|q-15b0pig", "navi2|q-unj9je", "navi2|q-kffu4z", "navi2|q-54l9ys", "navi2|q-7g3m84", "navi2|q-wsoke", "navi2|q-qi4xe4", "navi3|q-ajseok", "navi3|q-1j1pcf6", "navi3|q-1mjbv7a"];assert.equal(repaired.length,26);for(const key of repaired)assert.ok(flat.some(i=>i.key===key),'missing '+key)});
