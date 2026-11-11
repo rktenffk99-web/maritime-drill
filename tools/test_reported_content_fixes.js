@@ -109,6 +109,39 @@ const trafficSnapshot=JSON.stringify(trafficLaw17);
 context.window.__mdReportedContentFixes.patchObject(trafficLaw17);
 assert.strictEqual(JSON.stringify(trafficLaw17),trafficSnapshot);
 
+// 2026 second-session navi2 navigation Q4 was truncated by two-column PDF OCR.
+const gyro26={
+  '번호':4,'과목':'항해',
+  '문제':'레식 자이로컴퍼스의 구조 중 선박이 변침할 때 이적인 제어로 주동부를 추종하는 부분은?',
+  '선택지':['㉮ Binnacle','㉯ Phantom element','㉰ Mercury ballistic','㉱ Sensitive element'],
+  '정답':1
+};
+context.window.__mdReportedContentFixes.patchObject(gyro26);
+assert.equal(gyro26['문제'],'스페리식 자이로컴퍼스의 구조 중 선박이 변침할 때 전기적인 제어로 주동부를 추종하는 부분은?');
+assert.equal(gyro26['정답'],1);
+assert.deepEqual(Array.from(gyro26['선택지']),['㉮ Binnacle','㉯ Phantom element','㉰ Mercury ballistic','㉱ Sensitive element']);
+
+// Reports #10-12 ended in '10 - 2025년', unlike the older bare footer '10 -'.
+const examined=[
+  {stem:'MARPOL 협약상 국제기름오염방지증서의 유효기간 중에 행하는 중간검사 시 작동상태를 확인하는 대상으로옳지 않은 것은?',answer:3,tail:'분리 밸러스트 탱크의 밸브 10 - 2025년'},
+  {stem:'( )에 순서대로 적합한 것은? "BWM 협약상 평형수 관리를 이행하는 선박은 1㎥당 50마이크로미터 이상인 생존 미생물이 ( ) 개체수미만이 되도록 배출하고, 10마이크로미터 이상 50마이크로미터 미만인 미생물은 1㎖당 ( ) 개체수 미만으로 배출 되도록 하여야 한다."',answer:1,tail:'20, 20 10 - 2025년'},
+  {stem:'MARPOL 협약상 총톤수 400톤 이상의 선박으로부터기름 또는 유성혼합물의 특별해역에서의 배출조건이아닌 것은?',answer:3,tail:'유출액 중의 유분이 희석되지 아니하고 25ppm 을 초과하지 않을 것 10 - 2025년'}
+];
+for(const entry of examined){
+  const obj={'문제':entry.stem,'선택지':['a','b','c',entry.tail],'정답':entry.answer};
+  context.window.__mdReportedContentFixes.patchObject(obj);
+  assert(!obj['선택지'][3].includes('2025년'));
+  assert(!/10\s*-\s*$/.test(obj['선택지'][3]));
+  assert.equal(obj['정답'],entry.answer);
+  const original=JSON.stringify(obj);
+  context.window.__mdReportedContentFixes.patchObject(obj);
+  assert.equal(JSON.stringify(obj),original);
+}
+assert.equal(context.window.__mdReportedContentFixes.stripPdfFooterArtifact('5~7배 2 -'),'5~7배');
+assert.equal(context.window.__mdReportedContentFixes.stripPdfFooterArtifact('20, 20 10 - 2025년'),'20, 20');
+assert.equal(context.window.__mdReportedContentFixes.stripPdfFooterArtifact('Rule 11'),'Rule 11');
+assert.equal(context.window.__mdReportedContentFixes.stripPdfFooterArtifact('x - 4'),'x - 4');
+
 const audit=context.window.__mdReportedContentFixes.auditKnownData();
 assert.strictEqual(audit.navi2.length,0);
 
