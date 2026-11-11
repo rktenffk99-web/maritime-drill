@@ -37,6 +37,12 @@
     ['옳지않은','옳지 않은'],
     // Verified 2025 3rd-session navigator law Q17 OCR spacing (answer unchanged).
     ['설명으로옳은','설명으로 옳은'],
+    ['대상으로옳지','대상으로 옳지'],
+    ['개체수미만','개체수 미만'],
+    ['선박으로부터기름','선박으로부터 기름'],
+    ['배출조건이아닌','배출조건이 아닌'],
+    ['하는거대선의','하는 거대선의'],
+    ['명할 수있는','명할 수 있는'],
     ['가까이접근하여','가까이 접근하여'],
     ['항행할 수있다','항행할 수 있다'],
     ['하여야 하는경우','하여야 하는 경우'],
@@ -115,7 +121,7 @@
   // PDF page footer (e.g. "- 4 -" / "4 -") was sometimes concatenated
   // to the final answer choice during text extraction. In the source corpus
   // every verified occurrence is on the last choice, never in the stem.
-  const PDF_FOOTER_SUFFIX_RE=/\s+(?:[1-9]|1[01])\s*-\s*$/;
+  const PDF_FOOTER_SUFFIX_RE=/\s+(?:[1-9]|1[01])\s*-\s*(?:20\d{2}년)?\s*$/;
 
   function stripPdfFooterArtifact(value){
     const source=String(value==null?'':value);
@@ -688,6 +694,13 @@
         'P = W × 100m / (100 + n)',
         'P = W × (10 + m) / (10n) × 1.10'
       ]);
+      changed=true;
+    }
+
+    // 2026 2급 항해 Q4: a cropped two-column PDF removed the beginning of
+    // '스페리식' and '전기적인'. Identical historical Sperry-gyro phrasing verifies both.
+    if(q==='레식 자이로컴퍼스의 구조 중 선박이 변침할 때 이적인 제어로 주동부를 추종하는 부분은?'){
+      setQuestionText(obj,'스페리식 자이로컴퍼스의 구조 중 선박이 변침할 때 전기적인 제어로 주동부를 추종하는 부분은?');
       changed=true;
     }
 
