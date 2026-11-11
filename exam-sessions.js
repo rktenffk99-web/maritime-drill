@@ -82,9 +82,24 @@
     }
     return out.sort((a,b)=>b.state.savedAt-a.state.savedAt||a.headId.localeCompare(b.headId));
   }
-  // Store the precise question and choice content used for grading. A changed
-  // source must fail closed instead of silently restoring a different question.
+  // Store the precise question and choice content used for grading.
   function content(q){return stable([q['문제'],q['선택지'],q['정답'],q['이미지']||null]);}
+  function matchesSavedContent(q,saved){
+    const current=content(q);
+    if(current===saved)return true;
+    const fixes=global.__mdReportedContentFixes;
+    if(!fixes)return false;
+    let snapshot;
+    try{snapshot=JSON.parse(saved)}catch(_){return false;}
+    if(!Array.isArray(snapshot)||snapshot.length!==4)return false;
+    const [stem,choices,answer,image]=snapshot;
+    if(typeof stem!=='string'||!Array.isArray(choices)||choices.some(choice=>typeof choice!=='string'))return false;
+    // Reapply the same text and PDF footer repairs as the question bank.
+    // Keep choice positions, the answer index, and the image strictly equal.
+    const corrected=choices.map(choice=>fixes.fixString(choice));
+    if(corrected.length)corrected[corrected.length-1]=fixes.stripPdfFooterArtifact(corrected.at(-1));
+    return stable([fixes.fixString(stem),corrected,answer,image])===current;
+  }
   function makeMeta(){
     const id=uuid();
     const refs=pastQueue.map(q=>({id:pqid(q),short:q._short||q._gradeShort,year:q._year,session:q['회차'],content:content(q),source:q._source,group:q._n3aGroupId,predictive:q._predictiveMock===true,predictiveReview:q._predictiveReview===true,planKey:q._planKey,planGrade:q._planGrade,predictiveConcept:q._predictiveConcept}));
@@ -217,7 +232,7 @@
           maps.set(key,map);
         }
         const q=maps.get(key).get(r.id);
-        if(!q||content(q)!==r.content||!mdQuestionUsable(q))throw new Error('저장 당시의 문항·선택지·정답과 현재 자료가 다릅니다. 다른 시험으로 대체하지 않았습니다.');
+        if(!q||!matchesSavedContent(q,r.content)||!mdQuestionUsable(q))throw new Error('저장 당시의 문항·선택지·정답과 현재 자료가 다릅니다. 다른 시험으로 대체하지 않았습니다.');
         return {...q,_source:r.source,_n3aGroupId:r.group,_predictiveMock:r.predictive,_predictiveReview:r.predictiveReview,_planKey:r.planKey,_planGrade:r.planGrade,_predictiveConcept:r.predictiveConcept,_balancedMock:meta.balanced,_unifiedMock:meta.unified,_targetedPractice:meta.targeted,_evaluationMock:meta.evaluation};
       });
       if(state.answers.some((a,i)=>a!==null&&a>=restored[i]['선택지'].length))throw new Error('저장된 답안을 확인할 수 없습니다.');

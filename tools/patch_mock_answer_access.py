@@ -53,6 +53,8 @@ def patch_html(text: str) -> str:
         if '/' in path.removeprefix('./') or '\\' in path:
             return match.group(0)
         parts = [part for part in query.split('&') if part and not part.startswith('v=')]
+        if path.removeprefix('./') == 'exam-sessions.js' and 'rev=2' not in parts:
+            parts.append('rev=2')
         parts.append('v=' + VERSION)
         updated = path + '?' + '&'.join(parts) + (fragment_sep + fragment if fragment_sep else '')
         return match.group('prefix') + match.group('quote') + updated + match.group('quote')
