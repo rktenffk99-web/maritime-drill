@@ -84,6 +84,31 @@ assert.strictEqual(
   context.window.__mdReportedContentFixes.fixString('탱크 내의 Free surface effects를 수정한 후 \uE06D 의 메타센터높이(\uE006\uE00C)는 0.15m 이상일 것 \uE0F3'),
   grainClean
 );
+// 2025 session 3 law Q17: repair OCR spacing without rewriting the source facts or answer.
+const trafficLaw17={
+  '번호':17,
+  '과목':'법규',
+  '문제':'국제해상충돌방지규칙상 통항분리방식(Traffic separation schemes)이 설정된 해역에서의 항법에 관한 설명으로옳은 것은?',
+  '선택지':[
+    '분리선이나 분리대에 될 수 있으면 가까이접근하여 항행한다.',
+    '길이 30미터 이상의 선박, 범선 및 어로에 종사하고 있는 선박은 연안통항대를 따라 항행할 수있다.',
+    '부득이한 사유로 그 통항로를 횡단하여야 하는경우에는 그 통항로와 선수방향이 직각에 가까운 각도로 횡단하여야 한다.',
+    '통항로의 옆쪽으로 출입하는 경우에는 그 통항로에 대하여 정하여진 선박의 진행방향에 대하여될 수 있으면 큰 각도로 출입하여야 한다.'
+  ],
+  '정답':2
+};
+context.window.__mdReportedContentFixes.patchObject(trafficLaw17);
+assert(trafficLaw17['문제'].includes('설명으로 옳은 것은?'));
+assert(trafficLaw17['선택지'][0].includes('가까이 접근하여'));
+assert(trafficLaw17['선택지'][1].includes('항행할 수 있다.'));
+assert(trafficLaw17['선택지'][2].includes('하여야 하는 경우에는'));
+assert(trafficLaw17['선택지'][3].includes('대하여 될 수 있으면'));
+assert(trafficLaw17['선택지'][1].includes('30미터 이상의 선박'));
+assert.strictEqual(trafficLaw17['정답'],2);
+const trafficSnapshot=JSON.stringify(trafficLaw17);
+context.window.__mdReportedContentFixes.patchObject(trafficLaw17);
+assert.strictEqual(JSON.stringify(trafficLaw17),trafficSnapshot);
+
 const audit=context.window.__mdReportedContentFixes.auditKnownData();
 assert.strictEqual(audit.navi2.length,0);
 
