@@ -20,7 +20,7 @@ const cases=[
   ['#11','2025',2,'상선전문',25,'BWM'],
   ['#10','2025',1,'상선전문',25,'유성혼합물'],
   ['#9','2026',2,'항해',4,'자이로컴퍼스'],
-  ['#8','2023',4,'법규',64,''],
+  ['#8','2023',4,'법규',0,'분뇨오염방지설비'],
   ['#7-5','2024',1,'운용',3,'Stockless anchor'],
   ['#4','2023',4,'상선전문',23,'IAMSAR'],
   ['#3','2025',4,'항해',13,'위치선'],
@@ -34,7 +34,7 @@ for(const [label,year,round,subject,num,term] of cases){
     const parts=/^(20\d{2})-navi[123]e?-(\d+)$/.exec(id);
     if(!parts||parts[1]!==year||Number(parts[2])!==round||!Array.isArray(paper.questions))continue;
     for(const q of paper.questions){
-      if(q['과목']!==subject||Number(q['번호'])!==num)continue;
+      if(q['과목']!==subject||(num&&Number(q['번호'])!==num))continue;
       const stem=String(q['문제']||'');
       if(term&&!stem.includes(term))continue;
       found.push({id,question:stem,choices:q['선택지']||q.choices||[],answer:q['정답']});
