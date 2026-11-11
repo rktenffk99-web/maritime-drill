@@ -20,10 +20,11 @@ assert.equal(fixes.stripPdfFooterArtifact('outstanding 6 -'),'outstanding');
 assert.equal(fixes.stripPdfFooterArtifact('x - 4'),'x - 4');
 assert.equal(fixes.stripPdfFooterArtifact('-4'),'-4');
 assert.equal(fixes.stripPdfFooterArtifact('Rule 11'),'Rule 11');
+assert.equal(fixes.stripPdfFooterArtifact('분리 밸러스트 탱크의 밸브 10 - 2025년'),'분리 밸러스트 탱크의 밸브');
 
 const bundleRe=/<script\s+type="application\/gzip"\s+id="(md-bundle-[^"]+)">\s*([A-Za-z0-9+/=\r\n]+?)\s*<\/script>/gs;
 const target=/^past-(20\d{2})-navi([123])(?:e)?-(\d+)\.js$/;
-const suffix=/\s+(?:[1-9]|1[01])\s*-\s*$/;
+const suffix=/\s+(?:[1-9]|1[01])\s*-\s*(?:20\d{2}년)?\s*$/;
 
 function bundleName(id){
   let name=id.replace(/^md-bundle-/,'');
