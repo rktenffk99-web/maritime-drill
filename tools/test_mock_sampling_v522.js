@@ -97,6 +97,20 @@ try{
     assert.ok(scope.ppPredictiveWeight(item('latest','latest',{maxYear:2027,hits:[{year:2027}]}),[],{})>scope.ppPredictiveWeight(item('old','old',{maxYear:2027,hits:[{year:2024}]}),[],{}));
     assert.ok(!source.includes("pastYear=2026;pastSession=0;pastVariant='상선';pastAllYears=false;pastReturnView='pass-plan-predictive-mock'"));
   });
+  test('questions not seen for years decay by their last appearance',()=>{
+    const w=hits=>scope.ppPredictiveWeight(item('a','a',{maxYear:2026,hits:hits.map(year=>({year}))}),[],{});
+    const close=(a,b)=>assert.ok(Math.abs(a-b)<1e-9,`${a} != ${b}`);
+    close(w([2025]),(1+0.72+0.6)*0.55);
+    close(w([2024]),(1+0.72+0.3)*0.35);
+    close(w([2023]),(1+0.72)*0.2);
+    close(w([2020]),(1+0.72)*0.2);
+    assert.ok(w([2026])>w([2025])&&w([2025])>w([2024])&&w([2024])>w([2023]));
+    // A repeated old question still outranks the same question seen only once at that age.
+    assert.ok(w([2021,2022])>w([2022]));
+    // The decay rolls forward with the bank instead of being pinned to 2026.
+    const future=scope.ppPredictiveWeight(item('f','f',{maxYear:2027,hits:[{year:2025}]}),[],{});
+    close(future,w([2024]));
+  });
 }finally{fs.rmSync(temp,{recursive:true,force:true})}
 
 test('all mock exam modes allow requesting the current answer and explanation',()=>{

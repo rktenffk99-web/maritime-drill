@@ -26,6 +26,11 @@ def patch(text):
     if(years.has(latestYear-1))weight+=0.6;
     if(years.has(latestYear-2))weight+=0.3;
     if(years.has(latestYear)&&hits.some(h=>Number(h.year)<latestYear))weight+=1.25;
+    // predictive-age-decay-v537: 2020~2025 2·3급 실측 재출제율(마지막 출제 후 1년 11~14%,
+    // 2년 5~8%, 3년 3~4%, 4년 이상 1~5%)에 맞춰 오래 안 나온 문제의 비중을 줄인다.
+    const lastYear=Math.max(0,...hits.map(h=>Number(h.year)||0));
+    const age=lastYear?Math.max(0,latestYear-lastYear):0;
+    weight*=[1,0.55,0.35,0.2][Math.min(3,age)];
     const recentLevel=ppPredictiveRecentLevel(item,history);
     if(recentLevel===0)weight*=0.45;
     else if(recentLevel===1)weight*=0.75;
