@@ -34,7 +34,7 @@ for needle in [
     'spaced-recheck-tail-v2',
     'const minimumGap=15;',
     'const remainingBase=',
-    'if(remainingBase<minimumGap)',
+    'if(!PP_SAME_DAY_RECHECK||remainingBase<minimumGap)',
     'rec.sameDayConfirmedDate=null;',
     'rec.lateSessionNextDayRecheck=true;rec.nextDayRecheckScheduledDate=today;',
     'rec.dueDate=ppReviewDueDate(today,1,ppExamDay(ppLoadPlan(),q._planGrade));',
@@ -42,7 +42,7 @@ for needle in [
     'const desiredGap=Math.max(minimumGap,Math.min(delay,remainingBase));',
 ]:
     assert needle in rb,f'missing recheck spacing marker: {needle}'
-assert rb.index('if(remainingBase<minimumGap)') < rb.index('const delay=30+Math.floor(Math.random()*21);')
+assert rb.index('if(!PP_SAME_DAY_RECHECK||remainingBase<minimumGap)') < rb.index('const delay=30+Math.floor(Math.random()*21);')
 
 # 4) Evaluation mock is non-personalized and survives resume.
 for needle in [
@@ -75,3 +75,6 @@ assert "const APP_VERSION = '5.36';" in html
 assert '<title>Maritime Drill v5.36 · Android</title>' in html
 
 print('exam-readiness algorithm checks: PASS')
+
+# v5.39: same-session rechecks are disabled; every first correct answer is checked on a later day.
+assert 'const PP_SAME_DAY_RECHECK=false;' in html

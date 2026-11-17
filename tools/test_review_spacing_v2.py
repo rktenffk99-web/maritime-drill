@@ -10,8 +10,7 @@ for needle in [
     'ppInitializeReviewSchedule(r)',
     'ppResetReviewSchedule(r,today)',
     'r.reviewSuccessDate!==today',
-    '[1,5,7,14,21,30]',
-    'ppReviewDueDate(today,interval,exam)',
+    'ppMasteredDueDate(today,Number(r.reviewStage)||1,exam,ppLoadPlan().finalDays)',
     'ppReviewDueDate(today,2,exam)',
     "priorConfirmed===today&&r.mastered",
 ]:
@@ -30,3 +29,9 @@ if "assignmentPolicy:'scheduler-v522'" in text:
 else:
     assert 'function ppBuildTodayAssignment(' in text
 print('review spacing v5.22 policy checks: PASS; actual sequences covered by test_mastery_sessions_v522.js')
+
+# v5.39: mastered items are checked after 7 and 21 days, then wait for the final review window.
+mastered=re.search(r"function ppMasteredDueDate\(today,stage,exam,finalDays\)\{(.*?)\n  \}",text,re.S)
+assert mastered, 'mastered spacing helper missing'
+for needle in ['if(stage<=1)return bounded(7);','if(stage===2)return bounded(21);','return finalStart>today?finalStart:exam;']:
+    assert needle in mastered.group(1), f'mastered spacing rule missing: {needle}'

@@ -32,8 +32,7 @@ c=commit.group(0)
 assert 'ppInitializeReviewSchedule(r)' in c
 assert 'ppResetReviewSchedule(r,today)' in c
 assert 'r.reviewSuccessDate!==today' in c
-assert '[1,5,7,14,21,30]' in c
-assert 'ppReviewDueDate(today,interval,exam)' in c
+assert 'ppMasteredDueDate(today,Number(r.reviewStage)||1,exam,ppLoadPlan().finalDays)' in c  # v5.39 spacing: 7d, 21d, final window
 assert 'sureRate=' not in c, 'lifetime accuracy must not trap recent recovery or override a new lapse'
 
 # Grade ratio stays exact.

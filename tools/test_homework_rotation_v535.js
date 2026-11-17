@@ -47,11 +47,12 @@ async function test(name,run){await run();count++;console.log('PASS '+name)}
     assert.equal(h.s.currentMode,'pass-plan-session');assert.equal(h.s.__test.state().index,0);assert.ok(h.data.has(C));assert.equal(h.record().attempts,1);
     h.fail.schedule=false;assert.equal(h.s.__mdHomeworkPersistence.beforeLeave(),true);assert.equal(h.record().attempts,1);assert.equal(h.record().dueDate,'2026-10-23');
   });
-  await test('retrying non-tail homework inserts one spaced recheck and preserves the base question count',()=>{
+  await test('non-tail first correct answer is checked tomorrow instead of repeating in the same session (v5.39)',()=>{
     const h=harness(16);h.fail.schedule=false;h.s.chooseNavigatorPassPlanAnswer(0);
     assert.equal(h.s.retryNavigatorPassPlanSave(),true);assert.equal(h.s.retryNavigatorPassPlanSave(),true);
-    const queue=h.s.__test.getQueue();assert.equal(queue.length,17);assert.equal(queue.filter(x=>x._sameDayRecheck).length,1);assert.equal(h.record().attempts,1);
-    h.s.nextNavigatorPassPlanQuestion();assert.equal(h.s.__test.getQueue().length,17);assert.equal(h.record().attempts,1);
+    const queue=h.s.__test.getQueue();assert.equal(queue.length,16);assert.equal(queue.filter(x=>x._sameDayRecheck).length,0);assert.equal(h.record().attempts,1);
+    assert.equal(h.record().lateSessionNextDayRecheck,true);assert.equal(h.record().dueDate,'2026-10-23');assert.equal(h.s.__test.cleared(h.record(),'2026-10-22'),true);
+    h.s.nextNavigatorPassPlanQuestion();assert.equal(h.s.__test.getQueue().length,16);assert.equal(h.record().attempts,1);
   });
   console.log(`homework rotation v5.35 regressions: PASS (${count} cases)`);
 })().catch(error=>{console.error(error);process.exitCode=1});

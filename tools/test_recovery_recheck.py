@@ -42,7 +42,7 @@ rbody=recheck.group(1)
 for needle in [
     'const minimumGap=15;',
     'const remainingBase=',
-    'if(remainingBase<minimumGap)',
+    'if(!PP_SAME_DAY_RECHECK||remainingBase<minimumGap)',
     'rec.sameDayConfirmedDate=null;',
     'rec.lateSessionNextDayRecheck=true;rec.nextDayRecheckScheduledDate=today;',
     'rec.dueDate=ppReviewDueDate(today,1,ppExamDay(ppLoadPlan(),q._planGrade));',
@@ -52,7 +52,7 @@ for needle in [
     'const desiredGap=Math.max(minimumGap,Math.min(delay,remainingBase));',
 ]:
     assert needle in rbody, f'missing actual recheck policy: {needle}'
-assert rbody.index('if(remainingBase<minimumGap)') < rbody.index('const delay=30+Math.floor(Math.random()*21);')
+assert rbody.index('if(!PP_SAME_DAY_RECHECK||remainingBase<minimumGap)') < rbody.index('const delay=30+Math.floor(Math.random()*21);')
 assert 'rec.sameDayConfirmedDate=today;' not in rbody, 'tail must not claim a second answer that never occurred'
 
 # Static ordering checks: commit must happen before scheduling, and scheduling before checkpoint save.
@@ -93,3 +93,6 @@ subprocess.run(['node','tools/test_mastery_sessions_v522.js','--final'],check=Tr
 subprocess.run(['node','tools/test_homework_rotation_v535.js'],check=True)
 
 print('recovery/recheck checks passed: checkpoint queue is authoritative and lost checkpoints recover from attempted-today progress')
+
+# v5.39: same-session rechecks are disabled; every first correct answer is checked on a later day.
+assert 'const PP_SAME_DAY_RECHECK=false;' in src
