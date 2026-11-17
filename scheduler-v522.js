@@ -27,7 +27,11 @@
     const byGrade=Object.fromEntries(active.map(g=>[g.id,all.filter(r=>r.gradeId===g.id)])),info={};
     for(const g of enabled){const rows=unique((input.rows||[]).filter(r=>r.gradeId===g.id)),dday=days(today,g.examDate),remaining=rows.filter(r=>!r.seen).length,newDays=Math.max(0,dday-finalDays);info[g.id]={studyDays:Math.max(0,dday),newStudyDays:newDays,recallReserveDays:finalDays,remainingFirstPass:remaining,requiredFirstPassToday:newDays?Math.ceil(remaining/newDays):0,finalReview:dday>0&&dday<=finalDays,scheduledFirstPassToday:0,newShortfall:0,coverageAtRisk:remaining>0&&dday<=0,absoluteCapacityShortfall:dday<=0?remaining:0}}
     const weights={},available={};
-    for(const g of active){const rows=byGrade[g.id],i=info[g.id];available[g.id]=rows.length;weights[g.id]=input.priorityMode==='auto'?Math.max(1,i.requiredFirstPassToday+Math.min(rows.filter(r=>r.due).length,Math.ceil(cap*.3))):Math.max(0,Number(input.weights&&input.weights[g.id])||0)}
+    // final-review-auto-weight-v538: inside the final window requiredFirstPassToday is 0 by design,
+    // so auto mode spreads the remaining first passes over the days left before the exam
+    // instead of handing the imminent grade's budget to a distant exam.
+    const autoFirstPassNeed=i=>i.finalReview?Math.ceil(i.remainingFirstPass/Math.max(1,i.studyDays)):i.requiredFirstPassToday;
+    for(const g of active){const rows=byGrade[g.id],i=info[g.id];available[g.id]=rows.length;weights[g.id]=input.priorityMode==='auto'?Math.max(1,autoFirstPassNeed(i)+Math.min(rows.filter(r=>r.due).length,Math.ceil(cap*.3))):Math.max(0,Number(input.weights&&input.weights[g.id])||0)}
     const quotas=allocate(weights,available,cap),selected=[],usedClusters=new Set(),gradeCounts={},requests={},scheduledFirstPassByGrade={};
     const reviewLists=[],newLists=[];
     for(const g of active){
