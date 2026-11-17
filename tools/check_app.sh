@@ -67,6 +67,7 @@ python tools/patch_homework_rotation_v535.py
 python tools/patch_exam_start_guard_v535.py
 python tools/patch_navi23_content_v537.py
 python tools/patch_pass_plan_finished_exam_v538.py
+python tools/patch_pass_plan_review_policy_v539.py
 # Older generators add script URLs; stamp the release only after all integration.
 python tools/patch_mock_answer_access.py
 python tools/patch_english_word_study.py
@@ -140,6 +141,7 @@ python tools/check_final_syntax.py
 node tools/test_data_identity_v522.js
 node tools/test_scheduler_v522.js
 node tools/test_pass_plan_finished_exam_v538.js
+node tools/test_pass_plan_review_policy_v539.js
 node tools/test_mastery_sessions_v522.js --final
 node tools/test_mock_sampling_v522.js
 node tools/test_metrics_v522.js

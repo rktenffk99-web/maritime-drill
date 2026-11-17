@@ -37,6 +37,8 @@
     for(const g of active){
       const rows=byGrade[g.id],quota=quotas[g.id]||0,i=info[g.id],picked=[],loads={};
       const review=rows.filter(r=>r.due),fresh=rows.filter(r=>!r.due&&!r.seen);
+      // reappear-order-v539: weak-topic boost times the re-appearance weight (1 when absent).
+      const score=r=>(Number(r.boost)||1)*(Number(r.reappear)||1);
       const age=r=>Math.max(0,Number(r.overdueDays)||0),tier=r=>age(r)>=7?0:r.weak?1:!r.mastered?2:3;
       function choose(list,isReview){
         const candidates=list.filter(r=>!usedClusters.has(r.clusterId||r.key));if(!candidates.length)return null;
@@ -44,7 +46,7 @@
           if(isReview){const t=tier(a)-tier(b);if(t)return t;if(tier(a)===0&&age(a)!==age(b))return age(b)-age(a)}
           const balance=(loads[a.subject]||0)-(loads[b.subject]||0);if(balance)return balance;
           if(isReview){const wait=age(b)-age(a);if(wait)return wait}
-          return (Number(b.boost)||1)-(Number(a.boost)||1)||(b.has2026?1:0)-(a.has2026?1:0)||(Number(b.count)||0)-(Number(a.count)||0)||(Number(b.latest)||0)-(Number(a.latest)||0)||a.key.localeCompare(b.key);
+          return score(b)-score(a)||(b.has2026?1:0)-(a.has2026?1:0)||(Number(b.count)||0)-(Number(a.count)||0)||(Number(b.latest)||0)-(Number(a.latest)||0)||a.key.localeCompare(b.key);
         });return candidates[0];
       }
       function take(list,isReview){if(picked.length>=quota)return false;const r=choose(list,isReview);if(!r)return false;picked.push(r);usedClusters.add(r.clusterId||r.key);loads[r.subject]=(loads[r.subject]||0)+1;return true}

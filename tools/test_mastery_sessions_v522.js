@@ -36,15 +36,18 @@ async function test(name,fn){await fn();passed++;console.log('PASS '+name)}
  await test('lapse resets spacing stage while retaining cumulative study history',()=>{
   date('2026-10-22');const {s}=harness(),question=q();s.__test.setup([question],'today',{[question._planKey]:{attempts:100,correct:100,wrong:0,masteryReviews:5,mastered:true,status:'mastered',firstPassDate:'2026-01-01',sameDayConfirmedDate:'2026-10-01'}});
   s.__test.commit(question,1);assert.equal(rec(s).reviewStage,0);assert.equal(rec(s).masteryReviews,5);assert.equal(rec(s).correct,100);assert.equal(rec(s).wrong,1);
-  s.__test.commit(question,0);s.__test.commit(question,0);date('2026-10-24');s.__test.commit(question,0);assert.equal(rec(s).reviewStage,1);assert.equal(rec(s).dueDate,'2026-10-29');assert.equal(rec(s).masteryReviews,6);
+  s.__test.commit(question,0);s.__test.commit(question,0);date('2026-10-24');s.__test.commit(question,0);assert.equal(rec(s).reviewStage,1);assert.equal(rec(s).dueDate,'2026-10-31');assert.equal(rec(s).masteryReviews,6);
  });
  await test('an older app client cannot retain a stale modern spacing stage after a lapse',()=>{
-  date('2026-10-22');const {s}=harness(),question=q();s.__test.setup([question],'today',{[question._planKey]:{attempts:101,correct:100,wrong:1,masteryReviews:5,mastered:false,status:'weak',firstPassDate:'2026-01-01',sameDayConfirmedDate:null,lastWrongDate:day,lastOutcome:'wrong',reviewScheduleVersion:1,reviewStage:4,reviewSuccessDate:'2026-10-01',reviewLapseDate:null}});s.__test.commit(question,0);s.__test.commit(question,0);date('2026-10-24');s.__test.commit(question,0);assert.equal(rec(s).reviewStage,1);assert.equal(rec(s).dueDate,'2026-10-29');assert.equal(rec(s).masteryReviews,6);
+  date('2026-10-22');const {s}=harness(),question=q();s.__test.setup([question],'today',{[question._planKey]:{attempts:101,correct:100,wrong:1,masteryReviews:5,mastered:false,status:'weak',firstPassDate:'2026-01-01',sameDayConfirmedDate:null,lastWrongDate:day,lastOutcome:'wrong',reviewScheduleVersion:1,reviewStage:4,reviewSuccessDate:'2026-10-01',reviewLapseDate:null}});s.__test.commit(question,0);s.__test.commit(question,0);date('2026-10-24');s.__test.commit(question,0);assert.equal(rec(s).reviewStage,1);assert.equal(rec(s).dueDate,'2026-10-31');assert.equal(rec(s).masteryReviews,6);
  });
  await test('recent independent successes advance despite historic wrong answers',()=>{
   date('2026-10-22');const {s}=harness(),question=q();s.__test.setup([question],'today',{[question._planKey]:{attempts:100,correct:0,wrong:100,masteryReviews:0,mastered:false,status:'weak',sameDayConfirmedDate:null}});
-  s.__test.commit(question,0);s.__test.commit(question,0);for(const d of ['2026-10-24','2026-10-29','2026-11-05','2026-11-19','2026-12-10']){date(d);s.__test.commit(question,0)}
-  assert.equal(rec(s).reviewStage,5);assert.equal(rec(s).dueDate,'2027-01-09');assert.equal(rec(s).wrong,100);assert.equal(rec(s).correct,7);
+  // v5.39: mastered spacing is 7 days, then 21 days, then parked until the final window (exam 2027-06-01, 4 final days).
+  s.__test.commit(question,0);s.__test.commit(question,0);
+  const expected=[['2026-10-24',1,'2026-10-31'],['2026-10-31',2,'2026-11-21'],['2026-11-21',3,'2027-05-28'],['2027-05-28',4,'2027-06-01'],['2027-05-29',5,'2027-06-01']];
+  for(const [d,stage,due] of expected){date(d);s.__test.commit(question,0);assert.equal(rec(s).reviewStage,stage,d);assert.equal(rec(s).dueDate,due,d)}
+  assert.equal(rec(s).wrong,100);assert.equal(rec(s).correct,7);
  });
  await test('same-day repeat cannot demote mastery or advance the spacing stage twice',()=>{
   date('2026-10-22');const {s}=harness(),question=q();s.__test.setup([question],'today',{[question._planKey]:{mastered:true,status:'mastered',masteryReviews:3,sameDayConfirmedDate:'2026-10-21',attempts:5,correct:5,wrong:0}});
@@ -55,8 +58,10 @@ async function test(name,fn){await fn();passed++;console.log('PASS '+name)}
   const r=rec(s);assert.equal(r.sameDayConfirmedDate,null);assert.equal(r.nextDayRecheckScheduledDate,'2026-10-22');assert.equal(s.__test.pending(r,day),true);assert.equal(s.__test.cleared(r,day),true);assert.equal(r.dueDate,'2026-10-23');
   date('2026-10-23');s.__test.commit(question,0);assert.equal(rec(s).mastered,true);assert.equal(rec(s).reviewStage,1);assert.equal(rec(s).lateSessionNextDayRecheck,false);
  });
- await test('non-tail success schedules an actual recheck rather than claiming completion',()=>{
-  date('2026-10-22');const {s}=harness(),question=q();s.__test.setup([question,...Array.from({length:15},(_,i)=>q('navi2|rest'+i))]);s.__test.commit(question,0);s.__test.schedule(question);assert.equal(rec(s).sameDayConfirmedDate,null);assert.equal(s.__test.cleared(rec(s),day),false);assert.equal(s.__test.getQueue().filter(x=>x._sameDayRecheck).length,1);
+ await test('non-tail success is checked tomorrow instead of repeating in the same session',()=>{
+  // v5.39: no same-session repeat; a non-tail success is also checked on the next day.
+  date('2026-10-22');const {s}=harness(),question=q();s.__test.setup([question,...Array.from({length:15},(_,i)=>q('navi2|rest'+i))]);s.__test.commit(question,0);s.__test.schedule(question);assert.equal(rec(s).sameDayConfirmedDate,null);assert.equal(s.__test.cleared(rec(s),day),true);assert.equal(s.__test.pending(rec(s),day),true);assert.equal(rec(s).dueDate,'2026-10-23');assert.equal(s.__test.getQueue().filter(x=>x._sameDayRecheck).length,0);
+  date('2026-10-23');s.__test.commit(question,0);assert.equal(rec(s).mastered,true);assert.equal(rec(s).dueDate,'2026-10-30');
  });
  await test('provisional review and exam-day reviews are never placed after target or into the past',()=>{
   date('2026-10-22');const {s}=harness(),question=q();s.__test.setup([question]);s.__test.plan({dailyCap:70,grades:{navi2:{enabled:true,examDate:'2026-10-24'},navi3:{enabled:false,examDate:''}}});s.__test.commit(question,0);s.__test.commit(question,0);assert.equal(rec(s).dueDate,'2026-10-23');

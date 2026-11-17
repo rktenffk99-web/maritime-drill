@@ -143,4 +143,14 @@ test('auto mode keeps the imminent grade ahead when it enters the final review w
   assert.ok(result.gradeCounts.navi3.new>result.gradeCounts.navi3.review,'unseen questions of the imminent exam are not starved');
 });
 
+test('fresh questions follow the re-appearance weight before raw frequency (v5.39)',()=>{
+  // Same subject; an old three-time question vs. a recent single and a latest-year question.
+  const fresh=[row(0,{subject:'항해',count:3,latest:2021,reappear:0.9}),row(5,{subject:'항해',count:1,latest:2025,reappear:2.1}),row(10,{subject:'항해',count:1,latest:2026,reappear:3.5})];
+  const input=config({cap:40,rows:fresh}),result=build(input);assertMetrics(input,result);
+  assert.deepEqual([...result.keys],['navi2|test-10','navi2|test-5','navi2|test-0']);
+  // Without a reappear value the previous order (2026 first, then frequency) still applies.
+  const legacy=build(config({cap:40,rows:fresh.map(({reappear,...r})=>r)}));
+  assert.deepEqual([...legacy.keys],['navi2|test-0','navi2|test-10','navi2|test-5']);
+});
+
 console.log(`scheduler v5.22 behavior checks: PASS (${passed} cases)`);
