@@ -1,0 +1,188 @@
+@@ 2021|navi2|1|영어|1
+> "위도와 경도를 쓸 때는 ( )로 나타내고, 적도의 북·남, 본초자오선의 동·서를 붙인다."
+SMCP 위치 표현 규칙이다. 위도·경도는 도와 분(degrees and minutes)으로 표시한다.
+- ㉮ 침로와 속력, ㉯ 위치와 수심, ㉱ 거리와 방위는 위·경도 표기 단위가 아니다.
+* 예) 35°10′N, 129°05′E → "three five degrees one zero minutes North…"
+
+@@ 2021|navi2|1|영어|2
+> 철자가 틀린 단어를 고르는 문제.
+갑판장은 boatswain [보순]이다. boatsuain은 틀린 철자이다.
+- ㉮ derelict = 유기선, ㉯ astronomical = 천문의, ㉱ trimmed = 트림을 맞춘.
+* boatswain = Bosun(갑판장).
+
+@@ 2021|navi2|1|영어|3
+> "통항분리방식의 육지 쪽 경계와 인접 해안 사이의 지정된 구역으로, 통과 선박이 보통 사용하지 않고 지역 특별 규칙이 적용될 수 있는 항로지정 방식은?"
+연안통항대(Inshore traffic zone)의 정의이다(COLREG 제10조, IMO 항로지정 일반규정).
+- ㉮ inland water = 내수.
+- ㉯ special zone = 특별 구역(일반 용어).
+- ㉱ separation zone or line = 반대 방향 통항로를 나누는 분리대·분리선.
+* Inshore traffic zone = TSS와 해안 사이, 통과 선박 원칙적 사용 금지.
+
+@@ 2021|navi2|1|영어|4
+> 서로 관계가 없는 짝을 고르는 문제.
+Way point(변침점)는 항로 계획 용어로 Hydrographic survey(수로 측량)와 관계가 없다.
+- ㉮ Air draught = 수면 위 높이.
+- ㉯ Gross tonnage = 용적.
+- ㉰ UKC = 선저 여유수심.
+* Way point = 항로상 변침점.
+
+@@ 2021|navi2|1|영어|5
+> "예를 들어 182°로 조타하라는 명령을 받으면 조타수는 복창하고 선박을 지시 침로로 꾸준히 돌린다. 선박이 지시 침로에 정침하면 조타수는 ( )라고 보고한다."
+SMCP 조타 명령: 정침하면 "Steady on one eight two."라고 보고한다.
+- ㉮ "Steer one eight two"는 명령이다.
+- ㉰ 정침 보고의 표준 표현이 아니다.
+- ㉱ "Ease to …"는 타각을 줄이라는 명령이다.
+* Steer ___ (명령) → Steady on ___ (정침 보고).
+
+@@ 2021|navi2|1|영어|6
+> SMCP상 잘못된 표현을 고르는 문제.
+SMCP는 뜻이 애매한 may 같은 조동사를 피하고 허가·지시를 명확히 표현하도록 한다. 그래서 "You may anchor."가 부적절한 표현으로 출제되었다.
+- ㉯ 선수줄이 끊어졌다.
+- ㉰ 앵커 체인이 수직이다.
+- ㉱ 선미줄의 늘어진 부분을 감아라.
+* up and down = 체인 수직, slack = 늘어진 부분.
+
+@@ 2021|navi2|1|영어|7
+> "전속 항해 속력에서 조종 회전수로 ( )하려면 얼마 전에 통보가 필요한가?"
+속력을 '줄이다'는 reduce이다. 기관실에 감속 예고(Stand-by)를 얼마나 미리 줘야 하는지 묻는 표현이다.
+- ㉮ notice는 명사로 문법에 맞지 않는다.
+- ㉰ increase는 반대 뜻이다.
+- ㉱ advance는 '전진하다·앞당기다'의 뜻이다.
+* full sea speed → manoeuvring revolutions = 감속(reduce).
+
+@@ 2021|navi2|1|영어|8
+> SMCP상 틀린 표현을 고르는 문제(하역 관련).
+SMCP 하역 관련 표준 문형과 맞지 않는 표현으로 ㉯가 출제되었다.
+- ㉮ Make bonding wire and report. = 본딩선을 연결하고 보고하라(정전기 방지).
+- ㉰ Can we connect the loading arm? = 로딩암을 연결해도 됩니까?
+- ㉱ Inform 3 minutes before discharge will start. = 양하 시작 3분 전에 알려라.
+* bonding wire = 정전기 방지 접지선, loading arm = 하역 암.
+
+@@ 2021|navi2|1|영어|9
+> IMDG 코드 분류 설명이 틀린 것을 고르는 문제.
+Class 7은 방사성 물질(Radioactive material)이다. 부식성 물질(Corrosive substances)은 Class 8이다.
+- ㉮ Class 4 = 가연성 고체(자연발화성·물반응성 포함).
+- ㉯ Class 5 = 산화성 물질, 유기과산화물.
+- ㉰ Class 6 = 독성·감염성 물질.
+* 1 화약류, 2 가스, 3 인화성 액체, 4 가연성 고체, 5 산화성, 6 독성, 7 방사성, 8 부식성, 9 기타.
+
+@@ 2021|navi2|1|영어|10
+> "크레인의 최대 ( )은/는 얼마입니까?"
+크레인이 닿을 수 있는 최대 거리, 즉 작업 반경은 reach이다(SMCP 하역 장비 문형).
+- ㉯ tonnes는 무게 단위로 'maximum tonnes'라고 하지 않는다(SWL을 쓴다).
+- ㉰ pumping capacity는 펌프 용량이다.
+- ㉱ safe working pressure는 압력 용기에 쓰는 말이다.
+* reach = 작업 반경, SWL = 안전사용하중.
+
+@@ 2021|navi2|1|영어|11
+> "선위는 ( )라는 기법으로 상당히 정확하게 추정할 수 있다. 이를 위해 항해사는 침로·속력·항주 거리를 알아야 한다."
+침로와 속력·거리만으로 구하는 위치는 추측위치(Dead reckoning position, DR)이다.
+- ㉮ actual position = 실제 위치(관측 위치).
+- ㉯ estimated position = 추정위치(조류·풍압까지 고려).
+- ㉰ dead estimation은 쓰지 않는 표현이다.
+* DR = 침로 + 속력, EP = DR + 해조류·풍압차.
+
+@@ 2021|navi2|1|영어|12
+> "자이로에 힘을 가하면 힘을 가한 방향에서 휠의 회전 방향으로 90° 떨어진 방향으로 움직이게 되는 현상은?"
+세차운동(Precession)의 정의이다.
+- ㉮ Inertia = 관성(방향 보존성).
+- ㉯ Damping = 제진(진동 감쇠).
+- ㉰ Gyro moment = 자이로 모멘트(일반 용어).
+* 자이로 2대 특성 = 관성(Rigidity) + 세차운동(Precession).
+
+@@ 2021|navi2|1|영어|13
+> "북반구 겨울에는 차가운 아시아 대륙에 강한 고기압이 발달하여, 10~11월부터 3월까지 북인도양과 남중국해에 지속적인 북동 ( ) 바람이 분다. 서태평양에서는 북북동풍이다."
+계절에 따라 대륙과 해양의 기압 차로 방향이 바뀌는 바람은 계절풍(monsoon)이다.
+- ㉮ trade wind = 무역풍(연중 일정).
+- ㉯ variable = 변하는, ㉰ average = 평균의.
+* NE monsoon = 겨울(10~3월), SW monsoon = 여름(5~9월).
+
+@@ 2021|navi2|1|영어|14
+> 도등(Range lights)에 대한 설명으로 틀린 것을 고르는 문제.
+도등은 앞쪽 등(Front light)이 낮고 뒤쪽 등(Rear light)이 더 높게 설치된다. 'lower rear light'라고 한 ㉮가 틀렸다.
+- ㉯ 두 등이 수직선상에 일직선으로 보이면 도등선 위에 있다.
+- ㉰ 일직선이 될 때 특정 위치선을 나타내는 등화 쌍이다.
+- ㉱ 앞쪽 등이 뒤쪽 등의 왼쪽에 보이면 관측자는 도등선의 오른쪽에 있다.
+* 도등 = 앞등 낮게, 뒤등 높게. 앞등이 왼쪽으로 보이면 오른쪽으로 벗어난 것.
+
+@@ 2021|navi2|1|영어|15
+> "양하하여 인도한 화물이 선하증권의 화물과 다른 경우를 무엇이라 하는가?"
+선하증권과 다른 화물을 인도하는 것은 오인도(Misdelivery)이다.
+- ㉮ Mislanding = 다른 항구에 잘못 양하하는 것.
+- ㉯ Over carriage = 양하항을 지나쳐 더 운송한 것.
+- ㉱ Change of destination = 목적지 변경.
+* Misdelivery = 잘못 인도, Overlanded/Shortlanded = 과·부족 양하.
+
+@@ 2021|navi2|1|영어|16
+> "선주가 편의치적을 이용하는 이유로 틀린 것은?"
+편의치적은 세금·인건비 절감, 운항·관리의 자유 등 때문에 이용한다. 세관(관세) 절차에서 자유로워지는 것은 아니다(입항국의 세관 규정은 그대로 적용된다).
+- ㉮ 운항상 자유가 크다.
+- ㉰ 선박 관리가 쉽다.
+- ㉱ 운항비(세금·선원비)를 줄일 수 있다.
+* Flag of convenience = 세금·선원 고용 규제 완화, 비용 절감.
+
+@@ 2021|navi2|1|영어|17
+> COLREG의 일반 정의 중 옳은 것은?
+COLREG 제3조(j): 선박의 '길이'는 전장(length overall)을 말한다.
+- ㉯ 만재흘수선 길이, ㉰ 등록 길이, ㉱ 수선간장은 COLREG의 정의가 아니다.
+* COLREG length = LOA.
+
+@@ 2021|navi2|1|영어|18
+> "화주가 공동해손 손실의 비례 분담금을 지급하겠다고 약속하는 문서는?"
+공동해손 맹약서(General average bond)이다. 선주는 이를 받고 화물을 인도한다(보통 보증장·공탁금과 함께).
+- ㉮ general average statement = 공동해손 정산서.
+- ㉰ valuation paper = 가액 증명 서류.
+- ㉱ non-separation agreement = 비분리 협정(분리 운송 시 공동해손 유지).
+* GA bond = 분담 약속, GA guarantee = 보험자 보증, GA statement = 정산서.
+
+@@ 2021|navi2|1|영어|19
+> "중량물을 갑판에서 선창으로 옮기면 어떤 변화가 생기는가?"
+무게를 아래로 옮기면 무게중심(G)이 내려가 KG가 줄고 GM이 커진다.
+- ㉯ KG는 줄어든다.
+- ㉰ GM은 커진다.
+- ㉱ KM은 흘수(선형)로 정해지며 선내 이동으로 변하지 않는다.
+* 무게 하향 이동 → KG↓, GM↑.
+
+@@ 2021|navi2|1|영어|20
+> "원유를 양하하면서 그 원유로 화물탱크를 세정하는 방식은?"
+원유세정(Crude oil washing, COW)이다.
+- ㉮ Tank inerting = 불활성가스 주입.
+- ㉯ Butterworth = 해수(온수) 고압 세정기·세정 방식.
+- ㉱ Crude oil discharging = 원유 양하.
+* COW = 양하 중 원유로 세정 → 슬러지 감소, 화물 회수.
+
+@@ 2021|navi2|1|영어|21
+> "용선자가 적재·양하 비용을 부담하는 용선 형태는?"
+FIO(Free In and Out)는 선적·양하 비용이 선주에게 부담되지 않는 조건, 즉 용선자가 부담하는 조건이다.
+- ㉯ Lump-sum charter = 선복 총액 운임 용선.
+- ㉰ Gross charter = 선주가 대부분 비용 부담.
+- ㉱ Net form = 선주 일부 부담.
+* FIO = 하역비 선주 면제.
+
+@@ 2021|navi2|1|영어|22
+> "( ) 계약이란 보험자가 약정한 방법과 범위로 해상손해, 즉 해상사업에 수반하는 손해를 피보험자에게 보상할 것을 인수하는 계약이다."
+영국 해상보험법(MIA 1906) 제1조의 해상보험계약(marine insurance) 정의이다.
+- ㉮ 매매, ㉯ 운송, ㉰ 신용 계약은 손해 보상 계약이 아니다.
+* MIA 1906 s.1 = Marine insurance 정의.
+
+@@ 2021|navi2|1|영어|23
+> "운송인과 선박은 폭동 및 내란(riots and civil commotions)으로 생긴 멸실·손상에 책임지지 않는다."
+riot = 폭동, civil commotion = 내란(소요). 헤이그 규칙의 운송인 면책 사유이다.
+- ㉮ 천재(Act of God)와 다르다.
+- ㉯ 선박폐쇄·동맹파업은 strikes or lock-outs이다.
+- ㉱ 공적행위·시민전쟁은 해당 표현이 아니다.
+* Hague Rules 면책 = 항해과실, 화재, 천재, 전쟁, 폭동·내란, 파업 등.
+
+@@ 2021|navi2|1|영어|24
+> "한 달에 두 번(twice a month)과 같은 말은?"
+bimonthly는 '한 달에 두 번' 또는 '두 달에 한 번' 두 뜻으로 모두 쓰인다. 보기 가운데 '한 달에 두 번'을 나타낼 수 있는 것은 bimonthly뿐이다(더 분명한 말은 semimonthly).
+- ㉮ two month(s) = 두 달.
+- ㉯ a few month(s) = 몇 달.
+- ㉱ quarterly = 분기별(3개월마다).
+* semimonthly = 월 2회, bimonthly = 월 2회 또는 격월.
+
+@@ 2021|navi2|1|영어|25
+> "부산에서 요코하마로 가던 중 응급환자 입원을 위해 한 ( )에 대해 요코하마 주재 한국 영사관에 해난보고서를 제출했다."
+응급환자를 육지로 보내기 위해 예정 항로에서 벗어난 것은 이로(deviation)이다. 정당한 이로임을 기록·증명하려고 해난보고서(Sea protest)를 낸다.
+- ㉮ collision = 충돌, ㉯ sacrifice = 공동해손 희생, ㉱ heavy weather = 황천.
+* deviation = 이로(인명 구조·응급환자는 정당한 이로).

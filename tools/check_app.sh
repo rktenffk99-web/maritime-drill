@@ -65,9 +65,11 @@ python tools/patch_exam_restore_v532.py
 python tools/patch_homework_checkpoint_v533.py
 python tools/patch_homework_rotation_v535.py
 python tools/patch_exam_start_guard_v535.py
+python tools/patch_navi23_content_v537.py
 # Older generators add script URLs; stamp the release only after all integration.
 python tools/patch_mock_answer_access.py
 python tools/patch_english_word_study.py
+node tools/test_navi23_content_v537.js
 node tools/test_exam_sessions_v530.js
 node tools/test_exam_cleanup_v531.js
 node tools/test_exam_deletion_v536.js

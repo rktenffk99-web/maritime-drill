@@ -128,7 +128,10 @@ async function test(name,fn){await fn();passed++;console.log('PASS '+name)}
   await test('different source questions sharing one exam number are excluded before saved-answer identity is used',()=>{
     const {s,data}=harness(),m=html.match(/<script[^>]+id=["']md-bundle-past-2023-navi2-1_js["'][^>]*>([\s\S]*?)<\/script>/);
     assert.ok(m);vm.runInContext(zlib.gunzipSync(Buffer.from(m[1].trim(),'base64')).toString('utf8'),s);
-    const exam=s.MD_PAST['2023-navi2-1'],ambiguous=exam.questions.filter(q=>q['과목']==='법규'&&q['번호']===4);
+    const exam=s.MD_PAST['2023-navi2-1'];
+    // v5.37에서 실제 데이터의 번호 중복(법규 4·20번)을 바로잡았으므로 같은 상황을 재현해 가드를 계속 검증한다.
+    if(exam.questions.filter(q=>q['과목']==='법규'&&q['번호']===4).length<2)exam.questions.push({...exam.questions.find(q=>q['과목']==='법규'&&q['번호']===20),'번호':4});
+    const ambiguous=exam.questions.filter(q=>q['과목']==='법규'&&q['번호']===4);
     assert.equal(ambiguous.length,2);assert.notEqual(ambiguous[0]['문제'],ambiguous[1]['문제']);
     s.getPastExam=()=>exam;const before=JSON.stringify([...data]);
     for(const q of ambiguous){
@@ -167,6 +170,8 @@ async function test(name,fn){await fn();passed++;console.log('PASS '+name)}
   });
   await test('source filtering precedes every ordinary mock quota across forced draws and random seeds',async()=>{
     const {s}=harness();loadRealBundles(s);
+    // v5.37에서 실제 번호 중복을 고쳤으므로 2023년 1회 법규 4번 중복을 재현해 출제 전 필터를 계속 검증한다.
+    {const exam=s.MD_PAST['2023-navi2-1'];if(exam.questions.filter(q=>q['과목']==='법규'&&q['번호']===4).length<2)exam.questions.push({...exam.questions.find(q=>q['과목']==='법규'&&q['번호']===20),'번호':4});}
     const all=['항해','운용','법규','영어','상선전문'];
     s.Math=Object.create(Math);s.baseFromShort=short=>short.replace(/e$/,'');
     s.variantMatches=(short,variant)=>variant==='all'||(variant==='상선'&&!short.endsWith('e'));

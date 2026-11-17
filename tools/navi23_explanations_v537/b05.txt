@@ -1,0 +1,182 @@
+@@ 2020|navi2|4|영어|1
+> 철자가 틀린 단어를 고르는 문제.
+갑판장은 boatswain [보순]으로 쓴다. boatsuain은 철자가 틀렸다.
+- ㉮ derelict [데럴릭트] = 유기선(버려진 선박), 표류 물체.
+- ㉯ astronomical [애스트러나미컬] = 천문의 (astronomical tide = 천문조).
+- ㉱ trimmed [트림드] = (선박의) 트림을 맞춘, 화물을 고르게 한.
+* boatswain(Bosun) = 갑판장. coxswain(정장)과 함께 철자 주의.
+
+@@ 2020|navi2|4|영어|2
+> 서로 관계가 없는 짝을 고르는 문제.
+Way point(변침점)는 항로 계획에서 쓰는 지점이고, Hydrographic survey(수로 측량)와 직접 관계가 없다.
+- ㉮ Air draught(수면 위 높이)는 높이(Height)이다.
+- ㉯ Gross tonnage(총톤수)는 선박의 용적(Volume)을 나타낸다.
+- ㉰ UKC(Under keel clearance, 선저 여유수심)는 수심(Depth of water)과 관계된다.
+* Air draught = 수면에서 최고점까지 높이, UKC = 선저 아래 여유수심.
+
+@@ 2020|navi2|4|영어|3
+> SMCP상 잘못된 표현을 고르는 문제.
+SMCP는 뜻이 애매해질 수 있는 may 같은 조동사를 피하고, 허가·지시는 명확하게 표현하도록 한다(예: "Anchor in position …", "You are allowed to anchor"의 취지). 그래서 "You may anchor."가 부적절한 표현으로 출제되었다.
+- ㉯ The head line is broken. = 선수줄이 끊어졌다.
+- ㉰ The cable is up and down. = 앵커 체인이 수직이다(앵커가 바로 아래에 있음).
+- ㉱ Pick up the slack on stern line. = 선미줄의 늘어진 부분을 감아라.
+* up and down = 체인이 수직, slack = 늘어진 부분.
+
+@@ 2020|navi2|4|영어|4
+> "갑판적 목재 화물을 갑판에 올라오는 파도로부터 보호하라."
+'~으로부터 보호하다'는 protect A against(from) B를 쓴다. shipping seas는 갑판 위로 덮치는 파도이다.
+- ㉮ at, ㉯ by, ㉰ to는 protect와 함께 '~로부터'의 뜻을 만들지 못한다.
+* protect against = ~로부터 보호. ship seas(green water) = 파도가 갑판에 올라오다.
+
+@@ 2020|navi2|4|영어|5
+> "1번 수로는 준설작업으로 일시적으로 폐쇄되었다."
+일시적으로 중지·폐쇄된 상태는 suspended로 표현한다.
+- ㉮ prohibited = 금지된(영구적·법적 금지의 느낌).
+- ㉯ resumed = 재개된(반대 뜻), dragging은 준설(dredging)이 아니라 '끌기'이다.
+- ㉰ restricted = 제한된(통항은 가능하나 제한).
+* dredging = 준설, suspended = 일시 중지.
+
+@@ 2020|navi2|4|영어|6
+> SOLAS의 '도선사 승하선 설비'에 포함되지 않는 것을 고르는 문제.
+SOLAS 제V장 제23규칙의 도선사 승하선 설비에는 도선사 사다리(Pilot ladder), 현문 사다리(Accommodation ladder), 기계식 도선사 승강기(Mechanical pilot hoist), 맨로프(Man rope), 구명부환, 조명 등이 포함된다. 비상구조정(Emergency rescue boat)은 구명설비이며 도선사 승하선 설비가 아니다.
+- ㉮·㉰·㉱ 도선사 승하선 설비에 포함된다.
+* Pilot transfer arrangements = pilot ladder, accommodation ladder(9m 넘는 경우 병용), man ropes, lifebuoy, lighting.
+
+@@ 2020|navi2|4|영어|7
+> SMCP상 잘못된 표현을 고르는 문제.
+침로 변경은 "I am altering course to 150 degrees." 또는 "I have altered course to 150 degrees."처럼 전치사 to로 새 침로를 나타낸다. for를 쓴 ㉰가 틀렸다.
+- ㉮ 레이더 접촉을 잃었다.
+- ㉯ 항해 지원이 필요하다.
+- ㉱ 동쪽 항로에 들어가기 전에 통항 허가가 필요하다.
+* alter course to + 침로(도).
+
+@@ 2020|navi2|4|영어|8
+> 올바른 문답 짝을 고르는 문제.
+"제 앞에 어구가 있습니까?" "아니요, 귀선 앞에는 어구가 없습니다." ㉱가 질문에 맞는 답이다.
+- ㉮ No로 답했으면 "you need not take tugs"여야 한다.
+- ㉯ No로 답했으면 "I cannot stop spillage"여야 한다.
+- ㉰ even keel은 트림(앞뒤 흘수 차)이 없는 상태이므로, 횡경사(list)가 없다는 대답은 맞지 않는다.
+* even keel = 선수·선미 흘수가 같음, list = 횡경사.
+
+@@ 2020|navi2|4|영어|9
+> "모든 국에. 여기는 M/V Fortune. 미확인 물체와 충돌하여 예인선 지원이 필요합니다. 위치는 Barwater 부두에서 160도, 4마일."
+즉각적인 생명 위협은 없지만 선박 안전에 관한 긴급 상황이므로 긴급 신호 Pan-Pan을 쓴다.
+- ㉮ Mayday는 중대하고 급박한 위험(조난)일 때 쓴다.
+- ㉯ Securite는 항행 안전 정보(경고)일 때 쓴다.
+- ㉱ Mayday relay는 다른 선박의 조난을 중계할 때 쓴다.
+* 조난 Mayday > 긴급 Pan-Pan > 안전 Securite.
+
+@@ 2020|navi2|4|영어|10
+> "홍도 부근의 모든 선박은 엄중히 경계하고 현장 조정관에게 보고하라."
+SMCP는 '~부근에'를 in the vicinity of로 표현한다.
+- ㉮ around는 일반 영어 표현이다.
+- ㉰ in position은 특정 위치를 나타낼 때 쓴다.
+- ㉱ from position은 의미가 맞지 않는다.
+* in (the) vicinity of = ~ 부근에. OSC = 현장 조정관.
+
+@@ 2020|navi2|4|영어|11
+> "관성항법의 기본 원리는 선박에 작용하는 가속도를 측정하고, 그 가속도를 알려진 방향으로 두 번 ( )하여 출발점으로부터의 변위를 얻는 것이다."
+가속도를 한 번 적분하면 속도, 두 번 적분하면 거리(변위)가 된다. 그래서 integration(적분)이다.
+- ㉮ differentiation = 미분(반대 연산).
+- ㉰ accumulation = 축적, ㉱ dissemination = 보급·전파.
+* 가속도 → (적분) 속도 → (적분) 변위.
+
+@@ 2020|navi2|4|영어|12
+> "자이로컴퍼스는 네 가지 자연 현상, 즉 자이로 관성, ( ), 지구 자전, 중력에 의존한다."
+자이로컴퍼스의 지북 원리는 방향 보존성(관성), 세차운동(precession), 지구 자전, 중력이다.
+- ㉮ rotor(회전체), ㉯ ellipse(타원), ㉰ gyrosphere(자이로구)는 장치나 도형으로 자연 현상이 아니다.
+* gyroscopic inertia + precession + Earth's rotation + gravity.
+
+@@ 2020|navi2|4|영어|13
+> "항성 관측에 Pub. No. 249 제1권을 쓸 때 주된 한계는?"
+Pub. 249 Vol. I(Selected Stars)은 선별된 항성 7개만 수록하므로 그 별들로만 관측해야 한다.
+- ㉮ 정확도는 항해용으로 충분하다(1′ 단위).
+- ㉯ 관측 시각을 일정한 간격으로 맞출 필요는 없다.
+- ㉱ 1등성만 수록한 것이 아니다.
+* Pub. 249 Vol. I = 선별 항성(Selected stars), Vol. II·III = 위도별 적위 0~29°.
+
+@@ 2020|navi2|4|영어|14
+> "지리적 광달거리는 ( ) 등화를 볼 수 있는 최대 거리이다."
+지리적 광달거리(Geographic range)는 시정이 완벽하다고 가정하고 지구의 곡률(등고·안고)만으로 제한되는 거리이다.
+- ㉮ 현재 시정 조건은 명목·광학적 광달거리 판단에 쓴다.
+- ㉰ 광력으로 제한되는 것은 광학적(명목) 광달거리이다.
+- ㉱ 배경 조명 간섭은 정의 요소가 아니다.
+* Geographic range = 곡률 제한, Luminous range = 광력·시정 제한.
+
+@@ 2020|navi2|4|영어|15
+> "선박의 전진 저항은 크게 세 가지, 즉 ( ), 조파, 와류(박리) 저항이다."
+선체 저항은 마찰저항(friction), 조파저항(wave-making), 와류저항(eddy-making)이다. 여기에 공기저항을 더하기도 한다.
+- ㉯ operation(운항), ㉰ motion(운동), ㉱ energy(에너지)는 저항의 종류가 아니다.
+* 저속선 = 마찰저항이 대부분, 고속선 = 조파저항 비중 증가.
+
+@@ 2020|navi2|4|영어|16
+> "모든 와이어로프는 부식을 막기 위해 ( ) 해야 한다."
+와이어로프는 그리스를 바르고 윤활하여(greased and lubricated) 부식과 내부 마모를 막는다.
+- ㉮ parceled and served는 로프에 천을 감고 실로 감싸는 보호 작업으로, 주로 이음부 등에 한다.
+- ㉯ 정리하고 자르기, ㉱ 폐기·깡깡이 작업은 부식 방지 방법이 아니다.
+* wire rope = 정기적 그리스 도포.
+
+@@ 2020|navi2|4|영어|17
+> "선박 또는 선복을 빌리기 위해 선주와 용선자 사이 계약의 모든 조건을 담고 양측(또는 대리인)이 서명한 문서는?"
+용선계약서(Charter party, C/P)이다.
+- ㉮ Bill of lading(선하증권)은 운송인이 화물 수령을 증명하는 유가증권이다.
+- ㉯ Fixture memo(Fixture note)는 성약 내용을 요약한 메모이다.
+- ㉱ Space charter는 선복 일부를 빌리는 용선 형태이다.
+* Charter party = 용선계약서, B/L = 선하증권.
+
+@@ 2020|navi2|4|영어|18
+> "안전관리증서(SMC)는 ( ) 또는 ( )가 인정한 기관이 선박에 발급하며, 회사와 선박이 승인된 SMS에 따라 운영되는지 검증해야 한다."
+SMC는 주관청(Administration) 또는 주관청이 인정한 기관(RO)이 발급한다(ISM Code 13.7).
+- ㉮ author, ㉱ auditor는 증서 발급 주체가 아니다.
+- ㉯ 선급(classification society)은 인정기관(RO)이 될 수 있지만, 빈칸 두 곳에 공통으로 들어갈 말은 administration이다.
+* DOC = 회사, SMC = 선박. 발급 = Administration 또는 RO.
+
+@@ 2020|navi2|4|영어|19
+> COLREG 제5조(경계): "모든 선박은 시각과 청각, 그리고 당시의 ( )에 적합한 모든 수단으로 항상 적절한 경계를 유지하여 상황과 충돌 위험을 충분히 파악해야 한다."
+조문은 "in the prevailing circumstances and conditions"이다.
+- ㉮·㉯·㉰ 조문 표현과 다르다.
+* Rule 5 Look-out: sight and hearing + all available means.
+
+@@ 2020|navi2|4|영어|20
+> "해상 안전을 향상시키기 위한 조치를 채택하려고 많은 국제회의가 열렸다."
+enhance = 높이다, 향상시키다 → improve와 뜻이 같다.
+- ㉯ minimize = 최소화하다, ㉰ impair = 손상시키다(반대 뜻), ㉱ approve = 승인하다.
+* enhance ≈ improve, impair ↔ enhance.
+
+@@ 2020|navi2|4|영어|21
+> "운송계약에서 화물이 목적지에 인도되기 전, 선주와 송화인이 합의한 시점에 지급하는 운임은?"
+선불운임(Freight in advance, Prepaid freight)이다.
+- ㉮ additional freight = 할증 운임.
+- ㉰ collect freight = 착지불(후불) 운임.
+- ㉱ ad valorem freight = 종가 운임(화물 가격 기준).
+* 선불 = freight prepaid / in advance, 후불 = freight collect.
+
+@@ 2020|navi2|4|영어|22
+> "선박·운임·적하 어떤 보험이든 선박이 그 항해에 감항성이 있다는 묵시적 ( )이 있다."
+영국 해상보험법(MIA 1906) 제39조의 감항성에 대한 묵시적 담보(implied warranty of seaworthiness)이다.
+- ㉯ contract(계약), ㉰ memorandum(메모·면책 약관), ㉱ condition(조건)은 조문 용어가 아니다.
+* 묵시적 담보 = 감항성, 적법성.
+
+@@ 2020|navi2|4|영어|23
+> "용선자가 화물의 적재·양하 비용을 부담하는 용선 형태는?"
+FIO(Free In and Out)는 선적·양하 비용이 선주에게 부담되지 않는(free) 조건, 즉 용선자(화주)가 부담하는 조건이다.
+- ㉯ Lump-sum charter는 선복 전체에 대해 총액으로 운임을 정하는 형태이다.
+- ㉰ Gross charter는 선주가 하역비 등 대부분의 비용을 부담하는 형태이다.
+- ㉱ Net form은 선주가 일부 비용만 부담하는 형태로, 하역비 부담 조건을 직접 가리키는 말이 아니다.
+* FIO = 하역비 선주 면제, Berth term(Liner term) = 선주 부담.
+
+@@ 2020|navi2|4|영어|24
+> "10월 25일 이전 선적(Shipment not later than October 25)"의 의미는?
+not later than = 늦어도 ~까지 → 10월 25일 당일 또는 그 이전에 선적해야 한다.
+- ㉮ 이후 선적이 아니다.
+- ㉯ 도착 시점을 말하는 것이 아니다.
+- ㉰ 그날에만 선적해야 하는 것이 아니다.
+* not later than = on or before.
+
+@@ 2020|navi2|4|영어|25
+> "북위 42°00′, 서경 167°14′에서 소화 및 퇴선 훈련 실시. 1515 화재 경보, 호스 6개 전개·최대 압력 방수. 비상 송신기·비상 발전기·수밀문 작동. 1520 퇴선 경보, 승무원·승객 소집 및 교육, 구명정 강하·인양, 수동 추진장치 전후진 작동. 1532 훈련 종료, 모든 장비 이상 없음."
+소화 훈련과 퇴선 훈련을 함께 기록한 항해일지이므로 '선내 훈련(Drill on board)'이 가장 알맞다.
+- ㉮ Fire-fighting은 일부(소화 훈련)에 불과하다.
+- ㉯ Abandon ship도 일부(퇴선 훈련)에 불과하다.
+- ㉱ 소화 호스 점검만 한 기록이 아니다.
+* Held fire & boat drill = 소화·퇴선 훈련 실시.
