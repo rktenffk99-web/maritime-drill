@@ -132,4 +132,15 @@ test('current-scale all-correct model warns instead of claiming an infeasible de
   assert.ok(warned,'capacity mismatch is explicitly surfaced');assert.ok(firstPasses.size>0);assert.ok(firstPasses.size<1326,'preserving review capacity cannot guarantee every remaining first pass');assert.ok(recalls.size>100,'later recall is not starved by the deadline target');
 });
 
+test('auto mode keeps the imminent grade ahead when it enters the final review window',()=>{
+  const grades=[{id:'navi2',enabled:true,examDate:'2027-01-16'},{id:'navi3',enabled:true,examDate:'2026-10-25'}];
+  const navi2=[...rows(30,0,{seen:true,due:true}),...rows(470,30,{seen:true}),...rows(2500,500)];
+  const navi3=[...rows(20,0,{seen:true,due:true}),...rows(2680,20,{seen:true}),...rows(300,2700)].map(r=>({...r,key:r.key.replace('navi2|','navi3|'),clusterId:r.clusterId.replace('navi2|','navi3|'),gradeId:'navi3'}));
+  const input=config({cap:120,grades,rows:[...navi2,...navi3]}),result=build(input);assertMetrics(input,result);
+  assert.equal(result.coverageByGrade.navi3.finalReview,true);
+  assert.ok(result.quotaTarget.navi3>result.quotaTarget.navi2,'the exam three days away receives the larger share');
+  assert.equal(result.gradeCounts.navi3.review,20,'final-window reviews are still taken first');
+  assert.ok(result.gradeCounts.navi3.new>result.gradeCounts.navi3.review,'unseen questions of the imminent exam are not starved');
+});
+
 console.log(`scheduler v5.22 behavior checks: PASS (${passed} cases)`);
