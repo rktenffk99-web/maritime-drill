@@ -88,9 +88,11 @@ try:
             for field in page.locator('.past-allyears-subj-check').all():
                 field.set_checked(field.input_value() in SELECTED)
             if grade == 'navi2':
-                assert page.evaluate("getPastExam('navi2',2023,1).questions.filter(q=>q['과목']==='법규'&&q['번호']===4).length===2")
-                # Force the known ambiguous source tuple into the draw if it was
-                # incorrectly allowed into the candidate pool before the quota.
+                # v5.37 repaired the duplicated 법규 4번 (the second copy is really 20번),
+                # so the source tuple is unique now and both questions can be drawn.
+                assert page.evaluate("(()=>{const qs=getPastExam('navi2',2023,1).questions.filter(q=>q['과목']==='법규');return qs.filter(q=>q['번호']===4).length===1&&qs.filter(q=>q['번호']===20).length===1})()")
+                # Put that formerly ambiguous tuple first in the draw: it must still
+                # yield exactly 25 questions per subject in the same order.
                 page.evaluate("""()=>{
                   window.__auditOriginalShuffle=shuffle;
                   const bad=q=>q._short==='navi2'&&q._year===2023&&q['회차']===1&&q['과목']==='법규'&&q['번호']===4;
@@ -98,7 +100,7 @@ try:
                 }""")
                 try:
                     page.evaluate("startPastAllYearsSession('mock')")
-                    check_paper(page, SELECTED, 'navi2: all-years mock filters ambiguous source tuples before drawing 25 per subject')
+                    check_paper(page, SELECTED, 'navi2: all-years mock keeps 25 per subject with the repaired 2023 법규 tuple drawn first')
                 finally:
                     page.evaluate('shuffle=window.__auditOriginalShuffle;delete window.__auditOriginalShuffle')
             page.evaluate("startPastAllYearsSession('mock')")
