@@ -78,8 +78,26 @@
   function contentIssue(q){
     const text=String(q&&(q['문제']||q.question)||'');
     if(/\bunderlined\b|밑줄\s*(?:친|부분)/i.test(text)&&!q._underlineText&&!/\[(?:밑줄|대상)\s*:/.test(text))return '밑줄 위치 확인 필요';
-    if(/(?:다음|아래)의?\s*그림|그림과\s*같|그림에서|그림의\s*(?:등화|선박|항로표지)|\[\s*그림\s*문제\s*\]/.test(text)&&!q._figureText&&!/\[그림\s*:[^\]]+\]/.test(text))return '그림 원문 확인 필요';
+    if(figureMissing(text)&&!q._figureText&&!q._figureImage&&!/\[그림\s*:[^\]]+\]/.test(text))return '그림 원문 확인 필요';
     return '';
+  }
+  // figure-missing-v540: PDF text extraction dropped pictures (chart symbols,
+  // circuits, graphs, shapes). Such questions cannot be answered from text alone.
+  const FIGURE_PATTERNS=[
+    /(?:다음|아래)의?\s*그림|그림과\s*같|그림에서|그림의\s*(?:등화|선박|항로표지)|\[\s*그림\s*문제\s*\]/,
+    // "<보기>의 해도도식의 의미는? <보기>" — the <보기> box itself was a picture.
+    /[<〈＜]\s*보\s*기\s*[>〉＞]\s*$/,
+    // "다음 회로에서…", "다음과 같은 블록선도에서…", "다음 그래프의…"
+    /(?:다음|아래)(?![^?.]{0,25}?보\s*기)[^?.]{0,25}?(?:회로(?!시험기)(?!\s*중)|파형|그래프|블록\s*선도|[가-힣A-Za-z-]*선도(?:에서|의\s*명칭|\s*중\s*[A-Za-z-]+\s*선도)|결선도|도형)/,
+    /(?:다음|아래)(?:과|와)\s*같은\s*(?:기호|형상물?|표지|도식|해도도식|진리표|오실로스코프|계측기|측정기|화면|영상)/,
+    // "다음 해도 도식의 의미는?", "해도도식 중  의 의미는?" — the symbol itself is missing.
+    /(?:다음|아래)의?\s*(?:해도\s*)?도\s*식(?:의|이|에서|은|는)\s*(?:의미|뜻|나타내|명칭)/,
+    /도식\s*(?:중|에서)?\s+(?:의|이|가)\s+(?:의미|뜻|나타내)/,
+    /(?:다음|아래)(?:과|와)\s*같이\s*[^?.]{0,20}(?:극점|회로)/
+  ];
+  function figureMissing(text){
+    const value=String(text||'').trim();
+    return FIGURE_PATTERNS.some(re=>re.test(value));
   }
   function optionOrder(key,seed,index){
     let n=2166136261;for(const c of String(key)+'|'+seed+'|'+index)n=Math.imul(n^c.charCodeAt(0),16777619)>>>0;
@@ -90,5 +108,5 @@
     if(!Array.isArray(order)||order.length!==4)return html;
     const labels='㉮㉯㉰㉱';return String(html).replace(/[㉮㉯㉰㉱㉴㉵]/g,c=>labels[order.indexOf(c==='㉴'?2:c==='㉵'?3:labels.indexOf(c))]);
   }
-  global.__mdLearningIntegrity={initializeCounters,appendOutcome,recount,mergeCounters,getDeviceId:deviceId,contentIssue,optionOrder,remapExplanation};
+  global.__mdLearningIntegrity={initializeCounters,appendOutcome,recount,mergeCounters,getDeviceId:deviceId,contentIssue,figureMissing,optionOrder,remapExplanation};
 })(window);

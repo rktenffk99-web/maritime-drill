@@ -56,7 +56,7 @@ def patch_html(text: str) -> str:
         parts.append('v=' + VERSION)
         if path.removeprefix('./') == 'exam-sessions.js':
             parts = [part for part in parts if not part.startswith('rev=')]
-            parts.append('rev=2')
+            parts.append('rev=3')
         updated = path + '?' + '&'.join(parts) + (fragment_sep + fragment if fragment_sep else '')
         return match.group('prefix') + match.group('quote') + updated + match.group('quote')
 

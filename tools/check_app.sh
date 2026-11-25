@@ -72,6 +72,7 @@ python tools/patch_pass_plan_review_policy_v539.py
 python tools/patch_mock_answer_access.py
 python tools/patch_english_word_study.py
 node tools/test_navi23_content_v537.js
+node tools/test_figure_missing_v540.js
 node tools/test_exam_sessions_v530.js
 node tools/test_exam_cleanup_v531.js
 node tools/test_exam_deletion_v536.js

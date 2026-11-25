@@ -92,7 +92,9 @@ for(const id of ['2025-navi2-1','2025-navi3-1']){
   const exam=sandbox.window.MD_PAST[id];
   assert.equal(exam.questions.length,125,id+' original exam must have 125 questions');
   const blocked=exam.questions.filter(q=>sandbox.window.__mdLearningIntegrity.contentIssue(q));
-  assert.equal(blocked.length,0,id+' should retain all 125 answerable questions');
+  // v5.40: 2025 3급 1회 항해 9번은 해도도식 그림이 원문에서 빠져 있어 제외한다.
+  const expected=id==='2025-navi3-1'?['항해|9']:[];
+  assert.deepEqual(JSON.parse(JSON.stringify(blocked.map(q=>q['과목']+'|'+q['번호']))),expected,id+' should retain every answerable question');
 }
 const n2=sandbox.window.MD_PAST['2025-navi2-1'].questions;
 const n3=sandbox.window.MD_PAST['2025-navi3-1'].questions;

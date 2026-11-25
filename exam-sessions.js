@@ -232,7 +232,10 @@
           maps.set(key,map);
         }
         const q=maps.get(key).get(r.id);
-        if(!q||!matchesSavedContent(q,r.content)||!mdQuestionUsable(q))throw new Error('저장 당시의 문항·선택지·정답과 현재 자료가 다릅니다. 다른 시험으로 대체하지 않았습니다.');
+        // figure-missing-v540: a question that is unchanged but is now known to be
+        // missing its picture is restored as saved; mdGuardPastQueue then drops it
+        // (with a notice) instead of making the whole saved paper unresumable.
+        if(!q||!matchesSavedContent(q,r.content))throw new Error('저장 당시의 문항·선택지·정답과 현재 자료가 다릅니다. 다른 시험으로 대체하지 않았습니다.');
         return {...q,_source:r.source,_n3aGroupId:r.group,_predictiveMock:r.predictive,_predictiveReview:r.predictiveReview,_planKey:r.planKey,_planGrade:r.planGrade,_predictiveConcept:r.predictiveConcept,_balancedMock:meta.balanced,_unifiedMock:meta.unified,_targetedPractice:meta.targeted,_evaluationMock:meta.evaluation};
       });
       if(state.answers.some((a,i)=>a!==null&&a>=restored[i]['선택지'].length))throw new Error('저장된 답안을 확인할 수 없습니다.');
@@ -260,6 +263,21 @@
     }
     finally{loading=false;}
   };
+  // figure-missing-v540: when the shared guard drops unusable questions from
+  // an open saved paper, close the old answer sheet first. The remaining
+  // questions and answers continue as one new sheet instead of two resumable copies.
+  if(typeof global.mdGuardPastQueue==='function'&&!global.mdGuardPastQueue.__mdExamSessionsWrapped){
+    const originalGuard=global.mdGuardPastQueue;
+    const wrappedGuard=function(){
+      const usable=typeof global.mdQuestionUsable==='function'?global.mdQuestionUsable:()=>true;
+      if(active&&active.queue===pastQueue&&Array.isArray(pastQueue)&&pastQueue.some(q=>!usable(q))){
+        try{clearPastProgress();}catch(error){console.warn('[exam-sessions] retire changed paper',error);}
+      }
+      return originalGuard.apply(this,arguments);
+    };
+    wrappedGuard.__mdExamSessionsWrapped=true;
+    global.mdGuardPastQueue=wrappedGuard;
+  }
   global.__mdExamSessions={PREFIX,valid,merge,compact,prune,dominates,list,content,restoreItems,
     liveItems(){const next=checkpoint();return {[PREFIX+next.record.meta.id]:JSON.stringify(next.record)};}};
   // Reconcile a competing tab's synchronous localStorage write without
