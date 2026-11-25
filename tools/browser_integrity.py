@@ -119,11 +119,11 @@ try:
         assert page.evaluate("currentMode")=='past'
         assert page.locator('#app .md-question-figure img').count()==1
         report['cases'].append('restored 2024 grade-3 figure question renders its original picture')
-        # 원문 그림을 아직 확보하지 못한 2025년 3급 1회 항해 9번은 계속 막힌다.
-        page.evaluate("""()=>{const bad=getPastExam('navi3',2025,1).questions.find(q=>q['과목']==='항해'&&q['번호']===9);pastQueue=[{...bad,_year:2025,_short:'navi3',_session:1}];pastAnswers=[null];pastIdx=0;pastMode='mock';currentMode='past';renderPastCard()}""")
+        # 밑줄 위치가 원문에서 빠진 2024년 3급 2회 영어 2번은 계속 막힌다.
+        page.evaluate("""()=>{const bad=getPastExam('navi3',2024,2).questions.find(q=>q['과목']==='영어'&&q['번호']===2);pastQueue=[{...bad,_year:2024,_short:'navi3',_session:2}];pastAnswers=[null];pastIdx=0;pastMode='mock';currentMode='past';renderPastCard()}""")
         assert page.evaluate("currentMode")=='past-unavailable'
         assert '학습 진도에는 반영하지 않습니다' in page.locator('#app').inner_text()
-        report['cases'].append('actual 2025 grade-3 missing-figure question is blocked without grading')
+        report['cases'].append('actual 2024 grade-3 missing-underline question is blocked without grading')
         assert not report['page_errors'],report['page_errors']
         report['status']='PASS';browser.close()
 except Exception as error:
