@@ -96,6 +96,8 @@ mdLoadAuxScript('drive-auth.js');
 
 // Load exact corrections for reviewed problem reports.
 mdLoadAuxScript('reported-content-fixes.js');
+mdLoadAuxScript('figure-images-data.js');
+mdLoadAuxScript('figure-images.js');
 
 // Use one classifier for analytics and homework selection.
 mdLoadAuxScript('weak-topic-classifier.js');
