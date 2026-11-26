@@ -1,0 +1,288 @@
+@@ 2023|navi3|2|영어|15
+order = 위해 — in order to는 '~하기 위해'
+avoid = 피하다
+immediate = 임박한
+danger = 위험
+reduce = 줄이다
+reverse = 후진시키다 — reverse the engine은 '기관을 후진으로 걸다'
+engine = 기관
+call = 부르다(보고하다)
+
+@@ 2023|navi3|2|영어|17
+drags = 끌다
+body = (물의) 덩어리
+wake = 반류
+ratio = 비율
+fraction = 비율 — wake fraction은 '반류 계수'
+advance = 전진 — speed of advance는 '전진 속도'
+propeller = 프로펠러
+
+@@ 2023|navi3|2|영어|20
+international = 국제의 — international waters는 '공해'
+sight = 보다
+round = 사방 — all-round light는 '전주등'
+bow = 선수
+stern = 선미
+vertical = 수직의
+aground = 좌초한
+dredging = 준설하는
+
+@@ 2023|navi3|2|영어|22
+consignee = 수하인
+delivered = 인도되는
+signed = 서명한
+contract = 계약
+owner = 소유자
+
+@@ 2023|navi3|2|영어|23
+deadweight = 재화중량
+carrying = 적재 — carrying capacity는 '적재 능력'
+capacity = 능력
+determined = 정해지는
+loaded = 만재 — loaded displacement는 '만재 배수량'
+displacement = 배수량 — 이 문장에서는 '변위'가 아님
+light = 경하 — light displacement는 '경하 배수량'
+gross = 총 — gross tonnage는 '총톤수'
+
+@@ 2023|navi3|2|영어|25
+subject = 주제
+contractor = 수리 업체
+mechanics = 정비공
+force = 인원 — ship's force는 '본선 선원'
+trials = 시운전 — sea trials는 '해상 시운전'
+readings = 측정값
+dock = 도크 — dock indent는 '수리 신청서'
+indent = 주문(수리 신청)
+
+@@ 2023|navi3|3|영어|1
+message = 통신문
+markers = 표지어
+vts = 해상교통관제
+running = 향하는 — running into danger는 '위험으로 향하고 있다'
+submerged = 수중의
+wreck = 침선
+alter = 바꾸다
+instruction = 지시(표지어)
+
+@@ 2023|navi3|3|영어|2
+noticed = 알아챘다
+aground = 좌초한
+tugs = 예인선
+pull = 끌다 — pull her off는 '끌어내다'
+engaged = 종사하는
+refloat = 이초 — refloat operation은 '이초 작업'
+seismic = 지진의 — seismic survey는 '탄성파 탐사'
+hydrographic = 수로의
+
+@@ 2023|navi3|3|영어|3
+underlined = 밑줄 친
+required = 요구되는
+comply = 따르다
+traffic = 교통 — traffic regulations는 '통항 규칙'
+regulations = 규칙
+fairway = 항로 — fairway speed는 '항로 제한 속력'
+knots = 노트
+
+@@ 2023|navi3|3|영어|4
+drill = 훈련
+held = 실시되는
+familiarize = 익숙하게 하다
+assembly = 집합 — assembly station은 '집합 장소'
+station = 장소
+life = 생명 — life-saving equipment는 '구명 설비'
+procedures = 절차
+
+@@ 2023|navi3|3|영어|8
+direction = 방향
+approaching = 접근하는
+from = ~로부터 — From what direction은 '어느 방향에서'
+
+@@ 2023|navi3|3|영어|9
+require = 필요로 하다
+fire = 화재
+fighting = 진압 — fire fighting assistance는 '소화 지원'
+assistance = 지원
+mayday = 조난 신호
+pan = 긴급 신호(PAN PAN)
+securite = 안전 신호
+
+@@ 2023|navi3|3|영어|13
+mtc = 매 cm 트림 모멘트
+moment = 모멘트
+change = 바꾸다
+trim = 트림
+draft = 흘수
+ton = 톤
+
+@@ 2023|navi3|3|영어|14
+land = 육지
+radar = 레이더
+detected = 탐지했다 — 레이더로 찾았을 때 쓰는 말
+sighted = 눈으로 보았다
+off = 떨어진 — 30' off는 '30해리 떨어진'
+observed = 관측했다
+
+@@ 2023|navi3|3|영어|16
+discontinuity = 불연속
+surface = 표면
+horizontal = 수평의
+aloft = 상공의
+advancing = 전진하는
+cold = 찬 — cold air mass는 '찬 기단'
+undermining = 밑으로 파고드는
+displacing = 밀어내는
+front = 전선
+
+@@ 2023|navi3|3|영어|18
+routeing = 항로지정
+specially = 특별히
+examined = 조사된
+dangers = 위험
+advised = 권고된
+navigate = 항행하다
+recommended = 권고 — recommended route는 '권고 항로'
+route = 항로
+
+@@ 2023|navi3|3|영어|20
+merchant = 상선 — merchant shipping은 '상선 해운'
+considered = 보면
+standpoint = 관점
+service = 서비스(운항 형태)
+categories = 범주
+liner = 정기선 — liner service는 '정기선 운항'
+tramper = 부정기선 — tramper shipping은 '부정기선 해운'
+multimodal = 복합 — multimodal transport는 '복합운송'
+
+@@ 2023|navi3|3|영어|21
+underlined = 밑줄 친
+keep = 유지하다 — Keep clear는 '떨어져 있어라'
+clear = 떨어져
+jettisoning = 투하하는(일부러 바다에 버리는)
+dangerous = 위험한
+deliberately = 일부러
+leaking = 새는
+accidentally = 우연히
+
+@@ 2023|navi3|3|영어|22
+doors = 문
+bows = 선수
+sterns = 선미
+lorries = 화물차
+driven = 운전되는 — driven on and off는 '차가 직접 타고 내리는'
+ro = 롤 — RO-RO ship은 '차량이 굴러 싣고 내리는 선박'
+lo = 리프트 — LO-LO ship은 '크레인으로 들어 싣는 선박'
+vlccs = 초대형 유조선
+
+@@ 2023|navi3|3|영어|23
+charter = 용선
+charterer = 용선자
+loading = 선적
+discharging = 양하
+responsible = 책임이 있는
+net = 순(純) — net terms는 '순 조건(하역비 선주 면제)'
+fio = 선적·양하비 선주 면제 조건
+berth = 선석 — berth terms는 '선주 하역비 부담 조건'
+
+@@ 2023|navi3|3|영어|24
+fog = 안개
+conditions = 상태
+prevailed = 계속되었다
+s = 기관 — S.B.E.는 '기관 대기(Stand By Engine)'
+visibility = 시정
+reduced = 줄어든
+precautions = 예방 조치
+observed = 지켜졌다 — All precautions observed는 '모든 예방 조치를 취했다'
+
+@@ 2023|navi3|4|영어|1
+radio = 무선
+transmitter = 송신기
+power = 출력
+necessary = 필요한
+satisfactory = 만족스러운
+communication = 통신
+lowest = 가장 낮은
+
+@@ 2023|navi3|4|영어|4
+wrong = 틀린
+explanation = 설명
+break = 끼어들기(통신 중 끼어들 때 쓰는 말) — '파손'이 아님
+again = 다시 — Say again은 '다시 말해 달라'
+over = 송신 끝
+read = (감도를) 듣다
+
+@@ 2023|navi3|4|영어|6
+sentence = 문장
+steerageway = 타효 속력(타가 듣는 속력)
+running = 달리는
+turns = 회두하다
+backward = 뒤로
+answer = 반응하다 — does not answer the wheel은 '타가 듣지 않는다'
+wheel = 타
+
+@@ 2023|navi3|4|영어|7
+concern = 우려
+helmsman = 조타수
+inattentive = 부주의한
+terminology = 용어
+reminder = 일깨우는 말
+mind = 주의하다
+helm = 조타
+heading = 선수방위
+
+@@ 2023|navi3|4|영어|11
+current = 해류
+barometric = 기압의
+ice = 얼음
+sightings = 목격 정보
+recommended = 권고된
+routes = 항로
+powered = 동력의 — high powered vessel은 '고출력 선박'
+pilot = 수로 — pilot chart는 '파일럿 차트(월별 해양 정보도)'
+
+@@ 2023|navi3|4|영어|12
+imaginary = 가상의
+lie = 위치하다
+satisfy = 만족시키다
+data = 자료
+observations = 관측
+terrestrial = 지상의
+celestial = 천체의
+position = 위치 — position line은 '위치선'
+
+@@ 2023|navi3|4|영어|19
+despite = ~에도 불구하고
+duties = 의무
+obligations = 의무
+pilot = 도선사
+presence = 승선해 있음
+relieve = 면제하다
+charge = 책임 — officer in charge of the watch는 '당직책임사관'
+
+@@ 2023|navi3|4|영어|20
+relations = 관계
+reception = 수용 — reception facilities는 '오염물질 수용시설'(MARPOL 사항)
+facilities = 시설
+navigation = 항해
+radio = 무선 — radio communications는 '무선통신'(SOLAS 사항)
+protection = 방호
+detection = 탐지
+extinction = 소화
+
+@@ 2023|navi3|4|영어|21
+document = 서류
+specifications = 명세
+goods = 화물
+loaded = 적재된
+receipt = 수령증 — mate's receipt는 '본선수령증'
+credit = 신용 — letter of credit은 '신용장'
+indemnity = 보상 — letter of indemnity는 '보상장'
+
+@@ 2023|navi3|4|영어|25
+accept = 받아들이다
+notice = 통지
+berthed = 접안한
+dock = 부두
+respects = 점 — in all respects는 '모든 면에서'
+charter = 용선 — charter party는 '용선계약서'
+readiness = 준비 완료 — notice of readiness는 '하역준비완료통지'
+typical = 전형적인

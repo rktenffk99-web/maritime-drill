@@ -1,0 +1,423 @@
+@@ 2022|navi2|1|영어|1
+uncontrolled = 통제되지 않는
+movement = 움직임
+influence = 영향
+current = 해류
+tide = 조류
+adrift = 표류하는
+capsizing = 전복
+abeam = 정횡에
+
+@@ 2022|navi2|1|영어|3
+officer = 사관(담당자)
+passengers = 승객
+individually = 한 사람씩
+roll = 명부 — roll call은 '인원 점호'
+call = 부름
+sake = 위함 — for your sake는 '당신을 위해'
+
+@@ 2022|navi2|1|영어|5
+underlined = 밑줄 친
+spilling = 새어 나오는
+gas = 가스
+toxic = 독성의
+turn = 돌리다
+out = 벗어나 — out of the wind는 '바람의 영향을 받지 않게(바람에서 벗어나게)'
+wind = 바람
+
+@@ 2022|navi2|1|영어|6
+expression = 표현
+tide = 조위 — tide is falling은 '조위가 내려가고 있다'
+falling = 내려가는
+depth = 수심
+veering = 순전하는(시계 방향으로 바뀌는)
+decreasing = 약해지는
+gears = 어구 — gear는 원래 셀 수 없는 말이라 SMCP에 맞지 않음
+ahead = 앞에
+
+@@ 2022|navi2|1|영어|7
+advise = 권고하다 — Advise you proceed는 '진행할 것을 권고한다'
+proceed = 진행하다
+channel = 수로
+reduced = 줄인 — at a reduced speed는 '감속하여'
+speed = 속력
+
+@@ 2022|navi2|1|영어|8
+incorrect = 틀린
+relative = 상대 — relative head-up은 '상대 선수상방 표시'
+head = 선수 — head-up은 '선수를 화면 위로'
+targets = 물표
+dsc = 디지털 선택 호출
+switched = 켜진 — switched in은 '연결(설정)된'
+echo = 반향 — echo sounder는 '음향측심기'
+sounder = 측심기
+
+@@ 2022|navi2|1|영어|12
+beam = 정횡 — beam wind는 '옆바람'
+wind = 바람
+leeway = 풍압차(바람에 밀려 옆으로 흐르는 것)
+blown = 밀려
+sideways = 옆으로
+headway = 전진 타력
+sternway = 후진 타력
+
+@@ 2022|navi2|1|영어|13
+manually = 수동으로
+entered = 입력된
+updated = 갱신된
+voyage = 항해 — voyage related information은 '항해 관련 정보'
+draught = 흘수
+hazardous = 위험한
+destination = 목적지
+static = 정적인 — static information은 '고정 정보'
+dynamic = 동적인 — dynamic information은 '동적 정보'
+
+@@ 2022|navi2|1|영어|14
+force = 힘
+buoyancy = 부력 — center of buoyancy는 '부심'
+vertically = 수직으로
+upwards = 위로
+whilst = 한편
+weight = 무게
+gravity = 중력 — center of gravity는 '무게중심'
+center = 중심
+
+@@ 2022|navi2|1|영어|15
+distress = 조난 — distress alert는 '조난 경보'
+alert = 경보
+inadvertently = 실수로
+ses = 선박지구국
+rcc = 구조조정본부
+cancelled = 취소된
+priority = 우선 — distress priority message는 '조난 우선 통신(취소 통보)'
+false = 오(誤) — false distress alert는 '오경보'
+
+@@ 2022|navi2|1|영어|16
+definitions = 정의
+length = 길이
+overall = 전체의 — length overall은 '전장'
+registered = 등록된
+perpendiculars = 수선 — length between perpendiculars는 '수선간장'
+
+@@ 2022|navi2|1|영어|18
+restricted = 제한된 — restricted visibility는 '제한된 시계'
+towed = 예인되는
+tow = 예인 선열
+manned = 사람이 있는
+intervals = 간격
+blasts = 기적 소리
+prolonged = 장음
+last = 맨 뒤의 — last vessel of the tow는 '예인 선열의 마지막 선박'
+
+@@ 2022|navi2|1|영어|19
+port = 항만 — port state control은 '항만국 통제'
+inspection = 점검
+initiated = 시작된
+complaint = 진정(불만 제기)
+crew = 선원
+source = 출처(정보 제공자)
+disclosed = 공개된
+
+@@ 2022|navi2|1|영어|22
+competence = 능력
+requirements = 요건
+masters = 선장
+chief = 수석 — chief officer는 '1등항해사'
+ecdis = 전자해도표시장치
+trim = 트림
+stability = 복원성
+stress = 응력(선체에 걸리는 힘)
+managerial = 관리의
+
+@@ 2022|navi2|1|영어|24
+informal = 비격식의
+formal = 격식 있는
+noticed = 알아챘다
+slight = 약간의
+discrepancy = 불일치(차이)
+figures = 수치
+
+@@ 2022|navi2|1|영어|25
+principles = 원칙
+concisely = 간결하게
+excessive = 지나친
+commercial = 상업의 — commercial letter는 '상업 서신'
+auxiliary = 보조의 — auxiliary verb는 '조동사'
+abbreviations = 약어
+
+@@ 2022|navi2|2|영어|1
+expression = 표현
+clockwise = 시계 방향의
+direction = 방향
+wind = 바람
+veering = 순전(풍향이 시계 방향으로 바뀜)
+backing = 반전(풍향이 반시계 방향으로 바뀜)
+
+@@ 2022|navi2|2|영어|5
+expression = 표현
+aboard = 선상의 — All full open aboard는 '선상 밸브 모두 완전 개방'
+pumping = 펌프 — pumping rate는 '펌프 송출량'
+rate = 속도(율)
+bar = 바(압력 단위)
+back = 역 — back pressure는 '배압'
+stripping = 잔유 흡입
+inerted = 불활성화된
+
+@@ 2022|navi2|2|영어|6
+cover = 덮다
+contaminated = 오염된
+goods = 화물
+tarpaulins = 방수포
+barrels = 통
+ventilators = 통풍기
+
+@@ 2022|navi2|2|영어|7
+improper = 알맞지 않은
+holds = 화물창
+dry = 건조된
+straighten = 곧게 펴다 — 화물창 상태를 묻는 말로 맞지 않음
+clean = 청소된
+smell = 냄새 — free of smell은 '냄새 없는'
+
+@@ 2022|navi2|2|영어|8
+situation = 상황
+segregation = 격리
+stow = 적재하다
+flammable = 인화성의
+bulkhead = 격벽
+brief = 설명하다
+stevedores = 하역 인부
+compatibility = 혼적 가능성(함께 실을 수 있는지)
+
+@@ 2022|navi2|2|영어|9
+hooks = 갈고리(훅)
+handling = 취급하는
+bags = 포대 화물
+in = ~할 때 — in handling은 '취급할 때'
+
+@@ 2022|navi2|2|영어|10
+fishing = 어로 — fishing boat는 '어선'
+anchorage = 정박지
+navigate = 항행하다
+caution = 주의 — with caution은 '주의하여'
+
+@@ 2022|navi2|2|영어|11
+considerations = 고려 사항
+planning = 계획
+ocean = 대양 — ocean passage는 '대양 항해'
+passages = 항해
+routeing = 항로지정 — routeing scheme은 '항로지정 방식'
+gnomonic = 대권(심사) 도법의 — gnomonic chart는 '대권 항법도'
+projection = 도법
+loadline = 만재흘수선 — loadline chart는 '만재흘수선 구역도'
+
+@@ 2022|navi2|2|영어|12
+rules = 규칙
+dead = 추측 — dead reckoning은 '추측항법'
+reckoning = 추산
+plotting = 작도
+fix = 선위
+running = 전위 — running fix는 '전위선 선위'
+single = 하나의 — single line of position은 '위치선 하나'
+
+@@ 2022|navi2|2|영어|13
+data = 자료
+ais = 선박자동식별장치
+static = 고정의
+weather = 기상
+dynamic = 동적인
+voyage = 항해 — voyage related information은 '항해 관련 정보'
+
+@@ 2022|navi2|2|영어|14
+statement = 설명
+rounded = 둥근
+glacier = 빙하
+bergy = 작은 빙산의 — bergy bit은 '소빙산'
+transparent = 투명한
+growler = 그라울러(아주 작은 빙산 조각)
+occupying = 차지하는
+grease = 그리스 — grease ice는 '그리스 아이스(엷은 결빙)'
+
+@@ 2022|navi2|2|영어|15
+improper = 알맞지 않은
+celestial = 천문의 — celestial body는 '천체'
+reduce = 계산하다(정리하다)
+observations = 관측값
+navigational = 항해의 — navigational triangle은 '천문 삼각형'
+triangle = 삼각형
+elevated = 상승한 — elevated pole은 '상승극'
+zenith = 천정
+angular = 각의 — angular distance는 '각거리'
+
+@@ 2022|navi2|2|영어|16
+angular = 각의
+horizon = 수평선
+arc = 호
+vertical = 수직의 — vertical circle은 '수직권'
+sphere = 구 — celestial sphere는 '천구'
+measured = 잰
+upward = 위쪽으로
+altitude = 고도
+
+@@ 2022|navi2|2|영어|17
+incorrect = 틀린
+reason = 이유
+shipowners = 선주
+flags = 국기 — flag of convenience는 '편의치적'
+convenience = 편의
+customs = 세관
+operational = 운항상의
+reduction = 절감
+
+@@ 2022|navi2|2|영어|20
+affect = 영향을 주다
+calculations = 계산
+load = 만재 — load line은 '만재흘수선'
+guard = 보호 — guard rail은 '난간'
+rails = 난간
+openings = 개구부
+skylight = 천창
+access = 출입 — means of access는 '통로'
+quarter = 거주구역
+
+@@ 2022|navi2|2|영어|24
+loading = 싣는
+generator = 발전기
+bed = 받침 — bed plate는 '받침판'
+plate = 판
+hatch = 해치(화물창)
+struck = 부딪혔다 — struck against는 '~에 부딪쳤다'
+against = ~에(부딪쳐)
+
+@@ 2022|navi2|3|영어|1
+damaged = 손상된
+impaired = 기능이 떨어진
+incapable = ~할 수 없는
+proceeding = 계속 항해하는
+voyage = 항해
+disabled = 항행불능의
+wrecked = 난파된
+
+@@ 2022|navi2|3|영어|3
+lashings = 고박
+securings = 고정 장치
+everyday = 매일
+check = 점검하다
+replace = 교체하다
+
+@@ 2022|navi2|3|영어|19
+hemisphere = 반구
+winds = 바람
+pressure = 기압 — low pressure는 '저기압'
+direction = 방향
+inclination = 기울기(비스듬히 향함)
+isobars = 등압선
+clockwise = 시계 방향
+anti = 반대 — anti-clockwise는 '반시계 방향'
+
+@@ 2022|navi2|4|영어|7
+track = 항적
+converging = 가까워지는 — converging with는 '~와 수렴하는'
+reference = 기준 — reference line은 '기준선'
+line = 선
+
+@@ 2022|navi2|4|영어|9
+wrong = 알맞지 않은
+emergency = 비상 — emergency power supply는 '비상 전원'
+power = 전력
+supply = 공급
+operational = 작동 가능한
+ventilation = 환기
+
+@@ 2022|navi2|4|영어|11
+improper = 부적절한
+selecting = 고르는
+celestial = 천체의
+bodies = 천체 — celestial bodies는 '천체들'
+sights = 천측
+identify = 식별하다
+twilight = 박명
+horizon = 수평선
+
+@@ 2022|navi2|4|영어|17
+document = 문서
+terms = 조건
+shipowner = 선주
+charterer = 용선자
+hire = 빌림
+space = 선복
+charter = 용선 — charter party는 '용선계약서'
+fixture = 성약 — fixture memo는 '성약 메모'
+
+@@ 2022|navi2|4|영어|19
+cold = 찬 — cold air mass는 '찬 기단'
+air = 공기
+mass = 덩어리 — air mass는 '기단'
+warmer = 더 따뜻한
+front = 전선
+stationary = 정체된 — stationary front는 '정체전선'
+occluded = 폐색된 — occluded front는 '폐색전선'
+
+@@ 2022|navi2|4|영어|22
+safety = 안전 — Safety Management Certificate는 '안전관리증서'
+certificate = 증서
+issued = 발급된
+administration = 주관청
+recognized = 인정된
+verify = 검증하다
+sms = 안전관리체제
+auditor = 심사원
+
+@@ 2022|navi2|4|영어|23
+port = 항만 — port state control은 '항만국 통제'
+inspection = 점검
+initiated = 시작된
+complaint = 진정
+source = 출처
+disclosed = 공개된
+
+@@ 2022|navi2|4|영어|25
+arises = 생기다
+swell = 너울
+surf = 부서지는 파도 — surf days는 '파랑으로 하역 못 한 날'
+prevents = 막다
+roadsteads = 외항 정박지
+laydays = 정박기간
+
+@@ 2022|navi3|1|영어|1
+suitable = 알맞은
+read = (감도를) 듣다
+bad = 나쁘게
+signal = 신호 — signal strength one은 '감도 1(최하)'
+strength = 세기
+advise = 권고하다 — Advise try VHF channel 06은 'VHF 6번 채널을 시도해 보라'
+ahead = 계속 — Go ahead는 '말씀하세요'
+
+@@ 2022|navi3|1|영어|2
+message = 통신문
+considered = 여겨지는
+sufficiently = 충분히
+safeguarding = 확실히 전달되도록 하는 것
+repeat = 반복 — 중요한 부분 앞에 붙이는 말
+corresponding = 해당하는
+
+@@ 2022|navi3|1|영어|4
+weight = 장력(체인에 걸린 힘) — 이 문장에서는 '무게'가 아님
+on = ~에 걸린 — weight on the cable은 '체인에 걸린 장력'
+cable = 앵커 체인
+tension = 장력
+grow = (체인이) 뻗다
+
+@@ 2022|navi3|1|영어|5
+meaning = 뜻
+answer = (타에) 반응하다 — does not answer the wheel은 '타가 듣지 않는다'
+wheel = 타륜(타)
+
+@@ 2022|navi3|1|영어|6
+principles = 원칙
+starboard = 우현 — Starboard twenty five는 '우현 25도 타'
+steady = 정침 — Steady on은 '~에 정침했다'
+port = 좌현 — Port, steer은 '좌현으로 돌려 ~로 조타하라'
+steer = 조타하다
+buoy = 부표
+side = 쪽 — 'to port side'는 SMCP에서 'to port'로 짧게 씀
