@@ -21,8 +21,8 @@ const answerOf = k => {
   return MARKS[q['정답']];
 };
 
-test('expanded explanation source covers all 350 keys without duplicates', () => {
-  assert.ok(keys.length === 350, 'keys ' + keys.length);
+test('expanded explanation source covers all 450 keys without duplicates', () => {
+  assert.ok(keys.length === 450, 'keys ' + keys.length);
   assert.equal(new Set(keys).size, keys.length);
 });
 test('every expanded explanation is in the bundle with the full section layout', () => {
@@ -44,5 +44,10 @@ test('the stated answer matches the question data', () => {
 test('corrected answer notes survive (2020 2급 3회 법규 3·4)', () => {
   assert.match(ctx.MD_EXPLAIN['2020|navi2|3|법규|3'].html, /풍우밀/);
   assert.match(ctx.MD_EXPLAIN['2020|navi2|3|법규|4'].html, /중형과 소형/);
+});
+test('2026 3회 3급 non-English questions use the full explanation, not the short fallback', () => {
+  for (const subj of ['항해','운용','법규','상선전문']) for (let n = 1; n <= 25; n++) {
+    const h = ctx.MD_EXPLAIN[`2026|navi3|3|${subj}|${n}`].html; assert.match(h, /용어 정리/); assert.match(h, /정답 해설/);
+  }
 });
 console.log(`navi2/navi3 explanations v5.43: PASS (${checks} cases, ${keys.length} keys)`);

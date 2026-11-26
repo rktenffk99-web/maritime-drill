@@ -169,10 +169,20 @@ def load_answers(source):
         mm = re.match(r'past-(20\d\d)-(navi[23])-(\d)_js$', m.group(2))
         if not mm:
             continue
-        pm = PAYLOAD_RE.search(inflate(m.group(3)))
-        if not pm:
-            continue
-        for q in json.loads(pm.group(2))['questions']:
+        text = inflate(m.group(3))
+        pm = PAYLOAD_RE.search(text)
+        try:
+            questions = json.loads(pm.group(2))['questions'] if pm else None
+        except ValueError:
+            questions = None
+        if questions is None:
+            # 2026년 3회처럼 Q(번호, 문제, [보기], 정답, 과목, 과목Id) 호출로 쓴 번들
+            nums = [int(n) for n in re.findall(r'\bQ\((\d+),', text)]
+            tails = re.findall(r',\s*([0-3])\s*,\s*"(항해|운용|법규|영어|상선전문)"\s*,\s*"[A-Za-z]+"\s*\)', text)
+            if not nums or len(nums) != len(tails):
+                continue
+            questions = [{'번호': n, '정답': int(a), '과목': s} for n, (a, s) in zip(nums, tails)]
+        for q in questions:
             answers[f'{mm.group(1)}|{mm.group(2)}|{mm.group(3)}|{q["과목"]}|{q["번호"]}'] = MARKS[q['정답']]
     return answers
 
