@@ -30,7 +30,7 @@
     const hangul=reading.startsWith('/')&&data.hangulReadings?.[word];
     return (hangul?hangul+' ':'')+reading+(status==='needs_review'?' · 검수 필요':'');
   }
-  function wordSection(label,value,local,section,q){
+  function wordSection(label,value,local,section,q,context){
     const data=global.MDEnglishWordStudyData;
     const ts=tokens(value),seen=new Map();
     ts.forEach((word,i)=>{
@@ -46,18 +46,22 @@
       // A future imported question may contain a new token. Expose it, never silently skip it.
       const definition=local[word]||entry?.[0]||'단어 뜻 미등록 — 보강 필요';
       const reading=pronunciation(word,value,section,q);
-      result+=`<tr><td style="vertical-align:top;padding:6px;overflow-wrap:anywhere;border-top:1px solid #DBEAFE"><b>${H(item.word)}</b><br><span style="color:#64748B;font-size:0.85em">${item.positions.join(', ')}번${item.positions.length>1?' · 반복':''}</span></td><td style="vertical-align:top;padding:6px;overflow-wrap:anywhere;border-top:1px solid #DBEAFE">${H(definition)}<br><span style="color:#64748B">발음: ${H(reading)}</span></td></tr>`;
+      // english-context-v546: the meaning in this sentence comes first, the basic sense after it.
+      const inContext=context&&context[word];
+      const meaning=inContext?`<b style="color:#0369A1">이 문장에서:</b> ${H(inContext)}<br><span style="color:#64748B">기본: ${H(definition)}</span>`:H(definition);
+      result+=`<tr><td style="vertical-align:top;padding:6px;overflow-wrap:anywhere;border-top:1px solid #DBEAFE"><b>${H(item.word)}</b><br><span style="color:#64748B;font-size:0.85em">${item.positions.join(', ')}번${item.positions.length>1?' · 반복':''}</span></td><td style="vertical-align:top;padding:6px;overflow-wrap:anywhere;border-top:1px solid #DBEAFE">${meaning}<br><span style="color:#64748B">발음: ${H(reading)}</span></td></tr>`;
     }
     return result+'</tbody></table>';
   }
   function supplement(q){
     if(!eligible(q)||!global.MDEnglishWordStudyData)return '';
     const local=global.MDEnglishWordStudyData.local[key(q)]||{};
+    const context=global.MDEnglishWordStudyData.context?.[key(q)]||{};
     const contexts=global.MDEnglishWordStudyData.pronunciationContexts?.[key(q)]||{};
-    let html='━━ 단어별 기본 뜻·형태 ━━<p>지문과 네 보기의 영어 단어를 원문 순서로 확인합니다. 같은 철자가 반복되면 한 행에 위치를 모두 표시합니다. 여러 뜻이 있는 단어의 이 문장 해석과 구·절의 연결은 위의 지문 독해·보기 해석을 함께 보십시오.</p>';
+    let html='━━ 단어별 기본 뜻·형태 ━━<p>지문과 네 보기의 영어 단어를 원문 순서로 확인합니다. 같은 철자가 반복되면 한 행에 위치를 모두 표시합니다. 핵심 단어는 <b>이 문장에서</b>의 뜻을 먼저 보여 줍니다. 그 밖의 단어 해석과 구·절의 연결은 위의 지문 독해·보기 해석을 함께 보십시오.</p>';
     html+='<p style="color:#64748B">IPA는 별도 표시가 없으면 미국식입니다. 한글은 학습용 근사 독음으로 강세·모음 길이·영어 고유 자음을 정확히 나타내지 못합니다. 사전의 IPA·음성을 우선하십시오. 검수 필요·발음 미확정 항목은 확인이 남아 있습니다. 약어 철자 읽기는 통용 단어식 독음과 구별해 표시합니다.</p>';
-    html+=wordSection('지문',q['문제'],local,contexts['0'],q);
-    (q['선택지']||[]).forEach((choice,i)=>{html+=wordSection(`보기 ${MARKS[i]||i+1}`,choice,local,contexts[String(i+1)],q);});
+    html+=wordSection('지문',q['문제'],local,contexts['0'],q,context);
+    (q['선택지']||[]).forEach((choice,i)=>{html+=wordSection(`보기 ${MARKS[i]||i+1}`,choice,local,contexts[String(i+1)],q,context);});
     return html;
   }
   function isWatchQuestion(q){

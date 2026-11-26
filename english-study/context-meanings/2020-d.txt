@@ -1,0 +1,290 @@
+@@ 2020|navi3|3|영어|12
+periodical = 정기적인
+publication = 간행물
+astronomical = 천문의
+data = 자료
+navigators = 항해사
+nautical = 항해의 — nautical almanac은 '천측력'
+almanac = 역서(曆書)
+notice = 통보 — notice to mariners는 '항행통보'
+
+@@ 2020|navi3|3|영어|13
+publications = 간행물
+detailed = 자세한
+descriptions = 설명
+harbors = 항만
+shore = 연안 — shore areas는 '연안 지역'
+sailing = 항해 — sailing directions는 '항로지'
+directions = 지침
+aids = 보조 — aids to navigation은 '항로표지'
+
+@@ 2020|navi3|3|영어|14
+occur = 생기다
+surface = 수면
+slope = 경사
+barometric = 기압의
+juxtaposition = 나란히 맞닿음
+salinity = 염분
+gradient = 경사 — gradient current는 '경사류'
+density = 밀도 — density current는 '밀도류'
+drift = 취송 — drift current는 '취송류'
+
+@@ 2020|navi3|3|영어|15
+function = 기능
+bilge = 빌지(선저 만곡부) — bilge keel은 '빌지 킬'
+keel = 용골 모양의 판
+strength = 강도
+rolling = 횡요
+bumper = 완충재
+docking = 입거(부두에 대는 것)
+upright = 똑바로 선
+
+@@ 2020|navi3|3|영어|16
+damage = 손해
+sweat = 발한(화물창 이슬 맺힘)
+supposed = ~로 여겨지는
+responsibility = 책임
+shipowner = 선주
+failed = ~하지 못했다
+ventilate = 통풍하다
+deviate = 이로하다(항로를 벗어나다)
+
+@@ 2020|navi3|3|영어|17
+type = 종류
+extinguishers = 소화기
+electric = 전기의 — electric fire는 '전기 화재'
+foam = 포말(거품)
+soda = 소다 — soda acid는 '산·알칼리 소화제'
+dry = 건조한 — dry chemical은 '분말 소화제'
+chemical = 화학 약제
+
+@@ 2020|navi3|3|영어|18
+circular = 원형의
+definite = 일정한
+limits = 경계
+counter = 반대 — counter-clockwise는 '반시계 방향'
+specified = 지정된
+roundabout = 원형 통항 구역(로터리)
+separation = 분리 — separation zone은 '분리대'
+lane = 통항로
+
+@@ 2020|navi3|3|영어|19
+risk = 위험
+collision = 충돌
+exists = 존재하다
+approaching = 접근하는
+steady = 일정한(변하지 않는) — steady bearing은 '방위 불변'
+bearing = 방위
+decreasing = 줄어드는
+range = 거리
+
+@@ 2020|navi3|3|영어|20
+ensure = 보장하다
+security = 보안 — ship security assessment는 '선박보안평가'
+assessment = 평가
+appropriate = 적절한
+skills = 능력
+evaluate = 평가하다
+guidance = 지침
+company = 회사 — company security officer는 '회사보안책임자'
+officer = 책임자
+
+@@ 2020|navi3|3|영어|21
+president = 사장(회장)
+speak = 연설하다
+behalf = 대신 — on his behalf는 '그를 대신하여'
+
+@@ 2020|navi3|3|영어|22
+replaced = 바꿔 쓸 수 있는
+muster = 소집 — muster list는 '비상 소집표'
+specify = 명시하다
+emergency = 비상 — general emergency alarm은 '비상 경보'
+alarm = 경보
+address = 연설 — public address system은 '선내 방송 장치'
+sounded = 울려진
+blown = (경보가) 울린
+raised = 올려진
+
+@@ 2020|navi3|3|영어|23
+survival = 생존 — survival craft는 '생존정(구명정·구명뗏목)'
+craft = 정(艇)
+stowed = 적재된
+continuous = 계속적인
+readiness = 준비 상태
+preparations = 준비
+embarking = 승정
+launching = 진수
+
+@@ 2020|navi3|3|영어|24
+effectiveness = 효과
+life = 생명 — life-saving appliances는 '구명설비'
+saving = 구하는
+appliances = 설비
+maintenance = 정비(유지보수)
+drills = 훈련
+regular = 정기적인
+handling = 취급
+
+@@ 2020|navi3|3|영어|25
+pratique = 검역 허가
+granted = 허가된
+weighed = (닻을) 올렸다 — weighed anchor는 '양묘했다'
+anchor = 닻
+proceeded = 나아갔다
+berth = 선석
+
+@@ 2020|navi3|4|영어|1
+followed = 뒤따르는
+interval = 간격(시간)
+available = 얻을 수 있는
+stand = 대기 — Stand by는 '대기하라'
+advise = 권고(표지어)
+information = 정보
+
+@@ 2020|navi3|4|영어|2
+considered = 여겨지는
+sufficiently = 충분히
+important = 중요한
+safeguarding = (전달 확인으로) 보호하는 것
+repeat = 반복 — 중요한 부분을 반복할 때 쓰는 말
+correction = 정정
+
+@@ 2020|navi3|4|영어|3
+indicates = 나타내다
+interrogative = 질문의
+character = 성격
+question = 질문(표지어)
+intention = 의도(표지어)
+warning = 경고(표지어)
+
+@@ 2020|navi3|4|영어|4
+figure = 그림
+expresses = 나타내다
+buoy = 부표
+port = 좌현
+bow = 선수 — port bow는 '좌현 선수 방향'
+starboard = 우현
+relative = 상대 — relative bearing은 '상대방위'
+
+@@ 2020|navi3|4|영어|5
+correctly = 올바르게
+expressed = 표현된
+inshore = 연안 — inshore traffic zone은 '연안통항대'
+separation = 분리 — separation zone은 '분리대'
+lane = 통항로
+clearance = 허가 — traffic clearance는 '통항 허가'
+
+@@ 2020|navi3|4|영어|6
+bow = 선수
+thruster = 스러스터(측면 추진기)
+order = 명령
+full = 최대
+half = 중간
+midships = 중앙(0의 위치)
+dead = 극(極) — dead slow는 '극미속'
+
+@@ 2020|navi3|4|영어|7
+found = 발견했다
+buoy = 부표
+off = 벗어나 — off station은 '정위치를 벗어난'
+station = 정위치(해도상 위치)
+
+@@ 2020|navi3|4|영어|9
+make = (만남을) 이루다 — make rendezvous는 '접선하다(만나다)'
+rendezvous = 접선(약속 장소에서 만남)
+position = 위치
+
+@@ 2020|navi3|4|영어|10
+course = 침로
+reach = 도달하다 — course to reach you는 '귀선에 도달하는 침로'
+
+@@ 2020|navi3|4|영어|12
+statement = 문장(설명)
+noxious = 유해한 — noxious liquid substance는 '유해액체물질'
+liquid = 액체
+substances = 물질
+discharged = 배출된
+deballasting = 평형수 배출
+deemed = 여겨지는
+hazard = 위험
+resources = 자원
+prohibition = 금지
+category = 분류(등급)
+
+@@ 2020|navi3|4|영어|13
+action = 작용
+propeller = 프로펠러(추진기)
+driving = 추진하는
+similar = 비슷한
+bolt = 볼트
+nut = 너트
+
+@@ 2020|navi3|4|영어|16
+function = 기능
+bulkheads = 격벽
+divide = 나누다
+watertight = 수밀의
+compartments = 구획
+strength = 강도
+rigidity = 강성(단단함)
+structure = 구조
+
+@@ 2020|navi3|4|영어|17
+detection = 탐지
+targets = 물표
+particularly = 특히
+ranges = 거리 — short range는 '근거리'
+plotting = 플로팅(작도)
+advisable = 바람직한
+scale = 거리 범위(레인지)
+
+@@ 2020|navi3|4|영어|21
+consignee = 수하인
+delivered = 인도되는
+signed = 서명한
+contract = 계약
+owner = 소유자
+
+@@ 2020|navi3|4|영어|22
+techniques = 방법
+securing = 고정하는
+bars = 막대
+struts = 버팀대
+spars = 원목 기둥
+voids = 빈 공간
+pressed = 눌린
+shoring = 버팀목 고정(쇼링)
+lashing = 고박
+wedging = 쐐기 고정
+
+@@ 2020|navi3|4|영어|23
+salt = 소금 — salt water는 '해수'
+fresh = 담수의
+remain = 그대로이다
+draft = 흘수
+decrease = 줄다
+freeboard = 건현
+clearance = 여유 — under-keel clearance는 '선저 여유수심'
+
+@@ 2020|navi3|4|영어|24
+appropriate = 적절한
+precautions = 예방 조치
+transport = 운송
+heavy = 무거운 — heavy cargo는 '중량화물'
+abnormal = 비정상적인
+dimensions = 크기
+structural = 구조적인
+adequate = 충분한
+stability = 복원성
+
+@@ 2020|navi3|4|영어|25
+delivered = 반선된(돌려주는)
+expiration = 만료
+charter = 용선
+order = 상태 — good order는 '양호한 상태'
+charterers = 용선자
+fair = 통상적인
+wear = 마모 — fair wear and tear는 '통상적인 마모·손상'
+tear = 손상
+excepted = 제외된
+ice = 얼음 — ice-free port는 '부동항'

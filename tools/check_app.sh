@@ -163,5 +163,6 @@ python tools/build_english_word_study.py
 python tools/audit_english_pronunciations.py
 node tools/test_english_word_study.js
 node tools/test_english_hangul_v543.js
+node tools/test_english_context_v546.js
 python tools/test_pronunciation_dictionary.py
 node tools/test_pronunciation_display.js

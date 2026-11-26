@@ -1,0 +1,309 @@
+@@ 2020|navi3|2|영어|1
+wind = 바람
+direction = 방향
+anti = 반대 — anti-clockwise는 '반시계 방향'
+clockwise = 시계 방향
+backing = 반전(풍향이 반시계 방향으로 바뀜)
+veering = 순전(풍향이 시계 방향으로 바뀜)
+
+@@ 2020|navi3|2|영어|2
+port = 항구 — 이 문장에서는 '좌현'이 아님
+bound = ~행의 — be bound for는 '~로 향하다'
+destination = 목적지(목적항)
+departure = 출발(출항)
+datum = 기준점
+
+@@ 2020|navi3|2|영어|3
+helmsman = 조타수
+experienced = 숙련된(경험이 많은)
+explanation = 설명
+
+@@ 2020|navi3|2|영어|4
+standard = 표준
+wheel = 타륜 — wheel order는 '조타 명령'
+orders = 명령
+rudder = 타(키)
+midships = 중앙 — 타를 선수미선 위치에 두라는 명령
+hard = 최대로 — hard-a-port는 '좌현 최대 타각'
+swing = (선수의) 회두
+meet = (회두를) 멈추게 하다 — Meet her는 '반대 타로 회두를 멈춰라'
+check = 억제하다
+
+@@ 2020|navi3|2|영어|5
+wrong = 틀린
+pair = 짝(약어와 원어)
+crude = 원유의 — COW는 '원유세정'
+washing = 세정
+swl = 안전사용하중(Safe Working Load)
+working = 사용 — safe working load는 '안전사용하중'
+teu = 20피트 컨테이너 환산 단위
+equivalent = 환산의
+
+@@ 2020|navi3|2|영어|6
+carbon = 탄소 — carbon dioxide는 '이산화탄소(CO₂)'
+dioxide = 이산화물
+agent = 소화제(불 끄는 물질)
+advantage = 장점
+minimal = 최소의
+cargo = 화물
+damage = 손상
+personnel = 인원(사람)
+
+@@ 2020|navi3|2|영어|7
+safe = 안전한
+drag = (닻을) 끌다 — drag anchor는 '닻을 끌며 이동하다'
+anchor = 닻
+allowed = 허용된
+cable = 해저 케이블 — 이 문장에서는 앵커 체인이 아님
+laid = 부설된
+dredge = (닻으로) 해저를 끌다
+
+@@ 2020|navi3|2|영어|8
+traffic = 통항
+lane = 통항로
+temporarily = 일시적으로
+underlined = 밑줄 친
+suspended = 일시 중지된
+discontinued = 중단(폐지)된
+diverted = 우회된
+
+@@ 2020|navi3|2|영어|9
+phrase = 구절
+relation = 관계
+hampered = 조종이 제한된 — hampered vessel은 '조종제한선'
+engaged = 종사하는
+cable = 해저 케이블 — cable laying은 '케이블 부설'
+berth = 선석 — at a berth는 '부두에 계류한'
+dredging = 준설하는
+underwater = 수중의
+
+@@ 2020|navi3|2|영어|10
+translation = 번역
+slipped = (닻줄을) 풀어 버렸다 — slip the anchor는 '닻을 버리다(잃다)'
+anchor = 닻
+position = 위치
+south = 남쪽
+pier = 부두
+
+@@ 2020|navi3|2|영어|11
+ebb = 썰물(낙조)
+flood = 밀물(창조) — 이 문장에서는 '홍수'가 아님
+tides = 조석
+attraction = 인력(끌어당기는 힘)
+moon = 달
+
+@@ 2020|navi3|2|영어|12
+involves = 포함하다(~하는 것이다)
+observations = 관측
+sextant = 육분의
+celestial = 천문의 — celestial navigation은 '천문항법'
+terrestrial = 지문의 — terrestrial navigation은 '지문항법'
+electronic = 전자의 — electronic navigation은 '전파항법'
+
+@@ 2020|navi3|2|영어|13
+weather = 기상
+elements = 요소
+determined = 측정(결정)된
+instrument = 계기
+velocity = 속도 — wind velocity는 '풍속'
+humidity = 습도
+atmospheric = 대기의 — atmospheric pressure는 '기압'
+visibility = 시정
+
+@@ 2020|navi3|2|영어|14
+aneroid = 아네로이드(액체를 쓰지 않는) — aneroid barometer는 '아네로이드 기압계'
+barometer = 기압계
+pressure = 압력(기압)
+measured = 측정된
+elasticity = 탄성
+plate = 판
+metal = 금속
+
+@@ 2020|navi3|2|영어|15
+determined = 결정된
+pressure = 기압
+gradient = 경도(기울기) — pressure gradient는 '기압경도'
+wind = 바람
+speed = 속도 — wind speed는 '풍속'
+current = 해류
+
+@@ 2020|navi3|2|영어|16
+lost = 잃은
+means = 수단
+propulsion = 추진 — means of propulsion은 '추진력'
+rough = 거친 — rough sea는 '황천'
+likely = 아마
+broach = 브로칭하다 — broach to는 '파도에 옆으로 돌아 정횡을 보이게 되다'
+heave = (선수를 파도 쪽으로) 버티다 — heave to는 '히브 투'
+scud = 순주하다(파도를 선미로 받고 달리다)
+
+@@ 2020|navi3|2|영어|17
+head = 선수 — head-on situation은 '마주치는 상태'
+situation = 상황
+sidelights = 현등
+both = 양쪽의
+bow = 선수 쪽 — port bow는 '좌현 선수 방향'
+
+@@ 2020|navi3|2|영어|18
+lights = 등화
+barge = 부선
+towed = 예인되는
+astern = 선미 쪽으로 — towed astern은 '뒤로 끌려가는'
+sternlight = 선미등
+corner = 모서리
+
+@@ 2020|navi3|2|영어|19
+salt = 소금 — salt water는 '해수'
+fresh = 담수의 — fresh water는 '담수'
+draft = 흘수
+decrease = 줄다
+freeboard = 건현
+increase = 늘다
+clearance = 여유 — under-keel clearance는 '선저 여유수심'
+
+@@ 2020|navi3|2|영어|20
+allowed = 허용된
+charter = 용선 — charter party는 '용선계약서'
+loading = 선적
+discharging = 양하
+laydays = 정박기간(하역 허용 일수)
+
+@@ 2020|navi3|2|영어|21
+carried = 운송된
+circumstances = 사정
+impossible = 불가능한
+voyage = 항해
+arises = 발생하다
+pro = ~에 따라 — pro rata freight는 '비례 운임(운송 거리 비율 운임)'
+rata = 비율
+dead = 공적(空積) — dead freight는 '부적 운임'
+
+@@ 2020|navi3|2|영어|22
+referring = 관련하여 — Referring to는 '~에 관해서는'
+damage = 손해
+knowledge = 아는 것
+collision = 충돌
+quickly = 빨리
+
+@@ 2020|navi3|2|영어|23
+passed = 통과했다
+quarantine = 검역
+order = 상태 — in good order는 '이상 없이'
+received = 받았다
+pratique = 검역 허가(입항 허가)
+fumigation = 훈증 소독
+shore = 육상 — shore pass는 '상륙증'
+
+@@ 2020|navi3|2|영어|24
+idle = 작업이 없는(대기 중인)
+activity = 작업
+lashing = 고박 — lashing gang은 '고박 작업반'
+gangs = 작업반
+rounds = 순회 — rounds of inspection은 '순찰'
+inspections = 점검
+made = 실시되었다
+gangway = 현문(사다리) — gangway tended는 '현문 당직 배치'
+
+@@ 2020|navi3|2|영어|25
+log = 일지 — log book은 '항해일지'
+watch = 당직
+error = 잘못
+correct = 바로잡다
+erase = 지우다
+blot = 덮어 지우다 — blot out은 '완전히 지우다'
+cross = 줄을 긋다 — cross out은 '줄을 그어 지우다'
+entry = 기재 사항
+
+@@ 2020|navi3|3|영어|1
+mooring = 계류 — mooring line은 '계선줄'
+leading = 뻗어 나가는
+angles = 각 — at right angles는 '직각으로'
+stern = 선미
+shore = 육지(부두)
+breast = 옆 — breast line은 '옆줄(선체와 직각인 계선줄)'
+spring = 스프링(앞뒤로 비스듬한 계선줄)
+towing = 예인
+
+@@ 2020|navi3|3|영어|2
+information = 정보
+requested = 요청된
+obtained = 얻어진
+stand = 대기 — Stand by는 '대기하라'
+understood = 이해된
+again = 다시 — Say again은 '다시 말해 달라'
+
+@@ 2020|navi3|3|영어|3
+mark = 표지(지점)
+obligatory = 의무적인
+entry = 입항(진입)
+transit = 통과
+escort = 호위
+procedure = 절차
+reporting = 보고 — reporting point는 '보고 지점'
+calling = 호출 — calling-in-point는 '통신 호출 지점'
+
+@@ 2020|navi3|3|영어|4
+quartermaster = 조타수
+answer = (타에) 반응하다 — does not answer the wheel은 '타가 듣지 않는다'
+wheel = 타륜(타)
+let = ~하게 하다 — Let go anchor는 '투묘하라'
+slow = 미속 — Slow astern은 '미속 후진'
+dead = 극(極) — Dead slow ahead는 '극미속 전진'
+hard = 최대로 — Hard-a-port는 '좌현 최대 타'
+
+@@ 2020|navi3|3|영어|5
+cranes = 크레인
+safety = 안전
+arrangements = 장치(설비)
+hold = 화물창
+operational = 작동 가능한
+mal = 불량 — mal-functional은 '오작동하는'
+loadable = 실을 수 있는
+
+@@ 2020|navi3|3|영어|6
+translation = 번역
+miles = 마일(해리)
+starboard = 우현 — starboard of you는 '귀선 우현 쪽'
+fishing = 어로 — fishing boat는 '어선'
+vessel = 선박
+
+@@ 2020|navi3|3|영어|7
+designed = 지정된
+co = 공동 — co-ordinate는 '조정하다'
+ordinate = 조정하다(co-ordinate)
+search = 수색
+rescue = 구조
+specified = 지정된
+scene = 현장 — on-scene co-ordinator는 '현장 조정관'
+
+@@ 2020|navi3|3|영어|8
+course = 침로
+advise = 권고하다
+make = (침로를) 잡다 — make course 145°는 '침로를 145°로 하다'
+swing = 회두하다
+run = 달리다
+
+@@ 2020|navi3|3|영어|9
+shore = 육상 — shore radio station은 '해안국'
+station = 무선국
+mayday = 조난 신호
+signal = 신호
+distress = 조난
+rebroadcast = 다시 방송하다
+relay = 중계 — Mayday relay는 '조난 중계'
+
+@@ 2020|navi3|3|영어|10
+improper = 알맞지 않은
+expect = 예상하다
+refloat = 이초하다(좌초선이 다시 뜨다)
+tide = 조석 — when tide rises는 '조위가 오르면'
+improves = 좋아지다
+tug = 예인선
+assistance = 지원
+draft = 흘수 — 흘수가 늘면 오히려 이초가 어려움
+
+@@ 2020|navi3|3|영어|11
+standard = 표준 — standard meridian은 '표준 자오선'
+meridian = 자오선
+zone = 대(帶) — time zone은 '시간대'
+degrees = 도
