@@ -1,0 +1,460 @@
+@@ 2024|navi3|2|영어|17
+engaged = 종사하는
+dredging = 준설
+distress = 조난
+crossing = 횡단하는
+command = 조종 — not under command는 '조종불능'
+restricted = 제한된
+ability = 능력
+manoeuvre = 조종하다
+
+@@ 2024|navi3|2|영어|20
+master's = 선장의
+responsibility = 책임
+ism = 국제안전관리규약
+verifying = 확인하는
+motivating = 동기를 부여하는
+establish = 수립하다 — 방침 수립은 회사의 책임
+environmental = 환경의
+policy = 방침
+issuing = 내리는
+
+@@ 2024|navi3|2|영어|21
+power = 동력 — power-driven vessel은 '동력선'
+meeting = 마주치는
+reciprocal = 정반대의 — reciprocal courses는 '반대 침로'
+courses = 침로
+involve = 수반하다
+risk = 위험
+alter = 바꾸다
+starboard = 우현
+port = 좌현
+
+@@ 2024|navi3|2|영어|22
+constrained = 제약된 — constrained by her draft는 '흘수제약선'
+draft = 흘수
+addition = 추가 — in addition to는 '~에 더하여'
+prescribed = 규정된
+exhibit = 표시하다
+round = 사방 — all-round light는 '전주등'
+vertical = 수직의
+cylinder = 원통형 형상물
+
+@@ 2024|navi3|2|영어|23
+way = 방향 — two-way는 '양방향(송수신)'
+radiotelephone = 무선전화
+apparatus = 장치
+provided = 비치된
+passenger = 여객
+cargo = 화물 — cargo ship은 '화물선'
+gross = 총 — gross tonnage는 '총톤수'
+upwards = 이상
+
+@@ 2024|navi3|2|영어|24
+situated = 놓인
+ready = 준비된
+visible = 잘 보이는
+reached = 닿을 수 있는
+serviceability = 사용 가능 상태
+impaired = 손상된
+vibration = 진동
+extinguishers = 소화기
+
+@@ 2024|navi3|2|영어|25
+noted = 제출했다
+sea = 해상 — sea protest는 '해난보고서'
+protest = 해난보고서
+consulate = 영사관
+against = ~에 대하여(~ 때문에) — protest against heavy weather는 '황천에 대한 해난보고'
+heavy = 심한 — heavy weather는 '황천'
+encountered = 만난
+route = 도중 — en route는 '가는 도중'
+
+@@ 2024|navi3|3|영어|1
+navigational = 항해의
+safety = 안전
+communications = 통신
+shore = 육상
+vice = 반대 — vice versa는 '그 반대도 마찬가지'
+precise = 정확한
+unambiguous = 애매하지 않은(명확한)
+confusion = 혼란
+standardize = 표준화하다
+
+@@ 2024|navi3|3|영어|2
+indicate = 나타내다
+relevant = 해당하는
+information = 정보
+filled = 채워지는 — filled in은 '기입되는'
+occur = 나타나다
+dots = 점(…)
+brackets = 괄호
+oblique = 사선 — oblique stroke는 '빗금(/)'
+
+@@ 2024|navi3|3|영어|3
+incorrect = 틀린
+translation = 번역
+stand = 대기 — Stand by는 '기다려 주세요'
+again = 다시
+read = (감도를) 듣다
+wide = 넓은
+berth = 거리(여유) — wide berth는 '충분한 거리를 두다'; 이 문장에서는 '부두'가 아님
+requested = 요청된
+
+@@ 2024|navi3|3|영어|4
+class = 분류
+dangerous = 위험한
+hazardous = 위험한
+harmful = 유해한
+pollutants = 오염물질
+transport = 운송
+classified = 분류된
+imdg = 국제해상위험물규칙
+
+@@ 2024|navi3|3|영어|5
+drill = 훈련
+held = 실시되는
+familiarize = 익숙하게 하다
+passengers = 승객
+assembly = 집합 — assembly station은 '집합 장소'
+life = 생명 — life-saving equipment는 '구명 설비'
+procedures = 절차
+
+@@ 2024|navi3|3|영어|6
+direction = 방향
+approaching = 접근하는
+from = ~로부터 — From what direction은 '어느 방향에서'
+
+@@ 2024|navi3|3|영어|7
+receipt = 수신
+dsc = 디지털 선택 호출
+distress = 조난
+alert = 경보
+acknowledge = 수신 확인
+commence = 시작하다
+traffic = 통신
+frequencies = 주파수
+channel = 채널
+
+@@ 2024|navi3|3|영어|8
+running = 향하는 — running into danger는 '위험으로 향하고 있다'
+into = ~안으로
+danger = 위험
+bridge = 다리(교량) — 이 문장에서는 '선교'가 아님
+defective = 결함이 있는
+
+@@ 2024|navi3|3|영어|10
+flooding = 침수되는
+below = 아래 — below water line은 '흘수선 아래'
+water = 물 — water line은 '흘수선'
+line = 선
+under = ~ 아래 — not under command는 '조종불능'
+command = 조종
+
+@@ 2024|navi3|3|영어|11
+surface = 표면
+frictional = 마찰의
+drag = 끌림
+imparted = 주어진
+rotation = 자전
+coriolis = 코리올리 — coriolis force는 '전향력'
+deflect = 휘게 하다
+hemisphere = 반구
+
+@@ 2024|navi3|3|영어|12
+improper = 알맞지 않은
+velocity = 속도
+sound = 소리
+varies = 변하다
+primarily = 주로
+salinity = 염분
+pressure = 압력
+temperature = 수온
+
+@@ 2024|navi3|3|영어|13
+publication = 간행물
+operating = 운용
+characteristics = 특성
+foreign = 외국의
+radiobeacons = 무선표지
+coast = 연안 — coast pilot은 '연안 수로지'
+lights = 등화 — list of lights는 '등대표'
+sailing = 항해 — sailing directions는 '항로지'
+
+@@ 2024|navi3|3|영어|14
+deciding = 정하는
+composition = 구성
+watch = 당직
+bridge = 선교
+fitted = 장착된
+track = 항로 — track control system은 '항로 자동 유지 장치'
+unattended = 비워 둔
+proximity = 근접
+
+@@ 2024|navi3|3|영어|15
+despite = ~에도 불구하고
+obligations = 의무
+pilot = 도선사
+presence = 승선해 있음
+relieve = 면제하다
+charge = 책임 — officer in charge of the watch는 '당직책임사관'
+
+@@ 2024|navi3|3|영어|16
+aground = 좌초한 — went aground는 '좌초했다'
+watch = 당직
+calling = 부르는
+captain = 선장
+notify = 알리다
+engine = 기관 — engine room은 '기관실'
+astern = 후진
+distress = 조난
+
+@@ 2024|navi3|3|영어|17
+primary = 주된
+cause = 원인
+wind = 바람
+gravity = 중력
+pressure = 기압 — pressure gradient force는 '기압경도력'
+gradient = 경도
+rotation = 자전
+
+@@ 2024|navi3|3|영어|18
+applied = 적용되는
+fishing = 어선 — fishing vessel은 '어선'
+cargo = 화물 — cargo ship은 '화물선'
+gross = 총 — gross tonnage는 '총톤수'
+pleasure = 놀이 — pleasure yacht는 '유람용 요트'
+trade = 상거래
+propelled = 추진되는
+mechanical = 기계적인
+
+@@ 2024|navi3|3|영어|19
+attention = 주의
+effectiveness = 효과
+escape = 탈출 — escape route는 '탈출로'
+routes = 경로
+vital = 중요한
+locked = 잠긴
+alleyways = 통로
+stairways = 계단
+obscured = 막힌
+
+@@ 2024|navi3|3|영어|20
+objectives = 목적
+safety = 안전
+management = 관리
+incomes = 수입
+safeguards = 안전장치(대책)
+identified = 확인된
+risks = 위험
+improvement = 개선
+
+@@ 2024|navi3|3|영어|22
+hamburg = 함부르크 — Hamburg Rules는 '함부르크 규칙'
+rules = 규칙
+behalf = 대신 — on whose behalf는 '그를 대신하여'
+contract = 계약
+carriage = 운송
+concluded = 체결된
+carrier = 운송인
+shipper = 송하인
+
+@@ 2024|navi3|3|영어|23
+propeller = 프로펠러
+turns = 회전하다
+voids = 빈 공간(기포)
+trailing = 뒤쪽의
+leading = 앞쪽의
+edges = 가장자리
+blades = 날개
+pitting = 침식(구멍 패임)
+cavitation = 공동현상
+
+@@ 2024|navi3|3|영어|25
+inflicted = 가했다
+disciplinary = 징계의
+punishment = 처벌
+prohibition = 금지 — prohibition of landing은 '상륙 금지'
+landing = 상륙
+ordinary = 보통 — ordinary seaman은 '갑판원'
+superior = 상급자
+
+@@ 2024|navi3|4|영어|2
+improper = 틀린
+explanation = 설명
+wreck = 난파선(침선) — '암초'가 아님
+capsize = 전복
+noxious = 유해한
+navigation = 항해 — navigation lights는 '항해등'
+lights = 등
+
+@@ 2024|navi3|4|영어|3
+close = 밀착 — close-coupled towing은 '밀착 예인'
+coupled = 결합된
+towing = 예인
+polar = 극지의
+icebreaking = 쇄빙의
+tugs = 예인선
+stern = 선미
+notch = 홈(노치)
+bow = 선수
+
+@@ 2024|navi3|4|영어|5
+restricted = 제한된
+ability = 능력
+manoeuvre = 조종하다
+nature = 성질
+hampered = 조종이 제한된 — hampered vessel은 '조종제한선'
+dragging = 주묘하는
+anchored = 정박한
+
+@@ 2024|navi3|4|영어|6
+numbers = 숫자
+spoken = 말해지는
+separate = 하나씩 떨어진 — in separate digits는 '한 자리씩'
+digits = 자리 숫자
+decimal = 소수점
+point = 점
+
+@@ 2024|navi3|4|영어|7
+keep = 유지하다 — keep well clear of는 '~에서 충분히 떨어져 있어라'
+clear = 떨어져
+of = ~에서
+towing = 예인 — towing line은 '예인줄'
+line = 줄
+
+@@ 2024|navi3|4|영어|9
+stand = 대기 — stand by는 '준비하다'
+port = 좌현 — port anchor는 '좌현 닻'
+anchor = 닻
+for = ~을 위해
+letting = 놓아주는 — letting go는 '투하'
+
+@@ 2024|navi3|4|영어|10
+principles = 원칙
+womanned = 여성 배치(manned의 잘못된 표현)
+engine = 기관
+bridge = 선교 — bridge control은 '선교 조종'
+diesel = 디젤
+turbine = 터빈
+astern = 후진
+
+@@ 2024|navi3|4|영어|11
+determining = 측정하는
+underwater = 수중의
+interval = 간격
+transmission = 송신
+sonic = 음파의
+ultrasonic = 초음파의
+echo = 반향
+sonar = 소나(수중 음향 탐지기)
+
+@@ 2024|navi3|4|영어|12
+tallow = 우지(소기름) 화물
+workers = 작업자
+commenced = 시작되었다
+ceased = 그쳤다
+hatch = 해치
+barge = 부선
+resumed = 재개했다
+disch = 양하(discharging 약어)
+
+@@ 2024|navi3|4|영어|13
+result = 결과
+cold = 찬 — cold front는 '한랭전선'
+front = 전선
+approach = 접근
+precipitation = 강수
+backs = 반전하다(반시계 방향으로 바뀌다)
+freshens = (바람이) 강해지다
+dewpoint = 이슬점
+
+@@ 2024|navi3|4|영어|14
+approximate = 대략의
+applying = 적용하는
+determined = 정해진
+vector = 벡터
+consecutive = 연속된
+steered = 조타한
+steamed = 항주한
+dead = 추측 — dead reckoning position은 '추측위치'
+reckoning = 추산
+
+@@ 2024|navi3|4|영어|15
+main = 주요한
+types = 종류
+marine = 선박용
+engine = 기관
+diesel = 디젤 — diesel engine은 '디젤 기관'
+steam = 증기 — steam turbine은 '증기 터빈'
+turbine = 터빈
+nuclear = 원자력의
+application = 용도
+
+@@ 2024|navi3|4|영어|18
+effectiveness = 효과
+appliances = 설비 — life-saving appliances는 '구명설비'
+maintenance = 정비
+drills = 훈련
+regular = 정기적인
+handling = 취급
+
+@@ 2024|navi3|4|영어|19
+mate = 항해사
+discovers = 발견하다
+hatches = 해치(화물창)
+hoses = 호스
+damaged = 손상된
+partial = 일부의 — partial loss는 '분손'
+average = 해손 — general average는 '공동해손'
+salvage = 구조
+
+@@ 2024|navi3|4|영어|20
+amount = 금액
+payable = 지급해야 할
+portion = 일부
+freight = 운임
+calculated = 계산된
+cubic = 입방 — cubic capacity는 '용적'
+lump = 덩어리 — lump-sum freight는 '총액 운임'
+
+@@ 2024|navi3|4|영어|21
+consignee = 수하인
+delivered = 인도되는
+signed = 서명한
+contract = 계약
+owner = 소유자
+
+@@ 2024|navi3|4|영어|22
+call = 끌다 — call your attention to는 '~에 주의를 환기하다'
+kind = 친절한
+attention = 주의
+respects = 점 — in all respects는 '모든 면에서'
+disposal = 처분 — at your disposal은 '귀하가 쓸 수 있도록'
+load = 싣다
+
+@@ 2024|navi3|4|영어|23
+tested = 시험했다
+steering = 조타 — steering gear는 '조타기'
+whistle = 기적
+communications = 통신
+apparent = 외관상
+synchronized = (시각을) 맞췄다
+clocks = 시계
+
+@@ 2024|navi3|4|영어|24
+discharging = 양하하는
+fire = 화재
+broke = 발생했다 — broke out은 '(불이) 났다'
+out = 발생 — break out은 '발생하다'
+hold = 화물창
+extinguished = 꺼졌다
+
+@@ 2024|navi3|4|영어|25
+documents = 문서
+implement = 시행하다
+sms = 안전관리체제
+referred = 불리는
+manual = 매뉴얼 — Safety Management Manual은 '안전관리 매뉴얼'
+compliance = 적합 — Document of Compliance는 '적합증서'
+certificate = 증서

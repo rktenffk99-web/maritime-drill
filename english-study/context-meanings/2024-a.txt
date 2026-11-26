@@ -1,0 +1,398 @@
+@@ 2024|navi2|1|영어|1
+distress = 조난 — distress traffic은 '조난 통신'
+traffic = 통신
+controlling = 통제하는
+impose = 부과하다
+silence = 침묵 — radio silence는 '무선 침묵'
+interfering = 방해하는
+seelonce = 통신 정지 명령(실렁스) — Seelonce Mayday는 '조난 통신 방해 금지'
+messages = 통신문
+
+@@ 2024|navi2|1|영어|2
+relation = 관계
+air = 공기 — air draught는 '수면 위 높이'
+draught = 높이
+ukc = 선저 여유수심
+gross = 총 — gross tonnage는 '총톤수'
+point = 점 — way point는 '변침점'
+hydrographic = 수로의 — hydrographic survey는 '수로 측량'
+
+@@ 2024|navi2|1|영어|3
+evacuate = 대피시키다
+crew = 선원
+passengers = 승객
+distress = 조난
+abandon = 버리다 — abandon vessel은 '퇴선'
+escape = 탈출
+sinking = 침몰하는
+
+@@ 2024|navi2|1|영어|4
+noticed = 알아챘다
+operational = 작동상의
+failure = 고장
+main = 주 — main engine은 '주기관'
+bridge = 선교
+breakdown = 고장(정지)
+blackout = 정전
+
+@@ 2024|navi2|1|영어|5
+translation = 번역
+turn = 꼬임 — Turn in cables는 '체인이 꼬여 있다'
+cables = 앵커 체인
+secured = 고정된
+rounds = 감김
+
+@@ 2024|navi2|1|영어|7
+pick = 집다 — pick up the slack은 '늘어진 부분만 감아라'
+slack = 늘어진 부분
+head = 선수 — head line은 '선수줄'
+line = 계선줄
+
+@@ 2024|navi2|1|영어|8
+wrong = 틀린
+antonym = 반대말
+load = 싣다
+unload = 내리다
+dispose = 처리하다
+lash = 고박하다 — dispose의 반대말이 아님
+connect = 연결하다
+disconnect = 분리하다
+
+@@ 2024|navi2|1|영어|10
+approaching = 접근하는
+pilot = 도선사 — pilot station은 '도선 위치'
+station = 위치 — on station은 '정위치에 있는'
+visible = 보이는
+visibility = 시정
+reduced = 줄어든 — reduced visibility는 '시정 저하'
+on = (위치에) 있는
+
+@@ 2024|navi2|1|영어|11
+corrections = 보정값
+receiver = 수신기
+reference = 기준 — reference station은 '기준국'
+signals = 신호
+errors = 오차
+broadcast = 방송되다
+dgps = 위성 보정 GPS(DGPS)
+users = 사용자
+
+@@ 2024|navi2|1|영어|12
+mercator = 메르카토르 — Mercator chart는 '점장도'
+chart = 해도
+rhumb = 항정 — rhumb line은 '항정선'
+straight = 직선의
+loxodromic = 항정선의
+hyperbolic = 쌍곡선의
+convex = 볼록한
+
+@@ 2024|navi2|1|영어|16
+frontal = 전선의
+cold = 찬 — cold front는 '한랭전선'
+front = 전선
+overtakes = 따라잡다
+occluding = 폐색하는
+warm = 따뜻한 — warm sector는 '난역'
+depression = 저기압 — 이 문장에서는 '우울'이 아님
+occluded = 폐색된 — occluded front는 '폐색전선'
+
+@@ 2024|navi2|1|영어|17
+maintain = 유지하다
+proper = 적절한
+look = 경계 — look-out은 '경계'
+sight = 시각
+hearing = 청각
+prevailing = 당시의
+appraisal = 판단
+guard = 경비
+
+@@ 2024|navi2|1|영어|23
+entries = 기재 사항
+recorded = 기록되는
+s = 기관 — S.B.E.는 '기관 대기'
+unmooring = 계류 해제
+buoy = 부이
+tug = 예인선
+struck = 부딪혔다
+pontoon = 폰툰 — pontoon barge는 '부선'
+leaving = 떠나는 — leaving port는 '출항'
+
+@@ 2024|navi2|1|영어|25
+improper = 부적절한
+drawing = 작성 — draw up은 '작성하다'
+sender's = 발신인의
+address = 주소
+business = 업무 — business letter는 '상업 서신'
+blank = 빈 — in blank form은 '빈 양식'
+position = 직위
+
+@@ 2024|navi2|2|영어|2
+call = 부르다(보고하다)
+master = 선장
+passes = 지나가다
+cpa = 최근접점 거리
+less = 더 적은 — less than은 '~ 미만'
+miles = 마일
+
+@@ 2024|navi2|2|영어|3
+translation = 번역
+overstow = 위에 겹쳐 쌓다
+cartons = 판지 상자
+goods = 화물
+
+@@ 2024|navi2|2|영어|4
+underlined = 밑줄 친
+hampered = 조종이 제한된 — hampered vessel은 '조종제한선'
+grounded = 좌초한
+command = 조종 — not under command는 '조종불능'
+constrained = 제약된 — constrained by her draft는 '흘수제약'
+restricted = 제한된
+nature = 성질
+
+@@ 2024|navi2|2|영어|5
+underlined = 밑줄 친
+replaced = 바꿔 쓸 수 있는
+obeying = 따르는
+traffic = 교통 — traffic regulation은 '통항 규칙'
+regulation = 규칙
+complying = 따르는 — complying with는 '~을 준수하는'
+
+@@ 2024|navi2|2|영어|6
+translates = 번역하다
+rig = 설치하다 — rig the pilot ladder는 '도선사 사다리를 내리다'
+pilot = 도선사
+ladder = 사다리
+stb'd = 우현(starboard 약어)
+feet = 피트
+arrange = 배치하다
+
+@@ 2024|navi2|2|영어|7
+attention = 주목 — Attention all vessels는 '모든 선박은 주목하라'
+emergency = 비상
+breakwater = 방파제
+entrance = 입구
+tanker = 유조선
+came = (충돌에) 이르렀다 — came into collision은 '충돌했다'
+collision = 충돌
+clear = 떨어져 — keep well clear는 '충분히 떨어져 있어라'
+
+@@ 2024|navi2|2|영어|8
+similar = 비슷한
+approach = 접근하다
+ahead = 앞의
+close = 좁히다 — close up on은 '~에 거리를 좁히다'
+drop = 처지다 — drop back은 '거리를 벌리다'
+keep = 유지하다
+
+@@ 2024|navi2|2|영어|10
+making = 하는
+identification = 식별 — identification signal은 '식별 신호'
+signals = 신호
+smoke = 연기 — smoke buoy는 '발연 부신호'
+buoy = 부신호
+helicopter = 헬리콥터
+identified = 식별되었다
+
+@@ 2024|navi2|2|영어|11
+nautical = 항해의 — nautical almanac은 '천측력'
+almanac = 역서
+astronomical = 천문의
+tabulated = 표에 실린
+arc = 호(각도)
+interpolation = 보간
+declination = 적위
+gha = 그리니치 시각(GHA)
+
+@@ 2024|navi2|2|영어|12
+radar = 레이더
+waves = 전파
+straight = 직선의
+horizon = 수평선 — radar horizon은 '레이더 수평선'
+output = 출력
+antenna = 안테나
+density = 밀도
+gradients = 경도(변화율)
+refraction = 굴절
+
+@@ 2024|navi2|2|영어|13
+included = 포함된
+navigational = 항해의 — navigational triangle은 '천문 삼각형'
+triangles = 삼각형
+coercivity = 보자력(자석 용어) — 천문 삼각형 요소가 아님
+colatitude = 여위도(90° − 위도)
+codeclination = 여적위(극거)
+coaltitude = 여고도(천정거리)
+
+@@ 2024|navi2|2|영어|15
+virtually = 사실상
+ditches = 도랑
+hold = 화물창
+condensation = 결로
+sweat = 발한(이슬)
+leaking = 새는
+drain = 흘러가다
+bilges = 빌지(선창 바닥 배수 웰)
+
+@@ 2024|navi2|2|영어|17
+manoeuvre = 조종 동작
+avoid = 피하다
+hazard = 위험
+officer = 사관 — officer of the watch는 '당직사관'
+relieved = 교대되는
+handover = 인계
+deferred = 미뤄진
+completed = 끝난
+
+@@ 2024|navi2|2|영어|22
+insurer = 보험자
+undertakes = 인수하다
+indemnify = 보상하다
+assured = 피보험자
+underwriter = 보험인수인
+losses = 손해 — marine losses는 '해상손해'
+incident = 수반되는
+adventure = 해상사업
+
+@@ 2024|navi2|2|영어|23
+essential = 필수적인
+elements = 요소
+business = 업무 — business letter는 '상업 서신'
+letter = 서신 — letter head는 '서두(회사명·주소 인쇄 부분)'
+inside = 안쪽 — inside address는 '수신인 주소'
+complimentary = 인사의 — complimentary close는 '결구'
+identification = 식별 — identification mark는 '작성자 표시'
+
+@@ 2024|navi2|2|영어|24
+wrong = 틀린
+referring = 언급하는
+contact = 연락
+advise = 알려 주다
+forward = 기대하다 — look forward to receiving은 '~을 기대하다'
+comments = 의견
+appropriate = (appreciate의 오기) 감사하다
+convenience = 편의 — at your earliest convenience는 '되도록 빨리'
+
+@@ 2024|navi2|2|영어|25
+improper = 부적절한
+informal = 비격식
+formal = 격식
+granted = 허락했다
+interview = 면담
+hold = 연락 — get hold of는 '연락하다'
+lawyer = 변호사
+contact = 연락하다
+
+@@ 2024|navi2|3|영어|1
+smcp = 표준해사통신영어
+crew = 선원
+passengers = 승객
+distress = 조난
+drill = 훈련
+functions = 임무
+muster = 소집 — muster list는 '비상 소집표'
+
+@@ 2024|navi2|3|영어|2
+expression = 표현
+defined = 정해진
+limits = 경계
+established = 설정된
+lane = 통항로 — traffic lane은 '통항로'
+roundabout = 원형 통항 구역
+inshore = 연안 — inshore traffic zone은 '연안통항대'
+
+@@ 2024|navi2|3|영어|3
+message = 통신문
+marker = 표지어
+proceed = 앞서다(앞에 오다)
+informs = 알리다
+immediate = 즉각적인
+navigational = 항해상의
+intended = 의도된
+intention = 의도(표지어)
+
+@@ 2024|navi2|3|영어|4
+incorrect = 틀린
+standard = 표준
+wheel = 타륜 — wheel order는 '조타 명령'
+meet = (회두를) 멈추게 하다
+ease = (타각을) 줄이다 — 'Ease to five'가 맞고 'Ease in five'는 틀림
+steady = 그대로 — Steady as she goes는 '현 침로 유지'
+
+@@ 2024|navi2|3|영어|5
+present = 현재의
+output = 출력
+main = 주 — main engine은 '주기관'
+engine = 기관
+kilowatts = 킬로와트
+pitch = 피치
+
+@@ 2024|navi2|3|영어|6
+underlined = 밑줄 친
+danger = 위험
+imminent = 임박한
+likely = ~할 것 같은
+serious = 심각한
+
+@@ 2024|navi2|3|영어|7
+underlined = 밑줄 친
+suited = 알맞은(적합한)
+pilot = 도선사
+ladder = 사다리
+suitable = 적합한
+acceptable = 받아들일 수 있는
+
+@@ 2024|navi2|3|영어|8
+improper = 알맞지 않은
+radiotelephone = 무선전화
+distress = 조난
+consists = 구성되다
+nature = 성질 — nature of distress는 '조난의 종류'
+assistance = 지원
+sign = 부호 — call sign은 '호출부호'
+particulars = 세부 사항
+
+@@ 2024|navi2|3|영어|9
+relation = 관계
+fire = 화재
+fighting = 진압 — fire-fighting team은 '소화반'
+jackets = 조끼 — life jacket은 '구명조끼'
+protective = 보호용 — protective clothing은 '방화복'
+smoke = 연기 — smoke helmet은 '방연 헬멧'
+breathing = 호흡 — breathing apparatus는 '호흡구'
+apparatus = 장치
+
+@@ 2024|navi2|3|영어|10
+fishing = 어로 — fishing boat는 '어선'
+anchorage = 정박지
+navigate = 항행하다
+caution = 주의 — with caution은 '주의하여'
+
+@@ 2024|navi2|3|영어|11
+normal = 보통의
+refraction = 굴절
+atmosphere = 대기
+warm = 따뜻한
+covered = 덮인
+cold = 차가운
+sub = 아(亞) — sub-refraction은 '굴절 부족(아굴절)'
+super = 초(超) — super-refraction은 '초굴절'
+
+@@ 2024|navi2|3|영어|12
+phenomenon = 현상
+gyroscope = 자이로스코프
+applied = 가해진
+rotation = 회전
+wheel = 회전체
+precession = 세차운동
+inertia = 관성
+
+@@ 2024|navi2|3|영어|13
+monitoring = 감시하는
+progress = 진행
+echo = 영상
+identified = 식별된
+mark = 물표
+display = 화면
+parallel = 평행한 — parallel index는 '평행 인덱스'
+track = 항적
+passage = 항해

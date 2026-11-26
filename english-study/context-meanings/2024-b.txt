@@ -1,0 +1,438 @@
+@@ 2024|navi2|3|영어|14
+regulations = 규정
+exempt = 면제하다
+exclusively = 오로지
+gmdss = 세계 해상조난·안전제도
+area = 해역 — Area A1은 'VHF 해안국 통달 해역'
+requirement = 요건
+lrit = 장거리 식별·추적
+fitted = 장착된
+ais = 선박자동식별장치
+
+@@ 2024|navi2|3|영어|15
+stability = 복원성
+defined = 정의된
+ability = 능력
+return = 돌아오다
+upright = 똑바로 선 상태
+slightly = 약간
+inclined = 기운
+maneuverability = 조종성
+
+@@ 2024|navi2|3|영어|16
+restricted = 제한된 — restricted visibility는 '제한된 시계'
+towed = 예인되는
+tow = 예인 선열
+manned = 사람이 있는
+blasts = 기적 소리
+prolonged = 장음
+last = 맨 뒤의
+intervals = 간격
+
+@@ 2024|navi2|3|영어|17
+apply = 적용되다
+vessels = 선박
+high = 공(公) — high seas는 '공해'
+seas = 바다
+waters = 수역
+connected = 연결된
+navigable = 항행할 수 있는
+seagoing = 외양 항행의
+
+@@ 2024|navi2|3|영어|18
+explanation = 설명
+designed = 지정된
+surveyed = 측량된
+clearance = 장애물 없음 확인
+submerged = 수중의
+obstacles = 장애물
+deep = 깊은 — deep water route는 '심흘수 항로'
+anchorage = 정박지
+
+@@ 2024|navi2|3|영어|19
+practicable = 가능한
+crossing = 횡단하는
+lanes = 통항로
+obliged = (어쩔 수 없이) ~해야 하는
+heading = 선수방위
+angles = 각 — at right angles는 '직각으로'
+flow = 흐름
+
+@@ 2024|navi2|3|영어|21
+wrong = 틀린
+contract = 계약
+l = 신용장·보상장 약어의 L(Letter)
+credit = 신용 — letter of credit은 '신용장'
+receipt = 수령증 — mate's receipt는 '본선수령증'
+c = C/P의 C(Charter)
+partner = 상대방 — C/P는 Contract Partner가 아니라 Charter Party(용선계약서)
+indemnity = 보상 — letter of indemnity는 '보상장'
+
+@@ 2024|navi2|3|영어|22
+claim = 청구하다
+actual = 현실의 — actual total loss는 '현실전손'
+total = 전부의
+loss = 손해
+destroyed = 파괴된
+idle = 놀고 있는(대기 중인)
+missing = 행방불명
+deprived = 박탈된
+possession = 점유
+
+@@ 2024|navi2|3|영어|23
+principles = 원칙
+concisely = 간결하게
+verb = 동사
+trite = 진부한
+modifiers = 수식어
+auxiliary = 보조의 — auxiliary verb는 '조동사'
+excessive = 지나친
+commercial = 상업의
+
+@@ 2024|navi2|3|영어|24
+entry = 기재 사항
+principal = 주요 — principal column은 '주요 기재란'
+column = 난
+deck = 갑판 — deck log book은 '항해일지'
+course = 침로
+rate = 율 — rate of turn은 '선회율'
+deviation = 자차
+weather = 기상
+
+@@ 2024|navi2|3|영어|25
+appropriate = 알맞은
+title = 제목
+regret = 유감
+complaining = 불평하는
+provisions = 식료품(선용 식량) — 이 문장에서는 '규정'이 아님
+contractor = 납품 업체
+sacks = 자루
+unfit = 부적합한
+consumption = 섭취(소비)
+
+@@ 2024|navi2|4|영어|1
+irrelevant = 관계없는
+air = 공기 — air draught는 '수면 위 높이'
+draught = 높이
+ukc = 선저 여유수심
+gross = 총 — gross tonnage는 '총톤수'
+point = 점 — way point는 '변침점'
+hydrographic = 수로의 — hydrographic survey는 '수로 측량'
+
+@@ 2024|navi2|4|영어|2
+stations = 국 — All stations는 '모든 국에'
+collided = 충돌했다
+unknown = 미확인의
+object = 물체
+tug = 예인선
+pier = 부두
+pan = 긴급 신호(Pan-Pan)
+securite = 안전 신호
+
+@@ 2024|navi2|4|영어|3
+underlined = 밑줄 친
+danger = 위험
+imminent = 임박한
+likely = ~할 것 같은
+serious = 심각한
+
+@@ 2024|navi2|4|영어|6
+rig = 설치하다(내리다) — rig the pilot ladder는 '도선사 사다리를 설치하다'
+pilot = 도선사
+ladder = 사다리
+starboard = 우현
+slack = 늦추다
+
+@@ 2024|navi2|4|영어|8
+veering = 순전하는
+increasing = 강해지는
+beaufort = 보퍼트 — Beaufort wind scale은 '보퍼트 풍력 계급'
+scale = 계급
+expect = 예상하다
+condition = 상태
+northwest = 북서
+
+@@ 2024|navi2|4|영어|9
+indicates = 나타내다
+informs = 알리다
+immediate = 즉각적인
+navigational = 항해상의
+intended = 의도된
+intention = 의도(표지어)
+reduce = 줄이다
+
+@@ 2024|navi2|4|영어|10
+incorrect = 틀린
+fire = 화재 — 'under control'이 맞고 'on control'은 틀림
+control = 통제
+engine = 기관 — engine room은 '기관실'
+danger = 위험
+explosion = 폭발
+assistance = 지원
+
+@@ 2024|navi2|4|영어|11
+ability = 능력
+separate = 구별하다
+targets = 물표
+range = 거리 — at the same range는 '같은 거리에'
+resolution = 분해능
+bearing = 방위 — resolution in bearing은 '방위 분해능'
+refraction = 굴절
+
+@@ 2024|navi2|4|영어|12
+radar = 레이더
+waves = 전파
+straight = 직선의
+horizon = 수평선
+output = 출력
+antenna = 안테나
+density = 밀도
+gradients = 경도(변화율)
+refraction = 굴절
+
+@@ 2024|navi2|4|영어|13
+gyrocompass = 자이로컴퍼스
+phenomena = 현상
+gyroscopic = 자이로의
+inertia = 관성
+rotation = 자전
+gravity = 중력
+precession = 세차운동
+
+@@ 2024|navi2|4|영어|14
+celestial = 천구의 — celestial latitude는 '천구 위도'
+latitude = 위도
+declination = 적위
+polar = 극의 — polar distance는 '극거'
+hour = 시 — hour circle은 '시권'
+zenith = 천정 — zenith distance는 '천정거리'
+
+@@ 2024|navi2|4|영어|16
+seaworthiness = 감항성
+fitness = 적합성
+aspects = 측면
+proposed = 예정된
+voyage = 항해
+preparation = 준비
+
+@@ 2024|navi2|4|영어|19
+command = 조종 — not under command는 '조종불능'
+exhibit = 표시하다
+round = 사방 — all-round light는 '전주등'
+red = 붉은
+vertical = 수직의
+lights = 등
+
+@@ 2024|navi2|4|영어|21
+distributing = 유통하는
+merchandise = 상품
+unitized = 단위화된
+transportation = 수송
+railroad = 철도
+canal = 운하
+containerization = 컨테이너화
+consolidation = 화물 혼재
+
+@@ 2024|navi2|4|영어|22
+routeing = 항로지정
+measure = 방식
+caution = 주의
+traffic = 통항
+flow = 흐름
+precautionary = 주의를 요하는 — precautionary area는 '경계수역'
+anchoring = 정박 — no anchoring area는 '정박 금지 구역'
+avoided = 피해야 할
+
+@@ 2024|navi2|4|영어|24
+entries = 기재 사항
+remark = 비고 — remark column은 '비고란'
+s = 기관 — S.B.E.는 '기관 대기'
+unmooring = 계류 해제
+tug = 예인선
+stb'd = 우현
+struck = 부딪혔다
+barge = 부선
+port = 좌현 — 이 문장에서는 '항구'가 아님
+
+@@ 2024|navi3|1|영어|1
+draft = 흘수
+available = 이용 가능한
+depth = 수심
+aground = 좌초한
+fast = 고정 — made fast는 '계류된'
+underway = 항행 중
+making = 내는 — making way는 '대수속력이 있는'
+
+@@ 2024|navi3|1|영어|2
+route = 항로
+specially = 특별히
+examined = 조사된
+dangers = 위험
+advised = 권고된
+recommended = 권고 — recommended track은 '권고 항로'
+track = 항로
+roundabout = 원형 통항 구역
+
+@@ 2024|navi3|1|영어|4
+heaving = 던지는 — heaving line은 '던짐줄'
+line = 줄
+ready = 준비된
+pilot = 도선사
+ladder = 사다리
+rigged = 설치된
+
+@@ 2024|navi3|1|영어|11
+ebb = 썰물
+flood = 밀물 — 이 문장에서는 '홍수'가 아님
+tide = 조석
+attraction = 인력
+moon = 달
+
+@@ 2024|navi3|1|영어|15
+primary = 주된
+cause = 원인
+wind = 바람
+gravity = 중력
+pressure = 기압 — pressure gradient force는 '기압경도력'
+gradient = 경도
+rotation = 자전
+
+@@ 2024|navi3|1|영어|16
+equatorial = 적도의
+countercurrents = 반류 — equatorial countercurrent는 '적도반류'
+set = (해류가) 흐르다 — 이 문장에서는 '놓다'가 아님
+eastward = 동쪽으로
+westward = 서쪽으로
+
+@@ 2024|navi3|1|영어|18
+garbage = 쓰레기
+annex = 부속서
+food = 음식 — food wastes는 '음식찌꺼기'
+wastes = 폐기물
+cargo = 화물 — cargo residues는 '화물 잔류물'
+residues = 잔류물
+harvested = 잡은 — harvested fish는 '어획물'(쓰레기 아님)
+carcasses = 사체
+
+@@ 2024|navi3|1|영어|20
+improper = 알맞지 않은
+transverse = 횡방향의
+exerted = 가해지는
+metacentric = 메타센터의 — metacentric height는 'GM'
+undue = 지나친
+distribution = 배분
+stress = 응력
+shear = 전단 — shear force는 '전단력'
+bunker = 연료유
+
+@@ 2024|navi3|1|영어|22
+basic = 기본적인
+purpose = 목적
+shipping = 해운 — shipping company는 '해운 회사'
+company = 회사
+profit = 이익
+fleet = 선대
+foster = 촉진하다
+claims = 클레임(손해 청구)
+
+@@ 2024|navi3|1|영어|23
+recognized = 인정된
+technical = 기술적인
+oceanographical = 해양학적인
+ecological = 생태적인
+mandatory = 강제적인
+prevention = 방지
+special = 특별한 — special area는 '특별해역'
+restricted = 제한된
+
+@@ 2024|navi3|1|영어|24
+regret = 유감스럽게 생각하다
+inform = 알리다
+stevedores = 하역 인부
+covering = 덮는
+hatchways = 해치 개구
+accidentally = 실수로
+shifting = 이동식 — shifting beam은 '해치 빔(이동식 보)'
+beams = 보
+lower = 아래쪽 — lower hold는 '하창'
+
+@@ 2024|navi3|1|영어|25
+documents = 문서
+implement = 시행하다
+sms = 안전관리체제
+referred = 불리는
+manual = 매뉴얼 — Safety Management Manual은 '안전관리 매뉴얼'
+documentation = 문서
+compliance = 적합 — Document of Compliance는 '적합증서'
+certificate = 증서
+
+@@ 2024|navi3|2|영어|3
+expression = 표현
+womanned = 여성 배치(manned의 잘못된 표현) — SMCP는 성별 없이 'manned'
+engine = 기관
+bridge = 선교 — bridge control은 '선교 조종'
+diesel = 디젤
+turbine = 터빈
+ahead = 전진
+astern = 후진
+
+@@ 2024|navi3|2|영어|7
+statement = 설명
+message = 통신문
+markers = 표지어
+informs = 알리다
+immediate = 즉각적인
+intended = 의도된
+announcing = 알리는
+intention = 의도(표지어)
+
+@@ 2024|navi3|2|영어|10
+glossary = 용어집
+abandon = 버리다 — abandon vessel은 '퇴선'
+evacuate = 대피시키다
+crew = 선원
+passengers = 승객
+distress = 조난
+muster = 소집하다
+
+@@ 2024|navi3|2|영어|12
+density = 밀도
+iceberg = 빙산
+imprisoned = 갇힌
+mean = 평균의
+assumed = 가정되는
+approximately = 약
+volume = 부피
+submerged = 물에 잠긴
+catched = caught의 잘못된 형태
+
+@@ 2024|navi3|2|영어|13
+crew = 선원
+engaged = 종사한
+chipping = 깡깡이(녹 떼기)
+rusty = 녹슨
+davits = 대빗(구명정 강하 장치)
+skylights = 천창
+ventilators = 통풍기
+funnel = 연돌
+casing = 케이싱 — engine room casing은 '기관실 케이싱'
+
+@@ 2024|navi3|2|영어|14
+bwms = 선박평형수처리장치
+code = 규칙
+test = 시험 — test cycle은 '시험 주기'
+cycle = 주기
+circumstances = 사정
+valid = 유효한
+invalid = 무효인
+consecutive = 연속된
+
+@@ 2024|navi3|2|영어|15
+polar = 극지의 — polar waters는 '극지 해역'
+service = 사용 — Polar Service Temperature는 '극지 사용 온도'
+temperature = 온도
+specified = 지정된
+intended = 예정된
+lowest = 가장 낮은
+mdlt = 평균 일 최저 기온
+season = 계절

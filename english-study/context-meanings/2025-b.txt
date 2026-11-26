@@ -1,0 +1,447 @@
+@@ 2025|navi2|3|영어|17
+nearing = 다가가는
+bend = 굽은 곳(굴곡부)
+channel = 수로
+fairway = 항로
+obscured = 가려진
+intervening = 사이에 있는
+obstruction = 장애물
+prolonged = 장(長) — one prolonged blast는 '장음 1회'
+
+@@ 2025|navi2|3|영어|21
+sand = 모래 — sand blast는 '샌드블라스트(모래 분사로 녹 제거)'
+blast = 분사
+bare = 드러난 — bare metal은 '맨 금속'
+flat = 평 — flat keel은 '평판 용골'
+keel = 용골
+apply = 칠하다
+coat = 한 겹(도막)
+primer = 하도(프라이머)
+anticorrosive = 방청의
+
+@@ 2025|navi2|3|영어|22
+noted = 제출했다
+sea = 해상 — sea protest는 '해난보고서'
+protest = 해난보고서
+consulate = 영사관
+deviation = 이로
+hospitalization = 입원
+urgent = 위급한
+route = 도중 — en route는 '가는 도중'
+
+@@ 2025|navi2|3|영어|23
+maximum = 최대의
+approximately = 대략
+p = 도선사 — P.O.B.는 '도선사 승선(Pilot On Board)'
+precautions = 준비 조치
+under = ~하는 중 — get under way는 '출항하다'
+var'ly = 여러 가지로(variously 약어)
+direction = 지시
+fairway = 항로 — fairway speed는 '항로 속력'
+standing = 나아가는 — standing out of는 '~에서 빠져나가는'
+
+@@ 2025|navi2|3|영어|24
+scattering = 산란
+absorption = 흡수
+energy = 에너지
+radar = 레이더
+beam = 빔(전파 다발) — 이 문장에서는 '정횡'이 아님
+atmosphere = 대기
+attenuation = 감쇠
+diffraction = 회절
+
+@@ 2025|navi2|3|영어|25
+total = 합계
+combined = 합쳐진
+errors = 오차
+gyrocompass = 자이로컴퍼스
+gyro = 자이로 — gyro error는 '자이로 오차'
+expressed = 표시된
+variation = 편차
+deviation = 자차
+
+@@ 2025|navi2|4|영어|1
+situation = 상황
+conversation = 대화
+escape = 탈출 — escape route는 '탈출로'
+routes = 경로
+clear = 막힌 것이 없는
+via = ~을 거쳐
+blocked = 막힌
+evacuation = 대피
+
+@@ 2025|navi2|4|영어|3
+noticed = 알아챘다
+operational = 작동상의
+failure = 고장
+main = 주 — main engine은 '주기관'
+bridge = 선교
+breakdown = 고장(정지)
+blackout = 정전
+
+@@ 2025|navi2|4|영어|4
+even = 등(等) — on even keel은 '등흘수 상태'
+keel = 용골
+vertical = 수직의
+horizontal = 수평의 — 용골이 수평(선수·선미 흘수가 같음)
+drowned = 잠긴
+leaning = 기댄
+
+@@ 2025|navi2|4|영어|5
+restow = 다시 적재하다
+cargo = 화물
+hold = 화물창
+improve = 개선하다
+stability = 복원성
+confirm = 확인하다
+
+@@ 2025|navi2|4|영어|9
+orders = 순서
+standard = 표준
+gmdss = 세계 해상조난·안전제도
+require = 필요로 하다
+fighting = 진압 — fire-fighting assistance는 '소화 지원'
+smoke = 연기
+toxic = 유독한
+position = 위치
+decimal = 소수점
+
+@@ 2025|navi2|4|영어|10
+flooding = 침수되는
+below = 아래 — below water line은 '흘수선 아래'
+assistance = 지원
+required = 필요로 했다
+pumps = 펌프(배수용)
+extinguisher = 소화기
+breathing = 호흡 — breathing apparatus는 '호흡구'
+
+@@ 2025|navi2|4|영어|12
+plane = 평면
+cuts = 자르다
+surface = 표면
+poles = 극
+meridian = 자오선
+equator = 적도
+loxodromic = 항정선의
+
+@@ 2025|navi2|4|영어|13
+accurate = 정확한
+determining = 구하는
+gyrocompass = 자이로컴퍼스
+error = 오차
+underway = 항행 중
+heading = 선수방위
+magnetic = 자기의
+drift = 표류(편류)
+celestial = 천문의
+
+@@ 2025|navi2|4|영어|14
+modification = 변형
+great = 큰 — great-circle sailing은 '대권 항법'
+circle = 원
+limit = 제한하다
+highest = 가장 높은
+latitude = 위도
+composite = 집성 — composite great circle sailing은 '집성 대권 항법'
+rhumb = 항정 — rhumb line sailing은 '항정선 항법'
+
+@@ 2025|navi2|4|영어|18
+alteration = 변경
+avoid = 피하다
+circumstances = 사정
+admit = 허락하다
+readily = 쉽게
+apparent = 알아볼 수 있는
+visually = 눈으로
+succession = 연속
+
+@@ 2025|navi2|4|영어|19
+charterers = 용선계약서(charter parties의 뜻)
+clause = 약관
+liability = 책임
+cease = 끝나다
+cesser = 책임 종료 — cesser clause는 '책임 종료 약관'
+lien = 유치권
+inserted = 삽입된
+shipowner = 선주
+
+@@ 2025|navi2|4|영어|20
+received = 받은
+shipment = 선적
+condition = 상태
+apparent = 외관상
+order = 상태 — in apparent good order는 '외관상 양호한'
+protect = 보호하다
+interests = 이익
+indemnity = 보상 — letter of indemnity는 '보상장'
+manifest = 적하목록
+
+@@ 2025|navi2|4|영어|22
+entries = 기재 사항
+remark = 비고 — remark column은 '비고란'
+approaching = 접근하는
+entrance = 입구
+pilot = 도선사
+conning = 조선 지휘하는
+stationed = 배치되었다
+breakwater = 방파제
+anchor = 닻
+
+@@ 2025|navi2|4|영어|23
+maximum = 최대의
+approximately = 대략
+entries = 기재 사항
+remark = 비고
+precautions = 준비 조치
+var'ly = 여러 가지로(variously 약어)
+fairway = 항로 — fairway speed는 '항로 속력'
+standing = 나아가는
+
+@@ 2025|navi2|4|영어|24
+improper = 부적절한
+drawing = 작성 — draw up은 '작성하다'
+inside = 안쪽 — inside address는 '수신인 주소'
+address = 주소
+preferable = 바람직한
+specific = 특정한
+recipient = 수신인
+row = 줄 — changing row는 '줄을 바꿔'
+
+@@ 2025|navi3|1|영어|4
+concern = 우려
+helmsman = 조타수
+inattentive = 부주의한
+questioned = 질문받는
+heading = 선수방위
+intention = 의도
+advise = 권고하다
+
+@@ 2025|navi3|1|영어|5
+standard = 표준
+wheel = 타륜 — wheel order는 '조타 명령'
+orders = 명령
+swing = 회두
+finished = 끝낸 — Finished with wheel은 '조타 종료'
+midships = 중앙 — 타를 선수미선 위치로
+check = 억제하다
+ease = (타각을) 줄이다
+
+@@ 2025|navi3|1|영어|6
+estimated = 추정된
+metacentric = 메타센터의 — metacentric height는 'GM'
+height = 높이
+breadth = 폭
+full = 전체의 — full roll period는 '완전 횡요주기'
+roll = 횡요
+period = 주기
+seconds = 초
+
+@@ 2025|navi3|1|영어|8
+ready = 준비된
+underway = 항행 — get underway는 '출항하다'
+
+@@ 2025|navi3|1|영어|9
+require = 필요로 하다
+pilot = 도선사
+holder = 소지자
+pilotage = 도선
+exemption = 면제 — pilotage exemption certificate는 '도선 면제 증서'
+certificate = 증서
+exempted = 면제된
+
+@@ 2025|navi3|1|영어|10
+procedure = 절차
+rescuing = 구조하는
+cargo = 화물
+salvage = 해난 구조 — salvage operation은 '구난 작업'
+operations = 작업
+towing = 예인
+clearance = 정리(제거)
+
+@@ 2025|navi3|1|영어|11
+wrong = 틀린
+pair = 짝
+frequency = 주파수
+arpa = 자동 레이더 플로팅 장치
+plotting = 작도
+gps = 위성항법시스템 — Global Positioning System이 맞음(satellite system은 틀림)
+epirb = 비상위치지시용 무선표지
+beacon = 표지
+
+@@ 2025|navi3|1|영어|12
+turn = 넘기다 — turn the watch over to는 '당직을 인계하다'
+watch = 당직
+relief = 교대자
+certain = 확실한
+thorough = 철저한
+understanding = 이해
+existing = 현재의
+handle = 처리하다
+
+@@ 2025|navi3|1|영어|13
+change = 변화
+trim = 트림
+fresh = 담수 — fresh water는 '청수'
+transferred = 옮겨진
+fore = 선수 — fore tank는 '선수 탱크'
+after = 선미 — after tank는 '선미 탱크'
+draft = 흘수
+distance = 거리
+
+@@ 2025|navi3|1|영어|15
+limit = 제한하다
+effective = 유효한 — effective range는 '유효 탐지거리'
+range = 거리
+pulse = 펄스 — pulse width는 '펄스폭'
+width = 폭
+horizontal = 수평의 — horizontal beam width는 '수평 빔 폭'
+peak = 최대 — peak power는 '첨두 출력'
+repetition = 반복 — pulse repetition frequency는 '펄스 반복 주파수'
+
+@@ 2025|navi3|1|영어|16
+distance = 거리
+measured = 잰
+amidships = 선체 중앙에서
+water = 물 — water line은 '흘수선'
+main = 주 — main deck은 '상갑판'
+freeboard = 건현
+gunwale = 현연(뱃전 위 끝)
+draft = 흘수
+
+@@ 2025|navi3|1|영어|18
+power = 동력 — power-driven vessel은 '동력선'
+crossing = 횡단하는
+involve = 수반하다
+risk = 위험
+starboard = 우현 — on her own starboard side는 '자기 우현 쪽에'
+side = 쪽
+keep = 유지하다 — keep out of the way는 '진로를 피하다'
+
+@@ 2025|navi3|1|영어|19
+improper = 틀린
+pair = 짝
+distress = 조난
+audibility = 가청
+screen = 차광판 — screen for sidelight는 '현등 차광판'
+sidelight = 현등
+attract = 끌다
+attention = 주의
+
+@@ 2025|navi3|1|영어|21
+principally = 주로
+control = 제어하다
+cargo = 화물
+tank = 탱크
+atmospheres = 내부 기체
+formation = 형성
+flammable = 인화성의
+mixtures = 혼합기
+inert = 불활성의 — inert gas는 '불활성가스'
+
+@@ 2025|navi3|1|영어|22
+lowered = 내렸다
+derrick = 데릭 — derrick boom은 '데릭 붐'
+booms = 붐
+battened = 밀폐했다 — batten down은 '해치를 단단히 덮다'
+hatches = 해치
+down = 단단히
+
+@@ 2025|navi3|1|영어|24
+discharge = 배출
+oily = 기름이 섞인
+mixtures = 혼합물
+gross = 총 — gross tonnage는 '총톤수'
+prohibited = 금지된
+content = 함유량
+effluent = 배출수
+dilution = 희석 — without dilution은 '희석하지 않고'
+
+@@ 2025|navi3|1|영어|25
+exemption = 예외(면제)
+prohibition = 금지
+discharging = 배출하는
+garbage = 쓰레기
+annex = 부속서
+operational = 운항상의 — operational wastes는 '운항 폐기물'
+stability = 복원성
+fishing = 어로 — fishing gear는 '어구'
+
+@@ 2025|navi3|2|영어|7
+expression = 표현
+smoking = 흡연
+loading = 적재
+ventilate = 통풍하다
+hold = 화물창
+refuse = 거부하다 — 포장이 좋은 화물을 거부하는 것은 맞지 않음
+packings = 포장
+stevedores = 하역 인부
+
+@@ 2025|navi3|2|영어|8
+maximum = 최대
+loading = 적재
+rate = 속도 — loading rate는 '적재율'
+tonnes = 톤
+hour = 시간
+ratio = 비율
+
+@@ 2025|navi3|2|영어|11
+proposed = 제안했다
+system = 방식
+cardinal = 방위 — cardinal system은 '방위표지 방식'
+lateral = 측방 — lateral system은 '측방표지 방식'
+region = 지역 — region A는 'A방식 지역'
+color = 색
+channels = 수로
+starboard = 우현
+
+@@ 2025|navi3|2|영어|13
+hereby = 이에
+report = 보고하다
+command = 지휘 — under my command는 '본인 지휘 하의'
+laden = 실은
+swine = 돼지
+encountered = 만났다
+boisterous = 거친
+rough = 거친 — rough sea는 '황천'
+iron = 철 — iron products는 '철강 제품'
+
+@@ 2025|navi3|2|영어|14
+cargo = 하역
+meal = 식사
+rain = 비
+ceases = 그치다
+hatch = 해치
+barge = 부선
+resume = 재개하다
+disch = 양하(discharging 약어)
+
+@@ 2025|navi3|2|영어|16
+sar = 수색구조
+levels = 단계
+coordination = 조정
+coordinators = 조정관
+scene = 현장 — on-scene coordinator는 '현장 조정관'
+mission = 임무 — SAR mission coordinator는 '수색구조임무 조정관'
+maritime = 해상의
+
+@@ 2025|navi3|2|영어|20
+detail = 세부 사항
+appropriate = 알맞은
+hand = 손 — hand flare는 '신호 홍염'
+flare = 홍염
+lsa = 구명설비 — LSA code는 '구명설비 코드'
+burn = 타다
+resistant = 견디는 — water-resistant는 '방수의'
+casing = 외피
+burning = 연소 — burning period는 '연소 시간(1분 이상이 기준)'
+
+@@ 2025|navi3|2|영어|21
+improper = 알맞지 않은
+transverse = 횡방향의
+exerted = 가해지는
+metacentric = 메타센터의 — metacentric height는 'GM'
+undue = 지나친
+distribution = 배분
+stress = 응력
+shear = 전단 — shear force는 '전단력'
+bunker = 연료유

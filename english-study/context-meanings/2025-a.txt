@@ -1,0 +1,408 @@
+@@ 2025|navi2|1|영어|1
+expression = 표현
+increase = 늘리다
+distance = 거리
+ahead = 앞의
+reducing = 줄이는
+drop = 처지다 — drop back은 '감속해 앞 선박과 거리를 벌리다'
+close = 좁히다 — close up은 '거리를 좁히다'
+overtake = 추월하다
+
+@@ 2025|navi2|1|영어|2
+improper = 부적절한
+anchor = 투묘하다 — 'You may anchor'는 may가 애매해 부적절
+head = 선수 — head line은 '선수줄'
+broken = 끊어진
+cable = 앵커 체인
+up = 위 — up and down은 '체인 수직'
+slack = 늘어진 부분
+stern = 선미
+
+@@ 2025|navi2|1|영어|4
+call = 부르다(보고하다)
+master = 선장
+passes = 지나가다
+cpa = 최근접점 거리
+less = 더 적은 — less than은 '~ 미만'
+miles = 마일
+
+@@ 2025|navi2|1|영어|5
+underlined = 밑줄 친
+danger = 위험
+imminent = 임박한
+likely = ~할 것 같은
+serious = 심각한
+
+@@ 2025|navi2|1|영어|7
+underlined = 밑줄 친
+suited = 적합한
+pilot = 도선사
+ladder = 사다리
+suitable = 적합한
+acceptable = 받아들일 수 있는
+
+@@ 2025|navi2|1|영어|8
+situation = 상황
+indicate = 표시하라
+landing = 착륙 — landing point는 '착륙 지점'
+helicopter = 헬리콥터
+operation = 작업
+hoist = 호이스트(윈치로 끌어올림)
+channel = 수로 — 헬기 작업과 다른 상황
+
+@@ 2025|navi2|1|영어|9
+aground = 좌초한
+beach = 좌안하다(일부러 얹히다)
+refloat = 이초하다
+assistance = 지원
+part = 부분
+full = 전체 — aground full length는 '선체 전장이 얹혔다'
+length = 길이
+
+@@ 2025|navi2|1|영어|10
+distress = 조난 — distress traffic은 '조난 통신'
+traffic = 통신
+pilot = 도선사
+broken = 끊어진
+flooding = 침수
+control = 통제 — not under control은 '통제되지 않는'
+prohibited = 금지된
+abnormally = 비정상적으로
+
+@@ 2025|navi2|1|영어|11
+improper = 부적절한
+navigating = 항행하는
+ice = 얼음(빙해)
+golden = 황금의 — golden rules는 '핵심 원칙'
+excessive = 지나친
+movement = 움직임
+angle = 각도
+floe = 유빙
+
+@@ 2025|navi2|1|영어|12
+officer = 사관
+watchkeeping = 당직
+thoroughly = 철저히
+familiar = 익숙한 — familiar with는 '~에 익숙한'
+electronic = 전자의
+navigational = 항해의
+aids = 장비(보조 장치)
+
+@@ 2025|navi2|1|영어|13
+distance = 거리
+meridians = 자오선
+measured = 잰
+parallel = 거등권 — parallel of latitude는 '위도선(거등권)'
+latitude = 위도
+departure = 동서거 — 이 문장에서는 '출발'이 아님
+longitude = 경도
+
+@@ 2025|navi2|1|영어|15
+method = 방법
+piloting = 연안 항해
+restricted = 제한된 — restricted waters는 '협수역'
+accurate = 정확한
+visual = 육안의
+ranges = 거리
+fix = 선위 결정
+bearings = 방위
+
+@@ 2025|navi2|1|영어|17
+bottom = 선저
+coating = 도막
+paint = 도료
+toxicant = 독성 물질
+poisonous = 유독한
+anti = 방(防) — anti-fouling은 '방오(따개비 부착 방지)'
+fouling = 오손(해양생물 부착)
+corrosive = 부식의 — anti-corrosive는 '방청'
+
+@@ 2025|navi2|1|영어|18
+weather = 기상 — weather map은 '일기도'
+maps = 지도
+joining = 잇는
+temperature = 기온
+isotherm = 등온선
+cirrus = 권운
+cyclolysis = 저기압 소멸
+deepening = 발달(기압 하강)
+
+@@ 2025|navi2|1|영어|19
+improper = 알맞지 않은
+convention = 협약 — Load Line Convention은 '만재흘수선 협약'
+annual = 연차 — annual survey는 '연차검사'
+anniversary = 기념일 — anniversary date는 '증서 연차일'
+alterations = 변경
+superstructures = 선루
+guard = 보호 — guard rail은 '난간'
+skylight = 천창
+
+@@ 2025|navi2|1|영어|20
+certificate = 증서
+recognized = 인정된
+serving = 근무하는
+ashore = 육상의
+intervals = 간격
+exceeding = 넘는
+medical = 의학적 — medical fitness는 '건강 적합성'
+professional = 직무상 — professional competence는 '직무 능력'
+competence = 능력
+
+@@ 2025|navi2|1|영어|21
+notwithstanding = ~에도 불구하고
+contained = 규정된
+overtaking = 추월하는
+keep = 유지하다 — keep out of the way는 '진로를 피하다'
+overtaken = 추월당하는 — vessel being overtaken은 '피추월선'
+
+@@ 2025|navi2|1|영어|22
+appropriate = 적절한
+precautions = 예방 조치
+transport = 운송 — cargo transport unit은 '화물 운송 단위(트레일러 등)'
+units = 단위
+ro = 롤 — ro-ro ship은 '차량 자력 하역선'
+securing = 고정 — securing arrangements는 '고박 장치'
+strength = 강도
+breadth = 폭
+
+@@ 2025|navi2|1|영어|23
+dangerous = 위험한
+solid = 고체
+bulk = 산적
+stowed = 적재된
+nature = 성질
+incompatible = 혼적 불가한
+segregated = 격리된
+distinct = 별개의
+
+@@ 2025|navi2|1|영어|24
+oil = 기름 — Oil Pollution Prevention Certificate는 '기름오염방지증서'
+pollution = 오염
+prevention = 방지
+endorsed = 배서된(확인 서명된)
+administration = 주관청
+authorized = 권한을 받은
+assumes = 지다(떠맡다)
+responsibility = 책임
+
+@@ 2025|navi2|1|영어|25
+insurer = 보험자
+undertakes = 인수하다
+indemnify = 보상하다
+assured = 피보험자
+underwriter = 보험인수인
+losses = 손해 — marine losses는 '해상손해'
+adventure = 해상사업
+
+@@ 2025|navi2|2|영어|2
+safety = 안전
+request = 요청하다
+passengers = 승객
+assembly = 집합 — assembly station은 '집합 장소'
+poop = 선미루 — poop deck은 '선미루 갑판'
+further = 추가의 — further instructions는 '다음 지시'
+instructions = 지시
+farther = 더 먼(거리)
+
+@@ 2025|navi2|2|영어|3
+long = 오래 — How long은 '얼마나 걸리나'
+start = 시동하다
+engines = 기관
+stopped = 정지 상태
+
+@@ 2025|navi2|2|영어|8
+traffic = 교통 — Traffic Control은 '교통관제'
+complying = 준수하는
+regulation = 규칙
+fairway = 항로 — fairway speed는 '항로 제한 속력'
+knots = 노트
+advise = 권고하다
+moving = 움직이는 — 7노트로 제한 속력을 넘은 상태
+
+@@ 2025|navi2|2|영어|10
+gale = 강풍 — gale warning은 '강풍 경보'
+warnings = 경보
+easterly = 동쪽에서 부는
+backing = 반전하는(반시계 방향으로 바뀌는)
+freshening = 강해지는
+issued = 발표되었다
+
+@@ 2025|navi2|2|영어|12
+receivers = 수신기
+determine = 결정하다
+location = 위치
+altitude = 고도
+microwave = 마이크로파
+ranging = 거리 측정
+satellites = 위성
+gnss = 위성항법시스템
+
+@@ 2025|navi2|2|영어|14
+wrong = 틀린
+officer = 사관
+charge = 책임 — officer in charge of the watch는 '당직책임사관'
+notify = 알리다
+doubt = 의심
+interest = 이익 — in the interest of safety는 '안전을 위해'
+relieved = 교대된
+relieving = 교대하는
+
+@@ 2025|navi2|2|영어|16
+winter = 겨울
+monsoon = 계절풍
+caused = 생기는
+warmer = 더 따뜻한
+pressure = 기압
+land = 육지
+
+@@ 2025|navi2|2|영어|18
+effectiveness = 효과
+appliances = 설비 — life-saving appliances는 '구명설비'
+maintenance = 정비
+drills = 훈련
+lapse = 경과
+survey = 검사
+deterioration = 열화(성능 저하)
+inspection = 점검
+
+@@ 2025|navi2|2|영어|19
+construing = 해석하는
+complying = 준수하는
+due = 정당한 — due regard는 '합당한 주의'
+regard = 주의
+dangers = 위험
+limitations = 제약
+departure = 벗어남 — departure from these Rules는 '규칙에서 벗어난 동작' — 이 문장에서는 '출항'이 아님
+immediate = 급박한
+
+@@ 2025|navi2|2|영어|20
+improper = 알맞지 않은
+convention = 협약
+annual = 연차 — annual survey는 '연차검사'
+anniversary = 기념일 — anniversary date는 '증서 연차일'
+alterations = 변경
+superstructures = 선루
+guard = 보호 — guard rail은 '난간'
+quarters = 거주구역
+
+@@ 2025|navi2|2|영어|22
+cover = 덮다
+sizes = 체격
+lifejacket = 구명조끼
+exception = 예외
+gloves = 장갑
+unpacked = 포장을 푼
+donned = 착용된
+immersion = 침수 — immersion suit는 '방수복(이머전 슈트)'
+suit = 복
+
+@@ 2025|navi2|2|영어|23
+prior = 앞서 — prior to는 '~ 전에'
+painting = 도장
+echo = 반향 — echo sounder는 '음향측심기'
+sounder = 측심기
+plates = 판
+wipe = 닦다
+grease = 그리스(기름)
+flooding = 물을 채우는
+
+@@ 2025|navi2|2|영어|24
+informal = 비격식의
+style = 문체
+preferable = 바람직한
+business = 업무 — business letter는 '상업 서신'
+tolerate = 참다
+faxing = 팩스로 보내는
+warehouse = 창고
+investigate = 조사하다
+
+@@ 2025|navi2|2|영어|25
+improper = 부적절한
+auxiliary = 보조의 — auxiliary verb는 '조동사'
+simplifying = 간단히 하는
+obliged = ~해야 하는 — be obliged to는 '~할 의무가 있다'(may로 바꾸면 뜻이 달라짐)
+possible = 가능한
+necessary = 필요한
+unlikely = 일어날 것 같지 않은
+
+@@ 2025|navi2|3|영어|2
+wrong = 알맞지 않은
+cable = 앵커 체인
+leading = 뻗어 있는
+weight = 장력 — 방향을 묻는 질문에 맞지 않는 대답
+ahead = 앞쪽으로
+port = 좌현
+bow = 선수 — round the bow는 '선수를 돌아'
+
+@@ 2025|navi2|3|영어|4
+ballast = 평형수
+control = 조절
+briefing = 사전 설명
+shore = 육상 — shore instructions는 '육상 지시'
+pumping = 펌프 작업
+present = 현재 — at present는 '현재'
+
+@@ 2025|navi2|3|영어|5
+wrong = 틀린
+rig = 설치하라
+hatchrails = 해치 난간
+hold = 화물창
+slings = 슬링 — 'slings does not'은 수 일치가 틀림
+permit = 허용하다
+available = 준비된
+fork = 포크 — fork-lift truck은 '지게차'
+
+@@ 2025|navi2|3|영어|6
+wrong = 틀린
+explanation = 설명
+fire = 화재
+brigade = 대(隊) — fire brigade는 '소방대'(장비가 아님)
+floating = 해상의 — floating crane은 '해상 크레인'
+handling = 하역 — handling capacity는 '하역 능력'
+capacity = 능력
+load = 하중 — safe working load는 '안전사용하중'
+
+@@ 2025|navi2|3|영어|7
+emit = 내뿜다
+flammable = 인화성의
+gases = 가스
+contact = 접촉
+dry = 건조한
+
+@@ 2025|navi2|3|영어|8
+indicates = 나타내다
+interrogative = 질문의
+character = 성격
+question = 질문(표지어)
+present = 현재의
+maximum = 최대
+draft = 흘수
+
+@@ 2025|navi2|3|영어|11
+modification = 변형
+great = 큰 — great circle sailing은 '대권 항법'
+circle = 원
+limit = 제한하다
+latitude = 위도
+severe = 심한
+poles = 극
+composite = 집성 — composite sailing은 '집성 대권 항법'
+
+@@ 2025|navi2|3|영어|13
+ability = 능력
+separate = 구별하다
+targets = 물표
+bearing = 방위 — on the same bearing은 '같은 방위에'
+resolution = 분해능 — resolution in range는 '거리 분해능'
+range = 거리
+refraction = 굴절
+
+@@ 2025|navi2|3|영어|16
+traffic = 통항 — traffic separation scheme은 '통항분리방식'
+separation = 분리
+scheme = 방식
+join = 진입하다
+leave = 이탈하다
+angle = 각 — at as small an angle as practicable은 '가능한 한 작은 각도로'
+margin = 여유
+terminations = 끝부분
