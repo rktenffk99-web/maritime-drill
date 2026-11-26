@@ -23055,7 +23055,7 @@ window.alert=appAlert;
           const q=ppFindQuestion(gradeId,item);
           return q?{...item,choices:q['선택지']}:null;
         }).filter(item=>item&&!fingerprints.has(ppPredictiveQuestionFingerprint(item)));
-        const draw=engine.select(candidates,{gradeId,data,state:exposure,identity,count:PAST_MOCK_PER_SUBJECT});
+        const draw=engine.select(candidates,{gradeId,data,state:exposure,identity,count:PAST_MOCK_PER_SUBJECT,boost:item=>1+0.6*(ppWeakTopicBoost(item)-1)}); // mock-weak-blend-v542
         if(draw.items.length!==PAST_MOCK_PER_SUBJECT)throw new Error(`${subject}의 사용 가능한 서로 다른 문항이 ${PAST_MOCK_PER_SUBJECT}개보다 적습니다.`);
         for(const item of draw.items){selected.push(item);fingerprints.add(ppPredictiveQuestionFingerprint(item));}
         identities.push(...draw.identities);

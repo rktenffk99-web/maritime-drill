@@ -102,7 +102,10 @@
       const id=String(identify(item)),fp=fingerprint(item);
       if(!id||seenIds.has(id)||seenText.has(fp))continue;
       seenIds.add(id);seenText.add(fp);
-      rows.push({item,id,fp,topic:topic(item,data),weight:1+0.20*Math.min(5,Math.max(0,(item.hits?.length||1)-1))});
+      // mock-weak-blend-v542: an optional, bounded personal weight (weak parts).
+      let personal=1;
+      if(typeof options.boost==='function'){try{const b=Number(options.boost(item));personal=Number.isFinite(b)?Math.max(1,Math.min(1.5,b)):1}catch(e){personal=1}}
+      rows.push({item,id,fp,topic:topic(item,data),weight:(1+0.20*Math.min(5,Math.max(0,(item.hits?.length||1)-1)))*personal});
     }
     const target=Math.min(Math.max(0,Math.floor(options.count||0)),rows.length);
     const history=normalize(state).grades[gradeId]||{recent:[],seen:{},sequence:0};

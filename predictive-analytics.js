@@ -199,7 +199,7 @@
     let history=loadEvaluationScores()[historyKey]||[];
     if(persist&&complete&&!explanationViewed){
       const id=String((typeof pastResultId!=='undefined'&&pastResultId)||((typeof pastStartedAt!=='undefined'&&pastStartedAt)||Date.now()));
-      history=saveEvaluationScore(historyKey,{id,at:new Date().toISOString(),score,correct,total,signature});
+      history=saveEvaluationScore(historyKey,{id,at:new Date().toISOString(),score,correct,total,signature,subjects:subjectScores(rows,answers)});
     }
     const recent=history.slice(0,3),avg=recent.length?Math.round(recent.reduce((s,r)=>s+(Number(r.score)||0),0)/recent.length*10)/10:null;
     return {grade,signature,historyKey,total,answered,correct,score,complete,explanationViewed,recentCount:recent.length,recentAverage:avg};
@@ -219,7 +219,7 @@
     let history=loadEvaluationScores()[historyKey]||[];
     if(persist&&eligible&&complete&&!explanationViewed){
       const id=String((typeof pastResultId!=='undefined'&&pastResultId)||((typeof pastStartedAt!=='undefined'&&pastStartedAt)||Date.now()));
-      history=saveEvaluationScore(historyKey,{id,at:new Date().toISOString(),score,correct,total,signature,mode:'unified-v1'},'모의시험 점수');
+      history=saveEvaluationScore(historyKey,{id,at:new Date().toISOString(),score,correct,total,signature,mode:'unified-v1',subjects:subjectScores(rows,answers)},'모의시험 점수');
     }
     const recent=history.slice(0,3),avg=recent.length?Math.round(recent.reduce((s,r)=>s+(Number(r.score)||0),0)/recent.length*10)/10:null;
     return {grade,signature,historyKey,total,answered,correct,score,complete,eligible,explanationViewed,recentCount:recent.length,recentAverage:avg};
@@ -231,6 +231,85 @@
     saveProfile(result.topics);
     if(queue.some(q=>q&&q._evaluationMock))evaluationSummary(queue,answers);
     if(queue.every(q=>q&&q._unifiedMock===true))unifiedSummary(queue,answers);
+  }
+
+  // mock-analysis-v542: pass judgement, part table, trend and wrong-question review.
+  const SUBJECT_ORDER=['항해','운용','법규','영어','상선전문','어선전문'];
+  function subjectRank(label){const i=SUBJECT_ORDER.indexOf(label);return i<0?99:i}
+  function subjectScores(queue,answers){
+    const out={};for(const r of stats(queue,answers).subjects)out[r.label]={score:r.score,correct:r.correct,total:r.total};return out;
+  }
+  // 선박직원법 시행령 제18조: 매 과목 40점(항해사의 법규과목은 60점) 이상, 전과목 평균 60점 이상.
+  function cutoffFor(grade,subject){return /^navi/.test(String(grade||''))&&subject==='법규'?60:40}
+  function passJudgement(subjects,grade){
+    const rows=subjects.filter(r=>r.total>0).map(r=>({...r,cutoff:cutoffFor(grade,r.label),exact:r.correct/r.total*100}));
+    if(!rows.length)return null;
+    const average=rows.reduce((t,r)=>t+r.exact,0)/rows.length;
+    const failing=rows.filter(r=>r.exact<r.cutoff).map(r=>({...r,need:Math.max(0,Math.ceil(r.cutoff*r.total/100-1e-9)-r.correct)}));
+    // Smallest number of extra correct answers that also lifts the average to 60.
+    const sim=rows.map(r=>({label:r.label,correct:r.correct,total:r.total}));
+    for(const f of failing){const x=sim.find(y=>y.label===f.label);x.correct+=f.need}
+    let extra=failing.reduce((t,f)=>t+f.need,0),avg=()=>sim.reduce((t,r)=>t+r.correct/r.total*100,0)/sim.length;
+    while(avg()<60-1e-9){const open=sim.filter(r=>r.correct<r.total).sort((a,b)=>a.total-b.total);if(!open.length)break;open[0].correct++;extra++}
+    const subjectPasses=rows.filter(r=>r.exact>=60).length;
+    return {rows,average,failing,pass:!failing.length&&average>=60-1e-9,extra,subjectPasses};
+  }
+  function judgementBlock(j){
+    if(!j)return '';
+    const tone=j.pass?'#047857':'#B91C1C';
+    const reasons=j.pass?`과목별 기준과 평균 60점을 모두 넘었습니다.`
+      :[...j.failing.map(f=>`${htmlText(f.label)} ${Math.round(f.exact)}점 → 과락 기준 ${f.cutoff}점까지 ${f.need}문제 더`),j.average<60?`평균 ${Math.round(j.average*10)/10}점 → 60점 필요`:''].filter(Boolean).join('<br>');
+    const chips=j.rows.sort((a,b)=>subjectRank(a.label)-subjectRank(b.label)).map(r=>`<span style="display:inline-block;margin:3px 4px 0 0;padding:3px 8px;border-radius:999px;font-size:11px;font-weight:700;background:${r.exact>=r.cutoff?'#D1FAE5':'#FEE2E2'};color:${r.exact>=r.cutoff?'#047857':'#B91C1C'}">${htmlText(r.label)} ${r.score}점 / 기준 ${r.cutoff}</span>`).join('');
+    return `<div data-pass-judgement style="padding:12px;border-radius:10px;border:1.5px solid ${tone};margin:12px 0 16px">`
+      +`<div style="font-size:16px;font-weight:900;color:${tone}">${j.pass?'합격선 통과':'합격선 미달'} · 평균 ${Math.round(j.average*10)/10}점</div>`
+      +`<div style="font-size:12px;color:#334155;margin-top:6px;line-height:1.6">${reasons}${j.pass?'':`<br><b>최소 ${j.extra}문제 더 맞히면 합격선</b>`}</div><div style="margin-top:6px">${chips}</div>`
+      +`<div style="font-size:10px;color:#64748B;margin-top:8px;line-height:1.5">기준: 선박직원법 시행령 제18조 — 매 과목 40점(항해사 법규 60점) 이상, 전 과목 평균 60점 이상. 무응답은 0점으로 계산합니다. 이 모의에 포함된 과목만 판정합니다.${j.subjectPasses>=2&&!j.pass?` 60점 이상 과목 ${j.subjectPasses}개는 실제 시험이라면 과목합격 대상입니다.`:''}</div></div>`;
+  }
+  function topicTable(topics){
+    if(!topics.length)return '';
+    const bySubject=new Map();
+    for(const r of topics){if(!bySubject.has(r.subject))bySubject.set(r.subject,[]);bySubject.get(r.subject).push(r)}
+    const groups=[...bySubject.entries()].sort((a,b)=>subjectRank(a[0])-subjectRank(b[0])).map(([subject,rows])=>{
+      const body=rows.sort((a,b)=>a.score-b.score||b.total-a.total).map(r=>{
+        const color=r.score>=60?'#059669':r.score>=40?'#D97706':'#DC2626';
+        return `<tr><td style="padding:5px 6px;font-size:12px">${htmlText(r.label)}</td><td style="padding:5px 6px;font-size:12px;text-align:right;white-space:nowrap">${r.correct}/${r.total}</td><td style="padding:5px 6px;width:42%"><div style="display:flex;align-items:center;gap:6px"><div style="flex:1;height:7px;background:#E2E8F0;border-radius:999px;overflow:hidden"><div style="height:100%;width:${r.score}%;background:${color}"></div></div><b style="font-size:11px;color:${color};min-width:34px;text-align:right">${r.score}%</b></div></td></tr>`;
+      }).join('');
+      return `<div style="margin-top:10px"><div style="font-size:12px;font-weight:900;color:#334155">${htmlText(subject)}</div><table style="width:100%;border-collapse:collapse">${body}</table></div>`;
+    }).join('');
+    return `<div data-topic-table style="margin:16px 0"><div style="font-size:13px;font-weight:900">파트별 정답률</div><div style="font-size:11px;color:#64748B;margin-top:3px">무응답 포함 · 정답률이 낮은 파트부터</div>${groups}</div>`;
+  }
+  function trendTable(historyKey,currentId){
+    const list=(loadEvaluationScores()[historyKey]||[]).slice(0,6);
+    if(!list.length)return '';
+    const subjects=[...new Set(list.flatMap(r=>plain(r.subjects)?Object.keys(r.subjects):[]))].sort((a,b)=>subjectRank(a)-subjectRank(b));
+    const date=at=>{const d=new Date(at);return Number.isFinite(d.getTime())?`${d.getMonth()+1}/${d.getDate()}`:'—'};
+    const diff=(a,b)=>typeof a==='number'&&typeof b==='number'?(a===b?'':`<span style="font-size:10px;color:${a>b?'#059669':'#DC2626'}"> ${a>b?'▲':'▼'}${Math.abs(a-b)}</span>`):'';
+    const rows=list.map((r,i)=>{const prev=list[i+1];const cur=String(r.id||'')===String(currentId||'');
+      const cells=subjects.map(sub=>{const v=plain(r.subjects)&&r.subjects[sub]?r.subjects[sub].score:null;const p=prev&&plain(prev.subjects)&&prev.subjects[sub]?prev.subjects[sub].score:null;return `<td style="padding:5px;text-align:center;font-size:12px">${v===null?'—':v+diff(v,p)}</td>`}).join('');
+      return `<tr style="${cur?'background:#F5F3FF;font-weight:800':''}"><td style="padding:5px;font-size:12px;white-space:nowrap">${date(r.at)}${cur?' (이번)':''}</td><td style="padding:5px;text-align:center;font-size:12px"><b>${r.score}</b>${diff(r.score,prev&&prev.score)}</td>${cells}</tr>`}).join('');
+    return `<div data-mock-trend style="margin:16px 0;overflow-x:auto"><div style="font-size:13px;font-weight:900">지난 모의와 비교</div><div style="font-size:11px;color:#64748B;margin:3px 0 6px">같은 과목 구성으로 끝까지 푼 모의만 · 최근 ${list.length}회 · ▲▼는 바로 이전 회 대비${subjects.length?'':' · 과목별 점수는 다음 모의부터 기록됩니다'}</div><table style="width:100%;border-collapse:collapse"><tr style="font-size:11px;color:#64748B"><th style="padding:5px;text-align:left">날짜</th><th style="padding:5px">총점</th>${subjects.map(x=>`<th style="padding:5px">${htmlText(x)}</th>`).join('')}</tr>${rows}</table></div>`;
+  }
+  function wrongList(queue,answers){
+    const markers=['㉮','㉯','㉰','㉱'];
+    const choiceText=v=>typeof pastChoiceText==='function'?pastChoiceText(v):safeText(v);
+    const groups=new Map();
+    (queue||[]).forEach((q,i)=>{
+      if(!q||!q._predictiveMock||q._predictiveReview)return;
+      const a=answers&&answers[i];if(a===null||a===undefined||a===q['정답'])return;
+      const key=`${subjectOf(q)}|${topicOf(q)}`;if(!groups.has(key))groups.set(key,[]);groups.get(key).push({q,a,i});
+    });
+    if(!groups.size)return `<div data-wrong-list style="margin:16px 0;font-size:12px;color:#047857"><b>틀린 문제가 없습니다.</b></div>`;
+    const blocks=[...groups.entries()].sort((a,b)=>b[1].length-a[1].length||subjectRank(a[0].split('|')[0])-subjectRank(b[0].split('|')[0])).map(([key,items])=>{
+      const [subject,topic]=key.split('|');
+      const body=items.map(({q,a,i})=>{
+        const explain=typeof renderExplainBlock==='function'?(()=>{try{return renderExplainBlock(q,{compact:true})}catch(e){return ''}})():'';
+        const figure=global.__mdFigureImages?global.__mdFigureImages.html(q):'';
+        return `<div style="padding:10px 0;border-top:1px solid #E2E8F0"><div style="font-size:11px;color:#64748B">${i+1}번 · ${htmlText([q._year&&q._year+'년',q['회차']&&q['회차']+'회',q['과목'],q['번호']!=null&&'Q'+q['번호']].filter(Boolean).join(' · '))}</div><div style="font-size:13px;font-weight:700;margin:4px 0;white-space:pre-wrap">${htmlText(q['문제']||'')}</div>${figure}<div style="font-size:12px;color:#DC2626">내 답: ${markers[a]||''} ${htmlText(choiceText((q['선택지']||[])[a]))}</div><div style="font-size:12px;color:#059669">정답: ${markers[q['정답']]||''} ${htmlText(choiceText((q['선택지']||[])[q['정답']]))}</div>${explain?`<div style="margin-top:6px">${explain}</div>`:''}</div>`;
+      }).join('');
+      return `<details style="border:1px solid #E2E8F0;border-radius:10px;padding:8px 10px;margin-top:8px"><summary style="cursor:pointer;font-size:13px;font-weight:800">${htmlText(topic)} <span style="font-size:11px;color:#64748B;font-weight:600">${htmlText(subject)}</span> <span style="color:#DC2626">· ${items.length}문제</span></summary>${body}</details>`;
+    }).join('');
+    const total=[...groups.values()].reduce((t,x)=>t+x.length,0);
+    return `<div data-wrong-list style="margin:16px 0"><div style="font-size:13px;font-weight:900">틀린 문제 모아보기 · ${total}문제</div><div style="font-size:11px;color:#64748B;margin-top:3px">파트별로 묶었습니다. 많이 틀린 파트부터 · 무응답 제외</div>${blocks}</div>`;
   }
   function pctBar(value){return `<div style="height:7px;background:#E2E8F0;border-radius:999px;overflow:hidden"><div style="height:100%;width:${Math.max(0,Math.min(100,value))}%;background:#7C3AED"></div></div>`}
   function render(){
@@ -248,16 +327,20 @@
     const boost=Object.values(getProfileForGrade(grade)||{}).sort((a,b)=>b.boostMultiplier-a.boostMultiplier);
     const evaluation=isEvaluation?evaluationSummary(pastQueue,pastAnswers,false):null;
     const unified=isUnified?unifiedSummary(pastQueue,pastAnswers,false):null;
+    const judgement=judgementBlock(passJudgement(s.subjects,grade));
+    const currentId=String((typeof pastResultId!=='undefined'&&pastResultId)||(typeof pastStartedAt!=='undefined'&&pastStartedAt)||'');
+    const trend=evaluation?trendTable(evaluation.historyKey,currentId):unified?trendTable(unified.historyKey,currentId):'';
+    const parts=topicTable(s.topics.slice()),wrongs=wrongList(pastQueue,pastAnswers);
     const host=document.createElement('section');host.id='md-predictive-analysis';host.className='card';host.style.cssText='margin-top:14px;border-left:4px solid #7C3AED';
     const subjects=s.subjects.sort((a,b)=>a.score-b.score).map(r=>`<div style="padding:11px;border:1px solid #E2E8F0;border-radius:10px"><div style="display:flex;justify-content:space-between;gap:8px"><b>${htmlText(r.label)}</b><b>${r.score}점</b></div><div style="font-size:11px;color:#64748B;margin:4px 0 7px">${r.total}문제 · 정답 ${r.correct} · 오답 ${r.wrong} · 무응답 ${r.unanswered}<br>푼 문제 중 정답률 ${r.accuracy===null?'—':r.accuracy+'%'} (응답 ${r.attempts}문제)</div>${pctBar(r.score)}</div>`).join('');
     const weak=boost.slice(0,6).map((r,i)=>`<div style="padding:10px 0;border-bottom:1px solid #E2E8F0"><div style="display:flex;justify-content:space-between;gap:10px"><div><b>${i+1}. ${htmlText(r.label)}</b><span style="font-size:10px;color:#64748B;margin-left:5px">${htmlText(r.subject)}</span></div><b>취약 가중치 ${(Number(r.boostMultiplier)||1).toFixed(2)}배</b></div><div style="font-size:11px;color:#64748B;margin:4px 0 6px">${r.attempts}문제 응답 · 오답 ${r.wrong} · 오답률 ${r.errorRate}% · 최근성·표본수 반영</div>${pctBar(Math.round((r.boostMultiplier-1)/0.75*100))}</div>`).join('');
     const evaluationBlock=evaluation?`<div style="font-size:18px;font-weight:900">평가용 모의고사 분석</div><div style="font-size:11px;color:#64748B;margin-top:4px;line-height:1.55">개인 취약도·학습 진도에 영향을 주지 않는 점수 측정용 결과입니다. 미응답은 현재 점수에는 0점으로 반영되지만 완료한 모의만 최근 평균에 저장합니다.</div><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px"><div style="padding:11px;border-radius:9px;background:#F8FAFC"><b>이번 점수 ${evaluation.score}%</b><div style="font-size:10px;color:#64748B">${evaluation.correct}/${evaluation.total} · 응답 ${evaluation.answered}/${evaluation.total}</div></div><div style="padding:11px;border-radius:9px;background:#F8FAFC"><b>동일 과목 구성 최근 ${evaluation.recentCount}회 평균 ${evaluation.recentAverage===null?'—':evaluation.recentAverage+'%'}</b><div style="font-size:10px;color:#64748B">${evaluation.explanationViewed?'힌트·해설 열람 기록 제외':evaluation.complete?'이번 기록 포함':'미완료라 이번 기록 제외'}</div></div></div>`:'';
     const unifiedBlock=unified?`<div data-unified-score-summary><div style="font-size:18px;font-weight:900">모의시험 성적 추이</div><div style="font-size:12px;color:#475569;margin-top:5px;line-height:1.6">같은 과목 구성의 완료한 모의시험을 비교합니다. 회차별 난이도 차이가 있어 점수 추이는 참고용입니다.</div><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0"><div style="padding:11px;border-radius:9px;background:#F8FAFC"><b>이번 점수 ${unified.score}점</b><div style="font-size:11px;color:#475569">정답 ${unified.correct}/${unified.total} · 응답 ${unified.answered}/${unified.total}</div></div><div style="padding:11px;border-radius:9px;background:#F8FAFC"><b>동일 과목 구성 최근 ${unified.recentCount}회 평균 ${unified.recentAverage===null?'—':unified.recentAverage+'점'}</b><div style="font-size:11px;color:#475569">${unified.explanationViewed?'힌트·해설 열람 기록 제외':unified.complete?'이번 기록 포함':'미완료라 이번 기록 제외'}</div></div></div><div style="font-size:12px;color:#475569;line-height:1.6;margin-bottom:16px">채점한 오답은 복습에 반영됩니다. 미응답은 점수에 0점으로 반영되며 취약도에는 반영하지 않습니다.</div></div>`:'';
-    host.innerHTML=isEvaluation?`${evaluationBlock}<div style="font-size:13px;font-weight:900;margin:14px 0 8px">과목별 성적 · 전체 문항 기준</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px">${subjects}</div>`:`${unifiedBlock}<div style="font-size:18px;font-weight:900">취약 파트 분석</div><div style="font-size:11px;color:#64748B;margin-top:4px;line-height:1.55">과목별 점수는 무응답을 포함한 전체 문항 기준(100점 만점)입니다. 푼 문제 중 정답률은 별도로 표시합니다. 취약 가중치는 실제 오답, 최근 숙제 결과, 표본 수와 경과 시간을 반영하며 실제 배정 비율을 뜻하지 않습니다. 무응답은 점수에는 반영되지만 취약도에는 반영하지 않습니다.</div><div style="font-size:13px;font-weight:900;margin:14px 0 8px">과목별 성적 · 전체 문항 기준</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px">${subjects}</div><div style="font-size:13px;font-weight:900;margin:16px 0 5px">다음 학습 취약 가중치 · 최근 학습 반영</div>${weak||'<div style="font-size:12px;color:#64748B">누적 결과에서 뚜렷한 취약 파트가 없습니다.</div>'}<div style="font-size:10px;color:#64748B;margin-top:10px;line-height:1.5">급수·과목별 최근 10회 모의와 최근 숙제 기록을 함께 봅니다. 오래된 기록은 30일 반감기로 줄이고, 3회 미만 표본의 가중치 증가는 최대 1.05배입니다. 가중치는 빈출·취약 연습과 숙제 신규문제 순서에 적용되며 실제 배정 비율과 다릅니다.</div>`;
+    host.innerHTML=isEvaluation?`${evaluationBlock}${judgement}<div style="font-size:13px;font-weight:900;margin:14px 0 8px">과목별 성적 · 전체 문항 기준</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px">${subjects}</div>${trend}${parts}${wrongs}`:`${unifiedBlock}${judgement}${trend}<div style="font-size:18px;font-weight:900">취약 파트 분석</div><div style="font-size:11px;color:#64748B;margin-top:4px;line-height:1.55">과목별 점수는 무응답을 포함한 전체 문항 기준(100점 만점)입니다. 푼 문제 중 정답률은 별도로 표시합니다. 취약 가중치는 실제 오답, 최근 숙제 결과, 표본 수와 경과 시간을 반영하며 실제 배정 비율을 뜻하지 않습니다. 무응답은 점수에는 반영되지만 취약도에는 반영하지 않습니다.</div><div style="font-size:13px;font-weight:900;margin:14px 0 8px">과목별 성적 · 전체 문항 기준</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px">${subjects}</div><div style="font-size:13px;font-weight:900;margin:16px 0 5px">다음 학습 취약 가중치 · 최근 학습 반영</div>${weak||'<div style="font-size:12px;color:#64748B">누적 결과에서 뚜렷한 취약 파트가 없습니다.</div>'}<div style="font-size:10px;color:#64748B;margin-top:10px;line-height:1.5">급수·과목별 최근 10회 모의와 최근 숙제 기록을 함께 봅니다. 오래된 기록은 30일 반감기로 줄이고, 3회 미만 표본의 가중치 증가는 최대 1.05배입니다. 가중치는 빈출·취약 연습, 숙제 신규문제 순서, 모의시험 문제 선택(약하게, 최대 1.45배)에 적용되며 실제 배정 비율과 다릅니다.</div>${parts}${wrongs}`;
     const firstCard=app.querySelector('.card');
     if(firstCard&&firstCard.parentNode)firstCard.parentNode.insertBefore(host,firstCard.nextSibling);else app.appendChild(host);
   }
-  global.__mdWeakTopicAnalytics={subjectOf,topicOf,stats,reinforcement,aggregateProfile,getProfileForGrade,recentHomeworkEvidence,evidenceDecay,evaluationSignature,evaluationSummary,unifiedSummary,loadEvaluationScores,persistResult};
+  global.__mdWeakTopicAnalytics={passJudgement,subjectScores,trendTable,topicTable,wrongList,subjectOf,topicOf,stats,reinforcement,aggregateProfile,getProfileForGrade,recentHomeworkEvidence,evidenceDecay,evaluationSignature,evaluationSummary,unifiedSummary,loadEvaluationScores,persistResult};
   new MutationObserver(()=>requestAnimationFrame(render)).observe(document.documentElement,{childList:true,subtree:true});
   document.addEventListener('DOMContentLoaded',render,{once:true});
   setTimeout(render,0);
