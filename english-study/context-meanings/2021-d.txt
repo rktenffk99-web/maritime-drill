@@ -1,0 +1,394 @@
+@@ 2021|navi3|2|영어|25
+answer = 답 — in answer to는 '~에 대한 답으로'
+letter = 서신
+dated = 날짜가 ~인
+advise = 알리다
+tracing = 추적 조사
+case = (화물) 상자 1개
+shortlanded = 부족 양하된
+negative = 찾지 못한(부정적인)
+
+@@ 2021|navi3|3|영어|1
+meaning = 뜻
+underlined = 밑줄 친
+vts = 해상교통관제
+understand = 이해하다
+interco = 국제신호서(International Code of Signals) 사용 신호
+signals = 신호
+international = 국제의
+phrases = 표현
+
+@@ 2021|navi3|3|영어|2
+message = 통신문
+properly = 제대로
+heard = 들리는
+say = 말하다 — Say again은 '다시 말해 달라'
+again = 다시
+pardon = 다시 말씀 — 일상 표현이라 SMCP에서 쓰지 않음
+
+@@ 2021|navi3|3|영어|3
+center = 중앙 — center fairlead는 '선수미 중앙 페어리더'
+fairlead = 페어리더(줄을 유도하는 구멍)
+fore = 선수
+aft = 선미
+take = 통과시키다 — take the line through는 '줄을 ~로 통과시켜라'
+tug's = 예인선의
+forward = 선수 — forward station은 '선수 작업 위치'
+station = 배치 위치
+
+@@ 2021|navi3|3|영어|4
+relations = 관계
+maximum = 최대
+reach = 작업 반경
+handling = 하역 — handling capacity는 '하역 능력'
+capacity = 능력
+drip = 방울 — drip-tray는 '기름받이'
+trays = 받침
+load = 하중 — safe working load는 '안전사용하중'
+
+@@ 2021|navi3|3|영어|6
+chipping = 깡깡이(녹 떼기)
+rust = 녹
+important = 중요한
+safety = 안전
+gear = 장구
+goggles = 보안경
+gloves = 장갑
+sleeve = 소매
+
+@@ 2021|navi3|3|영어|7
+proper = 알맞은
+unknown = 미상의(이름을 모르는)
+outward = 출항하는
+vicinity = 부근
+buoy = 부표
+read = (무선 감도를) 듣다 — How do you read me?는 '내 말이 어떻게 들리나?'
+five = 5(감도 최상)
+ahead = 계속 — Go ahead는 '말씀하세요'
+
+@@ 2021|navi3|3|영어|9
+expression = 표현
+tide = 조석(조위)
+rising = 오르는
+below = 아래
+water = 수위 — high water는 '고조'
+falling = 내려가는
+datum = 기준면(기본수준면)
+setting = (조류가) 흐르는 — tide is setting은 '조류가 ~ 방향으로 흐른다'
+
+@@ 2021|navi3|3|영어|10
+direction = 방향
+approaching = 접근하는
+proceeding = 진행하는
+manoeuvring = 조종하는
+
+@@ 2021|navi3|3|영어|11
+horizon = 수평선
+disappear = 사라지다
+immediately = 즉시
+lowered = 낮춰진
+raised = 올려진
+former = 이전의
+visible = 보이는
+bobbing = 등화를 확인하는 것 — bobbing a light는 '눈높이를 바꿔 등화가 막 보이는 거리를 확인하는 것'
+
+@@ 2021|navi3|3|영어|12
+term = 용어
+volume = 용적
+measured = 측정된
+frames = 늑골
+underside = 아랫면
+beams = 갑판보
+ceiling = 내저판(탱크 위 깔판)
+grain = 곡물 — grain capacity는 '그레인 용적'
+bale = 베일 — bale capacity는 '베일 용적'
+
+@@ 2021|navi3|3|영어|13
+deratting = 쥐 구제 — deratting certificate는 '쥐 구제 증명서'
+certificate = 증명서
+presented = 제출되는
+quarantine = 검역
+inspection = 검사
+entering = 입항하는
+foreign = 외국의
+immigration = 출입국
+
+@@ 2021|navi3|3|영어|14
+drags = 끌고 가다
+body = (물의) 덩어리
+wake = 반류(배를 따라 움직이는 물)
+ratio = 비율
+fraction = 비율 — wake fraction은 '반류 계수'
+advance = 전진 — speed of advance는 '전진 속도'
+propeller = 프로펠러
+distribution = 분포
+
+@@ 2021|navi3|3|영어|15
+determine = 확인하다
+date = 날짜 — up to date는 '최신의'
+psc = 항만국통제
+officer = 검사관
+crew = 선원 — crew list는 '선원 명부'
+verify = 검증하다
+manning = 인원 배치 — safe manning document는 '최소안전승무증서'
+muster = 소집 — muster list는 '비상 소집표'
+
+@@ 2021|navi3|3|영어|16
+annex = 부속서
+recognized = 인정된
+technical = 기술적인
+oceanographical = 해양학적인
+ecological = 생태적인
+mandatory = 강제적인
+prevention = 방지
+special = 특별한 — special area는 '특별해역'
+
+@@ 2021|navi3|3|영어|17
+designated = 지정된
+landward = 육지 쪽의
+boundary = 경계
+separation = 분리 — traffic separation scheme은 '통항분리방식'
+adjacent = 인접한
+coastal = 연안의
+inshore = 연안 — inshore traffic zone은 '연안통항대'
+offshore = 해양의 — offshore installation은 '해양 시설'
+
+@@ 2021|navi3|3|영어|18
+term = 용어
+restricted = 제한된
+ability = 능력
+manoeuvre = 조종하다
+nature = 성질
+hampered = 조종이 제한된 — hampered vessel은 '조종제한선'
+command = 조종 — not under command는 '조종불능'
+anchored = 정박한
+
+@@ 2021|navi3|3|영어|20
+company = 회사
+define = 규정하다
+document = 문서화하다
+master's = 선장의
+responsibility = 책임
+motivating = 동기를 부여하는
+observation = 준수(지킴)
+policy = 방침
+
+@@ 2021|navi3|3|영어|21
+classification = 선급 — classification rules는 '선급 규칙'
+surveys = 검사
+hull = 선체
+machinery = 기관
+alternatively = 대신에
+continuous = 연속 — continuous survey는 '연속 검사'
+divided = 나뉜
+cycle = 주기
+
+@@ 2021|navi3|3|영어|22
+voyage = 항해 — voyage charter party는 '항해용선계약서'
+charterer = 용선자
+loads = 선적하다
+discharges = 양하하다
+allowed = 허용된
+earns = 받다
+dispatch = 조출 — dispatch money는 '조출료'
+demurrage = 체선료
+
+@@ 2021|navi3|3|영어|24
+damage = 손해 — damage claim은 '손해배상 청구'
+claim = 청구
+breach = 위반 — breach of contract는 '계약 위반'
+charterer = 용선자
+furnish = 제공하다
+full = 가득한 — full cargo는 '만재 화물'
+dead = 공적(空積) — dead freight는 '부적 운임'
+back = 되돌아오는 — back freight는 '반송 운임'
+
+@@ 2021|navi3|3|영어|25
+course = 침로
+speed = 속력
+changed = 바뀌는
+unless = ~하지 않는 한(~하는 경우 외에는)
+immediate = 임박한
+danger = 위험
+authority = 허가(권한)
+reported = 보고되는
+
+@@ 2021|navi3|4|영어|1
+explanation = 설명
+spelling = 철자 — spelling letters는 '음성 문자(포네틱 코드)'
+letters = 문자
+golf = G를 나타내는 음성 문자
+miky = M의 틀린 표기(바른 것은 Mike)
+flamenco = F의 틀린 표기(바른 것은 Foxtrot)
+navy = N의 틀린 표기(바른 것은 November)
+
+@@ 2021|navi3|4|영어|2
+range = 거리 — range scale은 '거리 범위'
+scale = 범위
+pilot's = 도선사의
+request = 요청
+radar = 레이더
+duty = 당직 — duty officer는 '당직사관'
+larger = 더 큰(더 먼 거리)
+
+@@ 2021|navi3|4|영어|3
+lifejackets = 구명조끼
+keep = 유지하다
+on = 입은 상태로 — keep on은 '계속 입고 있다'
+
+@@ 2021|navi3|4|영어|4
+hold = 화물창 — hold ladder는 '창내 사다리'
+ladder = 사다리
+straighten = 곧게 펴다
+bent = 휜
+crushed = 찌그러진
+torn = 찢어진
+
+@@ 2021|navi3|4|영어|5
+improper = 알맞지 않은
+load = 실을 수 있다
+tonnes = 톤
+deck = 갑판 — deck cargo는 '갑판적 화물'
+cars = 차량
+cubic = 입방 — cubic meters는 '세제곱미터'
+
+@@ 2021|navi3|4|영어|6
+unsuitable = 알맞지 않은
+marks = 화인(화물 표시)
+cargoes = 화물
+hold = 화물창
+unclear = 불분명한
+illegible = 읽을 수 없는
+resewn = 다시 꿰맨(포대 화물의 상태)
+false = 잘못된
+
+@@ 2021|navi3|4|영어|7
+underlined = 밑줄 친
+radar = 레이더
+inoperative = 작동하지 않는
+functioning = 작동하는 — not functioning은 '작동하지 않는'
+hampered = 제한된
+available = 쓸 수 있는
+
+@@ 2021|navi3|4|영어|8
+vessel = 선박
+leaving = 떠나는
+anchorage = 정박지
+channel = 수로
+read = (감도를) 듣다 — How do you read me?는 '감도 어떤가?'
+unknown = 미상의 — Unknown vessel은 '이름 모르는 선박'
+five = 5(감도 최상)
+ahead = 계속 — Go ahead는 '말씀하세요'
+
+@@ 2021|navi3|4|영어|9
+improper = 알맞지 않은
+report = 보고하라
+damage = 손상
+deformation = 변형
+plating = 외판 — side plating은 '선측 외판'
+control = 통제 — damage control material은 '손상 통제 자재'
+material = 자재
+navigational = 항해의
+
+@@ 2021|navi3|4|영어|10
+designed = 지정된
+co = 공동
+ordinate = 조정하다(co-ordinate)
+search = 수색
+rescue = 구조
+specified = 지정된
+scene = 현장 — on-scene co-ordinator는 '현장 조정관'
+
+@@ 2021|navi3|4|영어|12
+statement = 설명
+craft = 선박(어선)
+congregate = 모이다
+periodically = 주기적으로
+fleets = 선단
+fishing = 어로 — fishing ground는 '어장'
+ground = 장소(어장)
+trap = 함정 — fish trap은 '정치망'
+
+@@ 2021|navi3|4|영어|14
+twin = 쌍 — twin screw ship은 '2축선'
+screw = 추진기(스크루)
+right = 오른쪽 — right-handed는 '우회전의'
+handed = 회전 방향의
+arrangement = 배치
+cavitation = 공동현상
+transverse = 횡방향의 — transverse thrust는 '횡압력'
+thrust = 추력(밀어내는 힘)
+
+@@ 2021|navi3|4|영어|15
+difference = 차이
+propeller = 프로펠러 — propeller speed는 '프로펠러 속도'
+actual = 실제의
+slip = 슬립(추진기 속도와 실제 속력의 차)
+pitch = 피치(1회전 동안 이론상 나아가는 거리)
+efficiency = 효율
+
+@@ 2021|navi3|4|영어|16
+explanations = 설명
+concerned = 관련된
+pilot = 도선사
+despite = ~에도 불구하고
+obligations = 의무
+presence = 승선해 있음
+relieve = 면제하다
+exchange = 교환하다
+
+@@ 2021|navi3|4|영어|17
+decks = 갑판
+cambered = 캠버가 있는(가운데가 볼록한)
+permit = 가능하게 하다
+drainage = 배수
+scuppers = 배수구
+overboard = 선외로
+bilges = 빌지
+
+@@ 2021|navi3|4|영어|19
+regulations = 규칙
+expressly = 명시적으로
+provided = 규정된
+fishing = 어선 — fishing vessel은 '어선'
+mobile = 이동식 — mobile offshore drilling unit은 '이동식 해양시추선'
+troopships = 수송선(군 수송선)
+gross = 총 — gross tonnage는 '총톤수'
+war = 전쟁 — ships of war는 '군함'
+
+@@ 2021|navi3|4|영어|21
+explanation = 설명
+distress = 조난
+audibility = 가청(들리는 정도)
+screen = 차광판 — screen for sidelight는 '현등 차광판'
+sidelight = 현등
+attract = 끌다
+attention = 주의
+
+@@ 2021|navi3|4|영어|23
+arriving = 도착하는
+discharge = 양하 — port of discharge는 '양하항'
+consignee = 수하인
+holder = 소지인
+lading = 선적 — bill of lading은 '선하증권'
+present = 제시하다
+obtaining = 받는
+delivery = 인도
+
+@@ 2021|navi3|4|영어|24
+lowered = 내렸다
+derrick = 데릭 — derrick boom은 '데릭 붐'
+booms = 붐
+battened = 해치를 밀폐했다 — batten down은 '해치를 단단히 덮어 막다'
+hatches = 해치
+down = 단단히(밀폐)
+
+@@ 2021|navi3|4|영어|25
+principles = 원칙
+drawing = 작성 — draw up은 '작성하다'
+business = 업무 — business letter는 '상업 서신'
+formal = 격식 있는
+modified = 수정된 — modified block format은 '수정 블록 형식'
+block = 블록(서신 배치 형식)
+modifiers = 수식어
+auxiliary = 보조의 — auxiliary verb는 '조동사'

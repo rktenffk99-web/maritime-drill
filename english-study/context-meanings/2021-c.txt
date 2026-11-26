@@ -1,0 +1,381 @@
+@@ 2021|navi3|1|영어|1
+eye = 아이(줄 끝의 고리) — 이 문장에서는 '눈'이 아님
+tug's = 예인선의
+line = 줄 — tug's line은 '예인삭'
+bitt = 비트(계선줄을 거는 쌍기둥)
+put = 걸다
+on = ~에(걸쳐)
+
+@@ 2021|navi3|1|영어|2
+moving = 들어가는
+berth = 선석
+lines = 계선줄
+ashore = 육지에(부두에 건네진)
+pulled = 끌어당겨진
+alongside = 부두에 나란히 — heave alongside는 '부두로 당겨 붙여라'
+heave = 감아 당기다
+fast = 단단히 — make fast는 '고정하라'
+
+@@ 2021|navi3|1|영어|4
+lifejackets = 구명조끼
+keep = 유지하다
+on = 입은 상태로 — keep your lifejackets on은 '구명조끼를 계속 입고 있어라'
+
+@@ 2021|navi3|1|영어|5
+officer = 사관(담당자)
+passengers = 승객
+individually = 한 사람씩
+names = 이름
+roll = 명부 — roll call은 '인원 점호'
+call = 부름
+sanitary = 위생의
+
+@@ 2021|navi3|1|영어|6
+available = 쓸 수 있는
+trimming = 트리밍(산적화물을 고르게 펴는 작업)
+bob = 소형 — bob-cats는 '소형 불도저(트리밍용)'
+cats = (bob-cat) 소형 불도저
+slings = 슬링
+fork = 포크 — fork-lift truck은 '지게차'
+
+@@ 2021|navi3|1|영어|8
+expression = 표현
+flag = 국기 — flag state는 '기국'
+state = 국가
+approaching = 접근하는
+part = 항 — 원래 port of call(기항지)이어야 맞는 표현
+call = 기항 — port of call은 '기항지'
+draft = 흘수
+aft = 선미의 — draft aft는 '선미 흘수'
+
+@@ 2021|navi3|1|영어|9
+fishing = 어로 — fishing gear는 '어구'
+gear = 어구
+fouled = 얽혔다(감겼다)
+propeller = 프로펠러
+recovered = 회수된
+
+@@ 2021|navi3|1|영어|10
+preposition = 전치사
+replaced = 바꿔 쓸 수 있는
+salvage = 해난 구조
+operations = 작업
+position = 위치 — in position은 '~ 위치에서'
+north = 북위
+east = 동경
+
+@@ 2021|navi3|1|영어|11
+publication = 간행물
+operating = 운용
+characteristics = 특성
+foreign = 외국의
+radiobeacons = 무선표지
+lights = 등화 — list of lights는 '등대표'
+coast = 연안 — coast pilot은 '연안 수로지'
+sailing = 항해 — sailing directions는 '항로지'
+
+@@ 2021|navi3|1|영어|12
+point = 점
+celestial = 천구의 — celestial sphere는 '천구'
+sphere = 구
+vertically = 수직으로
+overhead = 머리 위에
+zenith = 천정
+nadir = 천저
+altitude = 고도
+
+@@ 2021|navi3|1|영어|13
+instruction = 지시
+haul = 끌어들이다
+essential = 꼭 필요한
+lines = 계선줄
+single = 하나만 남기다 — single up은 '계선줄을 한 가닥씩만 남겨라'
+quay = 안벽
+berth = 선석
+fast = 고정 — make fast는 '고정하라'
+
+@@ 2021|navi3|1|영어|14
+noted = 제출했다
+protest = 해난보고서 — sea protest는 '해난보고서'
+authority = 당국 — port authority는 '항만 당국'
+deviation = 이로
+hospitalization = 입원
+urgent = 위급한
+route = 도중 — en route는 '~로 가는 도중'
+
+@@ 2021|navi3|1|영어|16
+designated = 지정된
+landward = 육지 쪽의
+boundary = 경계
+separation = 분리 — traffic separation scheme은 '통항분리방식'
+adjacent = 인접한
+intended = 의도된
+coastal = 연안의
+inshore = 연안 — inshore traffic zone은 '연안통항대'
+
+@@ 2021|navi3|1|영어|17
+replaced = 바꿔 쓸 수 있는
+ensure = 보장하다
+master = 선장
+conversant = 정통한(잘 아는)
+familiar = 잘 아는
+safety = 안전 — safety management system은 '안전관리체제'
+management = 관리
+
+@@ 2021|navi3|1|영어|19
+amount = 금액
+payable = 지급해야 할
+portion = 일부
+freight = 운임
+calculated = 계산된
+cubic = 입방의 — cubic capacity는 '용적'
+capacity = 용량
+lump = 덩어리 — lump-sum freight는 '총액 운임'
+
+@@ 2021|navi3|1|영어|20
+bollard = 볼라드(계선주)
+found = 있는
+pier = 부두
+beach = 해변
+sbm = 단일점 계류 부이(SBM)
+towed = 예인되는
+
+@@ 2021|navi3|1|영어|21
+maintain = 유지하다
+proper = 적절한
+look = 경계 — look-out은 '경계'
+sight = 시각
+hearing = 청각
+available = 이용 가능한
+prevailing = 당시의
+circumstances = 사정
+
+@@ 2021|navi3|1|영어|22
+advanced = (시계를) 앞당겼다
+clocks = 시계
+min = 분
+l = 지방 — L.M.T.는 '지방평시'
+put = 놓다 — put ahead는 '앞당기다'
+retarded = 늦췄다
+
+@@ 2021|navi3|1|영어|23
+ex = 전(前)
+second = 2등 — second officer는 '2등항해사'
+officer = 항해사
+relieved = 교대되었다
+joined = 승선했다
+promoted = 승진했다
+
+@@ 2021|navi3|1|영어|24
+prior = 앞서 — prior to는 '~ 전에'
+departure = 출항
+navigation = 항해
+equipment = 장비
+tested = 시험했다
+order = 상태 — in good order는 '이상 없는'
+
+@@ 2021|navi3|1|영어|25
+applied = 적용되는
+isps = 국제선박및항만시설보안규칙
+passenger = 여객
+craft = 정(艇) — high-speed craft는 '고속선'
+gross = 총 — gross tonnage는 '총톤수'
+mobile = 이동식 — mobile offshore drilling unit은 '이동식 해양시추선'
+drilling = 시추
+commercial = 상업용의
+
+@@ 2021|navi3|2|영어|2
+eyes = 아이(줄 끝 고리)
+towing = 예인 — towing line은 '예인삭'
+lines = 줄
+bitts = 비트(계선 기둥)
+put = 걸다
+
+@@ 2021|navi3|2|영어|3
+wrong = 틀린
+antonym = 반대말
+cast = 풀다 — cast off는 '계선줄을 풀다'
+fast = 고정 — make fast는 '고정하다'
+inward = 안쪽의(입항의)
+outward = 바깥쪽의(출항의)
+draught = 높이 — air draught는 '수면 위 높이'
+ukc = 선저 여유수심
+
+@@ 2021|navi3|2|영어|4
+class = 분류
+dangerous = 위험한
+hazardous = 위험한
+harmful = 유해한
+pollutants = 오염물질 — marine pollutant는 '해양오염물질'
+transport = 운송
+classified = 분류된
+imdg = 국제해상위험물규칙
+
+@@ 2021|navi3|2|영어|5
+dispose = 처리하다 — dispose of는 '처분하다'
+sludge = 슬러지(기름찌꺼기)
+tank = 탱크
+displace = 옮겨 놓다
+replace = 교체하다
+
+@@ 2021|navi3|2|영어|6
+normally = 보통
+percentage = 비율
+oxygen = 산소
+air = 공기
+
+@@ 2021|navi3|2|영어|7
+heave = (닻을) 감아올리다
+anchor = 닻
+orders = 지시
+changed = 바뀌었다
+berth = 계류하다 — berth alongside는 '부두에 붙이다'
+alongside = 부두에 나란히
+
+@@ 2021|navi3|2|영어|8
+explanation = 설명
+mmsi = 해상이동업무식별번호
+mobile = 이동 — maritime mobile service는 '해상이동업무'
+identity = 식별
+sart = 수색구조용 레이더 트랜스폰더
+epirb = 비상위치지시용 무선표지
+mrcc = 해상구조조정본부
+rescue = 구조
+
+@@ 2021|navi3|2|영어|10
+transmissions = 송신
+station = 무선국
+broken = 고장 난 — broken down은 '고장 났다'
+switched = 꺼진 — switched off는 '전원이 꺼진'
+suspended = 중단된
+air = 방송 — off air는 '송신 중단'
+
+@@ 2021|navi3|2|영어|11
+locus = 자취(궤적)
+possible = 있을 수 있는
+strictly = 엄밀히
+arc = 호(원의 일부)
+circle = 원
+assumed = 가정된
+material = 중대한 — without material error는 '큰 오차 없이'
+line = 선 — line of position은 '위치선'
+
+@@ 2021|navi3|2|영어|12
+great = 큰 — great circle은 '대권'
+circle = 원
+geographical = 지리상의
+poles = 극
+meridian = 자오선
+equator = 적도
+rhumb = 항정 — rhumb line은 '항정선'
+
+@@ 2021|navi3|2|영어|13
+leave = 떠나다
+bridge = 선교
+circumstances = 상황 — under any circumstances는 '어떤 경우에도'
+relieved = 교대된
+captain = 선장
+licensed = 면허가 있는
+
+@@ 2021|navi3|2|영어|14
+states = 국가
+physical = 물리적인
+margins = 대륙 주변부 — continental margin은 '대륙변계'
+extend = 뻗다
+outer = 바깥 — outer limit은 '바깥 한계'
+continental = 대륙의 — continental shelf는 '대륙붕'
+shelf = 붕(선반)
+unclos = 유엔해양법협약
+
+@@ 2021|navi3|2|영어|15
+advantage = 장점
+purpose = 용도 — all-purpose nozzle은 '다용도 노즐'
+nozzle = 노즐(관창)
+converts = 바꾸다
+stream = 물줄기(직사)
+fog = 분무 — 이 문장에서는 '안개'가 아님
+spray = 뿌리다
+
+@@ 2021|navi3|2|영어|16
+spring = 대조 — spring tide는 '대조(사리)'; 계절 '봄'이 아님
+tides = 조석
+unpredictable = 예측할 수 없는
+lows = 저조
+highs = 고조
+normal = 평소
+
+@@ 2021|navi3|2|영어|17
+sewage = 분뇨(오수)
+drainage = 배수(흘러나오는 물)
+medical = 의료의 — medical premises는 '의무실'
+premises = 장소
+slop = 슬롭 — slop tank는 '혼합물탱크'
+living = 살아 있는
+toilets = 변기
+urinals = 소변기
+
+@@ 2021|navi3|2|영어|18
+alteration = 변경
+admit = 허락하다
+readily = 쉽게
+apparent = 알아볼 수 있는
+observing = 관찰하는
+visually = 눈으로
+succession = 연속 — a succession of small alterations는 '작은 변경의 연속'
+
+@@ 2021|navi3|2|영어|19
+dangerous = 위험한 — dangerous goods는 '위험물'
+solid = 고체의
+bulk = 산적 — in bulk는 '포장하지 않은'
+stowed = 적재된
+nature = 성질
+incompatible = 서로 섞이면 안 되는(혼적 불가)
+segregated = 격리된
+combustible = 가연성의
+
+@@ 2021|navi3|2|영어|20
+determining = 정하는
+safe = 안전한 — safe speed는 '안전한 속력'
+factors = 요소
+visibility = 시정
+background = 배경 — background light는 '배경광'
+manning = 인원 배치
+proximity = 근접
+hazards = 위험물
+
+@@ 2021|navi3|2|영어|21
+specifically = 특별히
+designated = 지정된
+collection = 모으기
+drainings = 탱크 배수
+washings = 세정수
+oily = 기름이 섞인
+mixtures = 혼합물
+slop = 슬롭 — slop tank는 '혼합물탱크'
+
+@@ 2021|navi3|2|영어|22
+annex = 부속서
+control = 규제
+pollution = 오염
+noxious = 유해한 — noxious liquid substances는 '유해액체물질'
+sewage = 분뇨
+harmful = 유해한
+packaged = 포장된 — in packaged form은 '포장된 형태로'(부속서 III 내용)
+prevention = 방지
+
+@@ 2021|navi3|2|영어|23
+insurance = 보험
+term = 용어
+average = 해손(海損) — 이 문장에서는 '평균'이 아님
+loss = 손해
+claim = 청구
+
+@@ 2021|navi3|2|영어|24
+tested = 시험했다
+steering = 조타 — steering gear는 '조타기'
+whistle = 기적
+communications = 통신
+apparent = 외관상
+synchronized = (시각을) 맞췄다
+clocks = 시계
+overhauled = 분해 정비했다

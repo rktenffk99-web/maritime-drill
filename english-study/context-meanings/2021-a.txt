@@ -1,0 +1,383 @@
+@@ 2021|navi2|1|영어|1
+latitude = 위도
+longitude = 경도
+expressed = 표시된
+degrees = 도
+minutes = 분(각도 단위)
+equator = 적도
+prime = 본초의 — prime meridian은 '본초자오선'
+meridian = 자오선
+
+@@ 2021|navi2|1|영어|3
+routeing = 항로지정
+designated = 지정된
+landward = 육지 쪽의
+boundary = 경계
+separation = 분리 — traffic separation scheme은 '통항분리방식'
+scheme = 방식(제도)
+adjacent = 인접한
+inshore = 연안 — inshore traffic zone은 '연안통항대'
+through = 통과하는 — through traffic은 '통과 선박'
+
+@@ 2021|navi2|1|영어|5
+receipt = 받음 — on receipt of는 '~을 받으면'
+steer = 조타하다
+helmsman = 조타수
+repeat = 복창하다
+steadily = 꾸준히
+steady = 정침한 — Steady on은 '~에 정침했다'
+ordered = 지시된
+ease = (타각을) 줄이다
+
+@@ 2021|navi2|1|영어|7
+notice = 예고(사전 통보)
+required = 필요한
+reduce = 줄이다(감속하다)
+full = 최대의 — full sea speed는 '전속 항해 속력'
+maneuvering = 조종의 — maneuvering revolutions는 '조종 회전수'
+revolutions = (기관) 회전수
+
+@@ 2021|navi2|1|영어|8
+bonding = 접지 — bonding wire는 '정전기 방지 접지선'
+wire = 선
+tanks = 탱크
+inerted = 불활성화된
+connect = 연결하다
+loading = 적하 — loading arm은 '하역 암'
+discharge = 양하
+
+@@ 2021|navi2|1|영어|9
+dangerous = 위험한 — dangerous goods는 '위험물'
+flammable = 가연성의
+solids = 고체
+oxidizing = 산화성의
+peroxides = 과산화물
+toxic = 독성의
+infectious = 감염성의
+corrosive = 부식성의
+
+@@ 2021|navi2|1|영어|10
+maximum = 최대의
+reach = 작업 반경
+crane = 크레인
+tonnes = 톤
+pumping = 펌프 — pumping capacity는 '펌프 용량'
+pressure = 압력
+
+@@ 2021|navi2|1|영어|12
+phenomenon = 현상
+gyroscope = 자이로스코프
+applied = 가해진
+rotation = 회전
+wheel = 회전체(로터)
+precession = 세차운동
+inertia = 관성
+damping = 제진(흔들림 감쇠)
+
+@@ 2021|navi2|1|영어|13
+hemisphere = 반구
+intense = 강한
+anticyclone = 고기압
+continent = 대륙
+persistent = 지속적인
+monsoon = 계절풍
+trade = 무역 — trade wind는 '무역풍'
+variable = 변하는
+
+@@ 2021|navi2|1|영어|14
+range = 도등 — range lights는 '도등(앞뒤로 겹쳐 보는 등)'
+lower = 낮은
+rear = 뒤쪽의
+front = 앞쪽의
+mariner = 선원(항해자)
+vertically = 수직으로 — in line은 '일직선'
+observer = 관측자
+
+@@ 2021|navi2|1|영어|15
+discharged = 양하된
+handed = 넘겨진 — handed over는 '인도된'
+lading = 선적 — bill of lading은 '선하증권'
+mislanding = 오양하(잘못된 항에 내림)
+carriage = 운송 — over carriage는 '과운송'
+misdelivery = 오인도
+destination = 목적지
+
+@@ 2021|navi2|1|영어|16
+reason = 이유
+shipowners = 선주들
+flags = 국기 — flag of convenience는 '편의치적'
+convenience = 편의
+operational = 운항상의
+customs = 세관
+reduction = 절감
+
+@@ 2021|navi2|1|영어|17
+definitions = 정의
+length = 길이
+overall = 전체의 — length overall은 '전장'
+load = 만재 — load line은 '만재흘수선'
+registered = 등록된
+perpendiculars = 수선 — length between perpendiculars는 '수선간장'
+
+@@ 2021|navi2|1|영어|18
+document = 문서
+undertake = 약속하다
+proportionate = 비례하는
+share = 분담분
+average = 해손 — general average는 '공동해손'
+bond = 맹약서
+statement = 정산서
+valuation = 가액 평가
+
+@@ 2021|navi2|1|영어|19
+weight = 중량물
+shifted = 옮겨진
+deck = 갑판
+hold = 화물창
+gm = 메타센터 높이(GM)
+kg = 용골에서 무게중심까지 높이(KG)
+km = 용골에서 메타센터까지 높이(KM)
+
+@@ 2021|navi2|1|영어|20
+cleaning = 세정
+cargo = 화물
+tanker = 유조선
+washing = 세정 — crude oil washing은 '원유세정'
+crude = 원유의
+discharged = 양하되는
+inerting = 불활성화
+
+@@ 2021|navi2|1|영어|23
+neither = ~도 아니다
+carrier = 운송인
+responsible = 책임이 있는
+loss = 멸실
+damage = 손상
+riots = 폭동
+civil = 시민의 — civil commotion은 '내란(소요)'
+commotions = 소요
+
+@@ 2021|navi2|1|영어|25
+noted = 제출(작성)했다
+sea = 해상 — sea protest는 '해난보고서'
+protest = 해난보고서
+consulate = 영사관
+deviation = 이로(항로를 벗어남)
+hospitalization = 입원
+urgent = 위급한
+route = 도중 — en route는 '~로 가는 도중'
+
+@@ 2021|navi2|2|영어|1
+observe = 지키다(준수하다) — 이 문장에서는 '관찰하다'가 아님
+imdg = 국제해상위험물규칙
+code = 규칙
+loading = 선적
+ventilate = 통풍하다
+
+@@ 2021|navi2|2|영어|3
+expression = 표현
+moving = 움직이는 것
+anchor = 닻
+bottom = 바닥 — sea bottom은 '해저'
+dredging = (닻을) 끄는 것 — 닻을 해저에서 끌어 선박 움직임을 조종하는 것
+dragging = 주묘(닻이 끌림)
+drifting = 표류
+
+@@ 2021|navi2|2|영어|4
+related = 기준으로 표시된
+mark = 물표
+charted = 해도에 표시된
+bearing = 방위
+notation = 표기 방식
+true = 진(眞) — true north는 '진북'
+magnetic = 자기의
+
+@@ 2021|navi2|2|영어|5
+expression = 표현
+anchor = 투묘하다
+head = 선수 — head line은 '선수줄'
+broken = 끊어진
+cable = 앵커 체인
+slack = 늘어진 부분
+stern = 선미 — stern line은 '선미줄'
+
+@@ 2021|navi2|2|영어|6
+slack = 늦추다 — slack away는 '(줄을) 풀어 주다'
+away = 풀어 — slack away는 '줄을 내어 주다'
+head = 선수 — head line은 '선수줄'
+line = 계선줄
+
+@@ 2021|navi2|2|영어|7
+preventers = 보조 고정줄(프리벤터)
+stability = 복원성
+calculation = 계산
+repair = 수리
+personally = 직접
+ladder = 사다리
+straighten = 곧게 펴다
+
+@@ 2021|navi2|2|영어|8
+vts = 해상교통관제(VTS)
+turn = 선회하다
+refinery = 정유 공장
+quay = 안벽(부두)
+fairway = 항로
+stay = 머무르다 — stay clear of는 '~에서 떨어져 있어라'
+clear = 떨어져(비켜)
+approach = 접근하다
+
+@@ 2021|navi2|2|영어|9
+positively = 확실히
+identified = 식별된
+locate = 찾아내다
+radar = 레이더
+identification = 식별
+screen = 화면
+
+@@ 2021|navi2|2|영어|10
+repeated = 반복된
+mmsi = 해상이동업무식별번호
+fire = 화재 — on fire는 '불이 난'
+engine = 기관 — engine room은 '기관실'
+require = 필요로 하다
+fighting = 진압 — fire-fighting assistance는 '소화 지원'
+mayday = 조난 신호
+pan = 긴급 신호(PAN-PAN)
+
+@@ 2021|navi2|2|영어|11
+method = 방법
+piloting = 연안 항해(도선 항해)
+restricted = 제한된 — restricted waters는 '협수역'
+accurate = 정확한
+visual = 육안의 — visual bearing은 '시각 방위'
+ranges = 거리
+fix = 선위 결정
+tangent = 접선의 — tangent bearing은 '물표 끝단 방위'
+
+@@ 2021|navi2|2|영어|12
+determining = 구하는
+compass = 컴퍼스
+error = 오차
+azimuth = 방위각
+polaris = 북극성
+almanac = 천측력
+aries = 춘분점 — GHA Aries는 '춘분점 그리니치 시각'
+lha = 지방시각(Local Hour Angle)
+
+@@ 2021|navi2|2|영어|13
+geographic = 지리적 — geographic range는 '지리적 광달거리'
+range = 광달거리
+visibility = 시정
+intensity = 광력
+curvature = 곡률
+interference = 방해
+
+@@ 2021|navi2|2|영어|14
+diameter = 지름
+rotates = 회전하다
+diurnally = 매일(하루 주기로)
+pole = 극
+axis = 축 — axis of the earth는 '지축'
+equator = 적도
+vernal = 봄의 — vernal point는 '춘분점'
+
+@@ 2021|navi2|2|영어|15
+equipped = 갖춘
+identification = 식별
+tracking = 추적 — LRIT는 '장거리 식별·추적'
+required = 요구되는
+report = 보고하다
+positions = 위치
+
+@@ 2021|navi2|2|영어|17
+document = 문서
+extracted = 뽑아낸
+lading = 선적 — bill of lading은 '선하증권'
+manifest = 적하목록
+invoice = 송장
+receipt = 수령증 — mate's receipt는 '본선수령증'
+indemnity = 보상장
+
+@@ 2021|navi2|2|영어|18
+exonerate = 면제하다
+consequences = 결과
+neglect = 태만
+comply = 따르다
+precaution = 주의(예방 조치)
+practice = 관행 — ordinary practice of seamen은 '선원의 상무'
+seamen = 선원
+master = 선장
+
+@@ 2021|navi2|2|영어|19
+underway = 항행 중
+anchor = 정박 — at anchor는 '닻을 내린'
+aground = 좌초된
+fast = 단단히 — made fast to the shore는 '육지에 계류된'
+shore = 육지
+power = 동력 — power-driven은 '동력으로 추진되는'
+
+@@ 2021|navi2|2|영어|20
+defined = 정해진
+limits = 경계
+established = 설정된
+natural = 자연의
+obstacles = 장애물
+constitute = 이루다
+boundary = 경계
+lane = 통항로 — traffic lane은 '통항로'
+
+@@ 2021|navi2|2|영어|21
+steaming = 항행하는
+dense = 짙은 — dense fog는 '짙은 안개'
+fog = 안개
+prolonged = 장(長) — prolonged blast는 '장음'
+short = 단(短) — short blast는 '단음'
+towed = 예인되는 — vessel being towed는 '끌려가는 선박'
+command = 조종 — not under command는 '조종불능'
+trawling = 트롤 어로
+
+@@ 2021|navi2|2|영어|22
+restricted = 제한된
+ability = 능력
+manoeuvre = 조종하다
+nature = 성질
+hampered = 조종이 제한된 — hampered vessel은 '조종제한선'
+chartered = 용선된
+
+@@ 2021|navi2|2|영어|23
+document = 문서
+title = 소유권 — document of title은 '권리증권'
+delivery = 인도
+obtained = 얻어지는
+lading = 선적 — bill of lading은 '선하증권'
+readiness = 준비 — notice of readiness는 '하역준비완료통지'
+guarantee = 보증
+
+@@ 2021|navi2|2|영어|24
+acknowledge = 수령을 알리다
+sailing = 출항 — sailing instruction은 '출항 지시'
+instruction = 지시
+endeavour = 노력하다
+comply = 따르다
+satisfaction = 만족
+receipt = 수령 — report receipt of는 '~을 받았다고 알리다'
+
+@@ 2021|navi2|2|영어|25
+suffered = 앓았다 — suffer from은 '~을 앓다'
+acute = 급성의
+appendicitis = 맹장염
+seriously = 심하게
+dropped = 들렀다
+nearest = 가장 가까운
+hospitalize = 입원시키다
+ashore = 육지에
+
+@@ 2021|navi2|3|영어|2
+steady = 그대로 — Steady as she goes는 '현 침로 유지'
+steer = 조타하다
+compass = 컴퍼스
+heading = 선수방위
+indicated = 표시된
+order = 명령 — at the time of the order는 '명령한 시점의'
+swing = 회두
+rudder = 타
