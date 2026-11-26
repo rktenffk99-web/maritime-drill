@@ -49,5 +49,9 @@ english_lines=[x for x in raw.splitlines() if 'Q(' in x and '"영어"' in x]
 assert len(english_lines)==25, f'2026 navi3 session3 English question count {len(english_lines)} != 25'
 embedded=bundle('md-bundle-past-explain-2026_js')
 embedded_keys=set(re.findall(r'"(2026\|navi[23]\|\d+\|[^"\n]+\|\d+)"\s*:',embedded))
-assert len(embedded_keys)==200, f'embedded 2026 explanation count {len(embedded_keys)} != 200'
+assert len(embedded_keys)==300, f'embedded 2026 explanation count {len(embedded_keys)} != 300'
+# v5.45: 3회 항해·운용·법규·상선전문 100문항은 상세 해설을 번들에 넣었다(짧은 보충 해설은 예비용).
+for subject in ('항해','운용','법규','상선전문'):
+    for n in range(1,26):
+        assert f'2026|navi3|3|{subject}|{n}' in embedded_keys, f'session3 {subject} {n} missing full explanation'
 print('2026 explanation coverage: 325/325; session3 English 25/25 detailed reading/vocab/options/grammar/rationale/memory; verified answers present')
