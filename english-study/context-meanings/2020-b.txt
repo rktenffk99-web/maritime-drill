@@ -1,0 +1,305 @@
+@@ 2020|navi2|3|영어|16
+seasonal = 계절의
+wind = 바람
+constant = 일정한
+intensity = 세기
+reverses = (방향이) 반대로 바뀌다
+monsoon = 계절풍
+doldrums = 적도 무풍대
+breeze = 미풍 — sea breeze는 '해풍'
+
+@@ 2020|navi2|3|영어|17
+emergency = 비상 — emergency steering drill은 '비상 조타 훈련'
+steering = 조타 — steering gear compartment는 '조타기실'
+direct = 직접의 — direct control은 '(조타기실에서의) 직접 조종'
+compartment = 구획(실)
+procedure = 절차
+applicable = 해당되는
+alternative = 대체(예비)의 — alternative power supply는 '예비 전원'
+supplies = 공급(장치)
+
+@@ 2020|navi2|3|영어|18
+tanker = 유조선
+dedicated = 전용의 — dedicated clean ballast tank는 '전용 깨끗한 평형수 탱크'
+ballast = 평형수
+equipped = 갖춘
+administration = 주관청(기국 정부)
+specifications = 사양(기준)
+content = 함유량 — oil content meter는 '유분 농도계'
+inert = 불활성의 — inert gas system은 '불활성가스장치'
+
+@@ 2020|navi2|3|영어|19
+practicable = 실행 가능한 — so far as practicable은 '가능한 한'
+crossing = 횡단하는
+lanes = 통항로 — traffic lane은 '통항로'
+obliged = (어쩔 수 없이) ~해야 하는
+heading = 선수방위 — cross on a heading은 '선수방위를 ~로 하여 횡단하다'
+angles = 각 — at right angles는 '직각으로'
+flow = 흐름 — traffic flow는 '통항 흐름'
+
+@@ 2020|navi2|3|영어|20
+restricted = 제한된 — restricted visibility는 '제한된 시계'
+visibility = 시계(시정)
+power = 동력 — power-driven vessel은 '동력선'
+making = (속력을) 내는 — making way through the water는 '대수속력이 있는'
+through = (물을) 지나 — through the water는 '물에 대하여'
+intervals = 간격 — at intervals of는 '~ 간격으로'
+prolonged = 장(長) — prolonged blast는 '장음'
+
+@@ 2020|navi2|3|영어|21
+notwithstanding = ~에도 불구하고
+contained = 포함된(규정된)
+overtaking = 앞지르는(추월하는)
+overtaken = 앞지르기 당하는 — overtaken vessel은 '피추월선'
+keep = 유지하다 — keep out of the way는 '진로를 피하다'
+
+@@ 2020|navi2|3|영어|22
+numerous = 많은
+conferences = 회의
+adopt = 채택하다
+measures = 조치
+enhance = 향상시키다
+improve = 개선하다
+impair = 손상시키다
+approve = 승인하다
+
+@@ 2020|navi2|3|영어|23
+entries = (항해일지) 기재 사항
+held = 실시했다
+drill = 훈련 — fire & boat drill은 '소화·퇴선 훈련'
+hoses = 소방 호스
+transmitter = 송신기
+generator = 발전기
+abandon = 버리다 — abandon ship은 '퇴선'
+mustered = 소집되었다
+secured = 종료했다 — secured from drills는 '훈련 종료'
+
+@@ 2020|navi2|3|영어|24
+insurer = 보험자
+undertakes = 인수하다(약속하다)
+indemnify = 보상하다
+assured = 피보험자
+underwriter = 보험인수인(보험자)
+losses = 손해 — marine losses는 '해상손해'
+incident = 수반되는
+adventure = 사업 — maritime adventure는 '해상사업'
+
+@@ 2020|navi2|3|영어|25
+prior = 앞서 — prior to는 '~하기 전에'
+painting = 도장(페인트칠)
+fathometer = 음향측심기
+plates = 판(송수파기 판)
+wipe = 닦다
+grease = 그리스(기름)
+flooding = 물을 채우는 — flooding dock은 '도크에 물을 넣다'
+dock = 도크(선거)
+
+@@ 2020|navi2|4|영어|1
+misspelled = 철자가 틀린
+derelict = 유기선(버려진 선박)
+astronomical = 천문의
+boatsuain = 갑판장의 틀린 철자(바른 철자 boatswain)
+trimmed = (화물이) 고르게 펴진
+
+@@ 2020|navi2|4|영어|2
+relation = 관계
+air = 공기 — air draught는 '수면 위 높이'
+draught = 흘수(높이) — air draught는 '수면에서 최고점까지 높이'
+gross = 총 — gross tonnage는 '총톤수'
+tonnage = 톤수
+ukc = 선저 여유수심(Under Keel Clearance)
+point = 점 — way point는 '변침점'
+hydrographic = 수로의 — hydrographic survey는 '수로 측량'
+
+@@ 2020|navi2|4|영어|3
+expression = 표현
+anchor = 닻을 내리다(투묘하다)
+head = 선수 — head line은 '선수줄'
+cable = 앵커 체인
+up = 위 — up and down은 '체인이 수직인 상태'
+slack = 늘어진 부분
+stern = 선미 — stern line은 '선미줄'
+
+@@ 2020|navi2|4|영어|4
+protect = 보호하다
+deck = 갑판 — deck cargo는 '갑판적 화물'
+timbers = 목재
+against = ~으로부터(~에 대비하여)
+shipping = (갑판에) 올라오는 — shipping seas는 '갑판을 덮치는 파도'
+seas = 파도
+
+@@ 2020|navi2|4|영어|5
+translation = 번역
+channel = 수로
+prohibited = 금지된
+resumed = 재개된
+dredging = 준설
+restricted = 제한된
+suspended = 일시 중지된(폐쇄된)
+operations = 작업
+
+@@ 2020|navi2|4|영어|6
+included = 포함된
+pilot = 도선사
+transfer = 승하선 — pilot transfer arrangements는 '도선사 승하선 설비'
+arrangements = 설비(장치)
+accommodation = 거주 — accommodation ladder는 '현문 사다리'
+rescue = 구조 — rescue boat는 '구조정'
+hoist = 승강기 — mechanical pilot hoist는 '기계식 도선사 승강기'
+man = 사람 — man rope는 '손잡이 줄'
+
+@@ 2020|navi2|4|영어|7
+incorrect = 틀린
+radar = 레이더
+contact = 접촉(포착) — lost radar contact는 '레이더 포착을 잃었다'
+require = 필요로 하다
+assistance = 지원
+altered = 바꿨다 — alter course to는 '침로를 ~로 바꾸다'
+clearance = 허가 — traffic clearance는 '통항 허가'
+fairway = 항로
+
+@@ 2020|navi2|4|영어|8
+pair = 짝
+tugs = 예인선
+spillage = 유출(기름 등이 흘러나옴)
+even = 등(等) — even keel은 '등흘수'
+keel = 용골
+list = 횡경사
+fishing = 어로 — fishing gear는 '어구'
+gear = 어구(장비)
+
+@@ 2020|navi2|4|영어|9
+appropriate = 적절한
+stations = (무선)국 — All stations는 '모든 국에'
+collided = 충돌했다
+unknown = 미확인의
+object = 물체
+tug = 예인선
+pier = 부두(잔교)
+mayday = 조난 신호(메이데이)
+securite = 안전 신호(시큐리테)
+pan = 긴급 신호(Pan-Pan, 팡팡)
+
+@@ 2020|navi2|4|영어|10
+vessels = 선박들
+vicinity = 부근 — in vicinity of는 '~ 부근에'
+sharp = 엄중한 — keep sharp lookout은 '엄중히 경계하라'
+lookout = 경계(견시)
+scene = 현장 — on-scene co-ordinator는 '현장 조정관'
+co = 공동 — co-ordinator는 '조정관'
+
+@@ 2020|navi2|4|영어|11
+principle = 원리
+inertial = 관성의 — inertial navigation은 '관성항법'
+measurement = 측정
+accelerations = 가속도
+craft = 선박(항공기)
+integration = 적분
+displacement = 변위(위치 변화) — '배수량'이 아님
+differentiation = 미분
+
+@@ 2020|navi2|4|영어|12
+gyrocompass = 자이로컴퍼스
+phenomena = 현상들
+gyroscopic = 자이로의
+inertia = 관성
+rotation = 자전
+gravity = 중력
+precession = 세차운동
+rotor = 로터(회전체)
+
+@@ 2020|navi2|4|영어|13
+limitation = 한계
+sight = 천측 — sight reduction은 '천측 계산'
+reduction = 계산(정리)
+tables = (계산)표
+stars = 항성(별)
+tabulated = 표에 실린
+increments = 간격
+magnitude = 등급 — first magnitude star는 '1등성'
+
+@@ 2020|navi2|4|영어|15
+resistance = 저항
+forward = 전진의
+motion = 운동
+principal = 주요한
+friction = 마찰
+wave = 파 — wave-making은 '조파(파를 만드는)'
+separation = 박리
+eddy = 와류 — eddy-making은 '와류 생성'
+
+@@ 2020|navi2|4|영어|16
+wire = 와이어
+corrosion = 부식
+greased = 그리스를 바른
+lubricated = 윤활된
+parceled = (천으로) 감싼
+served = (실로) 감은
+scrapped = 폐기된
+chipped = 깡깡이(녹 떨기) 한
+
+@@ 2020|navi2|4|영어|17
+document = 문서
+terms = 조건
+shipowner = 선주
+charterer = 용선자
+agents = 대리인
+hire = 빌림(임차)
+space = 선복
+charter = 용선 — charter party는 '용선계약서'
+lading = 선적 — bill of lading은 '선하증권'
+
+@@ 2020|navi2|4|영어|18
+safety = 안전 — Safety Management Certificate는 '안전관리증서'
+certificate = 증서
+issued = 발급된
+administration = 주관청(기국 정부)
+recognized = 인정된
+verify = 검증하다
+shipboard = 선상의
+sms = 안전관리체제(Safety Management System)
+classification = 선급 — classification society는 '선급협회'
+
+@@ 2020|navi2|4|영어|19
+maintain = 유지하다
+proper = 적절한
+look = 경계 — look-out은 '경계'
+prevailing = 당시의
+circumstances = 사정
+conditions = 조건
+appraisal = 판단
+
+@@ 2020|navi2|4|영어|21
+freight = 운임
+payable = 지급해야 할
+shipper = 송하인
+delivered = 인도된
+destination = 목적지
+advance = 선불 — freight in advance는 '선불 운임'
+collect = 착지불 — collect freight는 '후불 운임'
+valorem = 가격 — ad valorem freight는 '종가 운임'
+
+@@ 2020|navi2|4|영어|22
+insurance = 보험
+freight = 운임
+implied = 묵시적인
+warranty = 담보(반드시 지켜야 할 약속)
+seaworthy = 감항성이 있는
+voyage = 항해
+memorandum = 메모(면책 약관)
+
+@@ 2020|navi2|4|영어|23
+charter = 용선
+charterer = 용선자
+cost = 비용
+loading = 적재(선적)
+discharging = 양하
+fio = 선적·양하비 선주 면제(Free In and Out)
+lump = 덩어리 — lump-sum charter는 '총액 운임 용선'
+
+@@ 2020|navi2|4|영어|24
+shipment = 선적
+later = 늦은 — not later than은 '늦어도 ~까지'
+anytime = 언제든
+arriving = 도착하는
+before = 이전에 — on or before는 '당일 또는 그 전에'

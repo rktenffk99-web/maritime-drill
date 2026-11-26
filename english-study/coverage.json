@@ -30,6 +30,8 @@
     "womanned"
   ],
   "manualContextReviewComplete": false,
+  "contextMeaningQuestions": 213,
+  "contextMeaningWords": 1449,
   "definitionSource": "existing explanations + maintained lexical supplement",
   "questions": [
     {

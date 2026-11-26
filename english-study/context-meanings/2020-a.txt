@@ -1,0 +1,336 @@
+# 문항별 핵심 단어의 '이 문장에서의 뜻' (v5.46). 형식: @@ 문항키 / 단어 = 뜻
+@@ 2020|navi2|2|영어|1
+suitable = 알맞은(빈칸에 가장 알맞은)
+blank = 빈칸
+crew = 선원(승무원)
+passengers = 승객들
+distress = 조난(조난 상황)
+drill = 훈련(비상 훈련)
+muster = 소집 — muster list는 '비상 소집표(비상배치표)'
+functions = 임무(비상시 각자 맡은 일)
+
+@@ 2020|navi2|2|영어|2
+routeing = 항로지정(선박 통항로를 정하는 것)
+measure = 방식·조치 — routeing measure는 '항로지정 방식'
+defined = 정해진(경계가 지정된)
+limits = 경계(구역의 한계선)
+caution = 주의
+traffic = 통항(선박의 교통)
+precautionary = 주의(경계)를 요하는 — precautionary area는 '경계수역'
+avoided = 피해야 할 — area to be avoided는 '항행회피수역'
+
+@@ 2020|navi2|2|영어|3
+related = (위치가 물표를) 기준으로 표시된
+mark = 물표(위치 기준이 되는 목표물)
+defined = 뚜렷한 — well-defined object는 '분명히 식별되는 물체'
+bearing = 방위
+notation = 표기 방식 — 360 degree notation은 '360도식 표기'
+true = 진(眞) — true north는 '진북'
+magnetic = 자기의 — magnetic north는 '자북'
+from = (물표)로부터 — position from the mark는 '물표에서 본 선위'
+
+@@ 2020|navi2|2|영어|4
+security = 보안 — fire and security patrol은 '화재·보안 순찰'
+patrol = 순찰
+reliever = 교대자(다음 당직자)
+order = 상태 — in good order는 '이상 없는(양호한) 상태'
+report = 보고하다
+
+@@ 2020|navi2|2|영어|5
+smcp = 표준해사통신영어(IMO Standard Marine Communication Phrases)
+prolonged = 장(長)— prolonged blast는 '장음(4~6초)'
+blast = 기적 소리 한 번
+whistle = 기적(汽笛)
+give = (신호를) 울리다 — Give one prolonged blast는 '장음 1회를 울려라'
+
+@@ 2020|navi2|2|영어|6
+maximum = 최대의
+reach = 작업 반경(크레인 팔이 수평으로 닿는 거리)
+crane = 크레인(하역용 기중기)
+meters = 미터
+
+@@ 2020|navi2|2|영어|7
+unsuitable = 알맞지 않은
+holds = 화물창
+clean = 청소된(깨끗한)
+dry = 건조된(물기 없는)
+smell = 냄새 — free of smell은 '냄새가 없는'
+false = 거짓의(화물창 상태로 맞지 않는 말)
+
+@@ 2020|navi2|2|영어|8
+pair = (질문과 대답의) 짝
+present = 현재의
+course = 침로
+even = 등(等) — even keel은 '등흘수(선수·선미 흘수가 같음)'
+keel = 용골 — on even keel은 '등흘수 상태'
+list = 횡경사(옆으로 기운 것)
+tug = 예인선
+fire = 화재 — on fire는 '불이 난'
+
+@@ 2020|navi2|2|영어|9
+pilot = 도선사
+ladder = 사다리 — pilot ladder는 '도선사용 줄사다리'
+rigged = (사다리·장비를) 설치된·내려진
+port = 좌현
+attached = 부착된
+established = 설치된(제도·시설에 쓰는 말)
+
+@@ 2020|navi2|2|영어|10
+gmdss = 세계 해상조난·안전제도
+operator = 통신사(무선 운용자)
+securite = 안전 신호(시큐리테) — 항행 안전·기상 경보 앞에 붙임
+navigation = 항행
+meteorological = 기상의
+warnings = 경보
+jeopardy = 위험 — in jeopardy는 '위험에 처한'
+immediate = 즉각적인
+
+@@ 2020|navi2|2|영어|11
+geographic = 지리적 — geographic range는 '지리적 광달거리'
+range = 도달 거리(광달거리)
+visibility = 시정(멀리 볼 수 있는 정도)
+curvature = 곡률 — curvature of the Earth는 '지구의 둥근 정도'
+intensity = 광력(빛의 세기)
+interference = 방해
+background = 배경 — background lighting은 '배경 조명(육지 불빛)'
+
+@@ 2020|navi2|2|영어|12
+estimation = 추정
+position = 선위(선박의 위치)
+navigator = 항해사
+course = 침로
+distance = 거리 — distance run은 '항주 거리'
+reckoning = 추측 — dead reckoning position은 '추측위치(DR)'
+estimated = 추정된 — estimated position은 '추정위치(EP)'
+
+@@ 2020|navi2|2|영어|13
+iala = 국제항로표지협회
+buoyage = 부표 체계
+can = 원통형(캔형) 부표 — 조동사 '할 수 있다'가 아님
+conical = 원뿔형의
+spherical = 구형의
+pillar = 기둥형
+spar = 원주형(막대형) 부표
+
+@@ 2020|navi2|2|영어|14
+underlined = 밑줄 친
+seized = 압수했다
+shipment = 선적 화물
+contraband = 밀수품(불법으로 들여오거나 내보내는 물건)
+smuggled = 밀수된
+illegally = 불법적으로
+
+@@ 2020|navi2|2|영어|15
+steering = 조타
+watch = 주시 — keep a close watch on은 '~을 주의 깊게 지켜보다'
+lubber's = 기선(基線)의 — lubber's line은 '컴퍼스 기선(선수 방향 표시선)'
+helm = 키(타) — put the helm over는 '타를 쓰다'
+swing = (선수가) 돌기 시작하다
+float = 뜨다
+
+@@ 2020|navi2|2|영어|16
+proceeding = 항행하는
+narrow = 좁은 — narrow channel은 '좁은 수로'
+fairway = 항로(선박이 다니는 수로)
+outer = 바깥쪽의 — outer limit은 '바깥쪽 끝(경계)'
+starboard = 우현
+practicable = 실행 가능한
+
+@@ 2020|navi2|2|영어|17
+times = 때 — at all times는 '항상'
+proper = 적절한
+look = 경계 — look-out은 '경계(견시)'
+prevailing = 당시의
+circumstances = 사정
+appraisal = 판단(평가)
+risk = 위험 — risk of collision은 '충돌의 위험'
+collision = 충돌
+
+@@ 2020|navi2|2|영어|18
+explanation = 설명
+designed = 지정된
+surveyed = 측량된
+clearance = 장애물이 없음을 확인함
+submerged = 물에 잠긴(수중의)
+obstacles = 장애물
+deep = 깊은 — deep water route는 '심흘수 항로'
+anchorage = 정박지
+
+@@ 2020|navi2|2|영어|19
+condition = 상태
+equipment = 설비
+maintained = 유지된
+conform = 따르다(일치하다) — conform with the provisions는 '규정에 맞다'
+provisions = 규정(조항) — '식량'이 아님
+regulations = 규칙
+
+@@ 2020|navi2|2|영어|20
+certifies = 증명하다
+holder = 소지자
+competence = 능력 — certificate of competence는 '해기사 면허(자격증명)'
+proficiency = 숙련 — certificate of proficiency는 '특정 업무 수료증'
+functions = 직무
+cargo = 화물
+
+@@ 2020|navi2|2|영어|21
+contract = 계약
+insurer = 보험자
+indemnify = 보상하다
+assured = 피보험자
+losses = 손해
+adventure = 사업(해상 모험) — marine adventure는 '해상사업'
+carriage = 운송
+insurance = 보험 — marine insurance는 '해상보험'
+
+@@ 2020|navi2|2|영어|22
+document = 서류
+issued = 발행된
+shipowner = 선주
+shipper = 송하인(화주)
+receipt = 수령증
+evidence = 증거
+title = 소유권 — document of title은 '권리증권'
+lading = 선적 — bill of lading은 '선하증권'
+
+@@ 2020|navi2|2|영어|23
+lost = 분실된
+transit = 운송 중
+delivery = 인도
+consignee = 수하인
+indemnity = 보상 — letter of indemnity는 '보상장(파손화물 보상장)'
+countersigned = 연서(함께 서명)된
+relieves = (책임을) 면제하다
+liability = 책임
+
+@@ 2020|navi2|2|영어|24
+obliged = 감사하는 — be much obliged는 '대단히 감사하다'
+kindly = 부디(정중한 요청)
+pay = 기울이다 — pay attention은 '주의를 기울이다'
+attention = 주의
+matter = 사항
+
+@@ 2020|navi2|2|영어|25
+equivalent = 같은 뜻의
+twice = 두 번
+month = 달
+bimonthly = 월 2회(또는 격월)
+quarterly = 분기마다(3개월마다)
+
+@@ 2020|navi2|3|영어|1
+message = 통신문
+marker = 표지어 — message marker는 'SMCP 통신문 앞에 붙이는 표지어'
+instruction = 지시
+request = 요청
+warning = 경고
+regulation = 규정 — 표지어가 아님
+
+@@ 2020|navi2|3|영어|2
+always = 항상
+expressed = 표시된
+notation = 표기 방식
+courses = 침로
+depths = 수심
+heights = 높이
+
+@@ 2020|navi2|3|영어|3
+cable = 앵커 체인(묘쇄)
+leading = (체인이) 뻗어 있는 — leading round the bow는 '선수를 돌아 뻗어 있다'
+bow = 선수
+growing = (체인이 어느 방향으로) 뻗은
+weight = 장력(체인에 걸린 힘)
+
+@@ 2020|navi2|3|영어|4
+emit = 내뿜다
+flammable = 인화성의
+gases = 가스
+contact = 접촉
+dry = 건조한 상태로
+
+@@ 2020|navi2|3|영어|5
+air = 공기
+rate = 비율 — air change rate는 '환기 횟수'
+hold = 화물창
+ventilator = 통풍기
+fold = 배(倍) — four-fold는 '4배(4회)'
+
+@@ 2020|navi2|3|영어|6
+engine = 기관
+manned = 사람이 배치된(당직자가 있는)
+bridge = 선교 — bridge control은 '선교 원격 조종'
+control = 조종
+equipped = 갖춘
+stand = 대기 — stand by는 '대기'
+
+@@ 2020|navi2|3|영어|7
+oil = 기름
+fence = 펜스 — oil fence는 '오일펜스'
+thrown = (오일펜스를) 둘러쳐진 — be thrown around는 '주위에 전개되다'
+tanker = 유조선
+prefectural = 현(縣)의(일본 지방)
+officials = 공무원
+removed = 제거된
+
+@@ 2020|navi2|3|영어|8
+engine = 기관
+pilot = 도선사
+clear = (본선에서) 떨어진·벗어난
+until = ~할 때까지
+
+@@ 2020|navi2|3|영어|9
+heading = 향하고 있는
+toward = ~쪽으로
+tow = 예인물(끌고 가는 물체)
+
+@@ 2020|navi2|3|영어|10
+translation = 번역
+miles = 마일(해리)
+ahead = 전방에
+dredger = 준설선
+astern = 후방에
+front = 앞
+
+@@ 2020|navi2|3|영어|11
+directive = 지북(指北)의 — directive force는 '지북력'
+gyrocompass = 자이로컴퍼스
+precession = 세차운동
+subject = (영향을) 받는
+dependent = 의존하는
+latitude = 위도
+equator = 적도
+poles = (지구의) 극
+
+@@ 2020|navi2|3|영어|12
+passage = 통과
+celestial = 천체의 — celestial body는 '천체'
+branch = (자오선의) 반쪽 — lower branch는 '하반 자오선'
+meridian = 자오선
+lower = 아래쪽의 — lower transit은 '하방 정중'
+transit = 정중(자오선 통과)
+
+@@ 2020|navi2|3|영어|13
+reservation = 예약
+shipper = 송하인(화주)
+agent = 대리점
+reserve = 예약하다
+space = 선복(배의 화물 공간)
+carriage = 운송
+booking = 선복 예약
+fixtures = 성약(용선 계약 확정)
+
+@@ 2020|navi2|3|영어|14
+wire = 와이어
+rope = 로프
+composed = 구성된
+strands = 스트랜드(소선을 꼰 가닥)
+core = 심(心)
+fibers = 섬유
+
+@@ 2020|navi2|3|영어|15
+trim = 트림(선수·선미 흘수 차)
+shifting = 이동하는
+forward = 선수 쪽으로
+aft = 선미 쪽으로
+abaft = ~보다 선미 쪽에
+floatation = 부면(浮面) — center of floatation은 '부면심'
+metacenter = 메타센터
+buoyancy = 부력 — center of buoyancy는 '부심'
