@@ -678,7 +678,12 @@
       :message);
     // No delayed reload: no 250 ms window in which a new answer can be lost.
     // Metadata-only merges do not need to reload the application.
-    if(itemsChanged&&!pending)location.reload();
+    if(itemsChanged&&!pending){
+      // v5.48: this merge was uploaded with every local answer; the reload is
+      // not leaving answers behind, so it must not trigger the leave warning.
+      try{window.__mdDriveClearUnsynced?.()}catch(error){}
+      location.reload();
+    }
   }
   function mdSyncBuildV2Payload(state,items,itemMeta,updatedAt,revision){
     return {

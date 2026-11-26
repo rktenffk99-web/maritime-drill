@@ -112,6 +112,33 @@ try:
         assert page.locator('#md-drive-auth-banner').count() == 0
         assert page.evaluate('__oauthRequests.length') == 1
         report['cases'].append('one-click renewal removes the banner and resumes synchronization')
+        # v5.48: answers stuck on this device after expiry get a strong warning,
+        # and an ordinary click anywhere renews the connection and uploads them.
+        page.evaluate("localStorage.setItem('maritime-drill:drive-unsynced:v1',String(Date.now()))")
+        page.evaluate("const t=JSON.parse(localStorage.getItem('maritime-drill:drive-auth:v1'));t.expiresAt=Date.now()+1000;localStorage.setItem('maritime-drill:drive-auth:v1',JSON.stringify(t))")
+        page.reload(wait_until='load')
+        page.wait_for_function("typeof __mdDriveAuthGeneration==='function'")
+        page.clock.fast_forward(21000)
+        page.locator('#md-drive-auth-banner').wait_for(state='visible')
+        page.wait_for_function("document.getElementById('md-drive-auth-banner').innerText.includes('아직 Google Drive에 올라가지 않았습니다')")
+        assert '아직 Google Drive에 올라가지 않았습니다' in page.locator('#md-drive-auth-banner').inner_text()
+        page.screenshot(path=str(OUT / 'drive-auth-unsynced-mobile.png'), full_page=True)
+        before = page.evaluate('__oauthRequests.length')
+        page.mouse.click(5, 400)
+        for _ in range(60):
+            if page.evaluate("driveSyncHasToken() && !driveSyncBusy"):
+                break
+            page.clock.fast_forward(1000)
+        assert page.evaluate('__oauthRequests.length') == before + 1
+        assert page.evaluate('driveSyncHasToken()') is True
+        # This fake Drive rejects the exam journal, so the upload fails: the
+        # warning must stay and offer a direct retry instead of reconnecting.
+        assert page.evaluate('driveSyncLastError') != ''
+        assert page.evaluate('__mdDriveUnsynced()') is True
+        page.evaluate('driveSyncRefreshPanel()')
+        assert '지금 동기화' in page.locator('#md-drive-auth-banner').inner_text()
+        page.screenshot(path=str(OUT / 'drive-auth-unsynced-retry-mobile.png'), full_page=True)
+        report['cases'].append('unsynced answers after expiry show a strong warning, an ordinary click renews the connection, and a failed upload keeps the warning with a retry')
         second = new_page()
         assert second.evaluate('driveSyncHasToken()') is True
         page.evaluate('disconnectGoogleDriveSync()')
