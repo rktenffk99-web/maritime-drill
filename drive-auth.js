@@ -4,6 +4,15 @@
   'use strict';
   // Deliberately outside md_: even older clients must never back up this key.
   const TOKEN_KEY='maritime-drill:drive-auth:v1';
+  // v5.48: a device-local marker survives reloads and browser restarts, so a
+  // school PC whose Google connection lapsed still knows its answers never
+  // reached Drive. Outside md_: never backed up or synced itself.
+  const UNSYNCED_KEY='maritime-drill:drive-unsynced:v1';
+  function unsynced(){try{return !!localStorage.getItem(UNSYNCED_KEY)}catch(e){return false}}
+  function markUnsynced(){try{localStorage.setItem(UNSYNCED_KEY,String(Date.now()))}catch(e){}}
+  function clearUnsynced(){try{localStorage.removeItem(UNSYNCED_KEY)}catch(e){}}
+  window.__mdDriveUnsynced=unsynced;
+  window.__mdDriveClearUnsynced=clearUnsynced;
   let memoryToken=null,memoryOnly=false,gisPromise=null,authPromise=null,cancelAuth=null;
   // Login cancellation and credential replacement have different lifetimes:
   // a successful OAuth response must not cancel its own connect operation,
@@ -92,9 +101,9 @@
     }).finally(()=>{gisPromise=null});
     return gisPromise;
   };
-  driveSyncRequestToken=function(interactive=true){
+  driveSyncRequestToken=function(interactive=true,renew=false){
     const existing=driveSyncLoadSessionToken();
-    if(existing)return Promise.resolve(existing.access_token);
+    if(existing&&!renew)return Promise.resolve(existing.access_token);
     if(authPromise)return authPromise;
     if(!interactive)return Promise.reject(new Error('Google Drive 연결 갱신이 필요합니다.'));
     // Preload at startup; if it is still loading, preserve popup user activation.
@@ -189,7 +198,7 @@
       if(!driveSyncSaveState(state))throw new Error('동기화 설정을 저장하지 못했습니다. 사이트 저장 공간을 확인하세요.');
       driveSyncLastError='';
       await driveSyncOnce({interactive:false,showNotice:true});
-      if(!driveSyncLastError){failures=0;retryAfter=0;nextCheckAt=Date.now()+REMOTE_CHECK_MS;}
+      if(!driveSyncLastError){failures=0;retryAfter=0;nextCheckAt=Date.now()+REMOTE_CHECK_MS;if(!editPending)clearUnsynced();}
     }catch(error){
       if(epoch!==generation)return;
       driveSyncLastError=(error&&error.message)||'Google Drive 연결에 실패했습니다.';
@@ -224,19 +233,32 @@
   function refreshBanner(){
     if(!document.body)return;
     let banner=document.getElementById('md-drive-auth-banner');
-    const needed=authState().enabled&&!driveSyncHasToken()&&navigator.onLine;
+    const enabled=authState().enabled,hasToken=driveSyncHasToken(),pending=unsynced();
+    // v5.48: also warn when answers are stuck locally because syncing keeps failing.
+    const needed=enabled&&navigator.onLine&&(!hasToken||pending&&!!driveSyncLastError);
     if(!needed){if(banner)banner.remove();return}
     if(!banner){
       banner=document.createElement('div');banner.id='md-drive-auth-banner';
       banner.setAttribute('role','status');
-      banner.style.cssText='position:sticky;top:0;z-index:1000;padding:10px 14px;background:#FEF3C7;color:#78350F;font-size:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap';
       const text=document.createElement('span');text.style.flex='1';
-      text.textContent='Drive 동기화가 일시 중지되었습니다. 연결을 갱신하면 기기에 저장된 기록을 동기화합니다.';
       const button=document.createElement('button');button.type='button';button.className='btn btn-accent';
-      button.onclick=()=>connectGoogleDriveSync();banner.append(text,button);document.body.prepend(banner);
+      button.style.cssText='width:auto;flex-shrink:0';
+      button.onclick=()=>driveSyncHasToken()?driveSyncOnce({interactive:true,showNotice:true}):connectGoogleDriveSync();
+      banner.append(text,button);document.body.prepend(banner);
     }
-    const button=banner.querySelector('button');button.disabled=!!authPromise;
-    const label=authPromise?'Google 확인 중…':'연결 갱신';
+    const strong=pending;
+    const css=strong
+      ?'position:sticky;top:0;z-index:1000;padding:12px 14px;background:#FEE2E2;color:#7F1D1D;border-bottom:2px solid #DC2626;font-size:13px;font-weight:700;display:flex;align-items:center;gap:10px;flex-wrap:wrap'
+      :'position:sticky;top:0;z-index:1000;padding:10px 14px;background:#FEF3C7;color:#78350F;font-size:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap';
+    if(banner.style.cssText!==css)banner.style.cssText=css;
+    const message=strong
+      ?(hasToken
+        ?'이 기기에서 푼 기록이 아직 Google Drive에 올라가지 않았습니다. 다른 기기에서 이어 풀려면 지금 동기화를 눌러 주세요.'
+        :'이 기기에서 푼 기록이 아직 Google Drive에 올라가지 않았습니다. Google 연결이 끊겼습니다. 다른 기기에서 이어 풀려면 연결 갱신을 눌러 주세요.')
+      :'Drive 동기화가 일시 중지되었습니다. 연결을 갱신하면 기기에 저장된 기록을 동기화합니다.';
+    const text=banner.querySelector('span');if(text.textContent!==message)text.textContent=message;
+    const button=banner.querySelector('button');button.disabled=!!authPromise||driveSyncBusy;
+    const label=authPromise?'Google 확인 중…':hasToken?'지금 동기화':'연결 갱신';
     if(button.textContent!==label)button.textContent=label;
   }
   driveSyncRefreshPanel=function(){
@@ -247,6 +269,30 @@
   };
   function canAutoSync(){
     return document.visibilityState==='visible'&&authState().enabled&&driveSyncHasToken()&&navigator.onLine;
+  }
+  // v5.48: Google tokens last about an hour and cannot be renewed in the
+  // background (the Google window needs a click). Renew on an ordinary click
+  // shortly before or after expiry, so long sessions keep syncing.
+  const RENEW_BEFORE_MS=10*60*1000,RENEW_RETRY_MS=5*60*1000;let lastRenewAt=0;
+  function renewOnClick(event){
+    if(!authState().enabled||!navigator.onLine||authPromise||driveSyncBusy||!gisReady())return;
+    const token=driveSyncLoadSessionToken();
+    if(token&&Number(token.expiresAt)-Date.now()>RENEW_BEFORE_MS)return;
+    if(lastRenewAt&&Date.now()-lastRenewAt<RENEW_RETRY_MS)return;
+    const target=event&&event.target;
+    // The banner and settings buttons run their own connect flow.
+    if(target&&target.closest&&target.closest('#md-drive-auth-banner,#md-drive-connect-btn'))return;
+    lastRenewAt=Date.now();
+    driveSyncRequestToken(true,!!token).then(()=>{
+      driveSyncLastError='';failures=0;retryAfter=0;nextCheckAt=0;tick();
+    },()=>{driveSyncRefreshPanel();});
+  }
+  // v5.48: closing the tab with answers that never reached Drive asks first.
+  function warnBeforeLeaving(event){
+    // A sync applying merged data reloads the page while still busy.
+    if(driveSyncBusy||!authState().enabled||!navigator.onLine||!unsynced())return;
+    event.preventDefault();event.returnValue='';
+    return '';
   }
   function flushLocalChange(){
     editTimer=null;
@@ -269,7 +315,10 @@
     driveSyncRefreshPanel();
   }
   // Called only after a durable local metadata write, not on remote application.
-  window.__mdDriveLocalChanged=scheduleLocalChange;
+  window.__mdDriveLocalChanged=function(){
+    if(authState().enabled)markUnsynced();
+    scheduleLocalChange();
+  };
   function syncSettled(kind,error){
     activeAutoKind=null;
     if(error||driveSyncLastError){
@@ -282,6 +331,9 @@
       }
     }else{
       failures=0;retryAfter=0;nextCheckAt=Date.now()+REMOTE_CHECK_MS;
+      // The merged upload already carries every local answer. A newer answer
+      // made during the request sets editPending again and keeps the marker.
+      if(!editPending)clearUnsynced();
     }
     driveSyncRefreshPanel();
     if(editPending&&editTimer===null&&!driveSyncLastError)scheduleLocalChange();
@@ -332,6 +384,8 @@
       }
     });
     window.addEventListener('pageshow',wake);
+    document.addEventListener('click',renewOnClick,true);
+    window.addEventListener('beforeunload',warnBeforeLeaving);
     document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')wake()});
     tick();
   }

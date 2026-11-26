@@ -4,7 +4,7 @@ const root=path.join(__dirname,'..'),html=fs.readFileSync(path.join(root,'index.
 const start=html.indexOf('const DRIVE_SYNC_CLIENT_ID='),end=html.indexOf("if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',driveSyncInit",start);
 const managed=html.slice(html.indexOf('function isManagedStorageKey('),html.indexOf('function backupNotice('));
 const base=html.slice(start,end),patch=fs.readFileSync(path.join(root,'drive-auth.js'),'utf8');
-const TOKEN='maritime-drill:drive-auth:v1',LEGACY='md_drive_sync_token_session_v1',STATE='md_drive_sync_state_v1';
+const UNSYNCED='maritime-drill:drive-unsynced:v1',TOKEN='maritime-drill:drive-auth:v1',LEGACY='md_drive_sync_token_session_v1',STATE='md_drive_sync_state_v1';
 function harness(options={}){
   class Storage{
     constructor(data){this.data=data||new Map();this.fail=false}
@@ -255,6 +255,37 @@ let count=0;async function test(name,fn){await fn();count++;console.log('PASS '+
     const h=harness();h.enable();const p=h.s.connectGoogleDriveSync();
     h.run('driveSyncSaveState({...driveSyncLoadState(),revision:42,itemMeta:{changed:true}})');h.respond();await p;
     assert.equal(h.s.driveSyncLoadState().revision,42);assert.equal(h.s.driveSyncLoadState().itemMeta.changed,true);
+  });
+  // v5.48: answers made on a device must not silently stay there after the hourly token lapses.
+  await test('a local answer marks the device unsynced until a clean sync uploads it',async()=>{
+    const h=harness();h.enable();h.save();h.emit('DOMContentLoaded');await Promise.resolve();await Promise.resolve();
+    h.s.__mdDriveLocalChanged();assert.ok(h.s.localStorage.getItem(UNSYNCED));assert.equal(h.s.__mdDriveUnsynced(),true);
+    [...h.timers.values()].find(timer=>timer.ms===4500).fn();await Promise.resolve();await Promise.resolve();
+    assert.equal(h.s.localStorage.getItem(UNSYNCED),null);
+    // The marker is device-local: never exported or synced.
+    h.s.__mdDriveLocalChanged();assert.equal(Object.keys(h.s.collectBackupItems()).includes(UNSYNCED.slice(1,-1)),false);
+  });
+  await test('an expired connection keeps the unsynced marker and warns before leaving',async()=>{
+    const h=harness();h.enable();h.save();h.emit('DOMContentLoaded');await Promise.resolve();
+    h.advance(3600000);h.s.__mdDriveLocalChanged();h.poll();await Promise.resolve();
+    assert.equal(h.s.__mdDriveUnsynced(),true);
+    let prevented=false;const event={preventDefault(){prevented=true},returnValue:null};
+    h.emit('beforeunload',event);assert.equal(prevented,true);
+    const off=harness();off.emit('DOMContentLoaded');let p2=false;off.emit('beforeunload',{preventDefault(){p2=true}});assert.equal(p2,false);
+  });
+  await test('a click renews the Google connection shortly before expiry, at most every 5 minutes',async()=>{
+    const h=harness();h.enable();h.save();h.emit('DOMContentLoaded');await Promise.resolve();
+    const click={target:{closest:()=>null}};
+    h.emit('click',click);assert.equal(h.prompts.length,0,'fresh token: no Google window');
+    h.advance(51*60000);h.emit('click',click);assert.equal(h.prompts.length,1);assert.equal(h.prompts[0].prompt,'');
+    h.respond({access_token:'renewed'});await Promise.resolve();
+    assert.equal(h.s.driveSyncLoadSessionToken().access_token,'renewed');
+    h.emit('click',click);assert.equal(h.prompts.length,1,'renewed token is fresh again');
+    h.advance(70*60000);h.emit('click',click);assert.equal(h.prompts.length,2,'expired token renews on click');
+    h.error('popup_closed');await Promise.resolve();
+    h.emit('click',click);assert.equal(h.prompts.length,2,'a failed renewal waits 5 minutes');
+    h.advance(5*60000);h.emit('click',{target:{closest:s=>s.includes('md-drive-auth-banner')?{}:null}});assert.equal(h.prompts.length,2,'banner button runs its own flow');
+    h.emit('click',click);assert.equal(h.prompts.length,3);
   });
   console.log(`drive-auth tests: PASS (${count} cases)`);
 })().catch(error=>{console.error(error);process.exitCode=1});
