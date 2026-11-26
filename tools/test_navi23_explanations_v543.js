@@ -21,8 +21,8 @@ const answerOf = k => {
   return MARKS[q['정답']];
 };
 
-test('expanded explanation source covers at least 170 keys without duplicates', () => {
-  assert.ok(keys.length >= 170, 'keys ' + keys.length);
+test('expanded explanation source covers all 350 keys without duplicates', () => {
+  assert.ok(keys.length === 350, 'keys ' + keys.length);
   assert.equal(new Set(keys).size, keys.length);
 });
 test('every expanded explanation is in the bundle with the full section layout', () => {
