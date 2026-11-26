@@ -1,0 +1,336 @@
+@@ 2020|navi2|4|법규|24
+~ 수면비행선박 | WIG craft, Wing-in-ground craft | 표면효과를 이용해 수면 가까이 떠서 비행하는 선박.
+~ 표면효과 | Ground effect | 날개가 수면 가까이 있을 때 양력이 커지는 현상.
+~ 고광도 홍색 섬광등 | High-intensity red flashing light | 수면비행선박이 이착수·비행 중에 덧붙이는 등.
+수면비행선박은 **표면효과**를 이용해 수면 가까이 비행하는 선박이며, 이착수·비행 중에는 동력선 등화에 **고광도 홍색 섬광등**을 덧붙인다. 등화 규정을 지킬 수 없으면 가능한 한 규정에 가깝게 표시한다.
+COLREG에 야간 운항을 금지·제한하는 규정은 없으므로 ㉱가 옳지 않으며, 정답은 ㉱이다.
+- ㉮ 수면비행선박의 정의와 일치한다.
+- ㉯ 고광도 홍색 섬광등을 덧붙이는 것이 규정이다.
+- ㉰ 등화를 표시할 수 없을 때의 규정과 일치한다.
+- ㉱ 야간 운항 제한 규정은 없으므로 틀렸다.
+* 수면비행선박 = 고광도 홍색 섬광등, 다른 선박의 통항을 방해하지 않도록 넉넉히 피한다.
+
+@@ 2020|navi2|4|법규|25
+~ 추월 신호 | Overtaking signal | 좁은 수로에서 추월하려는 선박이 울리는 음향신호.
+~ 장음 | Prolonged blast | 4~6초 동안 울리는 소리.
+~ 단음 | Short blast | 약 1초 동안 울리는 소리.
+좁은 수로에서 추월할 때 **상대의 우현 쪽으로 추월하려면 장음 2회·단음 1회**, **좌현 쪽으로 추월하려면 장음 2회·단음 2회**를 울린다. 추월당하는 선박이 동의하면 장음·단음·장음·단음을 울린다.
+좌현 쪽 추월이므로 장음 2회·단음 2회이며, 정답은 ㉱이다.
+- ㉮ 장음 1회·단음 1회는 규정된 추월 신호가 아니다.
+- ㉯ 장음 2회·단음 1회는 우현 쪽 추월 신호이다.
+- ㉰ 장음 1회·단음 2회는 규정된 추월 신호가 아니다.
+- ㉱ 장음 2회·단음 2회가 좌현 쪽 추월 신호이다.
+* 우현 추월 = 장장단, 좌현 추월 = 장장단단, 동의 = 장단장단.
+
+@@ 2020|navi2|4|영어|1
+> Select a word | 셀렉트 어 워드 | 단어를 고르시오
+> which is misspelled | 위치 이즈 미스스펠드 | 철자가 틀린
+전체: 철자가 틀린 단어를 고르시오.
+= ㉮ derelict | 데럴릭트 | 유기선(버려진 선박), 표류물 — 철자 맞음
+= ㉯ astronomical | 애스트러나미컬 | 천문의(astronomical tide = 천문조) — 철자 맞음
+= ㉰ boatsuain | 보순 | 갑판장 — 바른 철자는 boatswain이므로 틀림
+= ㉱ trimmed | 트림드 | 트림을 맞춘, 화물을 고르게 편 — 철자 맞음
+갑판장은 **boatswain**으로 쓰고 [보순]으로 읽는다. 발음만 생각하고 쓰면 틀리기 쉬운 단어이다.
+boatsuain은 철자가 틀렸으므로 정답은 ㉰이다.
+* boatswain(Bosun) = 갑판장, coxswain = 정장 — 철자 주의.
+
+@@ 2020|navi2|4|영어|2
+> Select a group | 셀렉트 어 그룹 | 짝을 고르시오
+> which has no relation each other | 위치 해즈 노 릴레이션 이치 아더 | 서로 관계가 없는
+전체: 서로 관계가 없는 짝을 고르시오.
+= ㉮ Air draught - Height | 에어 드래프트 - 하이트 | 수면 위 높이 - 높이 — 관계 있음
+= ㉯ Gross tonnage – Volume | 그로스 토니지 - 볼륨 | 총톤수 - 용적 — 관계 있음
+= ㉰ UKC - Depth of water | 유케이시 - 뎁스 오브 워터 | 선저 여유수심 - 수심 — 관계 있음
+= ㉱ Way point - Hydrographic survey | 웨이 포인트 - 하이드러그래픽 서베이 | 변침점 - 수로 측량 — 관계 없음
+Way point(변침점)는 항로 계획에서 침로를 바꾸는 지점이고, Hydrographic survey(수로 측량)는 바다의 수심·지형을 재는 일이어서 직접 관계가 없다.
+나머지는 모두 '용어 - 그 용어가 나타내는 물리량'의 짝이므로 정답은 ㉱이다.
+* Air draught = 수면에서 최고점까지 높이.
+* UKC = 선저 아래 여유수심.
+
+@@ 2020|navi2|4|영어|3
+> Select one | 셀렉트 원 | 하나를 고르시오
+> which has wrong expression | 위치 해즈 롱 익스프레션 | 잘못된 표현이 있는
+> in SMCP | 인 에스엠시피 | 표준해사통신영어에서
+전체: SMCP상 잘못된 표현을 고르시오.
+= ㉮ You may anchor. | 유 메이 앵커 | 닻을 내려도 됩니다 — may가 애매하여 SMCP에 맞지 않음
+= ㉯ The head line is broken. | 더 헤드 라인 이즈 브로큰 | 선수줄이 끊어졌다 — 바른 표현
+= ㉰ The cable is up and down. | 더 케이블 이즈 업 앤 다운 | 앵커 체인이 수직이다 — 바른 표현
+= ㉱ Pick up the slack on stern line. | 픽 업 더 슬랙 온 스턴 라인 | 선미줄의 늘어진 부분을 감아라 — 바른 표현
+SMCP는 뜻이 애매해질 수 있는 **may** 같은 조동사를 피하고, 허가와 지시를 명확하게 말하도록 한다(예: "You are allowed to anchor").
+그래서 "You may anchor."가 잘못된 표현으로 출제되었으며, 정답은 ㉮이다.
+* SMCP에서 may·might·should·could는 피한다.
+* up and down = 체인이 수직, slack = 늘어진 부분.
+
+@@ 2020|navi2|4|영어|4
+> Protect the deck cargo of timbers | 프로텍트 더 덱 카고 오브 팀버즈 | 갑판에 실은 목재 화물을 보호하라
+> ( ) shipping seas | 쉬핑 시즈 | 갑판 위로 올라오는 파도( )
+전체: 갑판적 목재 화물을 갑판 위로 덮치는 파도로부터 보호하라.
+= ㉮ at | 앳 | ~에서(지점) — protect와 어울리지 않음
+= ㉯ by | 바이 | ~에 의해 — 의미가 맞지 않음
+= ㉰ to | 투 | ~에게, ~로 — 의미가 맞지 않음
+= ㉱ against | 어겐스트 | ~에 대비하여, ~로부터 — protect against로 맞음
+'~으로부터 보호하다'는 **protect A against(from) B**로 쓴다. shipping seas는 갑판 위로 올라와 덮치는 파도이다.
+따라서 정답은 ㉱이다.
+* protect against = ~로부터 보호하다.
+* ship seas(green water) = 파도가 갑판에 올라오다.
+
+@@ 2020|navi2|4|영어|5
+> Select a correct translation | 셀렉트 어 커렉트 트랜슬레이션 | 올바른 번역을 고르시오
+> 1번 수로는 준설작업으로 일시적으로 폐쇄되었다 | - | 번역할 문장
+전체: "1번 수로는 준설작업으로 일시적으로 폐쇄되었다."를 올바르게 옮긴 것을 고르시오.
+= ㉮ prohibited by dredging operations | 프로히비티드 바이 드레징 오퍼레이션즈 | 준설작업으로 금지되었다 — 영구적·법적 금지 느낌
+= ㉯ resumed by dragging operations | 리줌드 바이 드래깅 오퍼레이션즈 | 끌기 작업으로 재개되었다 — 반대 뜻, dragging은 준설이 아님
+= ㉰ restricted by dredging operations | 리스트릭티드 바이 드레징 오퍼레이션즈 | 준설작업으로 제한되었다 — 통항은 가능한 상태
+= ㉱ suspended by dredging operations | 서스펜디드 바이 드레징 오퍼레이션즈 | 준설작업으로 일시 중지되었다 — 맞음
+'일시적으로 폐쇄(중지)된' 상태는 **suspended**로 표현한다. dredging은 준설이다.
+따라서 정답은 ㉱이다.
+* dredging = 준설, suspended = 일시 중지, restricted = 제한.
+
+@@ 2020|navi2|4|영어|6
+> Select one which is not included | 셀렉트 원 위치 이즈 낫 인클루디드 | 포함되지 않는 것을 고르시오
+> in the 'Pilot transfer arrangements' | 인 더 파일럿 트랜스퍼 어레인지먼츠 | '도선사 승하선 설비'에
+> in SOLAS Convention | 인 솔라스 컨벤션 | 해상인명안전협약의
+전체: SOLAS 협약의 '도선사 승하선 설비'에 포함되지 않는 것을 고르시오.
+= ㉮ Accommodation ladder | 어카머데이션 래더 | 현문 사다리 — 포함됨
+= ㉯ Emergency rescue boat | 이머전시 레스큐 보트 | 비상 구조정 — 구명설비라 포함 안 됨
+= ㉰ Mechanical pilot hoist | 머캐니컬 파일럿 호이스트 | 기계식 도선사 승강기 — 포함됨
+= ㉱ Man rope | 맨 로프 | 사다리 옆 손잡이 줄 — 포함됨
+SOLAS 제V장 제23규칙의 도선사 승하선 설비에는 **도선사 사다리, 현문 사다리, 기계식 승강기, 맨로프, 구명부환, 조명** 등이 들어간다. 비상 구조정은 구명설비이지 도선사 승하선 설비가 아니다.
+따라서 정답은 ㉯이다.
+* Pilot transfer arrangements = pilot ladder, accommodation ladder(9m 초과 시 병용), man ropes, lifebuoy, lighting.
+
+@@ 2020|navi2|4|영어|7
+> Choose an incorrect one | 추즈 언 인커렉트 원 | 틀린 것을 고르시오
+> in SMCP | 인 에스엠시피 | 표준해사통신영어에서
+전체: SMCP상 틀린 표현을 고르시오.
+= ㉮ I have lost radar contact. | 아이 해브 로스트 레이더 컨택트 | 레이더 접촉을 잃었다 — 바른 표현
+= ㉯ I require navigational assistance. | 아이 리콰이어 내비게이셔널 어시스턴스 | 항해 지원이 필요하다 — 바른 표현
+= ㉰ I have altered course for 150 degrees. | 아이 해브 올터드 코스 포 원피프티 디그리즈 | 침로를 150도로 바꿨다 — for가 틀림(to가 맞음)
+= ㉱ Traffic clearance is required before entering the east fairway. | 트래픽 클리어런스 이즈 리콰이어드 비포 엔터링 디 이스트 페어웨이 | 동쪽 항로에 들어가기 전 통항 허가가 필요하다 — 바른 표현
+침로 변경은 "I am altering course **to** 150 degrees." 또는 "I have altered course **to** 150 degrees."처럼 전치사 **to**로 새 침로를 나타낸다.
+for를 쓴 ㉰가 틀렸으므로 정답은 ㉰이다.
+* alter course to + 침로(도).
+
+@@ 2020|navi2|4|영어|8
+> Choose a correct pair | 추즈 어 커렉트 페어 | 올바른 짝(문답)을 고르시오
+전체: 질문과 대답이 올바르게 짝지어진 것을 고르시오.
+= ㉮ Must I take tugs? - No, you need take tugs. | 머스트 아이 테이크 터그즈 - 노 유 니드 테이크 터그즈 | 예인선을 써야 합니까? - 아니요, 써야 합니다 — 앞뒤가 모순
+= ㉯ Can you stop spillage? - No, I can stop spillage. | 캔 유 스탑 스필리지 - 노 아이 캔 스탑 스필리지 | 유출을 멈출 수 있습니까? - 아니요, 멈출 수 있습니다 — 모순
+= ㉰ Are you on even keel? - Yes, I have no list. | 아 유 온 이븐 킬 - 예스 아이 해브 노 리스트 | 등흘수입니까? - 예, 횡경사가 없습니다 — 질문과 답이 다름
+= ㉱ Is fishing gear ahead of me? - No fishing gear ahead of you. | 이즈 피싱 기어 어헤드 오브 미 - 노 피싱 기어 어헤드 오브 유 | 제 앞에 어구가 있습니까? - 귀선 앞에 어구는 없습니다 — 맞음
+"제 앞에 어구가 있습니까?"에 "귀선 앞에 어구는 없습니다"라고 답한 ㉱가 올바른 짝이므로 정답은 ㉱이다.
+- ㉮ No로 답했으면 "you need not take tugs"여야 한다.
+- ㉯ No로 답했으면 "I cannot stop spillage"여야 한다.
+- ㉰ even keel은 앞뒤 흘수가 같은 상태이므로 횡경사(list)로 답하면 맞지 않는다.
+* even keel = 선수·선미 흘수가 같음, list = 횡경사.
+
+@@ 2020|navi2|4|영어|9
+> All stations. This is M/V Fortune. | 올 스테이션즈 디스 이즈 엠브이 포춘 | 모든 국에. 여기는 포춘호
+> I have collided with unknown object | 아이 해브 컬라이디드 위드 언노운 아브젝트 | 미확인 물체와 충돌하였다
+> and I require tug assistance | 앤 아이 리콰이어 터그 어시스턴스 | 예인선 지원이 필요하다
+> My position is 160 degrees, 4 miles from Barwater pier | 마이 퍼지션 이즈 원식스티 디그리즈 포 마일즈 프럼 바워터 피어 | 본선 위치는 바워터 부두에서 160도, 4마일
+전체: 미확인 물체와 충돌해 예인선 지원이 필요한 상황에서 앞에 붙일 신호를 고르시오.
+= ㉮ Mayday Mayday Mayday | 메이데이 | 조난 신호 — 중대하고 급박한 위험일 때
+= ㉯ Securite Securite Securite | 시큐리테 | 안전 신호 — 항행 안전 정보일 때
+= ㉰ Pan-Pan Pan-Pan Pan-Pan | 팡팡 | 긴급 신호 — 선박 안전에 관한 긴급 상황, 맞음
+= ㉱ Mayday relay | 메이데이 릴레이 | 조난 중계 — 다른 선박의 조난을 대신 알릴 때
+즉각적인 생명의 위협은 없지만 충돌로 선박 안전에 문제가 생겨 도움이 필요한 **긴급** 상황이므로 **Pan-Pan**을 쓴다.
+따라서 정답은 ㉰이다.
+* 조난 Mayday > 긴급 Pan-Pan > 안전 Securite.
+
+@@ 2020|navi2|4|영어|10
+> All vessels ( ) of Hongdo island | 올 베슬즈 오브 홍도 아일랜드 | 홍도 ( )의 모든 선박은
+> keep sharp lookout | 킵 샤프 룩아웃 | 엄중히 경계하고
+> and report to on-scene co-ordinator | 앤 리포트 투 온신 코오디네이터 | 현장 조정관에게 보고하라
+전체: 홍도 부근의 모든 선박은 엄중히 경계하고 현장 조정관에게 보고하라.
+= ㉮ around | 어라운드 | ~ 주위에 — 일반 영어 표현, SMCP 표현 아님
+= ㉯ in vicinity | 인 비시니티 | ~ 부근에 — SMCP 표현으로 맞음
+= ㉰ in position | 인 퍼지션 | ~ 위치에 — 특정 위치를 말할 때 씀
+= ㉱ from position | 프럼 퍼지션 | ~ 위치로부터 — 의미가 맞지 않음
+SMCP는 '~ 부근에'를 **in (the) vicinity of**로 표현한다.
+따라서 정답은 ㉯이다.
+* in (the) vicinity of = ~ 부근에.
+* OSC = On-scene co-ordinator, 현장 조정관.
+
+@@ 2020|navi2|4|영어|11
+> The basic principle of inertial navigation | 더 베이식 프린서플 오브 이너셜 내비게이션 | 관성항법의 기본 원리는
+> is the measurement of the accelerations acting on a craft | 이즈 더 메저먼트 오브 디 액셀러레이션즈 액팅 온 어 크래프트 | 선체에 작용하는 가속도를 측정하는 것과
+> and the double ( ) of these accelerations | 앤 더 더블 오브 디즈 액셀러레이션즈 | 이 가속도를 두 번 ( )하는 것이다
+> to obtain the displacement from the start point | 투 업테인 더 디스플레이스먼트 프럼 더 스타트 포인트 | 출발점으로부터의 변위를 얻기 위해
+전체: 관성항법의 원리는 가속도를 측정해 두 번 적분하여 출발점으로부터의 변위를 얻는 것이다.
+= ㉮ differentiation | 디퍼렌시에이션 | 미분 — 반대 연산
+= ㉯ integration | 인티그레이션 | 적분 — 맞음
+= ㉰ accumulation | 어큐뮬레이션 | 축적 — 수학 용어가 아님
+= ㉱ dissemination | 디세미네이션 | 보급, 전파 — 의미가 맞지 않음
+가속도를 한 번 **적분**하면 속도, 두 번 적분하면 거리(변위)가 된다.
+따라서 정답은 ㉯이다.
+* 가속도 → (적분) 속도 → (적분) 변위.
+
+@@ 2020|navi2|4|영어|12
+> The gyrocompass depends upon four natural phenomena | 더 자이로컴퍼스 디펜즈 어폰 포 내추럴 퍼나머나 | 자이로컴퍼스는 네 가지 자연 현상에 의존한다
+> gyroscopic inertia, ( ), Earth's rotation, and gravity | 자이로스코픽 이너셔 어스 로테이션 앤 그래비티 | 자이로 관성, ( ), 지구 자전, 중력
+전체: 자이로컴퍼스는 자이로 관성, 세차운동, 지구 자전, 중력이라는 네 가지 자연 현상에 의존한다.
+= ㉮ rotor | 로터 | 회전체 — 장치 부품이지 자연 현상이 아님
+= ㉯ ellipse | 일립스 | 타원 — 도형
+= ㉰ gyrosphere | 자이로스피어 | 자이로구 — 장치 부품
+= ㉱ precession | 프리세션 | 세차운동 — 자연 현상으로 맞음
+자이로컴퍼스가 북을 가리키는 원리는 **방향 보존성(자이로 관성), 세차운동, 지구 자전, 중력**이다.
+나머지는 장치나 도형이므로 정답은 ㉱이다.
+* gyroscopic inertia + precession + Earth's rotation + gravity.
+
+@@ 2020|navi2|4|영어|13
+> What is the major limitation | 왓 이즈 더 메이저 리미테이션 | 주된 한계는 무엇인가
+> in using the Sight Reduction Tables for Air Navigation Volume I | 인 유징 더 사이트 리덕션 테이블즈 포 에어 내비게이션 볼륨 원 | 항공용 천측계산표 제1권을 쓸 때
+> for star sights | 포 스타 사이츠 | 항성 관측에
+전체: 항성 관측에 Pub. 249 제1권을 쓸 때의 주된 한계는 무엇인가?
+= ㉮ More accuracy is needed than what is tabulated | 모어 애큐러시 이즈 니디드 | 표의 값보다 더 높은 정확도가 필요하다 — 항해용으로 충분하므로 틀림
+= ㉯ Sights must be made at even time increments | 사이츠 머스트 비 메이드 앳 이븐 타임 인크리먼츠 | 일정한 시간 간격으로 관측해야 한다 — 그럴 필요 없음
+= ㉰ Only certain stars are included | 온리 서튼 스타즈 아 인클루디드 | 특정 별만 실려 있어 그 별로만 관측해야 한다 — 맞음
+= ㉱ Only first magnitude stars are tabulated | 온리 퍼스트 매그니튜드 스타즈 | 1등성만 실려 있다 — 틀림
+Pub. 249 제1권(Selected Stars)은 **선별된 항성 7개만 수록**하므로 그 별들로만 관측해야 한다는 한계가 있다.
+따라서 정답은 ㉰이다.
+* Pub. 249 Vol. I = 선별 항성, Vol. II·III = 위도별 적위 0~29°.
+
+@@ 2020|navi2|4|영어|14
+> Geographic range is the maximum distance | 지오그래픽 레인지 이즈 더 맥시멈 디스턴스 | 지리적 광달거리는 최대 거리이다
+> at which a light may be seen under ( ) | 앳 위치 어 라이트 메이 비 신 언더 | 등화를 ( ) 볼 수 있는
+전체: 지리적 광달거리는 시정이 완벽하고 지구 곡률로만 제한되는 조건에서 등화를 볼 수 있는 최대 거리이다.
+= ㉮ existing visibility conditions, limited only by the curvature of the Earth | 이그지스팅 비저빌리티 컨디션즈 | 현재 시정 조건, 지구 곡률로만 제한 — 시정 조건이 틀림
+= ㉯ perfect visibility conditions, limited only by the curvature of the Earth | 퍼펙트 비저빌리티 컨디션즈 리미티드 온리 바이 더 커버처 오브 디 어스 | 완벽한 시정, 지구 곡률로만 제한 — 맞음
+= ㉰ existing visibility conditions, limited only by the intensity of the light | 이그지스팅 비저빌리티 인텐시티 오브 더 라이트 | 현재 시정, 광력으로만 제한 — 광학적 광달거리 개념
+= ㉱ perfect visibility conditions, limited only by interference from background lighting | 퍼펙트 비저빌리티 백그라운드 라이팅 | 완벽한 시정, 배경 조명으로만 제한 — 정의 요소가 아님
+지리적 광달거리는 **시정이 완벽하다고 가정**하고 **지구의 곡률(등고·안고)만으로 제한**되는 거리이다.
+따라서 정답은 ㉯이다.
+* Geographic range = 곡률 제한, Luminous range = 광력·시정 제한.
+
+@@ 2020|navi2|4|영어|15
+> The resistance to forward motion of a ship | 더 레지스턴스 투 포워드 모션 오브 어 쉽 | 선박의 전진 운동에 대한 저항은
+> is of three principal kinds | 이즈 오브 쓰리 프린서플 카인즈 | 세 가지 주요 종류가 있다
+> ( ), wave-making and separation or eddy-making | 웨이브메이킹 앤 세퍼레이션 오어 에디메이킹 | ( ), 조파, 박리 또는 와류
+전체: 선박의 전진 저항은 크게 마찰, 조파, 와류(박리) 저항의 세 가지이다.
+= ㉮ friction | 프릭션 | 마찰 — 맞음
+= ㉯ operation | 아퍼레이션 | 운항 — 저항의 종류가 아님
+= ㉰ motion | 모션 | 운동 — 저항의 종류가 아님
+= ㉱ energy | 에너지 | 에너지 — 저항의 종류가 아님
+선체 저항은 **마찰저항, 조파저항, 와류저항**이며 여기에 공기저항을 더하기도 한다.
+따라서 정답은 ㉮이다.
+* 저속선 = 마찰저항이 대부분, 고속선 = 조파저항 비중 증가.
+
+@@ 2020|navi2|4|영어|16
+> All wire rope should be ( ) | 올 와이어 로프 슈드 비 | 모든 와이어로프는 ( ) 해야 한다
+> to prevent corrosion | 투 프리벤트 커로전 | 부식을 막기 위해
+전체: 모든 와이어로프는 부식을 막기 위해 그리스를 바르고 윤활해야 한다.
+= ㉮ parceled and served | 파슬드 앤 서브드 | 천을 감고 실로 감싼 — 이음부 보호 작업
+= ㉯ arranged and cut | 어레인지드 앤 컷 | 정리하고 자른 — 부식 방지와 무관
+= ㉰ greased and lubricated | 그리스드 앤 루브리케이티드 | 그리스를 바르고 윤활한 — 맞음
+= ㉱ scrapped and chipped | 스크랩트 앤 칩트 | 폐기하고 깡깡이한 — 부식 방지와 무관
+와이어로프는 **그리스를 바르고 윤활**하여 부식과 소선 사이의 내부 마모를 막는다.
+따라서 정답은 ㉰이다.
+* 와이어로프 = 정기적 그리스 도포.
+
+@@ 2020|navi2|4|영어|17
+> What is the document | 왓 이즈 더 다큐먼트 | 그 문서는 무엇인가
+> containing all terms and conditions of the contract | 컨테이닝 올 텀즈 앤 컨디션즈 오브 더 컨트랙트 | 계약의 모든 조건을 담고
+> between a shipowner and a charterer | 비트윈 어 쉽오너 앤 어 차터러 | 선주와 용선자 사이의
+> signed by both parties or their agents | 사인드 바이 보스 파티즈 | 양 당사자나 대리인이 서명한
+> for the hire of a ship or the space in a ship | 포 더 하이어 오브 어 쉽 | 선박 또는 선복을 빌리기 위한
+전체: 선박이나 선복을 빌리기 위해 선주와 용선자가 계약 조건을 모두 담아 서명한 문서는?
+= ㉮ Bill of lading | 빌 오브 레이딩 | 선하증권 — 화물 수령을 증명하는 증권
+= ㉯ Fixture memo | 픽스처 메모 | 성약 메모 — 성약 내용 요약
+= ㉰ Charter party | 차터 파티 | 용선계약서 — 맞음
+= ㉱ Space charter | 스페이스 차터 | 선복 용선 — 용선 형태
+선주와 용선자 사이 계약의 모든 조건을 담은 문서는 **용선계약서(Charter party, C/P)**이다.
+따라서 정답은 ㉰이다.
+* Charter party = 용선계약서, B/L = 선하증권.
+
+@@ 2020|navi2|4|영어|18
+> A Safety Management Certificate shall be issued to a ship | 어 세이프티 매니지먼트 서티피킷 섈 비 이슈드 투 어 쉽 | 안전관리증서는 선박에 발급된다
+> by the ( ) or organization recognized by the ( ) | 바이 더 오어 오거니제이션 레커그나이즈드 바이 더 | ( ) 또는 ( )가 인정한 기관에 의해
+> which should verify that the company and its shipboard management | 위치 슈드 베리파이 댓 더 컴퍼니 | 회사와 선박 관리가
+> operate in accordance with the approved SMS | 아퍼레이트 인 어코던스 위드 디 어프루브드 에스엠에스 | 승인된 안전관리체제에 따라 운영되는지 검증해야 한다
+전체: 안전관리증서는 주관청 또는 주관청이 인정한 기관이 발급하며, 회사와 선박이 승인된 SMS대로 운영되는지 검증해야 한다.
+= ㉮ author | 오서 | 저자 — 발급 주체가 아님
+= ㉯ classification society | 클래시피케이션 소사이어티 | 선급 — 인정기관은 될 수 있으나 두 빈칸 공통어가 아님
+= ㉰ administration | 어드미니스트레이션 | 주관청(기국 정부) — 맞음
+= ㉱ auditor | 오디터 | 심사원 — 발급 주체가 아님
+SMC는 **주관청(Administration)** 또는 **주관청이 인정한 기관(RO)**이 발급한다(ISM Code 13.7). 두 빈칸에 공통으로 들어갈 말은 administration이다.
+따라서 정답은 ㉰이다.
+* DOC = 회사, SMC = 선박.
+* 발급 = Administration 또는 RO.
+
+@@ 2020|navi2|4|영어|19
+> Every vessel shall at all times maintain a proper look-out | 에브리 베슬 섈 앳 올 타임즈 메인테인 어 프라퍼 룩아웃 | 모든 선박은 항상 적절한 경계를 유지해야 한다
+> by sight and hearing | 바이 사이트 앤 히어링 | 시각과 청각으로
+> as well as by all available means appropriate in the prevailing ( ) | 애즈 웰 애즈 바이 올 어베일러블 민즈 어프로프리엇 인 더 프리베일링 | 그리고 당시의 ( )에 적합한 모든 수단으로
+> so as to make a full appraisal of the situation and of the risk of collision | 소 애즈 투 메이크 어 풀 어프레이절 | 상황과 충돌 위험을 충분히 판단할 수 있도록
+전체: 모든 선박은 시각·청각과 당시의 사정과 조건에 맞는 모든 수단으로 항상 적절한 경계를 유지해야 한다.
+= ㉮ cases and shapes | 케이시즈 앤 셰이프스 | 경우와 형상 — 조문과 다름
+= ㉯ cases and conditions | 케이시즈 앤 컨디션즈 | 경우와 조건 — 조문과 다름
+= ㉰ circumstances and shapes | 서컴스탠시즈 앤 셰이프스 | 사정과 형상 — 조문과 다름
+= ㉱ circumstances and conditions | 서컴스탠시즈 앤 컨디션즈 | 사정과 조건 — 조문 그대로
+COLREG 제5조(경계)의 조문은 "in the prevailing **circumstances and conditions**"이다.
+따라서 정답은 ㉱이다.
+* Rule 5 Look-out = sight and hearing + all available means.
+
+@@ 2020|navi2|4|영어|20
+> Numerous international conferences have been held | 뉴머러스 인터내셔널 컨퍼런시즈 해브 빈 헬드 | 많은 국제회의가 열렸다
+> to adopt measures | 투 어답트 메저즈 | 조치를 채택하기 위해
+> to enhance maritime safety | 투 인핸스 매리타임 세이프티 | 해상 안전을 향상시키는
+전체: 해상 안전을 향상시키는 조치를 채택하려고 많은 국제회의가 열렸다. 밑줄 enhance와 뜻이 같은 것은?
+= ㉮ improve | 임프루브 | 개선하다, 향상시키다 — enhance와 같은 뜻
+= ㉯ minimize | 미니마이즈 | 최소화하다 — 다른 뜻
+= ㉰ impair | 임페어 | 손상시키다 — 반대 뜻
+= ㉱ approve | 어프루브 | 승인하다 — 다른 뜻
+enhance는 '높이다, 향상시키다'로 **improve**와 뜻이 같다.
+따라서 정답은 ㉮이다.
+* enhance ≈ improve, impair ↔ enhance.
+
+@@ 2020|navi2|4|영어|21
+> What is the freight payable at a time | 왓 이즈 더 프레이트 페이어블 앳 어 타임 | 어느 시점에 지급하는 운임은 무엇인가
+> agreed by the shipowner and the shipper | 어그리드 바이 더 쉽오너 앤 더 쉬퍼 | 선주와 송화인이 합의한
+> before the goods are delivered at the place of destination | 비포 더 굿즈 아 딜리버드 | 화물이 목적지에 인도되기 전에
+전체: 운송계약에서 화물이 목적지에 인도되기 전, 선주와 송화인이 합의한 시점에 지급하는 운임은?
+= ㉮ additional freight | 어디셔널 프레이트 | 할증 운임 — 다름
+= ㉯ freight in advance | 프레이트 인 어드밴스 | 선불 운임 — 맞음
+= ㉰ collect freight | 컬렉트 프레이트 | 착지불(후불) 운임 — 다름
+= ㉱ ad valorem freight | 애드 벌로럼 프레이트 | 종가 운임 — 다름
+화물 인도 전에 미리 내는 운임은 **선불운임(Freight in advance, Prepaid freight)**이다.
+따라서 정답은 ㉯이다.
+* 선불 = freight prepaid / in advance, 후불 = freight collect.
+
+@@ 2020|navi2|4|영어|22
+> In every insurance | 인 에브리 인슈어런스 | 모든 보험에는
+> whether the insurance is for ship, freight or cargo | 웨더 디 인슈어런스 이즈 포 쉽 프레이트 오어 카고 | 선박·운임·적하 어느 보험이든
+> there is an implied ( ) | 데어 이즈 언 임플라이드 | 묵시적 ( )이 있다
+> that the ship is seaworthy for voyage | 댓 더 쉽 이즈 시워디 포 보이지 | 선박이 그 항해에 감항성이 있다는
+전체: 선박·운임·적하 어떤 보험이든 선박이 그 항해에 감항성이 있다는 묵시적 담보가 있다.
+= ㉮ warranty | 워런티 | 담보 — 맞음
+= ㉯ contract | 컨트랙트 | 계약 — 조문 용어가 아님
+= ㉰ memorandum | 메머랜덤 | 메모, 면책 약관 — 조문 용어가 아님
+= ㉱ condition | 컨디션 | 조건 — 조문 용어가 아님
+영국 해상보험법(MIA 1906) 제39조의 **감항성에 대한 묵시적 담보(implied warranty of seaworthiness)**이다.
+따라서 정답은 ㉮이다.
+* 묵시적 담보 = 감항성, 적법성.
+
+@@ 2020|navi2|4|영어|23
+> The charter under which the charterer pays | 더 차터 언더 위치 더 차터러 페이즈 | 용선자가 지급하는 용선 형태는
+> for the cost of loading and discharging the cargo | 포 더 코스트 오브 로딩 앤 디스차징 더 카고 | 화물의 적재·양하 비용을
+전체: 용선자가 화물의 적재·양하 비용을 부담하는 용선 형태는?
+= ㉮ FIO charter | 에프아이오 차터 | 선적·양하비 선주 면제 용선 — 맞음
+= ㉯ Lump-sum charter | 럼프섬 차터 | 총액 운임 용선 — 다름
+= ㉰ Gross charter | 그로스 차터 | 선주가 비용 대부분을 부담하는 용선 — 반대
+= ㉱ Net form of charter | 넷 폼 오브 차터 | 선주가 일부 비용만 부담하는 용선 — 하역비 조건을 직접 가리키지 않음
+**FIO(Free In and Out)**는 선적·양하 비용이 선주에게서 면제되는(free) 조건, 즉 용선자(화주)가 부담하는 조건이다.
+따라서 정답은 ㉮이다.
+* FIO = 하역비 선주 면제, Berth term(Liner term) = 선주 부담.
+
+@@ 2020|navi2|4|영어|24
+> Shipment not later than October 25. means | 쉽먼트 낫 레이터 댄 악토버 트웬티파이브 민즈 | "10월 25일보다 늦지 않은 선적"의 뜻은
+전체: "Shipment not later than October 25."의 의미를 고르시오.
+= ㉮ Shipment anytime after October 25. | 쉽먼트 에니타임 애프터 악토버 트웬티파이브 | 10월 25일 이후 아무 때나 선적 — 반대
+= ㉯ Ship must be arriving on October 25. | 쉽 머스트 비 어라이빙 온 악토버 트웬티파이브 | 10월 25일에 도착해야 함 — 도착이 아님
+= ㉰ Shipment must be made on October 25. | 쉽먼트 머스트 비 메이드 온 악토버 트웬티파이브 | 10월 25일 당일에만 선적 — 너무 좁음
+= ㉱ Shipment must be made on or before October 25. | 쉽먼트 머스트 비 메이드 온 오어 비포 악토버 트웬티파이브 | 10월 25일 당일 또는 그 전에 선적 — 맞음
+**not later than**은 '늦어도 ~까지'로, 그날 당일 또는 그 이전을 뜻한다.
+따라서 정답은 ㉱이다.
+* not later than = on or before.
