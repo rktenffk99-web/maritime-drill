@@ -1,0 +1,361 @@
+@@ 2021|navi2|3|영어|3
+shackles = 섀클(앵커 체인 1절, 약 27.5m)
+left = 남은
+water = 물 — in the water는 '물속에 나가 있는'
+captain = 선장
+
+@@ 2021|navi2|3|영어|5
+expression = 표현
+safety = 안전 — safety load는 '안전 하중'
+load = 하중
+tween = 중갑판 — tween deck은 '중갑판'
+deck = 갑판
+square = 평방 — per square meter는 '1제곱미터당'
+pressure = 압력 — safe working pressure는 '안전 사용 압력'
+slings = 슬링(화물 매다는 줄)
+stripping = 잔유 흡입(탱크 바닥 잔량 퍼내기)
+
+@@ 2021|navi2|3|영어|6
+included = 포함된
+pilot = 도선사
+transfer = 승하선
+arrangements = 설비
+accommodation = 거주 — accommodation ladder는 '현문 사다리'
+hoist = 승강기
+rescue = 구조 — rescue boat는 '구조정'
+
+@@ 2021|navi2|3|영어|7
+underlined = 밑줄 친
+proceed = 가라(항행하라)
+channel = 수로
+orders = 지시 — for next orders는 '다음 지시를 받으러'
+
+@@ 2021|navi2|3|영어|9
+translation = 번역
+waiting = 기다리는
+lee = 풍하 — make a lee는 '(바람을 막아) 풍하측을 만들어 주다'
+make = 만들다
+side = 쪽
+
+@@ 2021|navi2|3|영어|10
+action = 조치
+request = 요청
+range = 거리 — range scale은 '거리 범위(레인지)'
+scale = 범위
+larger = 더 큰(더 먼 거리를 보는)
+fixed = 고정 — fixed range ring은 '고정 거리환'
+variable = 가변의
+adjusted = 조정했다
+
+@@ 2021|navi2|3|영어|11
+revolving = 회전하는
+attract = 끌다
+attention = 주의
+mistaken = 오인되는
+intensity = 광도 — high intensity는 '고광도'
+intermittent = 간헐적인
+strobe = 섬광(스트로보)
+rotational = 회전의
+
+@@ 2021|navi2|3|영어|12
+lighthouses = 등대
+dangerous = 위험한
+rocks = 암초
+lantern = 등롱(등불)
+sailors = 선원
+wrecked = 난파된 — keep ships from being wrecked는 '난파를 막다'
+charts = 해도
+
+@@ 2021|navi2|3|영어|13
+information = 정보
+automatically = 자동으로
+transmitted = 송신되는
+lrit = 장거리 식별·추적 장치
+identity = 식별 정보
+estimated = 예정된 — estimated time of arrival은 '도착 예정 시각'
+arrival = 도착
+
+@@ 2021|navi2|3|영어|14
+master = 선장
+note = 제출(작성)하다 — note a protest는 '해난보고서를 작성하다'
+protest = 해난보고서
+stress = 압박 — stress of weather는 '악천후'
+practicable = 가능한
+precautions = 예방 조치
+ventilation = 통풍
+perishable = 부패하기 쉬운
+
+@@ 2021|navi2|3|영어|15
+indicates = 가리키다
+whistle = 기적
+bell = 호종
+gong = 징
+tone = 음조
+confused = 혼동되는
+addition = 추가 — in addition은 '그에 더해'
+
+@@ 2021|navi2|3|영어|16
+caution = 주의
+observed = 지켜지는 — caution should be observed는 '주의해야 한다'
+approaching = 접근하는
+displaying = 표시하는
+shape = 형상물 — shape signals는 '형상물 신호'
+signals = 신호
+obscured = 가려진
+structure = 구조물
+
+@@ 2021|navi2|3|영어|17
+effectiveness = 효과
+appliances = 설비 — life-saving appliances는 '구명설비'
+maintenance = 정비
+drills = 훈련
+lapse = 경과
+survey = 검사
+deterioration = 열화(성능 저하)
+inspection = 점검
+
+@@ 2021|navi2|3|영어|19
+port = 항만 — port state control은 '항만국 통제'
+state = 국가
+control = 통제
+certificated = 자격을 갖춘
+personnel = 인원
+radio = 무선
+keeping = 유지 — keeping watch는 '당직 유지'
+log = 일지 — radio log는 '무선 일지'
+
+@@ 2021|navi2|3|영어|20
+whilst = ~하는 동안
+time = 기간 — time charter는 '정기용선'
+charter = 용선
+hire = 용선료
+charterers = 용선자
+terminal = 항만(터미널)
+fuel = 연료
+provision = 공급 — food provision은 '식료품'
+
+@@ 2021|navi2|3|영어|21
+excluded = 제외된
+peril = 위험
+policy = 보험증권
+piracy = 해적 행위
+earthquake = 지진
+perils = 위험 — perils of the sea는 '해상 고유의 위험'
+wear = 마모 — wear and tear는 '자연 마모'
+tear = 손상
+
+@@ 2021|navi2|3|영어|22
+excepted = 제외된
+hull = 선체 — hull insurance는 '선박보험'
+insured = 보험에 든 — subject matter insured는 '보험의 목적물'
+jettison = 투하(바다에 버림)
+barratry = 선원의 악행
+derelict = 버려진 — derelict mines는 '유기 기뢰'
+weapons = 무기
+negligence = 과실
+
+@@ 2021|navi2|3|영어|24
+phrase = 문구
+latent = 숨은(잠재적인)
+defects = 결함
+implies = 뜻하다
+hidden = 숨겨진
+evident = 명백한
+obvious = 뚜렷한
+perceptible = 알아챌 수 있는
+
+@@ 2021|navi2|3|영어|25
+arises = 생기다
+swell = 너울
+surf = 부서지는 파도 — surf days는 '파랑으로 하역 못 한 날'
+prevents = 막다
+roadsteads = 정박지(외항 묘박지)
+count = 계산되다
+laydays = 정박기간
+running = 연속의 — running days는 '연속 일수'
+
+@@ 2021|navi2|4|영어|1
+compiled = 편집된
+assist = 돕다
+greater = 더 큰
+safety = 안전
+navigation = 항해
+conduct = 운항 — conduct of the ship은 '선박 운항'
+efficiency = 효율
+
+@@ 2021|navi2|4|영어|2
+misspelled = 철자가 틀린
+derelict = 유기선
+astronomical = 천문의
+trimmed = 고르게 편
+boatsuain = 갑판장의 틀린 철자(바른 철자 boatswain)
+
+@@ 2021|navi2|4|영어|4
+sentence = 문장
+heave = (닻을) 감아올리다
+slack = (체인을) 풀어 주다 — slack out the cable은 '체인을 내어 주라'
+cable = 앵커 체인
+throw = 던지다
+anchors = 닻
+gear = 연결하다 — gear the windlass는 '양묘기를 연결하다'
+windlass = 양묘기
+
+@@ 2021|navi2|4|영어|6
+underlined = 밑줄 친
+danger = 위험
+imminent = 임박한
+likely = ~할 것 같은
+progress = 진행 — in progress는 '진행 중'
+
+@@ 2021|navi2|4|영어|7
+concern = 우려
+helmsman = 조타수
+inattentive = 부주의한
+questioned = 질문받는
+heading = 선수방위
+advise = 권고하다
+steering = 조타하는
+
+@@ 2021|navi2|4|영어|8
+relations = 관계
+bent = 휜
+damaged = 손상된
+dent = 움푹 들어감(찌그러짐)
+operational = 작동 가능한
+
+@@ 2021|navi2|4|영어|9
+identify = 식별하다 — identify yourself는 '너의 신원을 밝혀라'
+directing = (빛을) 향하게 하는
+signal = 신호 — signal lamp는 '신호등'
+lamp = 등
+
+@@ 2021|navi2|4|영어|10
+report = 보고하라
+damage = 손상
+agree = 합의하다
+retreat = 후퇴 — retreat signal은 '후퇴 신호'
+power = 전력 — power supply는 '전원'
+gallery = 통로(회랑)
+minor = 경미한
+
+@@ 2021|navi2|4|영어|11
+passage = 항해 — passage planning은 '항해 계획'
+ecdis = 전자해도표시장치
+navigating = 항해 — navigating officer는 '항해사'
+contour = 등심선 — safety contour는 '안전 등심선'
+shallow = 얕은
+prohibited = 금지된
+indicated = 표시되는
+executed = 실행되는
+
+@@ 2021|navi2|4|영어|12
+factor = 요소
+determine = 결정하다
+charted = 해도에 기재된
+visibility = 시정 — charted visibility는 '해도상 광달거리'
+lighthouse's = 등대의
+height = 높이
+intensity = 광력
+observer = 관측자
+
+@@ 2021|navi2|4|영어|13
+heavens = 하늘(천구)
+directly = 바로
+observer = 관측자
+zenith = 천정
+nadir = 천저
+pole = 극 — elevated pole은 '상승극'
+
+@@ 2021|navi2|4|영어|14
+phenomenon = 현상
+gyroscope = 자이로스코프
+applied = 가해진
+rotation = 회전
+wheel = 회전체
+precession = 세차운동
+inertia = 관성
+
+@@ 2021|navi2|4|영어|16
+ocean = 대양 — ocean current는 '해류'
+current = 해류
+primarily = 주로
+caused = 일어나는
+prevailing = 탁월한 — prevailing wind는 '탁월풍(늘 부는 바람)'
+salinity = 염분
+rotation = 자전
+
+@@ 2021|navi2|4|영어|17
+falls = 떨어지다
+overboard = 배 밖으로 — man overboard는 '익수자'
+port = 좌현 — port bow는 '좌현 선수 방향'
+bow = 선수 쪽
+watchkeeping = 당직 — officer of the watch는 '당직사관'
+rudder = 타 — hard-over to port는 '좌현 최대 타'
+launching = 진수
+
+@@ 2021|navi2|4|영어|18
+improper = 알맞지 않은
+determining = 정하는
+safe = 안전한 — safe speed는 '안전한 속력'
+traffic = 교통 — traffic density는 '교통량 밀도'
+density = 밀도
+background = 배경 — background light는 '배경광'
+draught = 흘수
+available = 이용 가능한 — available depth는 '가용 수심'
+
+@@ 2021|navi2|4|영어|19
+officer = 사관 — officer of the watch는 '당직사관'
+conversant = 잘 알고 있는
+emergency = 비상
+alarm = 경보
+instigating = (경보를) 울리는(발령하는)
+raising = (경보를) 울리는
+cancelling = 취소하는
+plans = 계획
+
+@@ 2021|navi2|4|영어|20
+proceeding = 항행하는
+narrow = 좁은 — narrow channel은 '좁은 수로'
+fairway = 항로
+outer = 바깥쪽의 — outer limit은 '바깥쪽 끝'
+limit = 경계
+starboard = 우현
+practicable = 가능한
+
+@@ 2021|navi2|4|영어|21
+average = 해손 — general average는 '공동해손'
+establishment = 결정(산정)
+contributory = 분담의 — contributory value는 '분담 가액'
+value = 가액
+casualty = 사고
+adventure = 해상사업
+termination = 종료
+commencement = 개시
+
+@@ 2021|navi2|4|영어|22
+full = 가득한 — full and complete cargo는 '만재 화물'
+complete = 완전한
+charter = 용선 — charter party는 '용선계약서'
+custom = 관습
+loading = 선적 — port of loading은 '선적항'
+regulation = 규정
+draft = 흘수
+
+@@ 2021|navi2|4|영어|24
+trades = 항로(거래 분야)
+owners = 선주
+repetitious = 반복되는
+voyages = 항해
+commodity = 화물(상품)
+consecutive = 연속의 — consecutive voyages는 '연속 항해 용선'
+continuous = 계속적인
+
+@@ 2021|navi2|4|영어|25
+damage = 손상
+apparent = 눈에 띄는
+judgement = 판정
+delayed = 미뤄진
+pending = ~까지(~을 기다리는 동안)
+examination = 검사
+underwater = 수중의
+exists = 존재하다
