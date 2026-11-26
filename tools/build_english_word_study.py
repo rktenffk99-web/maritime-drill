@@ -95,7 +95,10 @@ def main():
     review=json.loads((ROOT/'english-study/pronunciation-review.json').read_text())
     audit=json.loads((ROOT/'english-study/pronunciation-audit.json').read_text())
     # Ship only display metadata, not research dictionaries or audit transcripts.
-    payload={'lexicon':data,'local':local,
+    # Hangul learning readings shown next to IPA-only pronunciations (v5.43).
+    hangul=json.loads((ROOT/'english-study/hangul-readings.json').read_text())
+    hangul={w:h for w,h in hangul.items() if w in data and str(data[w][1]).startswith('/')}
+    payload={'lexicon':data,'local':local,'hangulReadings':hangul,
              'pronunciationNotes':{w:{k:v for k,v in r.items() if k in ['display','variants','unconfirmed','conventionalUnconfirmed','reason']} for w,r in review['words'].items()},
              'pronunciationStatus':{w:r['status'] for w,r in audit['words'].items()},
              'pronunciationContexts':review['contexts'],
