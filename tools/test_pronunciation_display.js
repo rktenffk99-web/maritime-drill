@@ -25,7 +25,7 @@ assert(html.includes('명사 /ˈjus/ · 동사 /ˈjuz/ (문맥별 선택 필요)
 assert(html.includes('/ɪnˈvælɪd/'));
 const legacy={html:'<span style="color:#0EA5E9">bags</span> <span style="color:#94A3B8">[백스]</span> → 포대<br><span>handle bags</span> <span style="color:#94A3B8">[핸들 백스]</span> → 포대를 다루다'};
 const old=JSON.stringify(legacy),patched=c.MDEnglishWordStudy.augment(q,legacy).html;
-assert(patched.includes('[/ˈbæɡz/]'));
+assert(patched.includes('[배그즈 /ˈbæɡz/]')); // v5.43: Hangul reading shown before IPA
 assert(patched.includes('[핸들 백즈]'));
 assert(!patched.includes('[백스]'));
 assert(patched.includes('→ 포대를 다루다'));

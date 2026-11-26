@@ -26,7 +26,9 @@
     if(note?.variants)return Object.values(note.variants).map(v=>`${v.label} ${v.reading}`).join(' · ')+' (문맥별 선택 필요)';
     const reading=data.lexicon[word]?.[1]||'발음 미등록';
     const status=data.pronunciationStatus?.[word];
-    return reading+(status==='needs_review'?' · 검수 필요':'');
+    // english-hangul-v543: show a Hangul learning reading before IPA-only entries.
+    const hangul=reading.startsWith('/')&&data.hangulReadings?.[word];
+    return (hangul?hangul+' ':'')+reading+(status==='needs_review'?' · 검수 필요':'');
   }
   function wordSection(label,value,local,section,q){
     const data=global.MDEnglishWordStudyData;
