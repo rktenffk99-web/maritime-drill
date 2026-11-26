@@ -1,0 +1,453 @@
+@@ 2023|navi2|1|영어|1
+message = 통신문
+markers = 표지어
+request = 요청(표지어)
+instruction = 지시(표지어)
+warning = 경고(표지어)
+regulation = 규정 — 표지어가 아님
+
+@@ 2023|navi2|1|영어|5
+ballast = 평형수
+control = 조절
+briefing = 사전 설명
+waiting = 기다리는
+shore = 육상 — shore instructions는 '육상(터미널) 지시'
+instructions = 지시
+pumping = 펌프 작업
+present = 현재 — at present는 '현재'
+
+@@ 2023|navi2|1|영어|6
+translation = 번역
+eta = 도착 예정 시각
+buoy = 부표
+decimal = 소수점 — one decimal three는 '1.3'
+miles = 마일(해리)
+north = 북쪽
+
+@@ 2023|navi2|1|영어|8
+indicates = 나타내다
+informs = 알리다
+immediate = 즉각적인
+navigational = 항해상의
+action = 동작
+intended = 의도된
+intention = 의도(표지어)
+reduce = 줄이다
+
+@@ 2023|navi2|1|영어|9
+relations = 관계
+danger = 위험
+capsizing = 전복
+dangerous = 위험한
+list = 횡경사
+jettison = 투하하다(바다에 버리다)
+listing = 기울어짐
+proceed = 나아가다
+
+@@ 2023|navi2|1|영어|10
+safety = 안전 — safety message는 '안전 통신'
+medical = 의료의
+assistance = 지원
+sinking = 침몰하는
+radio = 무선 — radio beacon은 '무선표지'
+beacon = 표지
+discontinued = 중지된
+buoyed = 부표를 달아 표시했다
+
+@@ 2023|navi2|1|영어|12
+adjustments = 조정
+sextant = 육분의
+index = 지표 — index mirror는 '동경(움직이는 거울)'
+mirror = 거울
+perpendicular = 수직인
+plane = 면
+horizon = 수평 — horizon mirror는 '수평경'
+instrument = 기기
+
+@@ 2023|navi2|1|영어|13
+anchor = 닻 — at anchor는 '정박 중'
+precautions = 예방 조치
+detect = 알아차리다
+dragging = 주묘(닻이 끌림)
+chains = 체인
+pulsate = 맥동하다(떨리다)
+anchorage = 정박 위치
+intervals = 간격
+
+@@ 2023|navi2|1|영어|15
+interfere = 방해하다
+special = 특별한
+additional = 추가의
+station = 위치 — station lights는 '위치 표시등'
+shapes = 형상물
+whistle = 기적
+war = 전쟁 — ships of war는 '군함'
+convoy = 호송 선단
+
+@@ 2023|navi2|1|영어|16
+procedures = 절차
+incidents = 사건(준사고)
+accidents = 사고
+hazardous = 위험한
+investigated = 조사된
+analysed = 분석된
+objective = 목적
+improvements = 개선
+non = 비(非) — non-conformities는 '부적합 사항'
+
+@@ 2023|navi2|1|영어|19
+space = 화물창(구역)
+ventilated = 통풍되는
+cargo = 화물
+temperature = 온도
+dew = 이슬 — dew point는 '이슬점'
+point = 점
+warmer = 더 따뜻한
+colder = 더 차가운
+
+@@ 2023|navi2|1|영어|20
+charterers = 용선계약서(이 문장에서는 charter parties 뜻)
+clause = 약관
+liability = 책임
+cease = 끝나다
+cesser = 책임 종료 — cesser clause는 '책임 종료 약관'
+lien = 유치권
+demurrage = 체선료
+dead = 공적 — dead freight는 '부적 운임'
+
+@@ 2023|navi2|1|영어|22
+c = CIF의 C(cost)
+cost = 원가
+insurance = 보험
+freight = 운임
+purchase = 구매 — purchase price는 '매매 가격'
+arranged = 마련된
+exporter = 수출자
+importer = 수입자
+
+@@ 2023|navi2|1|영어|23
+precautions = 주의 사항
+deck = 갑판 — deck log book은 '항해일지'
+log = 일지
+entries = 기재 사항
+accurate = 정확한
+erase = 지우다
+underline = 밑줄을 긋다
+signature = 서명
+
+@@ 2023|navi2|1|영어|25
+inferred = 추론되는
+entries = 기재 사항
+drill = 훈련 — fire & boat drill은 '소화·퇴선 훈련'
+hoses = 소방 호스
+abandon = 버리다 — abandon ship은 '퇴선'
+mustered = 소집되었다
+hemisphere = 반구
+northern = 북쪽의
+
+@@ 2023|navi2|2|영어|1
+expression = 표현
+restricted = 제한된
+ability = 능력
+manoeuvre = 조종하다
+nature = 성질
+hampered = 조종이 제한된 — hampered vessel은 '조종제한선'
+polluter = 오염 유발 선박
+command = 조종 — not under command는 '조종불능'
+
+@@ 2023|navi2|2|영어|3
+cable = 앵커 체인
+leading = 뻗어 있는 — How is the cable leading?은 '체인이 어느 방향으로 뻗어 있나?'
+coming = 감겨 들어오는
+weight = 장력
+ahead = 앞쪽으로
+up = 위 — up and down은 '수직'
+
+@@ 2023|navi2|2|영어|5
+stow = 적재하다
+flammable = 인화성의
+goods = 화물
+engine = 기관 — engine room은 '기관실'
+bulkhead = 격벽
+refuse = 거부하다
+brief = 설명하다
+
+@@ 2023|navi2|2|영어|7
+veering = 순전하는(시계 방향으로 바뀌는)
+increasing = 강해지는
+beaufort = 보퍼트 — Beaufort wind scale은 '보퍼트 풍력 계급'
+scale = 계급
+expect = 예상하다
+condition = 상태
+northwest = 북서
+east = 동쪽
+
+@@ 2023|navi2|2|영어|8
+belong = 속하다
+subject = 주제
+indicate = 표시하다
+landing = 착륙 — landing point는 '착륙 지점'
+helicopter = 헬리콥터
+operation = 작업
+hoist = 호이스트(윈치로 끌어올림)
+channel = 수로
+
+@@ 2023|navi2|2|영어|9
+improper = 알맞지 않은
+sea = 해면(해상 상태)
+high = 높은 — high sea는 '높은 파도'
+rough = 거친
+smooth = 잔잔한
+good = 좋은 — SMCP의 해상 상태 표현이 아님
+
+@@ 2023|navi2|2|영어|10
+gmdss = 세계 해상조난·안전제도
+operator = 통신사
+securite = 안전 신호
+coast = 해안 — coast station은 '해안국'
+jeopardy = 위험
+immediate = 즉각적인
+meteorological = 기상의
+warnings = 경보
+
+@@ 2023|navi2|2|영어|11
+navigator = 항해사
+rely = 의지하다
+floating = 떠 있는 — floating aids는 '부표 등 떠 있는 항로표지'
+aids = 표지 — aids to navigation은 '항로표지'
+daylight = 낮
+calm = 잔잔한
+fixed = 고정된
+
+@@ 2023|navi2|2|영어|12
+celestial = 천문의
+reduce = 계산하다
+observations = 관측
+navigational = 항해의 — navigational triangle은 '천문 삼각형'
+triangle = 삼각형
+elevated = 상승한 — elevated pole은 '상승극'
+zenith = 천정
+lunar = 달의
+
+@@ 2023|navi2|2|영어|13
+diameter = 지름
+rotates = 회전하다
+diurnally = 하루 주기로
+axis = 축 — axis of the earth는 '지축'
+pole = 극
+equator = 적도
+vernal = 춘분의
+
+@@ 2023|navi2|2|영어|16
+condition = 상태
+equipment = 설비
+maintained = 유지된
+conform = 따르다 — conform with는 '~에 맞다'
+provisions = 규정
+regulations = 규칙
+defect = 결함
+
+@@ 2023|navi2|2|영어|17
+instantaneous = 순간의 — instantaneous rate of discharge는 '순간배출률'
+rate = 율
+discharge = 배출
+liters = 리터
+instant = 순간
+divided = 나눈
+knots = 노트
+
+@@ 2023|navi2|2|영어|18
+lading = 선적 — bill of lading은 '선하증권'
+consigned = 탁송된
+directly = 직접
+firm = 회사
+negotiable = 유통(양도) 가능한
+straight = 기명식 — straight bill of lading은 '기명식 선하증권'
+indemnity = 보상 — letter of indemnity는 '보상장'
+
+@@ 2023|navi2|2|영어|20
+time = 기간 — time charter는 '정기용선'
+charter = 용선
+charterer = 용선자
+dues = 요금 — port dues는 '항비'
+fuel = 연료
+overtime = 초과 근무
+incurred = 발생한
+turn = 회항 — turn-round는 '정박 회전 기간'
+
+@@ 2023|navi2|2|영어|21
+handling = 조종 — ship-handling은 '조선(선박 조종)'
+decisions = 결정
+weather = 기상
+account = 고려 — take into account는 '고려하다'
+stowage = 적재 — stowage position은 '적재 위치'
+position = 위치
+securing = 고정 — securing arrangements는 '고박 장치'
+
+@@ 2023|navi2|2|영어|22
+procedures = 절차
+incidents = 사건(준사고)
+accidents = 사고
+hazardous = 위험한
+investigated = 조사된
+improvements = 개선
+objective = 목적
+non = 비(非) — non-conformities는 '부적합 사항'
+
+@@ 2023|navi2|2|영어|23
+damage = 손상
+apparent = 눈에 띄는
+judgement = 판정
+pending = ~까지(~을 기다리는 동안)
+examination = 검사
+underwater = 수중의
+exists = 존재하다
+
+@@ 2023|navi2|2|영어|25
+entries = 기재 사항
+probably = 아마
+drill = 훈련
+passengers = 승객 — 승객이 있으므로 여객선임을 알 수 있음
+mustered = 소집되었다
+carrier = 운반선 — car carrier는 '자동차 운반선'
+passenger = 여객 — passenger ship은 '여객선'
+bulk = 산적 — bulk carrier는 '산적화물선'
+
+@@ 2023|navi2|3|영어|2
+salvage = 해난 구조
+operation = 작업
+position = 위치
+lighthouse = 등대
+information = 정보(표지어)
+advice = 권고(표지어)
+intention = 의도(표지어)
+
+@@ 2023|navi2|3|영어|3
+translation = 번역
+weight = 장력 — much weight on the cable은 '체인 장력이 크다'
+cable = 앵커 체인
+slack = 늘어짐
+lead = (체인이 뻗은) 방향
+pulling = 당김
+
+@@ 2023|navi2|3|영어|5
+wrong = 틀린
+cargo = 화물 — cargo list는 '화물 목록'
+available = 준비된
+dangerous = 위험한 — dangerous list는 '위험한 횡경사'
+list = 목록(이 질문) / 횡경사(이 대답) — 뜻이 어긋나 틀린 문답
+capacity = 능력(용량)
+cranes = 크레인
+loading = 적재 — loading rate는 '적재율'
+
+@@ 2023|navi2|3|영어|6
+indicates = 나타내다
+implies = 뜻하다
+intention = 의도
+sender = 발신자
+danger = 위험
+warning = 경고(표지어)
+obstruction = 장애물
+fairway = 항로
+
+@@ 2023|navi2|3|영어|7
+lost = 잃었다 — lost a person overboard는 '사람이 배 밖으로 떨어졌다'
+person = 사람
+overboard = 배 밖으로
+search = 수색
+rescue = 구조
+
+@@ 2023|navi2|3|영어|8
+report = 보고하라
+condition = 상태
+survivor = 생존자
+passenger = 승객 — 상태 보고가 아니므로 맞지 않는 대답
+hypothermia = 저체온증
+suffering = 앓는
+shock = 쇼크
+
+@@ 2023|navi2|3|영어|12
+statement = 설명
+objectives = 목적
+code = 규칙
+prevention = 방지
+injury = 부상
+avoidance = 회피
+environment = 환경
+property = 재산
+ism = 국제안전관리규약
+
+@@ 2023|navi2|3|영어|13
+passes = 지나가다
+density = 밀도
+mean = 평균 — mean draft는 '평균 흘수'
+draft = 흘수
+heavily = 크게
+trimmed = 트림이 진
+buoyancy = 부력 — center of buoyancy는 '부심'
+immersion = 침하 — TPC는 '매 cm 배수톤수'
+
+@@ 2023|navi2|3|영어|17
+route = 항로
+specially = 특별히
+examined = 조사된
+dangers = 위험
+advised = 권고된
+navigate = 항행하다
+recommended = 권고 — recommended track은 '권고 항로'
+track = 항로
+
+@@ 2023|navi2|3|영어|18
+freight = 운임
+payable = 지급해야 할
+circumstances = 경우
+charterer = 용선자
+failed = ~하지 못했다
+full = 가득한 — full and complete cargo는 '만재 화물'
+dead = 공적 — dead freight는 '부적 운임'
+pro = 비례 — pro rata freight는 '비례 운임'
+
+@@ 2023|navi2|3|영어|19
+certify = 증명하다
+dunnage = 더니지(깔개·완충재)
+removed = 치워진
+compartments = 구획(화물창)
+swept = 쓸어진
+cleaned = 청소된
+satisfaction = 만족
+survey = 검사 — survey report for hold는 '화물창 검사 보고서'
+
+@@ 2023|navi2|3|영어|20
+documents = 서류
+off = 정지 — off-hire는 '용선료 지급 정지'
+hire = 용선료
+breaks = 고장 나다 — breaks down은 '고장 나다'
+strands = 좌초하다
+delay = 지연
+time = 기간 — time charter party는 '정기용선계약서'
+bareboat = 나용선
+
+@@ 2023|navi2|3|영어|21
+accepting = 받아들이는
+lading = 선적 — bill of lading은 '선하증권'
+shippers = 송하인
+consignees = 수하인
+holders = 소지인
+stipulations = 조항
+exceptions = 면책 사항
+signed = 서명된 — as if signed by them은 '그들이 서명한 것처럼'
+
+@@ 2023|navi2|3|영어|22
+shipment = 선적
+later = 늦은 — not later than은 '늦어도 ~까지'
+anytime = 언제든
+arriving = 도착하는
+before = 전 — on or before는 '당일 또는 그 전에'
+
+@@ 2023|navi2|3|영어|23
+opposite = 반대말
+forgot = 잊었다
+duplicate = 사본 — duplicate copy는 '부본'
+copy = 사본
+original = 원본
+double = 두 배의

@@ -1,0 +1,442 @@
+@@ 2022|navi3|1|영어|8
+improper = 알맞지 않은
+capacity = 용적 — hold capacity는 '화물창 용적'
+hold = 화물창
+grain = 곡물 — grain capacity는 '그레인 용적'
+bale = 베일 — bale capacity는 '베일 용적'
+cubic = 입방 — cubic meters는 '세제곱미터'
+container = 컨테이너 — 컨테이너 용량은 TEU로 나타내므로 맞지 않음
+
+@@ 2022|navi3|1|영어|9
+international = 국제의
+regulations = 규정
+passengers = 승객
+assembled = 소집된
+drill = 훈련
+departure = 출항
+within = ~ 이내에
+
+@@ 2022|navi3|1|영어|10
+transmissions = 송신
+radio = 무선
+station = 국
+broken = 고장 난 — broken down은 '고장 났다'
+switched = 꺼진
+suspended = 중단된
+air = 방송 — off air는 '송신 중단'
+
+@@ 2022|navi3|1|영어|12
+zone = 시간대 — zone description은 '시간대 표시(ZD)'
+meridian = 자오선 — zone meridian은 '시간대 기준 자오선'
+time = 시간
+description = 표시
+degrees = 도
+
+@@ 2022|navi3|1|영어|13
+search = 수색
+rescue = 구조
+operations = 작업
+ship = 선박 — ship-to-ship은 '선박 상호 간'
+communication = 통신
+satellite = 위성 — satellite channel은 '위성 통신 회선'
+coordination = 조정 — rescue coordination center는 '구조조정본부'
+kept = 남겨 두는
+
+@@ 2022|navi3|1|영어|15
+instrument = 계기
+measuring = 측정하는
+wind = 바람
+force = 세기 — wind force는 '풍력'
+anemometer = 풍속계
+hydrometer = 비중계
+thermometer = 온도계
+chronometer = 크로노미터(정밀 시계)
+
+@@ 2022|navi3|1|영어|16
+rule = 법칙
+locating = 위치를 찾는
+cyclones = 저기압
+anticyclones = 고기압
+facing = 향하는 — facing away from the wind는 '바람을 등지고'
+hemisphere = 반구
+low = 낮은 — low pressure는 '저기압'
+law = 법칙 — Buys Ballot's law는 '바이스 발로트의 법칙'
+
+@@ 2022|navi3|1|영어|19
+dangerous = 위험한 — dangerous goods는 '위험물'
+solid = 고체
+bulk = 산적
+stowed = 적재된
+nature = 성질
+incompatible = 혼적 불가한
+segregated = 격리된
+fragile = 깨지기 쉬운
+
+@@ 2022|navi3|1|영어|20
+length = 길이
+sailing = 범선의 — sailing vessel은 '범선'
+impede = 방해하다
+passage = 통항
+navigate = 항행하다
+narrow = 좁은 — narrow channel은 '좁은 수로'
+fairway = 항로
+fishing = 어선 — fishing vessel은 '어선'
+
+@@ 2022|navi3|1|영어|21
+tare = 용기 — tare weight는 '용기 무게(빈 포장·컨테이너 무게)'
+weight = 무게
+alone = 만
+packing = 포장
+minus = 뺀
+empty = 비어 있는
+
+@@ 2022|navi3|1|영어|23
+record = 기록
+contractor = 수리 업체(계약자)
+mechanics = 정비공
+assist = 돕다
+force = 인원 — ship's force는 '본선 선원'
+trials = 시운전 — sea trials는 '해상 시운전'
+readings = 측정값
+shaft = 축 — shaft RPM은 '축 회전수'
+
+@@ 2022|navi3|1|영어|24
+stack = 연돌(굴뚝) — stack markings는 '연돌 마크'
+markings = 표시
+restored = 원래대로 복구된
+owners = 선주
+color = 색
+redelivery = 반선(돌려줌)
+
+@@ 2022|navi3|1|영어|25
+inflicted = 가했다(부과했다)
+disciplinary = 징계의
+punishment = 처벌 — disciplinary punishment는 '징계'
+prohibition = 금지 — prohibition of landing은 '상륙 금지'
+landing = 상륙
+ordinary = 보통의 — ordinary seaman은 '갑판원(보통 선원)'
+superior = 상급자
+
+@@ 2022|navi3|2|영어|2
+relations = 관계
+abeam = 정횡에(방향을 나타내는 말)
+air = 공기 — air draft는 '수면 위 높이'
+draft = 높이(흘수)
+freeboard = 건현
+keel = 용골 — under-keel clearance는 '선저 여유수심'
+clearance = 여유
+
+@@ 2022|navi3|2|영어|3
+speed = 속력
+fairway = 항로 — fairway speed는 '항로 지정 속력'
+mandatory = 의무적인(강제된)
+charted = 해도에 기재된
+advised = 권고된
+recommended = 권장된
+
+@@ 2022|navi3|2|영어|4
+advisable = 바람직한
+remain = 머무르다
+channel = 채널
+frequency = 주파수
+accepted = 받아들여진
+stand = 대기 — Stand by on ~는 '~채널에서 대기하라'
+standing = 대기하는 — Standing by on ~는 '~채널에서 대기하겠다'
+
+@@ 2022|navi3|2|영어|5
+officer = 사관
+roll = 명부 — roll call은 '인원 점호'
+call = 부름
+here = 여기 — 점호 대답 '네(있습니다)'
+
+@@ 2022|navi3|2|영어|7
+preposition = 전치사
+pilot = 도선사 — pilot boat는 '도선선'
+boat = 보트
+bearing = 방위에 있는 — bearing 254° from you는 '귀선에서 254° 방향에 있다'
+from = ~로부터
+
+@@ 2022|navi3|2|영어|8
+expression = 표현
+wait = 기다리다
+lock = 갑문 — lock clearance는 '갑문 통과 허가'
+clearance = 허가
+passage = 통로(수로)
+close = 좁히다 — close up on은 '~에 거리를 좁히다'
+drop = 뒤로 처지다 — drop back은 '거리를 벌리다'
+astern = 뒤의
+
+@@ 2022|navi3|2|영어|9
+keeping = 유지하는 — keep to the lane은 '통항로를 지키다'
+correct = 올바른
+traffic = 통항
+lane = 통항로
+
+@@ 2022|navi3|2|영어|11
+underlined = 밑줄 친
+speed = 쾌속 — speed boat는 '고속정'
+caught = 걸렸다(얹혔다)
+shoal = 얕은 곳(여울)
+low = 낮은 — low tide는 '저조'
+shallow = 얕은 곳
+inlet = 작은 만
+peninsula = 반도
+
+@@ 2022|navi3|2|영어|12
+surface = 표면
+oblique = 비스듬한
+angle = 각
+meridians = 자오선
+rhumb = 항정 — rhumb line은 '항정선'
+equator = 적도
+
+@@ 2022|navi3|2|영어|13
+change = 변화
+trim = 트림
+moving = 옮기는
+weight = 중량
+longitudinal = 선수미 방향의
+distance = 거리
+moment = 모멘트 — moment to change trim 1cm는 '매 cm 트림 모멘트(MTC)'
+
+@@ 2022|navi3|2|영어|14
+highest = 최고의
+governing = 결정하는 — governing body는 '의결 기관'
+representatives = 대표
+member = 회원 — Member States는 '회원국'
+states = 국가
+regular = 정기의 — regular session은 '정기 회기'
+assembly = 총회
+council = 이사회
+
+@@ 2022|navi3|2|영어|15
+gradient = 경사 — gradient current는 '경사류'
+currents = 해류
+surface = 수면
+slope = 경사
+barometric = 기압의
+juxtaposition = 나란히 맞닿음
+salinity = 염분
+compensation = 보충 — compensation current는 '보류'
+
+@@ 2022|navi3|2|영어|16
+marks = 표지
+yellow = 황색
+band = 띠
+symbol = 기호
+special = 특수 — special mark는 '특수표지'
+safe = 안전 — safe water mark는 '안전수역표지'
+isolated = 고립 — isolated danger mark는 '고립장해표지'
+
+@@ 2022|navi3|2|영어|17
+corrected = 보정된
+reading = 측정값(기압 읽음)
+hpa = 헥토파스칼
+normal = 평년값
+avoiding = 피하는 — avoiding action은 '피항 조치'
+doubt = 의심
+tropical = 열대의 — tropical storm은 '열대 폭풍(태풍)'
+vicinity = 부근
+
+@@ 2022|navi3|2|영어|18
+steerage = 조타 — steerage way는 '타효 속력(타가 듣는 최소 속력)'
+minimum = 최소
+answer = 반응하다 — answer her helm은 '타에 반응하다'
+helm = 타
+fast = 고정 — made fast to the shore는 '육지에 계류된'
+actually = 실제로
+
+@@ 2022|navi3|2|영어|19
+meat = 고기
+fruit = 과일
+dairy = 유제품의
+products = 제품
+refrigerated = 냉장(냉동)의 — refrigerated hold는 '냉동 화물창'
+perishable = 부패하기 쉬운 — perishable goods는 '부패성 화물'
+inflammable = 가연성의
+
+@@ 2022|navi3|2|영어|20
+vertical = 수직의
+partitions = 칸막이
+walls = 벽
+specified = 정해진
+watertight = 수밀의
+divisions = 구획
+sinking = 침몰
+holed = 구멍 난
+bulkheads = 격벽
+
+@@ 2022|navi3|2|영어|21
+activation = 작동 — non-activation은 '작동하지 않음'
+maintaining = 유지하는
+planned = 계획된 — planned track은 '계획 항로'
+track = 항로(항적)
+currents = 해류
+heading = 선수방위
+unchanged = 변하지 않은
+course = 침로 — off-course alarm은 '침로 이탈 경보'
+
+@@ 2022|navi3|2|영어|22
+restricted = 제한된
+ability = 능력
+manoeuvre = 조종하다
+exhibit = 표시하다
+shapes = 형상물
+vertical = 수직의
+balls = 둥근꼴
+diamond = 마름모꼴
+
+@@ 2022|navi3|2|영어|24
+access = 출입 — access opening은 '출입구'
+openings = 개구부
+bulkheads = 격벽
+enclosed = 폐위된 — enclosed superstructure는 '폐위 선루'
+superstructures = 선루
+weathertight = 풍우밀하게
+gaskets = 패킹(개스킷)
+clamping = 죄는 — clamping device는 '죔 장치'
+sides = 쪽 — both sides는 '양쪽'
+
+@@ 2022|navi3|2|영어|25
+purpose = 목적
+alert = 경보를 보내다
+flag = 기국 — Flag State는 '기국'
+competent = 권한 있는 — competent authorities는 '관할 당국'
+security = 보안
+threatened = 위협받는
+compromised = 침해된
+ssas = 선박보안경보장치
+
+@@ 2022|navi3|3|영어|7
+send = 보내다 — Send a heaving line은 '던짐줄을 보내라'
+heaving = 던지는 — heaving line은 '던짐줄'
+line = 줄
+boat = 보트 — line boat는 '계선줄 운반선'
+fast = 고정 — make fast는 '고정하라'
+
+@@ 2022|navi3|3|영어|9
+meaning = 뜻
+turn = 꼬임 — turn in cables는 '(두 앵커) 체인이 꼬였다'
+cables = 앵커 체인
+
+@@ 2022|navi3|3|영어|18
+science = 학문
+determining = 결정하는
+observer = 관측자
+employed = 사용되는
+conducting = 이끄는(항행시키는)
+surface = 표면
+navigation = 항해학(항법)
+positioning = 위치 결정
+
+@@ 2022|navi3|3|영어|20
+included = 포함된
+movement = 운동
+seaway = 파랑 해역(파도 속)
+swaying = 좌우 동요(스웨이)
+surging = 전후 동요(서지)
+yawing = 선수 동요(요)
+propelling = 추진 — 선체 운동이 아님
+
+@@ 2022|navi3|3|영어|21
+function = 기능
+bulkhead = 격벽
+divide = 나누다
+water = 물 — water-tight는 '수밀의'
+tight = 밀폐된
+compartments = 구획
+strength = 강도
+rigidity = 강성
+
+@@ 2022|navi3|3|영어|25
+voyage = 항해 — voyage charter party는 '항해용선계약'
+charter = 용선
+charterer = 용선자
+longer = 더 오래
+allowed = 허용된
+demurrage = 체선료
+dispatch = 조출 — dispatch money는 '조출료'
+laytime = 정박기간
+
+@@ 2022|navi3|4|영어|1
+message = 통신문
+markers = 표지어
+vts = 해상교통관제
+running = 들어가고 있는 — running into danger는 '위험으로 향하고 있다'
+submerged = 수중의 — submerged wreck는 '수중 침선'
+wreck = 침선
+alter = 바꾸다 — alter course는 '침로를 바꾸다'
+instruction = 지시(표지어)
+
+@@ 2022|navi3|4|영어|2
+message = 통신문
+properly = 제대로
+heard = 들리는
+say = 말하다 — Say again은 '다시 말해 달라'
+again = 다시
+pardon = 다시 말씀 — 일상 표현
+
+@@ 2022|navi3|4|영어|4
+figure = 그림
+express = 나타내다
+buoy = 부표
+port = 좌현
+bow = 선수 — port bow는 '좌현 선수 방향'
+relative = 상대 — relative bearing은 '상대방위'
+starboard = 우현
+
+@@ 2022|navi3|4|영어|6
+expression = 표현
+shackles = 섀클(체인 1절)
+left = 남은 — left to come in은 '감아 들여야 할 남은'
+come = (감겨) 들어오다
+cables = 체인(케이블 길이 단위)
+heave = 감아올리다
+water = 물 — in the water는 '물속에'
+
+@@ 2022|navi3|4|영어|15
+drags = 끌다
+body = (물의) 덩어리
+wake = 반류
+ratio = 비율
+fraction = 비율 — wake fraction은 '반류 계수'
+advance = 전진 — speed of advance는 '전진 속도'
+propeller = 프로펠러
+
+@@ 2022|navi3|4|영어|16
+metacentric = 메타센터의 — metacentric height는 'GM'
+height = 높이
+tender = 경연한 — tender ship은 'GM이 작아 흔들림이 느린 배'
+stiff = 경고한 — stiff ship은 'GM이 커서 흔들림이 빠른 배'
+small = 작은
+
+@@ 2022|navi3|4|영어|17
+interfere = 방해하다
+operation = 시행
+special = 특별한
+authority = 당국
+roadsteads = 정박지(외항)
+harbours = 항만
+inland = 내륙의 — inland waterway는 '내륙 수로'
+seagoing = 외양 항행의
+berths = 선석
+dolphins = 계선주(돌핀)
+
+@@ 2022|navi3|4|영어|20
+searched = 수색되는
+entering = 입항하는
+leaving = 출항하는
+narcotics = 마약
+fuel = 연료 — fuel on board는 '선내 연료'
+stowaways = 밀항자
+contraband = 밀수품
+
+@@ 2022|navi3|4|영어|21
+classification = 선급 — classification rules는 '선급 규칙'
+surveys = 검사
+hull = 선체
+machinery = 기관
+alternatively = 대신에
+continuous = 연속 — continuous survey는 '연속 검사'
+cycle = 주기
+inspection = 검사

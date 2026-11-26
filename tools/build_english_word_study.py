@@ -93,11 +93,14 @@ def context_meanings(rows):
                     raise SystemExit(f'{path.name}:{n}: "{word}" does not occur in {key}')
                 if not re.search('[가-힣]',meaning):raise SystemExit(f'{path.name}:{n}: meaning must be Korean')
                 own[key][word]=meaning
-    shared={}
-    for key,words in own.items():shared.setdefault(sig(byid[key]),words)
+    # Same question reused with the choices in another order shares the same word set.
+    bag=lambda row:frozenset(w for ts in row['tokens'] for w in ts)
+    shared={};shared_bag={}
+    for key,words in own.items():
+        shared.setdefault(sig(byid[key]),words);shared_bag.setdefault(bag(byid[key]),words)
     out={}
     for row in rows:
-        words=own.get(row['id']) or shared.get(sig(row))
+        words=own.get(row['id']) or shared.get(sig(row)) or shared_bag.get(bag(row))
         if words:out[row['id']]=words
     return out
 
