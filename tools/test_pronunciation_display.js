@@ -26,7 +26,7 @@ assert(html.includes('/ɪnˈvælɪd/'));
 const legacy={html:'<span style="color:#0EA5E9">bags</span> <span style="color:#94A3B8">[백스]</span> → 포대<br><span>handle bags</span> <span style="color:#94A3B8">[핸들 백스]</span> → 포대를 다루다'};
 const old=JSON.stringify(legacy),patched=c.MDEnglishWordStudy.augment(q,legacy).html;
 assert(patched.includes('[배그즈 /ˈbæɡz/]')); // v5.43: Hangul reading shown before IPA
-assert(patched.includes('[핸들 백즈]'));
+assert(patched.includes('[핸들 배그즈]')); // v5.54: phrase rebuilt from reviewed word readings
 assert(!patched.includes('[백스]'));
 assert(patched.includes('→ 포대를 다루다'));
 assert.equal(JSON.stringify(legacy),old,'legacy source explanation mutated');
@@ -36,15 +36,16 @@ const contextual={html:'<span>holds water</span> <span style="color:#94A3B8">[�
 const fixed=c.MDEnglishWordStudy.augment(q,contextual).html;
 assert(fixed.includes('[홀드즈 워터]'));
 assert(fixed.includes('[홀즈]'));
-assert(fixed.includes('[홀즈 앤드 홀즈]'));
+assert(fixed.includes('[홀드즈 앤드 홀즈]')); // v5.54: each word from its own reviewed reading
 const saint={_year:2025,_short:'navi3',_session:3,'과목':'영어','번호':2,'문제':d.pronunciationContexts['2025|navi3|3|영어|2']['0'].text,'선택지':[]};
 assert(c.MDEnglishWordStudy.supplement(saint).includes('saint의 축약형 /ˈseɪnt/'));
 const phase=c.MDEnglishWordStudy.augment(q,{html:'<span>St. Nicholas</span> <span style="color:#94A3B8">[스트리트 니콜라스]</span>'}).html;
-assert(phase.includes('[세인트 니콜라스]'));
+assert(phase.includes('[세인트 니콜러스]'));
 const hooks=c.MDEnglishWordStudy.augment(q,{html:'<span>hooks for handling</span> <span style="color:#94A3B8">[훗스 포 핸들링]</span>'}).html;
 assert(hooks.includes('[훅스 포 핸들링]'));
 const uncertain=c.MDEnglishWordStudy.augment(q,{html:'<span>M/V Seastar is here</span> <span style="color:#94A3B8">[엠브이 시스타 이즈 히어]</span>'}).html;
-assert(uncertain.includes('발음 미확정 포함: seastar'));
+// v5.54: a phrase with an unconfirmed word shows no phrase reading (the word table has it).
+assert(!uncertain.includes('발음 미확정 포함'));assert(!/\[[^\]]*\]/.test(uncertain.split('━━')[0]));
 assert(!uncertain.includes('시스타 이즈 히어'));
 const kg=c.MDEnglishWordStudy.supplement({...q,'문제':'The KG increases.'});
 assert(kg.includes('용골 위 무게중심 높이'));
@@ -55,4 +56,5 @@ const compounds=c.MDEnglishWordStudy.supplement({...q,'문제':'Restow the cargo
 assert(compounds.includes('발음: 리스토우 · 검수 필요'));
 assert(compounds.includes('발음: 코앨티튜드 · 검수 필요'));
 assert.equal(JSON.stringify(d),snapshot,'rendering mutated dictionary/context data');
+assert(!c.MDEnglishWordStudy.augment(q,{html:'<p>x</p>'}).html.includes('검수가 남아'));
 console.log(JSON.stringify({reviewedContextReadings:checked,staleContextFallback:true,unknownSpellingNoGuess:true,dialectAlternatives:true}));
