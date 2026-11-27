@@ -68,6 +68,8 @@ python tools/patch_exam_start_guard_v535.py
 python tools/patch_navi23_content_v537.py
 python tools/patch_navi23_explanations_v543.py
 python tools/patch_explain_audit_v549.py
+python tools/patch_spacing_v557.py
+python tools/test_spacing_v557.py
 python tools/patch_pass_plan_finished_exam_v538.py
 python tools/patch_pass_plan_review_policy_v539.py
 python tools/patch_figure_images_v541.py
