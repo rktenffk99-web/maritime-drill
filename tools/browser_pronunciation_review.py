@@ -72,18 +72,19 @@ try:
               pastSubjectId=grade;pastBaseShort=grade;pastYear=year;pastSession=session;pastVariant='상선';
               pastQueue=[q];pastIdx=0;pastAnswers=[q['정답']];pastMode='study';pastStartedAt=Date.now();currentMode='past';renderPastCard();
             }''',{'grade':grade,'year':year,'session':session,'number':number})
-            assert expected in page.locator('#app').inner_text(),(grade,year,session,number,expected)
+            # v5.56: the word table is no longer shown in the card; its data (also used by
+            # the word popup) is still checked through supplement().
+            assert '단어별 기본 뜻·형태' not in page.locator('#app').inner_text()
+            assert page.evaluate('''()=>{const d=document.createElement('div');d.innerHTML=MDEnglishWordStudy.supplement(pastQueue[0]);return d.textContent}''').find(expected)>=0,(grade,year,session,number,expected)
             assert 'existing-history-sentinel'==page.evaluate("localStorage.getItem('pronunciation_test_preserve')")
             if number==9:
                 assert '[백스]' not in page.locator('#app').inner_text()
                 assert '훗스' not in page.locator('#app').inner_text()
                 assert '[훅스 포 핸들링]' in page.locator('#app').inner_text()
-                assert '/ˈbæɡz/' in page.locator('#app').inner_text()
-                page.get_by_text('단어별 기본 뜻·형태',exact=False).last.scroll_into_view_if_needed()
+                assert '/ˈbæɡz/' in page.evaluate('''()=>{const d=document.createElement('div');d.innerHTML=MDEnglishWordStudy.supplement(pastQueue[0]);return d.textContent}''')
                 page.screenshot(path=str(OUT/'pronunciation-desktop.png'),full_page=False)
             report['cases'].append({'grade':grade,'year':year,'session':session,'question':number,'expected':expected})
         page.set_viewport_size({'width':390,'height':844})
-        page.get_by_text('단어별 기본 뜻·형태',exact=False).last.scroll_into_view_if_needed()
         assert page.evaluate('document.documentElement.scrollWidth<=window.innerWidth+1'),'mobile horizontal overflow'
         page.screenshot(path=str(OUT/'pronunciation-mobile.png'),full_page=False)
         assert not report['pageErrors'],report['pageErrors']
