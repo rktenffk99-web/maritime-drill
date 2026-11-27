@@ -76,6 +76,7 @@ python tools/patch_mock_weak_blend_v542.py
 python tools/patch_mock_answer_access.py
 python tools/patch_english_word_study.py
 python tools/patch_english_word_popup_v547.py
+python tools/patch_compact_question_v553.py
 node tools/test_navi23_content_v537.js
 node tools/test_navi23_explanations_v543.js
 node tools/test_explain_audit_v549.js

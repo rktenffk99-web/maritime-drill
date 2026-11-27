@@ -2,6 +2,12 @@
 
 해기사 필기·면접 학습 앱. 배포 주소: https://rktenffk99-web.github.io/maritime-drill/
 
+## 문제 화면 간소화·SMCP 문항 정답 수정 (v5.53, 2026-11-27)
+
+- 문제 화면에서 이미 아는 안내를 없애고 여백을 줄임: "이 기기에 자동 저장됨"(저장 실패 때만 표시), "원할 때 0 키 또는 해설 버튼으로…", 해설 버튼 아래 설명, 단축키 줄, 문제 화면의 Drive 상태 문구. 설정·문제 신고 버튼은 맨 위 한 줄(나가기·북마크·문항 번호와 같은 줄)로 모음. 휴대폰에서도 한 줄에 들어감. 기기에만 남은 기록 경고(빨간 배너)는 그대로 표시.
+- 2021년 2급 1회 영어 8번: SMCP B3/1.3.1.6은 "Fit bonding wire and report."이므로 틀린 표현은 ㉮ "Make bonding wire and report."임. 같은 시험 어선 문제지도 ㉮라 상선 정답 표기 ㉯를 ㉮로 바로잡고 해설을 SMCP 원문 근거로 다시 씀.
+- 파일: `tools/patch_compact_question_v553.py`, `convenience-controls.js`, `mock-explanation-controls.js`, `tools/patch_explain_audit_v549.py`, `tools/navi23_explanations_v543/a11.txt`
+
 ## 2026년 3급 3회 법규 20 재구성 (v5.52, 2026-11-27)
 
 - 촬영 문제지에서 그림과 보기 문구가 깨져 "서로 시계 안에서", "정횡 왼쪽 선박에 대해 좌현 쪽으로 변침"이 정답으로 들어와 있던 문항을 해상교통안전법 제77조 ⑤(COLREG 제19조 (d))에 맞게 재구성함. 제한된 시계에서 레이더로만 탐지한 경우의 침로 변경 피항동작을 묻는 문제로, 정답 위치 ㉰(공식 정답가안)는 유지.

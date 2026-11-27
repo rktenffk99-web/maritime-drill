@@ -144,8 +144,8 @@
   }
   function findQuestionCounter(root){
     if(!root)return null;
-    const exact=/^(?:실전예측|실전|모의|문제)\s*\d+\s*\/\s*\d+$/;
-    const loose=/(?:실전예측|실전|모의|문제)\s*\d+\s*\/\s*\d+/;
+    const exact=/^(?:실전예측|실전|모의시험|모의|집중 연습|평가|문제)\s*\d+\s*\/\s*\d+$/;
+    const loose=/(?:실전예측|실전|모의시험|모의|집중 연습|평가|문제)\s*\d+\s*\/\s*\d+/;
     const nodes=[...root.querySelectorAll('div,span')];
     return nodes.find(el=>el.children.length===0&&exact.test((el.textContent||'').trim()))
       ||nodes.find(el=>(el.textContent||'').trim().length<80&&loose.test((el.textContent||'').trim()))
@@ -283,7 +283,10 @@
     prepareReportDialog(overlay,'md-report-title');
   }
   function addReportButton(){
-    const root=appRoot();if(!root||!inQuestionSession())return;
+    const root=appRoot();
+    // v5.53: a question screen hides the app-wide status bar to save space.
+    if(document.body&&document.body.classList&&typeof document.body.classList.toggle==='function')document.body.classList.toggle('md-question-mode',!!root&&inQuestionSession()&&!!root.querySelector('[data-past-save-status]'));
+    if(!root||!inQuestionSession())return;
     let b=document.getElementById('md-report-btn');
     if(!b){
       const counter=findQuestionCounter(root),card=root.querySelector('.card');
