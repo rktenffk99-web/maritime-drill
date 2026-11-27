@@ -87,8 +87,7 @@
   function matchesSavedContent(q,saved){
     const current=content(q);
     if(current===saved)return true;
-    const fixes=global.__mdReportedContentFixes;
-    if(!fixes)return false;
+    const fixes=global.__mdReportedContentFixes||{fixString:v=>v,stripPdfFooterArtifact:v=>v};
     let snapshot;
     try{snapshot=JSON.parse(saved)}catch(_){return false;}
     if(!Array.isArray(snapshot)||snapshot.length!==4)return false;
@@ -98,7 +97,18 @@
     // Keep choice positions, the answer index, and the image strictly equal.
     const corrected=choices.map(choice=>fixes.fixString(choice));
     if(corrected.length)corrected[corrected.length-1]=fixes.stripPdfFooterArtifact(corrected.at(-1));
-    return stable([fixes.fixString(stem),corrected,answer,image])===current;
+    if(stable([fixes.fixString(stem),corrected,answer,image])===current)return true;
+    // v5.59: word-spacing repairs (v5.57) change only whitespace. Compare stem
+    // and choices without whitespace; positions, answer and image stay strict.
+    const flat=v=>String(v==null?'':v).replace(/\s+/g,'');
+    const now=[q['문제'],q['선택지'],q['정답'],q['이미지']||null];
+    if(!Array.isArray(now[1])||now[1].length!==corrected.length)return false;
+    return flat(fixes.fixString(stem))===flat(fixes.fixString(now[0]))&&
+      corrected.every((c,i)=>{
+        let cur=fixes.fixString(String(now[1][i]));
+        if(i===corrected.length-1)cur=fixes.stripPdfFooterArtifact(cur);
+        return flat(c)===flat(cur);
+      })&&stable(answer)===stable(now[2])&&stable(image)===stable(now[3]);
   }
   function makeMeta(){
     const id=uuid();
