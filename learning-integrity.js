@@ -93,7 +93,11 @@
     // "다음 해도 도식의 의미는?", "해도도식 중  의 의미는?" — the symbol itself is missing.
     /(?:다음|아래)의?\s*(?:해도\s*)?도\s*식(?:의|이|에서|은|는)\s*(?:의미|뜻|나타내|명칭)/,
     /도식\s*(?:중|에서)?\s+(?:의|이|가)\s+(?:의미|뜻|나타내)/,
-    /(?:다음|아래)(?:과|와)\s*같이\s*[^?.]{0,20}(?:극점|회로)/
+    /(?:다음|아래)(?:과|와)\s*같이\s*[^?.]{0,20}(?:극점|회로)/,
+    // v5.49: "In the following figure, ..." (English) and "다음의 정적 복원력 곡선에서 GM은?"
+    // with ①~④ marked on a curve that was not extracted.
+    /following figure/i,
+    /(?:다음|아래)의?\s*[^?.]{0,15}곡선에서/
   ];
   function figureMissing(text){
     const value=String(text||'').trim();
