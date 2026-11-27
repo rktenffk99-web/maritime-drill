@@ -1,0 +1,181 @@
+"""항해사 2·3급 해설 점검 v5.49 (다시 실행해도 결과가 같다).
+
+2026-11-27 전수 점검에서 확인한 것만 고친다.
+  1. 정답 전사 오류 1건: 2020 2급 2회 법규 5 (선박안전법 시행규칙 제16조 대조,
+     2021-navi2-3·2024-navi2-4 같은 문제의 정답과도 일치) ㉰ → ㉯.
+  2. 해설 전체 재작성 3건: 정답과 다른 보기를 정답처럼 설명했거나 용어 정의가
+     서로 모순되던 해설.
+  3. "옳지 않은 것" 문제에서 정답 보기를 "오답"이라고 적어 헷갈리던 해설 17건:
+     정답 보기 줄의 "오답"만 "정답(틀린 설명)"으로 바꾼다.
+결과는 past-explain-YEAR 번들 끝에 덮어쓰기 블록으로 붙인다.
+"""
+import base64
+import gzip
+import json
+import re
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+INDEX = ROOT / 'index.html'
+START = '// md-explain-audit-v549 START'
+END = '// md-explain-audit-v549 END'
+BUNDLE_RE = r'(<script type="application/gzip" id="md-bundle-{}_js">)(.*?)(</script>)'
+
+T = '<span style="color:#0EA5E9;font-weight:bold">{}</span>'
+S = '<span style="color:#94A3B8;font-size:0.9em">{}</span>'
+HL = '<span style="background:#FEF3C7;padding:1px 4px;border-radius:3px">{}</span>'
+
+
+def inflate(b64):
+    return gzip.decompress(base64.b64decode(b64.strip())).decode('utf-8')
+
+
+def deflate(text):
+    return base64.b64encode(gzip.compress(text.encode('utf-8'), mtime=0)).decode('ascii')
+
+
+def page(terms, body, bullets, keys):
+    out = '━━ 용어 정리 ━━'
+    out += '<br>'.join(f'• {T.format(name)}{S.format(sub)}: {desc}' for name, sub, desc in terms)
+    out += '<br>━━ 정답 해설 ━━' + body + '<br>'
+    out += '<br>'.join(f'• {line}' for line in bullets)
+    out += '<br>━━ 핵심 암기 ━━' + '<br>'.join(keys)
+    return out
+
+
+REWRITES = {
+    '2020|navi2|2|법규|5': page(
+        [('항해구역', '(航海區域)', '선박검사증서에 적어 그 선박이 다닐 수 있게 정한 바다의 범위. 평수·연해·근해·원양구역 네 가지.'),
+         ('선박안전법 시행규칙 제16조', '(항해구역의 지정)', '항해구역을 지정할 때 고려할 사항을 정한 조문.'),
+         ('선박시설기준', '(船舶施設基準)', '선체·기관·구명·소방 설비 등 선박시설이 갖춰야 할 기준.'),
+         ('선적항', '(船籍港, Port of Registry)', '선박을 등록한 항구. 국적·등록 관할을 정하는 기준이지 안전 성능과는 관계가 없다.')],
+        f'선박안전법 시행규칙 제16조 ①은 "항해구역을 지정하는 경우에는 {HL.format("선박소유자의 요청, 선박의 구조 및 선박시설기준")} 등을 고려하여 지정하여야 한다"고 정한다. '
+        '선적항은 이 목록에 없으므로 고려 사항이 아닌 것은 ㉯ 선적항이다. 따라서 정답은 ㉯이다.<br>'
+        '(같은 문제가 나온 2021년 2급 3회·2024년 2급 4회도 정답이 "선적항"이다. 이 문항의 정답 표기 ㉰는 전사 오류라 ㉯로 바로잡았다.)',
+        ['㉮ 선박의 구조: 제16조에 적힌 고려 사항이다.',
+         '㉯ 선박의 선적항: 제16조에 없는 항목 → 정답.',
+         '㉰ 선박의 시설기준: 제16조의 "선박시설기준"으로 고려 사항이다.',
+         '㉱ 선박소유자의 요청: 제16조 맨 앞에 적힌 고려 사항이다.'],
+        ['항해구역 지정 고려 사항 = 선박소유자의 요청 + 선박의 구조 + 선박시설기준 (선적항은 아님).',
+         '어선에는 항해구역을 지정하지 않는다(같은 조 단서).']),
+    '2026|navi2|2|운용|12': page(
+        [('기압 배치', '(氣壓配置)', '우리나라를 기준으로 고기압과 저기압이 어느 쪽에 놓였는지로 나눈 날씨 유형.'),
+         ('북고남저형', '(北高南低型)', '북쪽에 고기압, 남쪽에 저기압·전선이 있는 배치. 북동풍이 불고 남부지방에 구름과 비(눈)가 많다.'),
+         ('서고동저형', '(西高東低型)', '서쪽 대륙에 고기압, 동쪽(일본 동쪽 해상)에 저기압. 전형적인 겨울 배치로 북서계절풍이 강하다.'),
+         ('동고서저형', '(東高西低型)', '동쪽에 고기압, 서쪽에서 저기압이 다가오는 배치. 날씨가 점차 나빠진다.'),
+         ('남고북저형', '(南高北低型)', '남쪽에 북태평양 고기압, 북쪽에 저기압. 여름철 무덥고 습한 배치.')],
+        '대륙 고기압이 시베리아 → 만주 → 연해주 → 북해도로 동서로 길게 뻗으면 우리나라의 '
+        f'{HL.format("북쪽")}이 고기압에 덮인다. 동시에 일본 남쪽 해상에 한랭전선이 북동~남서로 걸쳐 있으면 우리나라 '
+        f'{HL.format("남쪽")}은 기압이 낮다. 북쪽 고기압·남쪽 저기압이므로 북고남저형이고, 전선에 가까운 남부지방이 흐린 날씨를 보인다. '
+        '따라서 정답은 ㉮이다.',
+        ['㉮ 북고남저형: 고기압이 북쪽(만주·연해주·북해도)에 동서로 뻗고 전선이 남쪽 해상에 있으므로 맞다 → 정답.',
+         '㉯ 서고동저형: 고기압이 서쪽 대륙, 저기압이 일본 동쪽 해상에 있는 겨울 배치로, 북서계절풍과 맑고 추운 날씨가 특징이다. 문제의 고기압은 북쪽에 동서로 뻗어 있다.',
+         '㉰ 동고서저형: 동쪽에 고기압이 있어야 하므로 맞지 않다.',
+         '㉱ 남고북저형: 남쪽에 고기압이 있는 여름 배치라 맞지 않다.'],
+        ['고기압이 만주~연해주~북해도로 "띠처럼" 뻗고 남쪽 해상에 전선 → 북고남저형, 남부지방 흐림·비.',
+         '고기압 서쪽 대륙 + 저기압 일본 동쪽 → 서고동저형(겨울 북서계절풍).']),
+    '2023|navi2|3|운용|10': page(
+        [('정적 복원력 곡선', '(GZ curve)', '경사각에 따른 복원정(GZ)의 크기를 그린 곡선.'),
+         ('복원정', '(復原挺, Righting lever, GZ)', '배가 기울었을 때 무게중심 G와 부력 작용선 사이의 수평 거리. 클수록 복원력이 크다.'),
+         ('최대 복원각', '(Angle of maximum GZ)', '복원정이 가장 큰 경사각. 대략 갑판 끝이 물에 잠기기 시작하는 각과 같다.'),
+         ('위험 횡요각', '(危險橫搖角)', '출제 기준상 최대 복원각을 말한다. 이 각을 넘으면 복원력이 줄어들며, 최대 횡요각의 약 1/2 정도로 본다.'),
+         ('복원력 소실각', '(Angle of vanishing stability)', '복원정이 다시 0이 되는 경사각. 이 각을 넘으면 배가 스스로 일어서지 못하고 전복된다.')],
+        '복원정이 0이 되는 경사각은 위험 횡요각이 아니라 복원력 소실각이다. 위험 횡요각은 복원정이 최대가 되는 최대 복원각을 가리키므로, '
+        '"복원정이 0이 되는 경사각을 위험 횡요각이라 한다"는 ㉯가 옳지 않은 설명이다. 따라서 정답은 ㉯이다.<br>'
+        '(같은 개념을 묻는 2021년 2급 2회 운용 9·3회 운용 8도 "위험 횡요각 = 복원력 소실각"을 틀린 설명으로 출제했다.)',
+        ['㉮ 위험 경사각(위험 횡요각)이 최대 횡요각의 약 1/2이라는 것은 출제 기준과 같은 설명이다.',
+         '㉯ 복원정이 0이 되는 각은 복원력 소실각이므로 틀린 설명 → 정답.',
+         '㉰ 복원정이 최대가 되는 경사각을 최대 복원각이라 하므로 옳다.',
+         '㉱ 최대 복원각은 갑판 끝이 잠기기 시작하는 각과 거의 같으므로 옳다.'],
+        ['GZ 최대 = 최대 복원각 = 위험 횡요각 ≈ 갑판 끝 몰입각.',
+         'GZ = 0 (두 번째) = 복원력 소실각 → 이 각을 넘으면 전복.']),
+}
+
+# "옳지 않은 것"류 문제에서 정답 보기 줄에 적힌 "오답"을 바꾼다.
+WORDING = [
+    '2021|navi3|4|상선전문|25', '2022|navi3|1|항해|19', '2022|navi3|1|항해|24', '2023|navi2|1|상선전문|22',
+    '2023|navi2|3|법규|24', '2023|navi3|4|법규|2', '2024|navi2|1|운용|13', '2024|navi2|2|법규|9',
+    '2024|navi3|1|항해|25', '2024|navi3|2|운용|21', '2024|navi3|3|상선전문|24', '2024|navi3|4|상선전문|22',
+    '2024|navi3|4|운용|8', '2025|navi2|3|항해|1', '2025|navi2|4|법규|23', '2025|navi3|1|법규|5',
+    '2025|navi3|1|상선전문|3',
+]
+RAW_MARKS = [('㉮',), ('㉯',), ('㉰', '㉴'), ('㉱', '㉵')]
+
+ANSWER_FIX = {
+    'past-2020-navi2-2': ('선박안전법상 해양수산부장관이 선박의 항해구역을 지정하는데 고려해야 하는 사항이 아닌 것은?', 2, 1),
+}
+
+
+def entries(js):
+    """Last html for each key in a bundle (later blocks override earlier ones)."""
+    out = {}
+    for m in re.finditer(r'"(\d{4}\|[^"]+)":\s*\{\s*html:\s*("(?:[^"\\]|\\.)*")', js):
+        out[m.group(1)] = json.loads(m.group(2))
+    return out
+
+
+def answer_index(text, key):
+    """정답 index from the matching past bundle."""
+    year, grade, session, subject, number = key.split('|')
+    m = re.search(BUNDLE_RE.format(re.escape(f'past-{year}-{grade}-{session}')), text, re.S)
+    payload = inflate(m.group(2))
+    data = json.loads(re.search(r'const PAYLOAD = (\{.*?\n\});', payload, re.S).group(1))
+    q = next(q for q in data['questions'] if q['과목'] == subject and str(q['번호']) == number)
+    return q['정답']
+
+
+def reword(html, mark_options):
+    for mark in mark_options:
+        m = re.search('•\\s*(?:<span[^>]*>)?\\s*' + mark + '(.*?)(?=•|━━|$)', html, re.S)
+        if not m:
+            continue
+        seg = m.group(0)
+        new = seg.replace('오답 연결', '틀린 연결이므로 정답').replace('(오답 보기로 출제된 함정)', '(틀린 내용이므로 정답)')
+        new = re.sub(r'오답(?!\s*(?:이\s*)?아님|이 아)', '정답(틀린 설명)', new)
+        if new == seg:
+            raise SystemExit('wording target has no 오답: ' + mark)
+        return html[:m.start()] + new + html[m.end():]
+    raise SystemExit('answer bullet not found')
+
+
+def main():
+    text = INDEX.read_text(encoding='utf-8-sig')
+    # 1. answer key
+    for bundle, (stem, old, new) in ANSWER_FIX.items():
+        m = re.search(BUNDLE_RE.format(re.escape(bundle)), text, re.S)
+        js = inflate(m.group(2))
+        i = js.index(json.dumps(stem, ensure_ascii=False))
+        j = js.index('"정답":', i)
+        k = js.index('\n', j)
+        current = js[j:k].strip().rstrip(',')
+        if current == f'"정답": {old}':
+            js = js[:j] + js[j:k].replace(f'"정답": {old}', f'"정답": {new}') + js[k:]
+            text = text[:m.start(2)] + deflate(js) + text[m.end(2):]
+        elif current != f'"정답": {new}':
+            raise SystemExit('answer fix anchor changed: ' + current)
+    # 2/3. explanation overrides
+    targets = dict(REWRITES)
+    years = sorted({k.split('|')[0] for k in list(REWRITES) + WORDING})
+    for year in years:
+        m = re.search(BUNDLE_RE.format(re.escape(f'past-explain-{year}')), text, re.S)
+        js = inflate(m.group(2))
+        js = re.sub(re.escape(START) + r'.*?' + re.escape(END) + r'\n?', '', js, flags=re.S)
+        base = entries(js)
+        block = {}
+        for key in [k for k in WORDING if k.startswith(year + '|')]:
+            block[key] = reword(base[key], RAW_MARKS[answer_index(text, key)])
+        for key, html in targets.items():
+            if key.startswith(year + '|'):
+                if key not in base:
+                    raise SystemExit('rewrite target missing: ' + key)
+                block[key] = html
+        body = ',\n'.join(f'  {json.dumps(k, ensure_ascii=False)}: {{ html: {json.dumps(v, ensure_ascii=False)}, loading: false }}'
+                          for k, v in sorted(block.items()))
+        js = js.rstrip('\n') + f'\n{START}\nObject.assign(window.MD_EXPLAIN, {{\n{body}\n}});\n{END}\n'
+        text = text[:m.start(2)] + deflate(js) + text[m.end(2):]
+    INDEX.write_text(text, encoding='utf-8')
+    print(f'explain audit v549: 1 answer fix, {len(REWRITES)} rewrites, {len(WORDING)} wording fixes')
+
+
+if __name__ == '__main__':
+    main()
