@@ -28,11 +28,13 @@ for old, new in PAIRS:
     text = text.replace(old, new)
 
 text = re.sub(r'<script src="english-word-popup\.js\?v=[^"]+"></script>\n?', '', text)
+text = re.sub(r'<script src="navi-term-glossary\.js\?v=[^"]+"></script>\n?', '', text)
 anchor = re.search(r'<script src="english-word-study\.js\?v=[^"]+"></script>', text)
 if not anchor:
     raise SystemExit('english-word-study.js loader missing')
 # Same release stamp as the other loaders (patch_mock_answer_access.py checks it).
 version = re.search(r"const APP_VERSION = '([^']+)'", text).group(1)
-text = text[:anchor.end()] + f'\n<script src="english-word-popup.js?v={version}"></script>' + text[anchor.end():]
+# v5.55: navigator key-term glossary (tap/hover in non-English navigator questions).
+text = text[:anchor.end()] + f'\n<script src="navi-term-glossary.js?v={version}"></script>\n<script src="english-word-popup.js?v={version}"></script>' + text[anchor.end():]
 path.write_text(text, encoding='utf-8')
 print('english word popup integrated')

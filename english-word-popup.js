@@ -24,10 +24,39 @@
     const reading=hangul&&lex.startsWith('/')?hangul+' '+lex:(lex||hangul);
     return {word:w,context:hit.context,basic:hit.basic,reading};
   }
+  // v5.55: navigator (non-English) questions — key terms from the question's own
+  // explanation (용어 정리), shown on tap/hover like English words.
+  function termList(q){
+    const g=global.MDNaviTermGlossary;
+    if(!g||!q||q['과목']==='영어')return [];
+    const short=String(q._short||q._gradeShort||'');
+    if(!/^navi\d/.test(short))return [];
+    const tail=`|${q._session||q['회차']}|${q['과목']}|${q['번호']}`;
+    const ids=g.keys[`${q._year}|${short}${tail}`]||g.keys[`${q._year}|${short.replace(/e$/,'')}${tail}`];
+    return ids?ids.map(i=>g.terms[i]).filter(Boolean):[];
+  }
+  function termHtml(q,value){
+    const list=termList(q).slice().sort((a,b)=>b[0].length-a[0].length);
+    if(!list.length)return H(value);
+    if(anchor&&!anchor.isConnected)hide();
+    currentQ=q;
+    const esc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    const re=new RegExp(list.map(([n])=>esc(n)).join('|'),'g');
+    let out='',last=0;
+    value.replace(re,(m,offset)=>{
+      out+=H(value.slice(last,offset))+`<span class="mdw" data-mdt="${H(m)}">${H(m)}</span>`;
+      last=offset+m.length;return m;
+    });
+    return out+H(value.slice(last));
+  }
+  function termLookup(q,name){
+    const hit=termList(q).find(([n])=>n===name);
+    return hit?{name:hit[0],definition:hit[1]}:null;
+  }
   // Same escaping as escapeHtml in index.html; only adds word spans.
   function html(q,raw){
     const value=String(raw==null?'':raw);
-    if(!eligible(q))return H(value);
+    if(!eligible(q))return termHtml(q,value);
     // A render replaces the old word spans, so an open popup would point at nothing.
     if(anchor&&!anchor.isConnected)hide();
     currentQ=q;
@@ -64,6 +93,15 @@
     if(anchor){anchor.classList.remove('mdw-on');anchor=null;}
   }
   function show(el){
+    if(el.hasAttribute('data-mdt')){
+      const term=termLookup(currentQ,el.getAttribute('data-mdt'));
+      if(!term)return;
+      hide();ensureStyle();
+      anchor=el;el.classList.add('mdw-on');
+      box=document.createElement('div');box.id='mdw-pop';box.setAttribute('role','tooltip');
+      box.innerHTML=`<div class="mdw-w">${H(term.name)}</div><div class="mdw-c">${H(term.definition)}</div>`;
+      place(el);return;
+    }
     const info=lookup(currentQ,el.getAttribute('data-mdw'));
     if(!info)return;
     hide();ensureStyle();
@@ -73,6 +111,9 @@
     if(info.context)inner+=`<div class="mdw-c"><b style="color:#0369A1">이 문장에서:</b> ${H(info.context)}</div>`;
     if(info.basic)inner+=`<div class="${info.context?'mdw-b':'mdw-c'}">${info.context?'기본: ':''}${H(info.basic)}</div>`;
     box.innerHTML=inner;
+    place(el);
+  }
+  function place(el){
     document.body.appendChild(box);
     const r=el.getBoundingClientRect(),b=box.getBoundingClientRect();
     const vw=global.innerWidth,vh=global.innerHeight;
@@ -110,5 +151,5 @@
   if(global.document){
     if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
   }
-  global.MDEnglishWordPopup={html,hint,lookup,eligible,show,hide};
+  global.MDEnglishWordPopup={html,hint,lookup,eligible,show,hide,termList,termLookup};
 })(window);

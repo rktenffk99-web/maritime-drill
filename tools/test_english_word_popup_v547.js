@@ -30,5 +30,5 @@ for(const r of cov.questions){
 }
 const idx=fs.readFileSync('index.html','utf8');
 assert.equal((idx.match(/MDEnglishWordPopup\.html\(q,/g)||[]).length,4,'stem+choices in past card and pass plan');
-assert.match(idx,/english-word-study\.js\?v=[^"]+"><\/script>\n<script src="english-word-popup\.js/);
+assert.match(idx,/navi-term-glossary\.js\?v=[^"]+"><\/script>\n<script src="english-word-popup\.js/);
 console.log(`english word popup: ${cov.questions.length} questions, ${words} word tokens with meanings`);

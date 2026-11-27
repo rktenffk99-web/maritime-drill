@@ -170,5 +170,7 @@ node tools/test_english_word_study.js
 node tools/test_english_hangul_v543.js
 node tools/test_english_context_v546.js
 node tools/test_english_word_popup_v547.js
+node tools/build_navi_term_glossary.js --check
+node tools/test_navi_term_popup_v555.js
 python tools/test_pronunciation_dictionary.py
 node tools/test_pronunciation_display.js
