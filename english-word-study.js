@@ -58,8 +58,8 @@
     const local=global.MDEnglishWordStudyData.local[key(q)]||{};
     const context=global.MDEnglishWordStudyData.context?.[key(q)]||{};
     const contexts=global.MDEnglishWordStudyData.pronunciationContexts?.[key(q)]||{};
-    let html='━━ 단어별 기본 뜻·형태 ━━<p>지문과 네 보기의 영어 단어를 원문 순서로 확인합니다. 같은 철자가 반복되면 한 행에 위치를 모두 표시합니다. 핵심 단어는 <b>이 문장에서</b>의 뜻을 먼저 보여 줍니다. 그 밖의 단어 해석과 구·절의 연결은 위의 지문 독해·보기 해석을 함께 보십시오.</p>';
-    html+='<p style="color:#64748B">IPA는 별도 표시가 없으면 미국식입니다. 한글은 학습용 근사 독음으로 강세·모음 길이·영어 고유 자음을 정확히 나타내지 못합니다. 사전의 IPA·음성을 우선하십시오. 검수 필요·발음 미확정 항목은 확인이 남아 있습니다. 약어 철자 읽기는 통용 단어식 독음과 구별해 표시합니다.</p>';
+    // v5.54: the long usage notes were removed; the table itself is self-explanatory.
+    let html='━━ 단어별 기본 뜻·형태 ━━';
     html+=wordSection('지문',q['문제'],local,contexts['0'],q,context);
     (q['선택지']||[]).forEach((choice,i)=>{html+=wordSection(`보기 ${MARKS[i]||i+1}`,choice,local,contexts[String(i+1)],q,context);});
     return html;
@@ -71,6 +71,44 @@
       options[0].startsWith('notify the master')&&options[1].startsWith('keep his watch')&&
       options[2].startsWith('hand over the watch')&&options[3].startsWith('continue to be responsible');
   }
+  // v5.54: Hangul for heteronyms whose IPA variants read differently in Korean.
+  // Variants that differ only in stress share the dictionary Hangul reading.
+  const HANGUL_VARIANTS={use:['유스','유즈'],close:['클로스','클로즈','클로우스','클로우즈'],wind:['윈드','와인드'],winds:['윈즈','와인즈'],
+    bow:['바우','보우'],bows:['바우즈','보우즈'],row:['로우','라우'],lead:['리드','레드'],read:['리드','레드'],reading:['리딩','레딩'],
+    live:['라이브','리브'],tear:['테어','티어'],used:['유즈드','유스트','유스드'],refuse:['리퓨즈','레퓨스'],separate:['세퍼레이트','세퍼럿','세퍼릿'],
+    duplicate:['듀플리킷','듀플리케이트'],moderate:['모더릿','모더레이트'],coordinate:['코오디네이트','코오디닛','코오디넛'],
+    record:['레코드','리코드','레커드'],records:['리코즈','레코즈','레커즈','리코드즈','레코드즈'],content:['콘텐트','컨텐트'],
+    present:['프레전트','프레즌트','프리젠트','프리즌트'],entrance:['엔트런스','인트랜스']};
+  function reviewedWordReading(word,original){
+    const data=global.MDEnglishWordStudyData,w=word.toLowerCase(),note=data.pronunciationNotes?.[w];
+    if(note?.unconfirmed||note?.conventionalUnconfirmed)return null;
+    if(data.pronunciationStatus?.[w]==='needs_review')return null;
+    if(note?.variants){
+      const options=HANGUL_VARIANTS[w];
+      if(options)return original&&options.includes(original)?original:null;
+    }
+    const lex=data.lexicon[w]?.[1]||'';
+    const base=lex.startsWith('/')?(data.hangulReadings?.[w]||''):lex;
+    if(!base||/미등록|미확정/.test(base))return null;
+    const alternatives=base.split(/\s+\/\s+/).map(x=>x.trim()).filter(Boolean);
+    return original&&alternatives.includes(original)?original:alternatives[0];
+  }
+  function reviewedPhraseReading(words,oldReading){
+    const old=String(oldReading||'').trim().split(/\s+/);
+    const aligned=old.length===words.length;
+    const out=[];
+    for(let i=0;i<words.length;i++){
+      // "St." before a capitalized name is Saint (St. Nicholas); otherwise unresolved.
+      if(words[i].toLowerCase()==='st'){
+        if(/^[A-Z]/.test(words[i+1]||'')){out.push('세인트');continue;}
+        return null;
+      }
+      const r=reviewedWordReading(words[i],aligned?old[i]:null);
+      if(!r)return null;
+      out.push(r);
+    }
+    return out.join(' ');
+  }
   function reviewLegacyPronunciations(html){
     // Work on the returned HTML string only. Never mutate MD_EXPLAIN or any
     // question/answer/state object. Match only the legacy paired reading spans.
@@ -81,22 +119,13 @@
         if(ts.length===1 && /^[A-Za-z]+(?:'[A-Za-z]+)?$/.test(raw) && global.MDEnglishWordStudyData.lexicon[raw.toLowerCase()]){
           return `${open}${english}${close}<span ${attrs}>[${H(pronunciation(raw.toLowerCase(),'',null))}]</span>`;
         }
-        // A phrase is not synthesized from isolated dictionary words. Only
-        // independently confirmed erroneous Korean tokens are corrected.
-        const data=global.MDEnglishWordStudyData,englishWords=ts.map(w=>w.toLowerCase());
-        const uncertain=[...new Set(englishWords.filter(w=>data.pronunciationNotes?.[w]?.unconfirmed || data.pronunciationNotes?.[w]?.conventionalUnconfirmed))];
-        if(uncertain.length)return `${open}${english}${close}<span ${attrs}>[발음 미확정 포함: ${H(uncertain.join(', '))} · 단어별 표 참조]</span>`;
-        for(const [word,fix] of Object.entries(data.pronunciationTokenFixes||{})){
-          if(!englishWords.includes(word))continue;
-          if(fix.requiredEnglish && !raw.toLowerCase().includes(fix.requiredEnglish.toLowerCase()))continue;
-          // "holds" and "holes" may both have been approximated as 홀즈.
-          // If another source word shares the old reading, do not guess which
-          // token in a phrase should change. The word table remains authoritative.
-          if(englishWords.some(w=>w!==word && (data.lexicon[w]?.[1]===fix.before || data.pronunciationTokenFixes?.[w]?.before===fix.before)))continue;
-          const escaped=fix.before.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-          reading=reading.replace(new RegExp('(^|\\s)'+escaped+'(?=\\s|$)','g'),(_,prefix)=>prefix+fix.after);
-        }
-        return `${open}${english}${close}<span ${attrs} title="기존 문장 근사 독음 · 전체 발음 검수 필요">[${H(reading)}]</span>`;
+        // v5.54: a phrase reading is rebuilt word by word from the reviewed
+        // word readings (the same values as the word table). A token from the
+        // old phrase reading is kept only when it is one of the reviewed readings.
+        // If any word has no single reviewed reading, no phrase reading is shown.
+        const rebuilt=reviewedPhraseReading(ts,reading);
+        if(!rebuilt)return `${open}${english}${close}`.replace(/\s+$/,'');
+        return `${open}${english}${close}<span ${attrs}>[${H(rebuilt)}]</span>`;
       });
   }
   const chunk=(en,ko,structure)=>`<p><span style="color:#0EA5E9;font-weight:bold">${H(en)}</span><br>→ ${H(ko)}<br><span style="color:#64748B">${H(structure)}</span></p>`;
@@ -140,7 +169,7 @@
       else html='<p>이 문항의 문장별 해설은 보강이 필요합니다. 아래는 원문 전체의 단어별 기본 뜻입니다.</p>';
     }
     html=reviewLegacyPronunciations(html);
-    return {...(explanation||{}),html:'<p style="color:#64748B">기존 해설의 문장 단위 한글 독음은 전체 검수가 남아 있습니다. 단어별 발음과 검수 상태는 아래 표를 확인하십시오.</p>'+html+'<br>'+extra};
+    return {...(explanation||{}),html:html+'<br>'+extra};
   }
   global.MDEnglishWordStudy={augment,tokens,supplement,isWatchQuestion};
 })(window);
