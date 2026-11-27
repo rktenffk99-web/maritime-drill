@@ -119,11 +119,16 @@ try:
         assert page.evaluate("currentMode")=='past'
         assert page.locator('#app .md-question-figure img').count()==1
         report['cases'].append('restored 2024 grade-3 figure question renders its original picture')
-        # 밑줄 위치가 원문에서 빠진 2024년 3급 2회 영어 2번은 계속 막힌다.
-        page.evaluate("""()=>{const bad=getPastExam('navi3',2024,2).questions.find(q=>q['과목']==='영어'&&q['번호']===2);pastQueue=[{...bad,_year:2024,_short:'navi3',_session:2}];pastAnswers=[null];pastIdx=0;pastMode='mock';currentMode='past';renderPastCard()}""")
+        # v5.51: 2024년 3급 2회 영어 2번은 기출문제집 원본으로 밑줄을 복원해 다시 풀 수 있다.
+        page.evaluate("""()=>{const ok=getPastExam('navi3',2024,2).questions.find(q=>q['과목']==='영어'&&q['번호']===2);pastQueue=[{...ok,_year:2024,_short:'navi3',_session:2}];pastAnswers=[null];pastIdx=0;pastMode='mock';currentMode='past';renderPastCard()}""")
+        assert page.evaluate("currentMode")=='past'
+        assert '[밑줄: Fairway speed]' in page.locator('#app').inner_text()
+        report['cases'].append('restored 2024 grade-3 underline question shows its booklet underline target')
+        # 원문 문제집이 아직 없는 2026년 3급 3회 영어 8번은 계속 막힌다.
+        page.evaluate("""()=>{const bad=getPastExam('navi3',2026,3).questions.find(q=>q['과목']==='영어'&&q['번호']===8);pastQueue=[{...bad,_year:2026,_short:'navi3',_session:3}];pastAnswers=[null];pastIdx=0;pastMode='mock';currentMode='past';renderPastCard()}""")
         assert page.evaluate("currentMode")=='past-unavailable'
         assert '학습 진도에는 반영하지 않습니다' in page.locator('#app').inner_text()
-        report['cases'].append('actual 2024 grade-3 missing-underline question is blocked without grading')
+        report['cases'].append('actual 2026 grade-3 missing-underline question is blocked without grading')
         assert not report['page_errors'],report['page_errors']
         report['status']='PASS';browser.close()
 except Exception as error:
