@@ -79,11 +79,11 @@ try:
             # A single selected subject always starts at question 1.
             page.evaluate("grade=>{const exams=getPastExamsByBase(grade,'상선').filter(exam=>exam.meta.year===2026).sort((a,b)=>b.meta.session-a.meta.session);pastYear=2026;pastSession=exams[0].meta.session;pastReturnView=null}", grade)
             page.evaluate("startPastSession('mock','법규')")
-            # 2026 3급 법규 20번 has no source figure and must not be graded.
-            count = 24 if grade == 'navi3' else 25
+            # v5.52: 2026 3급 법규 20번 was rebuilt from 해상교통안전법 제77조 ⑤, so all 25 are usable.
+            count = 25
             check_paper(page, ['법규'], f'{grade}: single-subject mock uses {count} complete source questions', counts={'법규': count})
             if grade == 'navi3':
-                assert page.evaluate("!pastQueue.some(q=>q._year===2026&&q['회차']===3&&q['과목']==='법규'&&q['번호']===20)")
+                assert page.evaluate("pastQueue.some(q=>q._year===2026&&q['회차']===3&&q['과목']==='법규'&&q['번호']===20&&/서로 시계 안에 있지 아니한/.test(q['문제']))")
             page.evaluate("grade=>{pastYearPickVariant='상선';pastVariant='상선';renderPastYearPick(grade,grade)}", grade)
             for field in page.locator('.past-allyears-subj-check').all():
                 field.set_checked(field.input_value() in SELECTED)

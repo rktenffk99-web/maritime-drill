@@ -39,4 +39,13 @@ for(const k of ['2024-navi2-3|운용|11','2024-navi2e-3|운용|11','2020-navi3-4
   assert.match(fig.__MD_FIGURE_IMAGE_DATA[k].src,/^data:image\/webp;base64,/,k);
 const issue=li.__mdLearningIntegrity.contentIssue;
 assert.equal(issue({'문제':'다음의 정적 복원력 곡선에서 GM은?','선택지':['①','②','③','④'],'정답':2,_figureImage:'data:image/webp;base64,AA'}),'');
+// 6. 2026 grade-3 session-3 law 20 is rebuilt to match 해상교통안전법 제77조 ⑤ and usable again
+{
+  const c={};c.window=c;vm.createContext(c);vm.runInContext(bundle('past-2026-navi3-3'),c);
+  const q20=c.MD_PAST['2026-navi3-3'].questions.find(r=>r['과목']==='법규'&&r['번호']===20);
+  assert.match(q20['문제'],/서로 시계 안에 있지 아니한/);
+  assert.match(q20['선택지'][q20['정답']],/정횡 앞쪽에 있는 선박.*우현 쪽으로/);
+  assert.equal(issue({...q20}),'');
+  assert.match(text('2026|navi3|3|법규|20'),/제77조[\s\S]*정답은 ㉰이다/);
+}
 console.log('explain audit v549: PASS');
