@@ -115,12 +115,14 @@ try:
         # v5.48: answers stuck on this device after expiry get a strong warning,
         # and an ordinary click anywhere renews the connection and uploads them.
         page.evaluate("localStorage.setItem('maritime-drill:drive-unsynced:v1',String(Date.now()))")
-        page.evaluate("const t=JSON.parse(localStorage.getItem('maritime-drill:drive-auth:v1'));t.expiresAt=Date.now()+1000;localStorage.setItem('maritime-drill:drive-auth:v1',JSON.stringify(t))")
+        # Already expired before the reload: with a still-valid token an automatic
+        # sync could legitimately upload the answers and clear the marker first.
+        page.evaluate("const t=JSON.parse(localStorage.getItem('maritime-drill:drive-auth:v1'));t.expiresAt=Date.now()-1000;localStorage.setItem('maritime-drill:drive-auth:v1',JSON.stringify(t))")
         page.reload(wait_until='load')
         page.wait_for_function("typeof __mdDriveAuthGeneration==='function'")
         page.clock.fast_forward(21000)
         page.locator('#md-drive-auth-banner').wait_for(state='visible')
-        page.wait_for_function("document.getElementById('md-drive-auth-banner').innerText.includes('아직 Google Drive에 올라가지 않았습니다')")
+        assert page.evaluate("__mdDriveUnsynced()") is True
         assert '아직 Google Drive에 올라가지 않았습니다' in page.locator('#md-drive-auth-banner').inner_text()
         page.screenshot(path=str(OUT / 'drive-auth-unsynced-mobile.png'), full_page=True)
         before = page.evaluate('__oauthRequests.length')
