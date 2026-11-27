@@ -56,7 +56,8 @@ for(const q of before.window.MD_DATA.navi2.QUESTIONS) {
     assert.deepEqual(snapshot(concepts.navi2[q.id]), snapshot(before.window.MD_CONCEPTS.navi2[q.id]));
   }
 }
-const pending = new Set([71,93,94,96,107,108,109,110,111]);
+// v5.49: 93·94·96은 교과서 기준 일반 답변으로 채움(원문 미확보 표시는 유지).
+const pending = new Set([71,107,108,109,110,111]);
 for(const q of questions) {
   for(const field of ['q','hint1','hint2','answer']) assert.equal(typeof q[field], 'string');
   if(pending.has(q.id)) {
@@ -75,7 +76,7 @@ for(const q of questions) {
     assert.doesNotMatch(q.q, /"[A-Za-z]/, 'fabricated English passage returned');
   }
 }
-const completed = [91,92,95,97,98,99,100,101,102,103,104,105,106];
+const completed = [91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106];
 for(const id of completed) {
   assert(concepts.navi2[id].terms.trim());
   assert(concepts.navi2[id].explanation.trim());
@@ -86,4 +87,4 @@ for(const id of pending) {
 const once = JSON.stringify(after.window);
 vm.runInContext(reviewSource, after);
 assert.equal(JSON.stringify(after.window), once, 'review must be idempotent');
-console.log('navi2 reviewed content: PASS (96 stable IDs, 15 fishing removed, 9 pending, 13 concepts, provenance, repeat-safe)');
+console.log('navi2 reviewed content: PASS (96 stable IDs, 15 fishing removed, 6 pending, 16 concepts, provenance, repeat-safe)');
