@@ -36,6 +36,10 @@ if(require.main===module)(async()=>{
  const wrong=plain(right);wrong.meta.refs.reverse();assert.throws(()=>b.s.__mdExamSessions.merge(left,wrong));
  const before=reload.s.pastProgressId;await reload.s.resumePastProgress('nonexistent');assert.equal(reload.s.pastProgressId,before);
  const corrupt=harness(new Map(baseData));corrupt.rows[0]['정답']=3;corrupt.s.currentMode='home';await corrupt.s.resumePastProgress(id);assert.equal(corrupt.s.currentMode,'past-resume-error');assert.ok(corrupt.s.getPastProgress(id));
+ // v5.59: a saved paper still resumes after word-spacing repairs (whitespace only).
+ const spaced=harness(new Map(baseData));spaced.rows[0]['문제']='question  0';spaced.rows[1]['선택지']=['a','b ','c','d'];spaced.s.currentMode='home';await spaced.s.resumePastProgress(id);
+ assert.notEqual(spaced.s.currentMode,'past-resume-error');assert.equal(spaced.s.pastIdx,50);
+ const changed=harness(new Map(baseData));changed.rows[0]['문제']='question 9';changed.s.currentMode='home';await changed.s.resumePastProgress(id);assert.equal(changed.s.currentMode,'past-resume-error');
  console.log('PASS mismatched paper/content or missing selected version never substitutes another exam');
  const oldPaper=harness();
  oldPaper.s.pastQueue=oldPaper.s.pastQueue.slice(0,122).reverse();
