@@ -153,23 +153,40 @@
     html+='━━ 핵심 암기 ━━<p>능력 없는 교대자 → 인계 금지 + 선장 보고.<br>relieving officer: 교대하러 온 항해사 / relieved officer: 교대를 받은 항해사.<br>선장의 단순 선교 방문 ≠ 책임의 자동 이전.<br>책임 인수의 명시적 통보 + 상호 이해를 확인합니다.</p>';
     return html;
   }
+  // v5.56: the word-by-word table is no longer appended (tap/hover a word for its
+  // meaning). Phrase terms that only the table carried (e.g. "ship security plan은
+  // '선박보안계획서'") are added to the explanation when it does not already say them.
+  function phraseTerms(q,html){
+    const ctx=global.MDEnglishWordStudyData.context?.[key(q)]||{};
+    const plainText=String(html||'').replace(/<[^>]*>/g,'').replace(/&amp;/g,'&').replace(/&#39;/g,"'").replace(/&quot;/g,'"').toLowerCase();
+    const seen=new Set(),rows=[];
+    for(const meaning of Object.values(ctx)){
+      const i=String(meaning).indexOf('—');if(i<0)continue;
+      const m=meaning.slice(i+1).trim().match(/^(.+?)(?:은|는)\s*'([^']+)'/);if(!m)continue;
+      const phrase=m[1].trim(),gloss=m[2].trim(),id=phrase.toLowerCase();
+      if(!/^[A-Za-z][A-Za-z0-9 '’\-~]*$/.test(phrase))continue;
+      if(seen.has(id))continue;seen.add(id);
+      // Already explained: the English phrase or any form of its Korean term is in the text.
+      const flat=plainText.replace(/\s+/g,'');
+      const forms=gloss.split(/[()（）·,]/).map(x=>x.replace(/\s+/g,'').toLowerCase()).filter(x=>x.length>=2);
+      if(flat.includes(id.replace(/\s+/g,''))||forms.some(x=>flat.includes(x)))continue;
+      rows.push(`<b>${H(phrase)}</b>: ${H(gloss)}`);
+    }
+    return rows.length?'<br>━━ 핵심 표현 ━━<p>'+rows.join('<br>')+'</p>':'';
+  }
   function augment(q,explanation){
     if(!eligible(q)||!global.MDEnglishWordStudyData||explanation?.loading)return explanation;
-    const extra=supplement(q);
-    if(!extra)return explanation;
     let html=isWatchQuestion(q)?watchDetail():explanation?.html;
     if(!html){
-      if(explanation && explanation['해설']){
-        html=H(explanation['해설']).replace(/\n/g,'<br>');
-        const terms=Object.entries(explanation['용어']||{});
-        if(terms.length)html+='<br>━━ 용어 ━━'+terms.map(([w,d])=>`<p><b>${H(w)}</b>: ${H(d)}</p>`).join('');
-        const points=explanation['키포인트']||[];
-        if(points.length)html+='<br>━━ 키포인트 ━━'+points.map(p=>`<p>${H(p)}</p>`).join('');
-      }
-      else html='<p>이 문항의 문장별 해설은 보강이 필요합니다. 아래는 원문 전체의 단어별 기본 뜻입니다.</p>';
+      if(!explanation||!explanation['해설'])return explanation;
+      html=H(explanation['해설']).replace(/\n/g,'<br>');
+      const terms=Object.entries(explanation['용어']||{});
+      if(terms.length)html+='<br>━━ 용어 ━━'+terms.map(([w,d])=>`<p><b>${H(w)}</b>: ${H(d)}</p>`).join('');
+      const points=explanation['키포인트']||[];
+      if(points.length)html+='<br>━━ 키포인트 ━━'+points.map(p=>`<p>${H(p)}</p>`).join('');
     }
     html=reviewLegacyPronunciations(html);
-    return {...(explanation||{}),html:html+'<br>'+extra};
+    return {...(explanation||{}),html:html+phraseTerms(q,html)};
   }
   global.MDEnglishWordStudy={augment,tokens,supplement,isWatchQuestion};
 })(window);

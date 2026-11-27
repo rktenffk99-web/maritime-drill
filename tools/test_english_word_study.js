@@ -10,7 +10,7 @@ for(const m of src.matchAll(/<script[^>]*id="(md-bundle-[^"]+)"[^>]*>([\s\S]*?)<
 for(const f of ['explain-2026-navi3-3.js','explain-2026-navi3-3-english.js','english-study-glossary.js','english-word-study.js'])vm.runInContext(fs.readFileSync(f,'utf8'),c,{filename:f});
 // Exercise the real app lookup path, including lazy-loaded and split-field fallbacks.
 vm.runInContext(src.slice(src.indexOf('function getExplain(q){'),src.indexOf('// 기본 해설도 허용')),c);
-c.getExplainIds=q=>[`${q._year}|${q._short}|${q['회차']}|${q['과목']}|${q['번호']}`];
+c.getExplainIds=q=>[`${q._year}|${q._short}|${q._session??q['회차']}|${q['과목']}|${q['번호']}`];
 const snapshot=JSON.stringify(c.MD_PAST),before=JSON.stringify(c.MD_EXPLAIN);let n=0,total=0;const samples=[];
 for(const [exam,data] of Object.entries(c.MD_PAST)){
  const [year,grade,session]=exam.split('-');
@@ -18,7 +18,7 @@ for(const [exam,data] of Object.entries(c.MD_PAST)){
   if(source['과목']!=='영어')continue;
   const q={...source,_year:Number(year),_short:grade,_session:Number(session)};
   const e=c.getExplain(q);assert(e?.html,exam+':'+q['번호']);
-  assert.match(e.html,/단어별 기본 뜻·형태/);
+  assert.doesNotMatch(e.html,/단어별 기본 뜻·형태/,'v5.56: no word table in explanations');
   assert.doesNotMatch(e.html,/단어 뜻 미등록|발음 미등록|발음 미확인/);
   const sections=[q['문제'],...q['선택지']];let expectedRows=0;
   for(const section of sections){
@@ -44,7 +44,14 @@ const safe=c.MDEnglishWordStudy.supplement(q);assert(!safe.includes('<img'));ass
 assert.equal(c.MDEnglishWordStudy.augment({...q,_short:'navi3e'},{html:'fish'}).html,'fish');
 assert.equal(c.MDEnglishWordStudy.augment({...q,'과목':'항해'},{html:'nav'}).html,'nav');
 assert.equal(c.MDEnglishWordStudy.augment(q,{html:'loading',loading:true}).html,'loading');
-assert.equal(c.MDEnglishWordStudy.augment({...q,'문제':'xyzzymissing'},null).html.includes('보강 필요'),true);
+assert.equal(c.MDEnglishWordStudy.augment({...q,'문제':'xyzzymissing'},null),null);
+// v5.56: a phrase term only the table carried is added once; one the explanation already has is not.
+{const k=`${q._year}|${q._short}|${q._session??q['회차']}|영어|${q['번호']}`;const d=c.MDEnglishWordStudyData;const keep=d.context[k];
+ d.context[k]={security:"보안 — ship security plan은 '선박보안계획서'",plan:"계획 — ship security plan은 '선박보안계획서'"};
+ const added=c.MDEnglishWordStudy.augment(q,{html:'<p>해석</p>'}).html;
+ assert.match(added,/━━ 핵심 표현 ━━<p><b>ship security plan<\/b>: 선박보안계획서<\/p>$/);
+ assert.equal(c.MDEnglishWordStudy.augment(q,{html:'<p>선박보안계획서(SSP)</p>'}).html,'<p>선박보안계획서(SSP)</p>');
+ if(keep)d.context[k]=keep;else delete d.context[k];}
 // Pronunciation text must be a reading of this word, not text copied from a
 // definition or surrounding question sentence.
 const expectedReadings={a:'어 / 에이',the:'더 / 디',of:'어브',to:'투 / 터',
