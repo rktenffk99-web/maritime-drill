@@ -105,6 +105,7 @@ python tools/test_problem_report_modes.py
 node tools/test_problem_report_storage.js
 node tools/test_problem_report_ui.js
 node tools/test_reported_content_fixes.js
+node tools/test_underline_v551.js
 node tools/test_reported_lazy_content.js
 node tools/test_reported_content_cache.js
 node tools/test_equation_glyph_normalizer.js
