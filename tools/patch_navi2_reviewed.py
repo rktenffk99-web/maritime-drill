@@ -73,4 +73,4 @@ if text.count('data-bundled-src="' + name + '"') != 1:
     raise SystemExit('navi2 review must be bundled exactly once')
 if text != original:
     path.write_text(text, encoding='utf-8')
-print('navi2 approved review applied: 96 questions, 15 fishing removed, 9 pending')
+print('navi2 approved review applied: 96 questions, 15 fishing removed, 6 pending')
