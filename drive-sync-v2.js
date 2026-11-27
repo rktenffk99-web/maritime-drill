@@ -668,6 +668,9 @@
     }
     // When pending, keep the LIVE local timestamps, field metadata and values.
     // The existing polling loop will merge them on the next sync.
+    // v5.58: Drive was reached and this device's merge was saved there, even
+    // when applying incoming records waits until the learner leaves a quiz.
+    current.lastCheckedAt=driveSyncNowIso();
     current.remoteFileId=fileId;
     current.remoteUpdatedAt=remoteUpdatedAt||current.remoteUpdatedAt;
     current.revision=Math.max(Number(current.revision)||0,Number(revision)||0);
@@ -795,6 +798,30 @@
         ?'Drive에 남아 있던 시험 기록과 삭제 상태를 복원해 동기화했습니다.':message,connectionVersion);
   }
 
+  // Show the latest successful contact with Drive, not only the last local apply.
+  function mdSyncLastLabel(){
+    const s=driveSyncLoadState(),a=Date.parse(s.lastSyncedAt||'')||0,b=Date.parse(s.lastCheckedAt||'')||0;
+    return '마지막 동기화: '+driveSyncFormat(b>a?s.lastCheckedAt:s.lastSyncedAt);
+  }
+  if(typeof driveSyncRefreshPanel==='function'){
+    const original=driveSyncRefreshPanel;
+    driveSyncRefreshPanel=function(){
+      original.apply(this,arguments);
+      const el=typeof document!=='undefined'&&document.getElementById&&document.getElementById('md-drive-sync-last');
+      if(el)el.textContent=mdSyncLastLabel();
+    };
+  }
+  if(typeof driveSyncPanelHTML==='function'&&typeof escapeHTML==='function'){
+    const original=driveSyncPanelHTML;
+    driveSyncPanelHTML=function(){
+      return String(original.apply(this,arguments)).replace(/마지막 동기화: [^<]*/,()=>escapeHTML(mdSyncLastLabel()));
+    };
+  }
+  const MD_SYNC_LOCK='maritime-drill-drive-sync',MD_SYNC_LOCK_WAIT_MS=15000,MD_SYNC_RUN_LIMIT_MS=150000;
+  function mdSyncStage(name){window.__mdDriveSyncStage=name}
+  // Timers may be missing in minimal hosts (and tests): then nothing is bounded.
+  const mdSyncLater=(fn,ms)=>typeof setTimeout==='function'?setTimeout(fn,ms):null;
+  const mdSyncCancel=id=>{if(id!=null&&typeof clearTimeout==='function')clearTimeout(id)};
   driveSyncOnce=async function({interactive=false,showNotice=false}={}){
     if(driveSyncBusy) return;
     const state=driveSyncLoadState();
@@ -811,6 +838,7 @@
       if(waitingVersion!==mdSyncConnectionVersion()||!driveSyncLoadState().enabled&&!interactive)return;
       if(!driveSyncHasToken()){
         if(!interactive) throw new Error('Google Drive 연결 갱신이 필요합니다.');
+        mdSyncStage('Google 로그인');
         await driveSyncRequestToken(true);
       }
       if(interactive&&!state.enabled){
@@ -818,6 +846,7 @@
         if(!driveSyncSaveState(connected))throw new Error('동기화 상태를 저장하지 못했습니다.');
       }
       const connectionVersion=mdSyncConnectionVersion();
+      mdSyncStage('Drive 파일 찾기');
       let file=await driveSyncFindRemoteFile();
       if(!driveSyncLoadState().enabled||connectionVersion!==mdSyncConnectionVersion())return;
       if(!file){
@@ -826,6 +855,7 @@
       }
 
       let remote;
+      mdSyncStage('Drive 기록 내려받기');
       try{remote=await driveSyncDownloadPayload(file.id)}
       catch(error){
         // Recreate only a confirmed missing aggregate or an explicitly empty
@@ -852,6 +882,7 @@
         }
       }
       const canonicalRemote=mdSyncValidateRemote(remote);
+      mdSyncStage('기기별 기록 병합');
       remote=await mdSyncMergeRemoteCandidates(file,canonicalRemote,connectionVersion);
       // Do not use a snapshot taken before this await: the learner may have
       // answered more questions while the download was in flight.
@@ -872,6 +903,7 @@
       const payload=mdSyncBuildV2Payload(local.state,merged.items,merged.itemMeta,now,revision);
       // A shared aggregate PATCH can race with another device. Preserve this
       // complete merge in one stable file per device before reporting success.
+      mdSyncStage('이 기기 기록 저장');
       await mdSyncPreserveDevice(payload,file,connectionVersion);
       if(!aggregateFileId){
         aggregateFileId=await driveSyncCreateRemote(payload);remoteUpdatedAt=now;
@@ -889,10 +921,45 @@
         :'Google Drive와 진도가 이미 같습니다.';
       mdSyncFinish(local,merged,aggregateFileId,remoteUpdatedAt,revision,showNotice,message,connectionVersion);
       };
+      // v5.58: a sync must always end. The cross-tab lock used to be awaited with
+      // no limit, so one stuck tab (or one stuck request) left every tab showing
+      // "동기화 중…" forever. Bound the wait for the lock and the run itself.
+      const guarded=async()=>{
+        const started=Date.now();
+        if(typeof setTimeout!=='function'){mdSyncStage('시작');return run()}
+        mdSyncStage('시작');
+        let timer;
+        const limit=new Promise((_,reject)=>{timer=mdSyncLater(()=>reject(new Error(
+          `동기화가 ${Math.round(MD_SYNC_RUN_LIMIT_MS/1000)}초 안에 끝나지 않아 중단했습니다(단계: ${window.__mdDriveSyncStage||'알 수 없음'}). 지금 동기화를 다시 눌러주세요.`)),MD_SYNC_RUN_LIMIT_MS)});
+        try{await Promise.race([run(),limit])}
+        finally{mdSyncCancel(timer);window.__mdDriveSyncLastRunMs=Date.now()-started}
+      };
       if(window.__mdDriveDeviceSnapshots){
         if(!navigator.locks||typeof navigator.locks.request!=='function')throw new Error('이 브라우저는 안전한 기기간 동기화를 지원하지 않습니다. 최신 Chrome 또는 Firefox에서 연결하세요. 기기 내 저장은 유지됩니다.');
-        await navigator.locks.request('maritime-drill-drive-sync',run);
-      }else await run();
+        mdSyncStage('다른 탭의 동기화 대기');
+        if(typeof setTimeout!=='function'){await navigator.locks.request(MD_SYNC_LOCK,guarded)}else{
+        // (name, callback) form for the normal path; a queued request that gave
+        // up waiting becomes a no-op when it is finally granted.
+        let given=false,gaveUp=false,waitTimer;
+        const held=navigator.locks.request(MD_SYNC_LOCK,async()=>{if(gaveUp)return;given=true;mdSyncCancel(waitTimer);await guarded()});
+        held.catch(()=>{});
+        let waited;
+        try{
+          waited=await Promise.race([
+            held.then(()=>false),
+            new Promise(resolve=>{waitTimer=mdSyncLater(()=>resolve(!given),MD_SYNC_LOCK_WAIT_MS)})
+          ]);
+        }finally{if(!waited)mdSyncCancel(waitTimer)}
+        if(waited){
+          gaveUp=true;
+          // Another tab holds the lock past any reasonable sync. A button press
+          // takes it over (the merge is safe to repeat); background checks retry later.
+          if(!interactive)throw new Error('다른 탭에서 동기화가 끝나지 않아 잠시 후 다시 확인합니다. 앱이 열린 다른 탭이 있으면 닫아주세요.');
+          mdSyncStage('멈춘 동기화 이어받기');
+          await navigator.locks.request(MD_SYNC_LOCK,{steal:true},guarded);
+        }else{mdSyncCancel(waitTimer);await held}
+        }
+      }else await guarded();
     }catch(error){
       const msg=(error&&error.message)||String(error);
       driveSyncLastError=msg;

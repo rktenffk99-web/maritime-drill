@@ -216,5 +216,29 @@ async function test(name,fn){await fn();count++;console.log('PASS '+name)}
     const m=h.s.__mdDriveSyncV2.mergeSnapshots({[key]:JSON.stringify({[q]:sparse})},{[key]:JSON.stringify({[q]:old})},{[key]:{updatedAt:'2026-10-22T02:00:00Z',fields}},{},'2026-10-22T02:00:00Z','2026-10-21T02:00:00Z');
     const saved=JSON.parse(m.items[key])[q],loaded=h.s.__mdPassProgressStorage.hydrate({[q]:saved})[q];assert.equal(saved._storage,1);assert.equal(saved.mastered,undefined);assert.equal(saved.reviewStage,undefined);assert.equal(loaded.mastered,false);assert.equal(loaded.reviewStage,0);assert.equal(loaded.reviewSuccessDate,null);assert.equal(loaded.reviewLapseDate,'2026-10-22');
   });
+  // v5.58: a sync can no longer stay "동기화 중…" forever.
+  function fakeTimers(s){
+    const timers=new Map();let id=0;
+    s.setTimeout=(fn,ms)=>{timers.set(++id,{fn,ms});return id};s.clearTimeout=i=>timers.delete(i);
+    return {timers,fire(ms){for(const [i,t] of [...timers])if(t.ms===ms){timers.delete(i);t.fn()}}};
+  }
+  const tick=()=>new Promise(r=>setImmediate(r));
+  await test('a lock held forever by another tab ends a background check with a clear message',async()=>{
+    const h=harness({locks:{request(name,a,b){return typeof a==='function'?new Promise(()=>{}):b()}}});
+    const t=fakeTimers(h.s);const pending=h.s.driveSyncOnce({});await tick();
+    assert.equal(h.s.driveSyncBusy,true);t.fire(15000);await pending;
+    assert.equal(h.s.driveSyncBusy,false);assert.match(h.s.driveSyncLastError,/다른 탭에서 동기화가 끝나지 않아/);assert.equal(h.calls.list,0);
+  });
+  await test('the sync button takes over a stuck lock and finishes',async()=>{
+    let stole=0;const h=harness({locks:{request(name,a,b){if(typeof a==='function')return new Promise(()=>{});assert.equal(a.steal,true);stole++;return b()}}});
+    const t=fakeTimers(h.s);const pending=h.s.driveSyncOnce({interactive:true});await tick();t.fire(15000);await pending;
+    assert.equal(stole,1);assert.equal(h.s.driveSyncBusy,false);assert.equal(h.s.driveSyncLastError,'');assert.equal(h.files.size,1);
+    assert.ok(h.load().lastCheckedAt,'Drive contact time recorded');
+  });
+  await test('a run that never returns is stopped after the time limit and names its step',async()=>{
+    const h=harness();const t=fakeTimers(h.s);h.s.driveSyncFetch=()=>new Promise(()=>{});
+    const pending=h.s.driveSyncOnce({});await tick();assert.equal(h.s.driveSyncBusy,true);t.fire(150000);await pending;
+    assert.equal(h.s.driveSyncBusy,false);assert.match(h.s.driveSyncLastError,/150초 안에 끝나지 않아 중단했습니다\(단계: Drive 파일 찾기\)/);
+  });
   console.log(`Drive recovery v5.22 tests: PASS (${count} cases)`);
 })().catch(error=>{console.error(error);process.exitCode=1});
