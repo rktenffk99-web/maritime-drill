@@ -137,6 +137,9 @@ QUESTION_FIX = {
 
 ANSWER_FIX = {
     'past-2020-navi2-2': ('선박안전법상 해양수산부장관이 선박의 항해구역을 지정하는데 고려해야 하는 사항이 아닌 것은?', 2, 1),
+    # v5.53: SMCP B3/1.3.1.6 is "Fit bonding wire and report." The same paper's fishing
+    # version (2021-navi2e-1) already has ㉮; the merchant copy was mistyped as ㉯.
+    'past-2021-navi2-1': ('Make bonding wire and report.', 1, 0),
 }
 
 
@@ -216,7 +219,7 @@ def main():
         js = js.rstrip('\n') + f'\n{START}\nObject.assign(window.MD_EXPLAIN, {{\n{body}\n}});\n{END}\n'
         text = text[:m.start(2)] + deflate(js) + text[m.end(2):]
     INDEX.write_text(text, encoding='utf-8')
-    print(f'explain audit v549: 1 answer fix, {len(REWRITES)} rewrites, {len(WORDING)} wording fixes')
+    print(f'explain audit v549: {len(ANSWER_FIX)} answer fixes, {len(REWRITES)} rewrites, {len(WORDING)} wording fixes')
 
 
 if __name__ == '__main__':

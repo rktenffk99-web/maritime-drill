@@ -94,8 +94,8 @@
     if(!next||!next.parentElement)return;
     const row=next.parentElement;
     const shell=document.createElement('div');shell.id=SHELL_ID;
-    shell.style.cssText='margin-top:10px';
-    shell.innerHTML=`<button type="button" class="btn btn-outline" id="${BUTTON_ID}" aria-controls="${PANEL_ID}" aria-expanded="false" aria-keyshortcuts="0" style="width:100%">해설 보기 (0)</button><p style="font-size:11px;color:var(--textDim);line-height:1.5;margin-top:7px">정답과 전체 해설을 확인합니다. 열람 기록이 자동 저장되며, 도움받은 평가는 최근 실력 평균에서 제외됩니다.</p><div id="${PANEL_ID}" class="card" role="region" aria-label="정답과 해설" hidden style="margin-top:8px;padding:12px 14px"></div>`;
+    shell.style.cssText='margin-top:8px';
+    shell.innerHTML=`<button type="button" class="btn btn-outline" id="${BUTTON_ID}" aria-controls="${PANEL_ID}" aria-expanded="false" aria-keyshortcuts="0" style="width:100%">해설 보기 (0)</button><div id="${PANEL_ID}" class="card" role="region" aria-label="정답과 해설" hidden style="margin-top:8px;padding:12px 14px"></div>`;
     row.insertAdjacentElement('afterend',shell);
     const button=shell.querySelector('#'+BUTTON_ID);
     button?.addEventListener('click',toggle);

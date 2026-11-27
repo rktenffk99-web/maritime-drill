@@ -48,4 +48,12 @@ assert.equal(issue({'문제':'다음의 정적 복원력 곡선에서 GM은?','�
   assert.equal(issue({...q20}),'');
   assert.match(text('2026|navi3|3|법규|20'),/제77조[\s\S]*정답은 ㉰이다/);
 }
+// 7. SMCP bonding-wire question: answer matches SMCP B3/1.3.1.6 and the fishing copy
+{
+  const c={};c.window=c;vm.createContext(c);vm.runInContext(bundle('past-2021-navi2-1'),c);vm.runInContext(bundle('past-2021-navi2e-1'),c);
+  const m=c.MD_PAST['2021-navi2-1'].questions.find(r=>r['과목']==='영어'&&r['번호']===8);
+  const f=c.MD_PAST['2021-navi2e-1'].questions.find(r=>r['과목']==='영어'&&r['번호']===8);
+  assert.equal(m['선택지'][m['정답']],'Make bonding wire and report.');assert.equal(m['정답'],f['정답']);
+  assert.match(text('2021|navi2|1|영어|8'),/Fit bonding wire and report[\s\S]*정답은 ㉮이다/);// from v543 source a11.txt
+}
 console.log('explain audit v549: PASS');
