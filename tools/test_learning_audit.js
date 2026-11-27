@@ -54,7 +54,11 @@ function sourceQuestion(){
   assert.ok(m,'2026 question bundle exists');
   const s={window:null};s.window=s;vm.createContext(s);
   vm.runInContext(zlib.gunzipSync(Buffer.from(m[1].trim(),'base64')).toString('utf8'),s);
-  return s.MD_PAST['2026-navi3-3'].questions.find(q=>q['과목']==='법규'&&q['번호']===20);
+  const q=s.MD_PAST['2026-navi3-3'].questions.find(q=>q['과목']==='법규'&&q['번호']===20);
+  // v5.52: the real question was rebuilt from the law; keep testing the original
+  // photographed-paper placeholder shape, which must still be excluded.
+  assert.match(q['문제'],/\[재구성: 원문 그림 미확보\]/);
+  return {...q,'문제':q['문제'].replace(/\s*\[재구성: 원문 그림 미확보\]/,' [그림 문제]')};
 }
 function loadRealBundles(s){
   for(const m of html.matchAll(/<script[^>]+id=["']md-bundle-([^"']+)["'][^>]*>([\s\S]*?)<\/script>/g)){
@@ -210,7 +214,8 @@ async function test(name,fn){await fn();passed++;console.log('PASS '+name)}
       await s.startPastAllYearsSession('mock');paper(grade,all);
       await s.startPastYearPickSession('mock');paper(grade,all);
       s.pastYear=2026;s.pastSession=Math.max(...s.getPastExamsByBase(grade,'상선').filter(exam=>exam.meta.year===2026).map(exam=>exam.meta.session));
-      await s.startPastSession('mock','법규');paper(grade,['법규'],{'법규':grade==='navi3'?24:25});
+      // v5.52: 2026 3급 3회 법규 20 was rebuilt, so all 25 law questions are usable.
+      await s.startPastSession('mock','법규');paper(grade,['법규']);
     }
   });
   console.log(`learning audit regressions: PASS (${passed} cases)`);
